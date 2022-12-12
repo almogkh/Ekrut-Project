@@ -8,6 +8,7 @@ public class ClientReportManager {
 	// method that send request to the server
 	ReportRequest request = new ReportRequest();
 	
+	/*
 	private boolean sendReportRequest(ReportRequest request) {
 		try {
 			//sendToServer(request);
@@ -17,7 +18,7 @@ public class ClientReportManager {
 		}
 		return false; 
 	}
-	
+	*/
 	private void handleReportResponse(ReportResponse response) {
 		if(response.getResultCode() == 0) {
 			//handle error
