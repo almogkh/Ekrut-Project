@@ -9,6 +9,20 @@ public class InventoryItemResponse implements Serializable{
 	private String resultCode;
 	private InventoryItem[] inventoryItems;
 	
+	// Constructor for String-only responses.
+	public InventoryItemResponse(String resultCode) {
+		this.resultCode = resultCode;
+	}
+
+	
+	
+	public InventoryItemResponse(String resultCode, InventoryItem[] inventoryItems) {
+		this.resultCode = resultCode;
+		this.inventoryItems = inventoryItems;
+	}
+
+
+
 	// TBD Anything BUT resultCode = "OK" means some sort of an error!
 	public String getResultCode() {
 		return resultCode;

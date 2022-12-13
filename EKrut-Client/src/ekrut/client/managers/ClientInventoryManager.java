@@ -48,7 +48,7 @@ public class ClientInventoryManager {
 		if (item == null)
 			throw new IllegalArgumentException("null Item was provided.");
 		if (threshold < 0)
-			throw new IllegalArgumentException("Threshold must be a non-negative number.");
+			throw new IllegalArgumentException("Threshold must be a non-negative integer.");
 		
 		// Prepare a InventoryItemRequest to send to server.
 		InventoryItemRequest inventoryUpdateItemThresholdRequest = 
@@ -60,7 +60,7 @@ public class ClientInventoryManager {
 		// ResultCode is not "OK" meaning we encountered an error.
 		String resultCode = inventoryUpdateItemThresholdResponse.getResultCode();
 		if (!resultCode.equals("OK"))
-			throw new Exception(resultCode); // TBD CHANGE TO SPESIFIC EXCEPTION
+			throw new Exception(resultCode); // TBD CHANGE TO SPESIFIC EXCEPTION?
 	}
 	
 	@SuppressWarnings("unused")

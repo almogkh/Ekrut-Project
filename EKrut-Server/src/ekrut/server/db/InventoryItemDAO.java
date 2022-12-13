@@ -5,7 +5,7 @@ import ekrut.entity.Item;
 
 public class InventoryItemDAO {
 
-	public static InventoryItem fetchInventoryItem(Item item, String ekrutLocation) {
+	public static InventoryItem fetchInventoryItem(int itemId, String ekrutLocation) {
 		return null;
 	}
 	
@@ -13,11 +13,18 @@ public class InventoryItemDAO {
 		return null;
 	}
 	
-	public static Boolean updateItemQuantity(InventoryItem inventoryItem) {
+	public static Boolean updateItemThreshold(int itemId, String ekrutLocation,int threshold) {
 		return false;
 	}
 	
+	// TBD NESSEARY?
 	public static Boolean updateThresholdByArea() {
 		return false;
 	}
+
+	public static Boolean updateItemQuantity(int itemId, int quantity, String ekrutLocation) {
+		return true;
+	}
+
+
 }

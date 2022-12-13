@@ -11,7 +11,7 @@ public class InventoryItemRequest implements Serializable{
 	private String ekrutLocation;
 	private int threshold;
 	
-	// Update inventory item request.
+	// Update item quantity request.
 	public InventoryItemRequest(int itemId, int quantity, String ekrutLocation) {
 		this.action = InventoryItemRequestType.UPDATE_ITEM_QUANTITY;
 		this.itemId = itemId;
