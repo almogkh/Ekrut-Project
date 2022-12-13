@@ -5,8 +5,28 @@ import ekrut.entity.InventoryItem;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
 
-public class ServerInventoryManager {
 
+/**
+ * Inventory Items server manager that handles all Client's requests regarding InventoryItem.
+ * 
+ * @author Ofek Malka
+ */
+public class ServerInventoryManager {
+	
+	/**
+	 * Constructs a new ServerInventoryManager with no parameters.
+	 * TBD
+	 */
+	public ServerInventoryManager() {
+	}
+	
+	/**
+	 * Handles Client's request to <b>update</b> InventoryItem's quantity.
+	 * 
+	 * @param inventoryUpdateItemRequest the InventoryItemRequest that was instantiated with:
+	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
+	 * @return InventoryItemResponse with the appropriate response.
+	 */
 	// pub-sending notifications
 	public InventoryItemResponse updateItemQuantity(InventoryItemRequest inventoryUpdateItemRequest) {
 		if (inventoryUpdateItemRequest == null)
@@ -29,7 +49,7 @@ public class ServerInventoryManager {
 			return new InventoryItemResponse("Couldn't find InventoryItem in DB.");
 		
 		//Check if new quantity is below the threshold of that InventoryItem.
-		if (quantity < inventoryItemInDB.getItemThreshold())
+		if (quantity < inventoryItemInDB.getItemThreshold()) {}
 			// In order to send 'below threshold' notification we need access to UserNotifier &
 			// To know the Area manager's information (who is the manager of this machine??)
 			// TBD HOW TO SEND NOTIFICATIONS??
@@ -42,6 +62,14 @@ public class ServerInventoryManager {
 		return new InventoryItemResponse("OK");
 	}
 	
+	
+	/**
+	 * Handles Client's request to <b>get</b> InventoryItem(s).
+	 * 
+	 * @param inventoryUpdateItemRequest the InventoryItemRequest that was instantiated with:
+	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
+	 * @return InventoryItemResponse with the appropriate response.
+	 */
 	// pub+
 	public InventoryItemResponse getItems(InventoryItemRequest inventoryGetItemsRequest) {
 		if (inventoryGetItemsRequest == null)
@@ -61,6 +89,13 @@ public class ServerInventoryManager {
 		return new InventoryItemResponse("OK", inventoryItems);
 	}
 	
+	/**
+	 * Handles Client's request to <b>update</b> InventoryItem's <b>threshold</b>.
+	 * 
+	 * @param inventoryUpdateItemRequest the InventoryItemRequest that was instantiated with:
+	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
+	 * @return InventoryItemResponse with the appropriate response.
+	 */
 	// pub-
 	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryUpdateItemThresholdRequest) {
 		if (inventoryUpdateItemThresholdRequest == null)
