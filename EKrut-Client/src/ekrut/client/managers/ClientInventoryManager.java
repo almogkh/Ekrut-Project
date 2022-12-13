@@ -19,7 +19,7 @@ public class ClientInventoryManager {
 		
 		// Sending InventoryItemRequest and receiving InventoryItemResponse.
 		InventoryItemResponse inventoryItemUpdateResponse = sendRequest(inventoryUpdateItemRequest);
-		if (inventoryItemUpdateResponse.getResultCode() == "OK") return;
+		if (inventoryItemUpdateResponse.getResultCode().equals("OK")) return;
 		
 		// ResultCode is not "OK" meaning we encountered an error.
 		throw new Exception(inventoryItemUpdateResponse.getResultCode()); // TBD CHANGE TO SPESIFIC EXCEPTION
@@ -36,7 +36,7 @@ public class ClientInventoryManager {
 		
 		// ResultCode is not "OK" meaning we encountered an error.
 		String resultCode = inventoryGetItemsResponse.getResultCode();
-		if (resultCode != "OK")
+		if (!resultCode.equals("OK"))
 			throw new Exception(resultCode); // TBD CHANGE TO SPESIFIC EXCEPTION
 		
 		// return the InventoryItem(s) attached to the response.
@@ -59,7 +59,7 @@ public class ClientInventoryManager {
 		
 		// ResultCode is not "OK" meaning we encountered an error.
 		String resultCode = inventoryUpdateItemThresholdResponse.getResultCode();
-		if (resultCode != "OK")
+		if (!resultCode.equals("OK"))
 			throw new Exception(resultCode); // TBD CHANGE TO SPESIFIC EXCEPTION
 	}
 	
