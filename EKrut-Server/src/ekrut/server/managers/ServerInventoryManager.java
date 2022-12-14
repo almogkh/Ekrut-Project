@@ -42,7 +42,12 @@ public class ServerInventoryManager {
 			return new InventoryItemResponse("Updated quantity must be a non-negative integer.");
 		
 		// Fetch InventoryItem from DB.
-		InventoryItem inventoryItemInDB = InventoryItemDAO.fetchInventoryItem(itemId, ekrutLocation);
+		InventoryItem inventoryItemInDB = null;
+		try {
+			inventoryItemInDB = InventoryItemDAO.fetchInventoryItem(itemId, ekrutLocation);
+		}catch(Exception e) {
+			return new InventoryItemResponse(e.getMessage());
+		}
 		
 		// Check that InventoryItem exist in DB.
 		if (inventoryItemInDB == null)
