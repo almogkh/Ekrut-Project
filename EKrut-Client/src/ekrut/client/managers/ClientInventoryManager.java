@@ -18,7 +18,8 @@ public class ClientInventoryManager {
 	 * @param item the item its quantity will be changed.
 	 * @param ekrutLocation the specific machine string descriptor.
 	 * @param quantity the new item's quantity at the given ekrutLocation.
-	 * @throws IllegalArgumentException, Exception.
+	 * @throws IllegalArgumentException when a null item is provided.
+	 * @throws Exception when the servers response is anything but "OK".
 	 */
 	public void updateInventoryQuantity(Item item, String ekrutLocation, int quantity) throws Exception {
 		if (item == null)
@@ -42,7 +43,8 @@ public class ClientInventoryManager {
 	 * Return InentoryItem list for a given ekrutLocation.
 	 * 
 	 * @param ekrutLocation the specific machine string descriptor.
-	 * @throws IllegalArgumentException, Exception.
+	 * @throws IllegalArgumentException when a null item is provided.
+	 * @throws Exception when the servers response is anything but "OK".
 	 */
 	public InventoryItem[] getItems(String ekrutLocation) throws Exception {
 		// Prepare a InventoryItemRequest to send to server.
@@ -67,7 +69,8 @@ public class ClientInventoryManager {
 	 * @param item the item its threshold will be changed.
 	 * @param ekrutLocation the specific machine string descriptor.
 	 * @param threshold the new item's threshold for the given ekrutLocation.
-	 * @throws IllegalArgumentException, Exception.
+	 * @throws IllegalArgumentException when a null item is provided.
+	 * @throws Exception when the servers response is anything but "OK".
 	 */
 	public void updateItemThreshold(Item item, String ekrutLocation, int threshold) throws Exception {
 		if (item == null)
@@ -92,7 +95,7 @@ public class ClientInventoryManager {
 	 * Send Client's request to the server, returns the server's response.
 	 * 
 	 * @param request the InventoryItemRequest instance representing the request.
-	 * @return InventoryItemResponse the server's response for the given request.
+	 * @return the server's response for the given request.
 	 */
 	@SuppressWarnings("unused")
 	private InventoryItemResponse sendRequest(InventoryItemRequest request) {

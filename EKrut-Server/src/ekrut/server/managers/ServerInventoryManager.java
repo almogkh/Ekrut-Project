@@ -25,7 +25,7 @@ public class ServerInventoryManager {
 	 * 
 	 * @param inventoryUpdateItemRequest the InventoryItemRequest that was instantiated with:
 	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
-	 * @return InventoryItemResponse with the appropriate response.
+	 * @return response to be sent to the client.
 	 */
 	// pub-sending notifications
 	public InventoryItemResponse updateItemQuantity(InventoryItemRequest inventoryUpdateItemRequest) {
@@ -66,9 +66,9 @@ public class ServerInventoryManager {
 	/**
 	 * Handles Client's request to <b>get</b> InventoryItem(s).
 	 * 
-	 * @param inventoryUpdateItemRequest the InventoryItemRequest that was instantiated with:
+	 * @param inventoryGetItemsRequest the InventoryItemRequest that was instantiated with:
 	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
-	 * @return InventoryItemResponse with the appropriate response.
+	 * @return response to be sent to the client.
 	 */
 	// pub+
 	public InventoryItemResponse getItems(InventoryItemRequest inventoryGetItemsRequest) {
@@ -92,9 +92,9 @@ public class ServerInventoryManager {
 	/**
 	 * Handles Client's request to <b>update</b> InventoryItem's <b>threshold</b>.
 	 * 
-	 * @param inventoryUpdateItemRequest the InventoryItemRequest that was instantiated with:
+	 * @param inventoryUpdateItemThresholdRequest the InventoryItemRequest that was instantiated with:
 	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
-	 * @return InventoryItemResponse with the appropriate response.
+	 * @return response to be sent to the client.
 	 */
 	// pub-
 	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryUpdateItemThresholdRequest) {
