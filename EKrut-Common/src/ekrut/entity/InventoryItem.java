@@ -1,7 +1,10 @@
 package ekrut.entity;
 
-public class InventoryItem {
-	
+import java.io.Serializable;
+
+public class InventoryItem implements Serializable{
+
+	private static final long serialVersionUID = -6441102031194818468L;
 	private Item item;
 	private int itemQuantity;
 	private String ekrutLocation;
@@ -20,10 +23,6 @@ public class InventoryItem {
 	
 	public int getItemQuantity() {
 		return itemQuantity;
-	}
-	
-	public void setItemQuantity(int itemQuantity) {
-		this.itemQuantity = itemQuantity;
 	}
 	
 	public String getEkrutLocation() {
