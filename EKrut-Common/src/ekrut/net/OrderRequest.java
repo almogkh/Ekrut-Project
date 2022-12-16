@@ -8,4 +8,5 @@ public class OrderRequest implements Serializable{
 	private OrderRequestType action;
 	private int orderId;
 	private Order order;
+	
 }

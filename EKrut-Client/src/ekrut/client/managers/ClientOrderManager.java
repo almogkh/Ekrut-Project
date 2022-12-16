@@ -15,7 +15,7 @@ public class ClientOrderManager {
 	private Order activeOrder;
 	
 	/**
-	 * Creates a new empty <b>pickup</b> order. There must not already be an active order (see {@link #isActiveOrder()}).
+	 * Creates a new empty <b>pickup</b> order. There must not already be an active order  
 	 * 
 	 * @param ekrutLocation the machine from which the order is taken
 	 */
