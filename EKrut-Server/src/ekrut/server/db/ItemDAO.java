@@ -11,6 +11,12 @@ import ekrut.entity.Item;
  *
  */
 public class ItemDAO {
+	
+	private DBController con;
+	
+	public ItemDAO(DBController con) {
+		this.con = con;
+	}
 
 	/**
 	 * Fetch a single Item object from DB, identified by itemId.
@@ -18,28 +24,22 @@ public class ItemDAO {
 	 * @param itemId the unique Item identifier. 
 	 * @return	an Item according to the provided itemId.
 	 */
-	public static Item fetchItem(int itemId) {
-		Item item = null;
+	public Item fetchItem(int itemId) {
+		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM items WHERE itemId = ?;");
 		try {
-			// TBD code below should be somewhere else!
-			DBController dbcon = new DBController("jdbc:mysql://localhost/ekrut?serverTimezone=IST", "root", "UntilWhenNov12");
-			dbcon.connect();
-			
-			PreparedStatement ps = dbcon.getPreparedStatement("SELECT * FROM items WHERE itemId = ?;");
-			ps.setString(1, Integer.toString(itemId));
-			ResultSet rs = dbcon.executeQuery(ps);
-			
-			// Check if any results are available.
+			ps.setInt(1, itemId);
+			ResultSet rs = con.executeQuery(ps);
 			if(rs.next())
-				item =  new Item(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getFloat(4));
-			
-			ps.close();
-			rs.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
+				return new Item(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getFloat(4));
+			return null;
+		} catch (SQLException e1) {
+			return null;
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
-		return item;
 	}
-	
-	
 }
