@@ -59,6 +59,42 @@ public class DBController {
 	}
 	
 	/**
+	 * Begins a new database transaction. Callers <b>must</b> call {@link #commitTransaction()} or
+	 * {@link #abortTransaction()} before continuing.
+	 */
+	public void beginTransaction() {
+		try {
+			conn.setAutoCommit(false);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * Commits an in-progress transaction. Can only be called after a call to {@link #beginTransaction()}.
+	 */
+	public void commitTransaction() {
+		try {
+			conn.commit();
+			conn.setAutoCommit(true);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
+	 * Aborts an in-progress transaction. Can only be called after a call to {@link #beginTransaction()}.
+	 */
+	public void abortTransaction() {
+		try {
+			conn.rollback();
+			conn.setAutoCommit(true);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	/**
 	 * Retrieves a PreparedStatement that can be used to send a query to the DB.
 	 * Users must manually call {@link PreparedStatement#close() close()} when they
 	 * are done with it.
