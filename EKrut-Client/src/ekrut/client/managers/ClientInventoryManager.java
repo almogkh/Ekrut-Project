@@ -2,6 +2,7 @@ package ekrut.client.managers;
 
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
+import java.util.ArrayList;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
 
@@ -46,7 +47,7 @@ public class ClientInventoryManager {
 	 * @throws IllegalArgumentException when a null item is provided.
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public InventoryItem[] getItems(String ekrutLocation) throws Exception {
+	public ArrayList<InventoryItem> getItems(String ekrutLocation) throws Exception {
 		// Prepare a InventoryItemRequest to send to server.
 		InventoryItemRequest inventoryGetItemsRequest = 
 				new InventoryItemRequest(ekrutLocation);

@@ -1,6 +1,7 @@
 package ekrut.server.managers;
 
 import ekrut.server.db.InventoryItemDAO;
+import java.util.ArrayList;
 import ekrut.entity.InventoryItem;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
@@ -13,11 +14,14 @@ import ekrut.net.InventoryItemResponse;
  */
 public class ServerInventoryManager {
 	
+	InventoryItemDAO inventoryItemDAO;
+	
 	/**
 	 * Constructs a new ServerInventoryManager with no parameters.
 	 * TBD
 	 */
 	public ServerInventoryManager() {
+		inventoryItemDAO = new InventoryItemDAO(null); // TBD SHOULD BE CON!!!!!!!!!!!!
 	}
 	
 	/**
@@ -44,7 +48,7 @@ public class ServerInventoryManager {
 		// Fetch InventoryItem from DB.
 		InventoryItem inventoryItemInDB = null;
 		try {
-			inventoryItemInDB = InventoryItemDAO.fetchInventoryItem(itemId, ekrutLocation);
+			inventoryItemInDB = inventoryItemDAO.fetchInventoryItem(itemId, ekrutLocation);
 		}catch(Exception e) {
 			return new InventoryItemResponse(e.getMessage());
 		}
@@ -60,7 +64,7 @@ public class ServerInventoryManager {
 			// TBD HOW TO SEND NOTIFICATIONS??
 		
 		// Try to commit the update in DB.
-		if (!InventoryItemDAO.updateItemQuantity(itemId,quantity, ekrutLocation))
+		if (!inventoryItemDAO.updateItemQuantity(itemId,quantity, ekrutLocation))
 			return new InventoryItemResponse("Failed updating item quantity.");
 		
 		// Updated successfully.
@@ -84,7 +88,8 @@ public class ServerInventoryManager {
 		String ekrutLocation = inventoryGetItemsRequest.getEkrutLocation();
 		
 		// Fetch InventoryItem(s) fromDB.
-		InventoryItem[] inventoryItems = InventoryItemDAO.fetchAllItemsByLocation(ekrutLocation);
+		
+		ArrayList<InventoryItem> inventoryItems = inventoryItemDAO.fetchAllItemsByLocation(ekrutLocation);
 		
 		// Check if DB could not locate InventoryItem(s) for given ekrutLocation.
 		if (inventoryItems == null)
@@ -116,7 +121,7 @@ public class ServerInventoryManager {
 			return new InventoryItemResponse("Threshold must be a non-negative integer.");
 		
 		// Try to update the InventoryItem's threshold.
-		if (!InventoryItemDAO.updateItemThreshold(itemId, ekrutLocation, threshold))
+		if (!inventoryItemDAO.updateItemThreshold(itemId, ekrutLocation, threshold))
 			return new InventoryItemResponse("Couldn't update item threshold."); // TBD CHANGE THIS ?
 		
 		return new InventoryItemResponse("OK");

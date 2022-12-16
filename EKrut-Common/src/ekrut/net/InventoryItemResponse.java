@@ -1,6 +1,7 @@
 package ekrut.net;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import ekrut.entity.InventoryItem;
 
@@ -8,19 +9,19 @@ public class InventoryItemResponse implements Serializable{
 	
 	private static final long serialVersionUID = -1415270822049012022L;
 	private String resultCode;
-	private InventoryItem[] inventoryItems;
+	private ArrayList<InventoryItem> inventoryItems;
 	
 	// Constructor for String-only responses.
 	public InventoryItemResponse(String resultCode) {
 		this.resultCode = resultCode;
 	}
 	
-	public InventoryItemResponse(String resultCode, InventoryItem[] inventoryItems) {
+	public InventoryItemResponse(String resultCode, ArrayList<InventoryItem> inventoryItems) {
 		this.resultCode = resultCode;
 		this.inventoryItems = inventoryItems;
 	}
 	
-	public InventoryItem[] getInventoryItems() {
+	public ArrayList<InventoryItem> getInventoryItems() {
 		return inventoryItems;
 	}
 	
