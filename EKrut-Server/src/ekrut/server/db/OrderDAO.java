@@ -30,7 +30,7 @@ public class OrderDAO {
                                                         "(date,status,type,dueDate,clientAddress,location) " +
                                                         "VALUES(?,?,?,?,?,?)", true);
 		
-		PreparedStatement p2 = con.getPreparedStatement("INSERT INTO orderItems (orderId,itemId,itemQuantity) " +
+		PreparedStatement p2 = con.getPreparedStatement("INSERT INTO orderitems (orderId,itemId,itemQuantity) " +
                                                         "VALUES(?,?,?)");
 		try {
 			p1.setObject(1, order.getDate(), MysqlType.DATETIME);
