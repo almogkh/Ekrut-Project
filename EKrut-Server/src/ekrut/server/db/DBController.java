@@ -37,6 +37,8 @@ public class DBController {
 	 * 	       false otherwise.
 	 */
 	public boolean connect() {
+		if (conn != null)
+			return true;
 		try {
 			conn = DriverManager.getConnection(url, username, password);
 			return true;
