@@ -16,16 +16,11 @@ import ekrut.entity.Item;
 public class InventoryItemDAO {
 
 	private DBController con;
-	ItemDAO itemDAO;
+	private ItemDAO itemDAO;
 
 	public InventoryItemDAO(DBController con) {
 		this.con = con;
-		itemDAO = new ItemDAO(con); // TBD USED CORRECTLY?
-	}
-	
-	// TBD NESSEARY?
-	public static Boolean updateThresholdByArea() {
-		return false;
+		itemDAO = new ItemDAO(con); 
 	}
 
 	/**
@@ -38,7 +33,7 @@ public class InventoryItemDAO {
 	public InventoryItem fetchInventoryItem(int itemId, String ekrutLocation) {
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM inventory_items WHERE itemId = ? AND ekrutLocation = ?;");
 		try {
-			ps.setString(1, Integer.toString(itemId));
+			ps.setInt(1, itemId);
 			ps.setString(2, ekrutLocation);
 			ResultSet rs = con.executeQuery(ps);
 
@@ -73,15 +68,13 @@ public class InventoryItemDAO {
 		try {
 			ps.setString(1, ekrutLocation);
 			ResultSet rs = con.executeQuery(ps);
-			if (!rs.next()) 
-				return null;
 			ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
 			while(rs.next()) {
 				Item item = itemDAO.fetchItem(rs.getInt(1));
 				if (item != null)
 					inventoryItems.add(new InventoryItem(item, rs.getInt(2), rs.getString(3), rs.getInt(4)));
 			}
-			return inventoryItems; // TBD IS STRUCTURE OK?
+			return inventoryItems.size() != 0? inventoryItems : null;
 		} catch (SQLException e1) {
 			return null;
 		}finally {
@@ -105,8 +98,8 @@ public class InventoryItemDAO {
 		PreparedStatement ps = con.getPreparedStatement(
 				"UPDATE inventory_items SET threshold = ? WHERE itemId = ? AND ekrutLocation = ?;");
 		try {
-			ps.setString(1, Integer.toString(threshold));
-			ps.setString(2, Integer.toString(itemId));
+			ps.setInt(1, threshold);
+			ps.setInt(2, itemId);
 			ps.setString(3, ekrutLocation);
 			int count = con.executeUpdate(ps);
 			if (count != 1) {
@@ -138,8 +131,8 @@ public class InventoryItemDAO {
 		PreparedStatement ps = con.getPreparedStatement(
 				"UPDATE inventory_items SET quantity = ? WHERE itemId = ? AND ekrutLocation = ?;");
 		try {
-			ps.setString(1, Integer.toString(quantity));
-			ps.setString(2, Integer.toString(itemId));
+			ps.setInt(1, quantity);
+			ps.setInt(2, itemId);
 			ps.setString(3, ekrutLocation);
 			int count = con.executeUpdate(ps);
 			if (count != 1) {

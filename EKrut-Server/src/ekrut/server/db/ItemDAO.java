@@ -27,7 +27,7 @@ public class ItemDAO {
 	public Item fetchItem(int itemId) {
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM items WHERE itemId = ?;");
 		try {
-			ps.setString(1, Integer.toString(itemId));
+			ps.setInt(1, itemId);
 			ResultSet rs = con.executeQuery(ps);
 			if(rs.next())
 				return new Item(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getFloat(4));

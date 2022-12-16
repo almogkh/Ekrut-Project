@@ -1,5 +1,6 @@
 package ekrut.server.managers;
 
+import ekrut.server.db.DBController;
 import ekrut.server.db.InventoryItemDAO;
 import java.util.ArrayList;
 import ekrut.entity.InventoryItem;
@@ -14,14 +15,13 @@ import ekrut.net.InventoryItemResponse;
  */
 public class ServerInventoryManager {
 	
-	InventoryItemDAO inventoryItemDAO;
+	private InventoryItemDAO inventoryItemDAO;
 	
 	/**
-	 * Constructs a new ServerInventoryManager with no parameters.
-	 * TBD
+	 * Constructs a new ServerInventoryManager.
 	 */
-	public ServerInventoryManager() {
-		inventoryItemDAO = new InventoryItemDAO(null); // TBD SHOULD BE CON!!!!!!!!!!!!
+	public ServerInventoryManager(DBController con) {
+		inventoryItemDAO = new InventoryItemDAO(con);
 	}
 	
 	/**

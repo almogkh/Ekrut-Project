@@ -18,9 +18,11 @@ import ekrut.entity.OrderType;
 public class OrderDAO {
 
 	private DBController con;
+	private ItemDAO itemDAO;
 	
 	public OrderDAO(DBController con) {
 		this.con = con;
+		itemDAO = new ItemDAO(con);
 	}
 	
 	public boolean createOrder(Order order) {
@@ -112,7 +114,7 @@ public class OrderDAO {
 			ResultSet rs2 = p2.executeQuery();
 			
 			while (rs2.next()) {
-				Item item = ItemDAO.fetchItem(rs2.getInt(2));
+				Item item = itemDAO.fetchItem(rs2.getInt(2)); // CHANGED BY OFEK CUZ ItemDAO AINT NO STATIC NO MO.
 				OrderItem orderItem = new OrderItem(item, rs2.getInt(3));
 				items.add(orderItem);
 			}
