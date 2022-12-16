@@ -22,7 +22,7 @@ public class OrderDAO {
 	
 	public OrderDAO(DBController con) {
 		this.con = con;
-		itemDAO = new ItemDAO(con);
+		this.itemDAO = new ItemDAO(con);
 	}
 	
 	public boolean createOrder(Order order) {
@@ -114,7 +114,7 @@ public class OrderDAO {
 			ResultSet rs2 = p2.executeQuery();
 			
 			while (rs2.next()) {
-				Item item = itemDAO.fetchItem(rs2.getInt(2)); // CHANGED BY OFEK CUZ ItemDAO AINT NO STATIC NO MO.
+				Item item = itemDAO.fetchItem(rs2.getInt(2));
 				OrderItem orderItem = new OrderItem(item, rs2.getInt(3));
 				items.add(orderItem);
 			}
