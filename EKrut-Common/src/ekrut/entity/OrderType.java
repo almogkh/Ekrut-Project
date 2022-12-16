@@ -1,5 +1,5 @@
 package ekrut.entity;
 
 public enum OrderType {
-	PICKUP, REMOTE
+	PICKUP, REMOTE, SHIPMENT
 }
