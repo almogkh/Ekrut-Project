@@ -29,6 +29,19 @@ public class Order implements Serializable {
 		this.items = new ArrayList<>();
 	}
 
+	public Order(int orderId, LocalDateTime date, OrderStatus status, OrderType type, LocalDateTime dueDate,
+			String clientAddress, String ekrutLocation) {
+		this.orderId = orderId;
+		this.isValidId = true;
+		this.date = date;
+		this.status = status;
+		this.type = type;
+		this.dueDate = dueDate;
+		this.clientAddress = clientAddress;
+		this.ekrutLocation = ekrutLocation;
+		this.items = new ArrayList<>();
+	}
+
 	public Integer getOrderId() {
 		if (isValidId)
 			return orderId;
