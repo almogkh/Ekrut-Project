@@ -1,7 +1,7 @@
 package ekrut.entity;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Order implements Serializable {
@@ -10,10 +10,10 @@ public class Order implements Serializable {
 
 	private int orderId;
 	private boolean isValidId;
-	private LocalDate date;
+	private LocalDateTime date;
 	private OrderStatus status;
 	private OrderType type;
-	private LocalDate dueDate;
+	private LocalDateTime dueDate;
 	private String clientAddress;
 	private String ekrutLocation;
 	private ArrayList<OrderItem> items;
@@ -42,7 +42,7 @@ public class Order implements Serializable {
 		this.isValidId = true;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 	
@@ -63,7 +63,7 @@ public class Order implements Serializable {
 		return type;
 	}
 
-	public LocalDate getDueDate() {
+	public LocalDateTime getDueDate() {
 		return dueDate;
 	}
 
