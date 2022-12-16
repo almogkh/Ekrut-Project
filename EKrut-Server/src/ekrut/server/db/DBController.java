@@ -59,6 +59,7 @@ public class DBController {
 	
 	/**
 	 * Retrieves a PreparedStatement that can be used to send a query to the DB.
+	 * Users must manually call {@link PreparedStatement#close() close()} when they are done with it.
 	 * 
 	 * @param query the SQL query to use as a template for the statement
 	 * @return      the prepared statement representing the SQL query
@@ -80,7 +81,6 @@ public class DBController {
 	public ResultSet executeQuery(PreparedStatement p) {
 		try {
 			ResultSet result = p.executeQuery();
-			p.close();
 			return result;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -96,7 +96,6 @@ public class DBController {
 	public int executeUpdate(PreparedStatement p) {
 		try {
 			int result = p.executeUpdate();
-			p.close();
 			return result;
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
