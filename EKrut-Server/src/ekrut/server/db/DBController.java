@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Database controller that manages the connection to a MySQL database.
@@ -59,19 +60,35 @@ public class DBController {
 	
 	/**
 	 * Retrieves a PreparedStatement that can be used to send a query to the DB.
-	 * Users must manually call {@link PreparedStatement#close() close()} when they are done with it.
+	 * Users must manually call {@link PreparedStatement#close() close()} when they
+	 * are done with it.
 	 * 
-	 * @param query the SQL query to use as a template for the statement
-	 * @return      the prepared statement representing the SQL query
+	 * @param query        the SQL query to use as a template for the statement
+	 * @param autoGenKeys  whether the statement should support retrieving auto
+	 *                     generated keys
+	 * @return             the prepared statement representing the SQL query
 	 */
-	public PreparedStatement getPreparedStatement(String query) {
+	public PreparedStatement getPreparedStatement(String query, boolean autoGenKeys) {
 		try {
-			return conn.prepareStatement(query);
+			return conn.prepareStatement(query,
+                                         autoGenKeys ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
+	/**
+	 * Retrieves a PreparedStatement that can be used to send a query to the DB.
+	 * Users must manually call {@link PreparedStatement#close() close()} when they
+	 * are done with it.
+	 * 
+	 * @param query the SQL query to use as a template for the statement
+	 * @return the prepared statement representing the SQL query
+	 */
+	public PreparedStatement getPreparedStatement(String query) {
+		return getPreparedStatement(query, false);
+	}
+
 	/**
 	 * Executes a PreparedStatement that is intended to return a result.
 	 * 
