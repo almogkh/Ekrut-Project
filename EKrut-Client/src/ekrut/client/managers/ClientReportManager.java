@@ -1,36 +1,49 @@
 package ekrut.client.managers;
-import java.io.IOException;
 import ekrut.net.ReportRequest;
 import ekrut.net.ReportResponse;
 
+import java.time.LocalDateTime;
+
+import ekrut.entity.Report; 
+
+/**
+ * This class manages reports on the client side.
+ * 
+ * @author Tal Gaon
+ *
+ */
 
 public class ClientReportManager {
-	// method that send request to the server
-	ReportRequest request = new ReportRequest();
 	
-	/*
-	private boolean sendReportRequest(ReportRequest request) {
-		try {
-			//sendToServer(request);
-			return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return false; 
-	}
-	*/
-	private void handleReportResponse(ReportResponse response) {
-		if(response.getResultCode() == 0) {
-			//handle error
-		}
-		else {
-			// do something? maybe only the viewer get the response..
-		}
+	/**
+	 * Returns the report according to the inputs if such a report exists. 
+	 * 
+	 * @param String area, String reportType, LocalDateTime date.
+	 * @throws Exception when the servers response is anything but "OK".
+	 * @return report.
+	 */
+	public Report getReport(String area, String reportType, LocalDateTime date) throws Exception {
+	// Prepare a getReportRequest to send to server.
+	ReportRequest reportRequest = new ReportRequest(area, reportType, date);
+	// Sending getReportRequest and receiving getReportResponse.
+	ReportResponse reportResponse = sendRequest(reportRequest);
+	// ResultCode is not "OK" meaning we encountered an error. 
+	String resultCode = reportResponse.getResultCode();
+	if (!resultCode.equals("OK"))
+		throw new Exception(resultCode); // TBD CHANGE TO SPESIFIC EXCEPTION
+	// Return the report that attached to the response.
+	return reportResponse.getReport();  
 	}
 	
-	/* those methods are filters for the arrayList of reports*/
+	
+	
+	
+ 
+	private ReportResponse sendRequest(ReportRequest getReportsRequest) {
+		// TODO Auto-generated method stub
+		ReportResponse reportsResponse = new ReportResponse();
+		return reportsResponse;
+	}
 	
 }
-	// method that handle message from server(reportRespone)
-	// filter reports? (at view class)
 	

@@ -9,6 +9,12 @@ public class ReportRequest implements Serializable{
 	private String reportType;
 	private LocalDateTime date;
 	
+	public ReportRequest(String area, String reportType, LocalDateTime date) {
+		this.area = area;
+		this.reportType = reportType;
+		this.date = date;
+	}
+	
 	public String getArea() {
 		return area;
 	}
@@ -16,12 +22,12 @@ public class ReportRequest implements Serializable{
 		this.area = area;
 	}
 	public String getReportType() {
-		return reportType;
+		return reportType; 
 	}
 	public void setReportType(String reportType) {
 		this.reportType = reportType;
 	}
-	public LocalDateTime getDate() {
+	public LocalDateTime getDate() { 
 		return date;
 	}
 	public void setDate(LocalDateTime date) {
