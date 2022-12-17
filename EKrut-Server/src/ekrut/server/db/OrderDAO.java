@@ -25,6 +25,10 @@ public class OrderDAO {
 		this.itemDAO = new ItemDAO(con);
 	}
 	
+	public void setItemDAO(ItemDAO dao) {
+		this.itemDAO = dao;
+	}
+	
 	public boolean createOrder(Order order) {
 		con.beginTransaction();
 		
