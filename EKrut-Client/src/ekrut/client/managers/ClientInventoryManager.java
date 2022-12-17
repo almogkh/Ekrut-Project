@@ -1,10 +1,10 @@
 package ekrut.client.managers;
 
 import ekrut.entity.InventoryItem;
-import ekrut.entity.Item;
 import java.util.ArrayList;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
+import ekrut.net.ResultType;
 
 /**
  * Inventory Items client manager that handles client actions regarding InventoryItem.
@@ -22,22 +22,17 @@ public class ClientInventoryManager {
 	 * @throws IllegalArgumentException when a null item is provided.
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public void updateInventoryQuantity(Item item, String ekrutLocation, int quantity) throws Exception {
-		if (item == null)
-			throw new IllegalArgumentException("null Item was provided.");
+	public ResultType updateInventoryQuantity(int itemId, String ekrutLocation, int quantity) throws RuntimeException {
 		if (quantity < 0)
-			throw new IllegalArgumentException("Quantity must be a non-negative number.");
+			return ResultType.INVALID_INPUT;
 		
 		// Prepare a InventoryItemRequest to send to server.
 		InventoryItemRequest inventoryUpdateItemRequest = 
-				new InventoryItemRequest(item.getItemId(), quantity, ekrutLocation);
+				new InventoryItemRequest(itemId, quantity, ekrutLocation);
 		
 		// Sending InventoryItemRequest and receiving InventoryItemResponse.
 		InventoryItemResponse inventoryItemUpdateResponse = sendRequest(inventoryUpdateItemRequest);
-		if (inventoryItemUpdateResponse.getResultCode().equals("OK")) return;
-		
-		// ResultCode is not "OK" meaning we encountered an error.
-		throw new Exception(inventoryItemUpdateResponse.getResultCode()); // TBD CHANGE TO SPESIFIC EXCEPTION
+		return inventoryItemUpdateResponse.getResultType();
 	}
 	
 	/**
@@ -56,9 +51,9 @@ public class ClientInventoryManager {
 		InventoryItemResponse inventoryGetItemsResponse = sendRequest(inventoryGetItemsRequest);
 		
 		// ResultCode is not "OK" meaning we encountered an error.
-		String resultCode = inventoryGetItemsResponse.getResultCode();
-		if (!resultCode.equals("OK"))
-			throw new Exception(resultCode); // TBD CHANGE TO SPESIFIC EXCEPTION
+		ResultType resultType = inventoryGetItemsResponse.getResultType();
+		if (resultType != ResultType.OK)
+			throw new Exception(resultType.toString());
 		
 		// return the InventoryItem(s) attached to the response.
 		return inventoryGetItemsResponse.getInventoryItems();
@@ -73,23 +68,19 @@ public class ClientInventoryManager {
 	 * @throws IllegalArgumentException when a null item is provided.
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public void updateItemThreshold(Item item, String ekrutLocation, int threshold) throws Exception {
-		if (item == null)
-			throw new IllegalArgumentException("null Item was provided.");
+	public ResultType updateItemThreshold(int itemId, String ekrutLocation, int threshold) {
 		if (threshold < 0)
 			throw new IllegalArgumentException("Threshold must be a non-negative integer.");
 		
 		// Prepare a InventoryItemRequest to send to server.
 		InventoryItemRequest inventoryUpdateItemThresholdRequest = 
-				new InventoryItemRequest(item.getItemId(), ekrutLocation, threshold);
+				new InventoryItemRequest(itemId, ekrutLocation, threshold);
 		
 		// Sending InventoryItemRequest and receiving InventoryItemResponse.
 		InventoryItemResponse inventoryUpdateItemThresholdResponse = sendRequest(inventoryUpdateItemThresholdRequest);
 		
 		// ResultCode is not "OK" meaning we encountered an error.
-		String resultCode = inventoryUpdateItemThresholdResponse.getResultCode();
-		if (!resultCode.equals("OK"))
-			throw new Exception(resultCode); // TBD CHANGE TO SPESIFIC EXCEPTION?
+		return inventoryUpdateItemThresholdResponse.getResultType();
 	}
 	
 	/**

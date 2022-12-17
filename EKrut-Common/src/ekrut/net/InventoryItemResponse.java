@@ -8,16 +8,16 @@ import ekrut.entity.InventoryItem;
 public class InventoryItemResponse implements Serializable{
 	
 	private static final long serialVersionUID = -1415270822049012022L;
-	private String resultCode;
+	private ResultType resultType;
 	private ArrayList<InventoryItem> inventoryItems;
 	
 	// Constructor for String-only responses.
-	public InventoryItemResponse(String resultCode) {
-		this.resultCode = resultCode;
+	public InventoryItemResponse(ResultType resultType) {
+		this.resultType = resultType;
 	}
 	
-	public InventoryItemResponse(String resultCode, ArrayList<InventoryItem> inventoryItems) {
-		this.resultCode = resultCode;
+	public InventoryItemResponse(ResultType resultType, ArrayList<InventoryItem> inventoryItems) {
+		this.resultType = resultType;
 		this.inventoryItems = inventoryItems;
 	}
 	
@@ -27,7 +27,7 @@ public class InventoryItemResponse implements Serializable{
 	
 	// TBD Anything BUT resultCode = "OK" means some sort of an error!
 	// THINKING ABOUT CHANGING IT TO INVENTORY_ITEM_TYPE
-	public String getResultCode() {
-		return resultCode;
+	public ResultType getResultType() {
+		return resultType;
 	}
 }
