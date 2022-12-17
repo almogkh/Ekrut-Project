@@ -97,7 +97,7 @@ public class OrderDAO {
 	
 	public Order fetchOrderById(int orderId) {
 		PreparedStatement p1 = con.getPreparedStatement("SELECT * FROM orders WHERE orderId = ?");
-		PreparedStatement p2 = con.getPreparedStatement("SELECT * FROM orderItems WHERE orderId = ?");
+		PreparedStatement p2 = con.getPreparedStatement("SELECT * FROM orderitems WHERE orderId = ?");
 		
 		try {
 			p1.setInt(1, orderId);
