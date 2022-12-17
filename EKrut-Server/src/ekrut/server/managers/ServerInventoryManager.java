@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import ekrut.entity.InventoryItem;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
+import ekrut.net.ResultType;
 
 
 /**
@@ -43,19 +44,19 @@ public class ServerInventoryManager {
 		
 		// Check that updated quantity is a valid value.
 		if (quantity < 0)
-			return new InventoryItemResponse("Updated quantity must be a non-negative integer.");
+			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Fetch InventoryItem from DB.
 		InventoryItem inventoryItemInDB = null;
 		try {
 			inventoryItemInDB = inventoryItemDAO.fetchInventoryItem(itemId, ekrutLocation);
 		}catch(Exception e) {
-			return new InventoryItemResponse(e.getMessage());
+			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		}
 		
 		// Check that InventoryItem exist in DB.
 		if (inventoryItemInDB == null)
-			return new InventoryItemResponse("Couldn't find InventoryItem in DB.");
+			return new InventoryItemResponse(ResultType.NOT_FOUND);
 		
 		//Check if new quantity is below the threshold of that InventoryItem.
 		if (quantity < inventoryItemInDB.getItemThreshold()) {}
@@ -65,10 +66,10 @@ public class ServerInventoryManager {
 		
 		// Try to commit the update in DB.
 		if (!inventoryItemDAO.updateItemQuantity(itemId,quantity, ekrutLocation))
-			return new InventoryItemResponse("Failed updating item quantity.");
+			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		
 		// Updated successfully.
-		return new InventoryItemResponse("OK");
+		return new InventoryItemResponse(ResultType.OK);
 	}
 	
 	
@@ -93,10 +94,10 @@ public class ServerInventoryManager {
 		
 		// Check if DB could not locate InventoryItem(s) for given ekrutLocation.
 		if (inventoryItems == null)
-			return new InventoryItemResponse("There are no available InventoryItem(s) for given ekrutLocation: " + ekrutLocation);
+			return new InventoryItemResponse(ResultType.NOT_FOUND);
 		
 		// Return the InventoryItems(s) fetched from DB.
-		return new InventoryItemResponse("OK", inventoryItems);
+		return new InventoryItemResponse(ResultType.OK, inventoryItems);
 	}
 	
 	/**
@@ -118,14 +119,12 @@ public class ServerInventoryManager {
 		
 		// Check if the new threshold value is valid.
 		if (threshold < 0)
-			return new InventoryItemResponse("Threshold must be a non-negative integer.");
+			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Try to update the InventoryItem's threshold.
 		if (!inventoryItemDAO.updateItemThreshold(itemId, ekrutLocation, threshold))
-			return new InventoryItemResponse("Couldn't update item threshold."); // TBD CHANGE THIS ?
+			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		
-		return new InventoryItemResponse("OK");
+		return new InventoryItemResponse(ResultType.OK);
 	}
-	
-	
 }
