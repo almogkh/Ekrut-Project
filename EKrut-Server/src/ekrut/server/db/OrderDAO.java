@@ -136,4 +136,28 @@ public class OrderDAO {
 			}
 		}
 	}
+	
+	public boolean updateOrderStatus(int orderId, OrderStatus status) {
+		PreparedStatement p = con.getPreparedStatement("UPDATE orders SET status = ? WHERE orderId = ?");
+		
+		try {
+			p.setString(1, status.toString());
+			p.setInt(2, orderId);
+			
+			if (p.executeUpdate() != 1)
+				return false;
+			
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+			
+		} finally {
+			try {
+				p.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		return true;
+	}
 }
