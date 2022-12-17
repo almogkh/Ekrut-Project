@@ -61,7 +61,7 @@ public class InventoryItemDAO {
 	 * Fetch array list of InventoryItem object(s) from DB, identified by ekrutLocation.
 	 * 
 	 * @param ekrutLocation the unique machine identifier. 
-	 * @return	ArrayList<InventoryItem> list with all the inventory items assigned to the provided machine
+	 * @return	{@link ArrayList}&lt;{@link InventoryItem}&gt; list with all the inventory items assigned to the provided machine
 	 */
 	public ArrayList<InventoryItem> fetchAllItemsByLocation(String ekrutLocation) {
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM inventory_items WHERE ekrutLocation = ?;");

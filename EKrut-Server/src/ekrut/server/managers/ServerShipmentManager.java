@@ -9,7 +9,7 @@ public class ServerShipmentManager {
 	
 	/**
 	 * Create shipping request for 
-	 * @param orderForDelivery
+	 * @param shipmentRequest
 	 * @return return if shipping request was successfully passed
 	 */
 	public ShipmentResponse createShippingRequest(ShipmentRequest shipmentRequest) {
