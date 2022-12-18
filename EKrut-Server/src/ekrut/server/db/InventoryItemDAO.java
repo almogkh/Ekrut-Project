@@ -87,13 +87,13 @@ public class InventoryItemDAO {
 	}
 
 	/**
-	 * Updates the <b>threshold</b> of an inventory item in DB, , identified by itemId and ekrutLocation.
+	 * Updates the <b>threshold</b> of an inventory item in DB, identified by itemId and ekrutLocation.
 	 * 
 	 * @param itemId the unique Item identifier. 
 	 * @param ekrutLocation the unique machine identifier. 
 	 * @return	True if update is successful, otherwise False.
 	 */
-	public Boolean updateItemThreshold(int itemId, String ekrutLocation, int threshold) {
+	public boolean updateItemThreshold(int itemId, String ekrutLocation, int threshold) {
 		con.beginTransaction();
 		PreparedStatement ps = con.getPreparedStatement(
 				"UPDATE inventory_items SET threshold = ? WHERE itemId = ? AND ekrutLocation = ?;");
@@ -120,13 +120,43 @@ public class InventoryItemDAO {
 	}
 
 	/**
+	 * Updates the <b>threshold</b> of all inventory item(s) of a specific location.
+	 * 
+	 * @param area all thresholds in machines in that area will be updated. 
+	 * @return	True if update is successful, otherwise False.
+	 */
+	public boolean updateItemsThresholdByArea(String area, int threshold) {
+		con.beginTransaction();
+		PreparedStatement ps = con.getPreparedStatement(
+				"UPDATE inventory_items "
+				+ "SET inventory_items.itemThreshold = ? "
+				+ "WHERE inventory_items.ekrutLocation IN "
+				+ "(SELECT ekrutLocation FROM machine_in_area WHERE area = ?);");
+		try {
+			ps.setInt(1, threshold);
+			ps.setString(2, area);
+			con.executeUpdate(ps);
+			con.commitTransaction();
+			return true;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	/**
 	 * Updates the <b>quantity</b> of an inventory item in DB, , identified by itemId and ekrutLocation.
 	 * 
 	 * @param itemId the unique Item identifier. 
 	 * @param ekrutLocation the unique machine identifier. 
 	 * @return	True if update is successful, otherwise False.
 	 */
-	public Boolean updateItemQuantity(int itemId, int quantity, String ekrutLocation) {
+	public boolean updateItemQuantity(int itemId, int quantity, String ekrutLocation) {
 		con.beginTransaction();
 		PreparedStatement ps = con.getPreparedStatement(
 				"UPDATE inventory_items SET quantity = ? WHERE itemId = ? AND ekrutLocation = ?;");
