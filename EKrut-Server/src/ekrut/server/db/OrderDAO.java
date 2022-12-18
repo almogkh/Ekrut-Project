@@ -116,7 +116,8 @@ public class OrderDAO {
 			return true;
 			
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			con.abortTransaction();
+			return false;
 		} finally {
 			try {
 				p1.close();
