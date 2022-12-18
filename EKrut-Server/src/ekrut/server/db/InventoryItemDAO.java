@@ -87,7 +87,7 @@ public class InventoryItemDAO {
 	}
 
 	/**
-	 * Updates the <b>threshold</b> of an inventory item in DB, , identified by itemId and ekrutLocation.
+	 * Updates the <b>threshold</b> of an inventory item in DB, identified by itemId and ekrutLocation.
 	 * 
 	 * @param itemId the unique Item identifier. 
 	 * @param ekrutLocation the unique machine identifier. 
@@ -119,6 +119,41 @@ public class InventoryItemDAO {
 		}
 	}
 
+	/**
+	 * Updates the <b>threshold</b> of all inventory item(s) of a specific location.
+	 * 
+	 * @param area all thresholds in machines in that area will be updated. 
+	 * @param ekrutLocation the unique machine identifier. 
+	 * @return	True if update is successful, otherwise False.
+	 */
+	public Boolean updateItemsThresholdByArea(String area, int threshold) {
+		con.beginTransaction();
+		PreparedStatement ps = con.getPreparedStatement(
+				"UPDATE inventory_items "
+				+ "SET inventory_items.itemThreshold = ? "
+				+ "WHERE inventory_items.ekrutLocation IN "
+				+ "(SELECT ekrutLocation FROM machine_in_area WHERE area = ?);");
+		try {
+			ps.setInt(1, threshold);
+			ps.setString(3, area);
+			int count = con.executeUpdate(ps);
+			if (count != 1) {
+				con.abortTransaction();
+				return false;
+			}
+			con.commitTransaction();
+			return true;
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
 	/**
 	 * Updates the <b>quantity</b> of an inventory item in DB, , identified by itemId and ekrutLocation.
 	 * 
