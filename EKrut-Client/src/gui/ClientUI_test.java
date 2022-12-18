@@ -23,6 +23,8 @@ public class ClientUI_test extends Application {
 		primaryStage.setTitle("EKrut Client");
 		primaryStage.setScene(scene);
 		primaryStage.setOnShown(controller::setFocus);
+		controller.setServerDetails("192.168.88.84", "5555", true);
+
 		primaryStage.show();
 	}
 	

@@ -47,7 +47,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -92,44 +92,29 @@
       <children>
             <Label fx:id="userGreetingLbl" layoutX="41.0" layoutY="102.0" prefHeight="92.0" prefWidth="405.0" text="Hello Username," textFill="#05445e">
                <font>
-                  <Font name="Cambria Bold" size="40.0" />
+                  <Font name="Arial Bold" size="40.0" />
                </font>
             </Label>
-            <Pane prefHeight="81.0" prefWidth="500.0" style="-fx-background-color: #189AB4;">
+             <Pane prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
                <children>
-                  <ImageView fitHeight="70.0" fitWidth="303.0" layoutX="131.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="98.0" fitWidth="192.0" layoutX="172.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@gui-assets/logo2-no-background.png" />
+                        <Image url="@gui-assets/logo.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="TOP" layoutX="21.0" layoutY="6.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="75.0" style="-fx-border-color: gray; -fx-background-color: #189AB4;" text="Logout">
-                     <font>
-                        <Font name="Cambria" size="17.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@gui-assets/logout.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                  <Line endX="283.0" layoutX="217.0" layoutY="100.0" startX="-216.0" strokeWidth="2.0" />
                </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-            </Pane>
+            </Pane>       
             <Label layoutX="41.0" layoutY="194.0" text="Please choose your desired action." textFill="#05445e">
                <font>
-                  <Font name="Cambria" size="23.0" />
+                  <Font name="Arial" size="23.0" />
                </font>
             </Label>
-            <Line endX="283.0" layoutX="216.0" layoutY="81.0" startX="-216.0" strokeWidth="2.0" />
             <Line endX="327.0" layoutX="172.0" layoutY="770.0" startX="-172.0" strokeWidth="2.0" />
-            <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #189AB4;">
+            <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -139,27 +124,27 @@
             </Pane>
             <Button fx:id="pickupOrderBtn" layoutX="41.0" layoutY="325.0" mnemonicParsing="false" text="Pickup exising order">
                <font>
-                  <Font name="Cambria" size="18.0" />
+                  <Font name="Arial" size="18.0" />
                </font>
             </Button>
             <Button fx:id="createNewOrderBtn" layoutX="41.0" layoutY="273.0" mnemonicParsing="false" text="Create a new order">
                <font>
-                  <Font name="Cambria" size="18.0" />
+                  <Font name="Arial" size="18.0" />
                </font>
             </Button>
             <Button fx:id="RegistrationRequestsBtn" layoutX="266.0" layoutY="273.0" mnemonicParsing="false" text="Registration requests">
                <font>
-                  <Font name="Cambria" size="18.0" />
+                  <Font name="Arial" size="18.0" />
                </font>
             </Button>
             <Button fx:id="viewMonthlyReportsBtn" layoutX="264.0" layoutY="325.0" mnemonicParsing="false" text="View monthly reports">
                <font>
-                  <Font name="Cambria" size="18.0" />
+                  <Font name="Arial" size="18.0" />
                </font>
             </Button>
             <Button fx:id="approveShipmentArrivalBtn" layoutX="41.0" layoutY="379.0" mnemonicParsing="false" text="Approve shipment arrival">
                <font>
-                  <Font name="Cambria" size="18.0" />
+                  <Font name="Arial" size="18.0" />
                </font>
             </Button>
       </children>
