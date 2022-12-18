@@ -4,25 +4,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.mysql.cj.MysqlType;
-
-import ekrut.entity.Item;
-import ekrut.entity.Order;
-import ekrut.entity.OrderItem;
-import ekrut.entity.OrderStatus;
-import ekrut.entity.OrderType;
 import ekrut.entity.Report;
 
 public class ReportDAO {
 	private DBController con;
 	/**
-	 * Constructs a new OrderDAO that uses the provided controller
+	 * Constructs a new reportDAO that uses the provided controller
 	 * 
-	 * @param con   the database controller to use
+	 * @param con, the database controller to use
 	 */
 	public ReportDAO(DBController con) {
 		this.con = con;
@@ -64,12 +57,55 @@ public class ReportDAO {
 				}
 			}
 	}
+	/**
+	 * Fetches a report based on the given parameters.
+	 *
+	 * @param date The date of the report.
+	 * @param ekrutLocation The location of the report.
+	 * @param area The area of the report.
+	 * @param type The type of the report ("order", "inventory", or "customer").
+	 * @return The report, or null if an error occurred.
+	 * */
+	public Report fetchReport(String date, String ekrutLocation, String area, String type) {
+		try {
+			int reportID = getReportID(date, ekrutLocation, area, type);
+			Report report = null;
+			if(type == "order") {
+				report = fetchOrderReportByID(reportID);
+			}
+			else if(type == "inventory") {
+				report = fetchInventoryReportByID(reportID);
+			}
+			else {
+				report = fetchCustomerReportByID(reportID);
+			}
+			return report;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
-	public Object fetchInventoryReportByID(Integer reportID) throws Exception {
-		/*
-		 * TODO: create an object of a report by get all the necessary data from the DB
-		 * We will probably need a methods that will handle
-		 * the creation of a report according to each type separately*/
+	private Report fetchCustomerReportByID(int reportID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	private Report fetchOrderReportByID(int reportID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
+	 * Fetches an inventory report based on the given report ID.
+	 *
+	 * @param reportID The ID of the report.
+	 * @return The report, or null if no report was found or an error occurred.
+	 * @throws Exception If an error occurred while fetching the report.
+	 */
+	public Report fetchInventoryReportByID(Integer reportID) throws Exception {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
 		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM inventory_reports WHERE reportID = ?");
 
@@ -79,6 +115,9 @@ public class ReportDAO {
 			
 			if (!rs1.next()) 
 				return null;
+			
+			/*Create instance of report using report constructor
+			 *Columns are: reportID, reportType, date, reportArea, ekrutLocaion*/
 			Report report = new Report(rs1.getInt(1), rs1.getString(2),
 					rs1.getObject(3, LocalDateTime.class), rs1.getString(4), rs1.getString(5)); 
 			
@@ -105,6 +144,7 @@ public class ReportDAO {
 				}
 			}
 	}
+	
 	
 	
 	
