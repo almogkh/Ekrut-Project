@@ -192,7 +192,7 @@ public class OrderDAO {
 				return false;
 			
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			return false;
 			
 		} finally {
 			try {
