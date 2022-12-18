@@ -13,6 +13,10 @@ public class OrderResponse implements Serializable{
 	private Order order;
 	private int orderId;
 	
+	public OrderResponse(ResultType result) {
+		this.result = result;
+	}
+	
 	public OrderResponse(ResultType result, Order order) {
 		this.result = result;
 		this.order = order;
