@@ -43,7 +43,7 @@ public class ClientLoginController {
 		usernameOrPasswdBlankLbl.setVisible(false);
 		incorrectUserPassLbl.setVisible(false);
 		String username = usernameTxt.getText().trim();
-		String password = passwordTxt.getText().trim(); // to trim or not to trim?
+		String password = passwordTxt.getText();
 		if (username.isEmpty() || password.isEmpty()) {
 			usernameOrPasswdBlankLbl.setVisible(true);
 			return;
