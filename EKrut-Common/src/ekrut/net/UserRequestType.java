@@ -1,7 +1,7 @@
 package ekrut.net;
 
 public enum UserRequestType {
-	CONNECT,
-	DISCONNECT,
-	IS_CONNECTED
+	LOGIN,
+	LOGOUT,
+	IS_LOGGEDIN
 }
