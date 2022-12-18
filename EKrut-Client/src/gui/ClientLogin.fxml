@@ -49,7 +49,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClientLoginController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -140,7 +140,7 @@
                   <Font name="Cambria" size="18.0" />
                </font>
             </Button>
-            <Label fx:id="incorrectUserPassLbl" layoutX="114.0" layoutY="590.0" text="Incorrect Username or Password" textFill="#ff5555" underline="true">
+            <Label fx:id="incorrectUserPassLbl" layoutX="113.0" layoutY="590.0" text="Incorrect Username or Password" textFill="#ff5555" underline="true">
                <font>
                   <Font name="Cambria Bold" size="18.0" />
                </font>
