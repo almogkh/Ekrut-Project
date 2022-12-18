@@ -135,7 +135,7 @@
                </image>
             </ImageView>
             <Line endX="283.0" layoutX="216.0" layoutY="81.0" startX="-216.0" strokeWidth="2.0" />
-            <Button fx:id="loginBtn" layoutX="75.0" layoutY="466.0" mnemonicParsing="false" text="Login">
+            <Button fx:id="loginBtn" layoutX="75.0" layoutY="466.0" mnemonicParsing="false" onAction="#attemptLogin" text="Login">
                <font>
                   <Font name="Cambria" size="18.0" />
                </font>
