@@ -5,25 +5,31 @@ import ekrut.net.UserRequest;
 import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
 
+/**
+ * The `ClientSessionManager` class provides methods for managing user sessions on the client side.
+ */
 public class ClientSessionManager {
 	
 	private User user = null;	
-
+	
+	/**
+	 * Attempts to login a user with the given username and password.
+	 *
+	 * @param username The username of the user.
+	 * @param password The password of the user.
+	 * @return The `User` object if the login was successful, or throws an exception if an error occurred.
+	 * @throws Exception if the user is already logged in, if the user has entered null items, or if the login failed.
+	 */
 	public User loginUser(String username, String password) throws Exception{
-		
-		//Check if user is already logged in
 		if (user != null)
 			throw new RuntimeException("User is already loggedin");
-		
-		//Checking if the user has entered invalid details
+
 		else if (username == null || password == null)
 			throw new NullPointerException("Null Item was provided");
 		
-		//Send request to login user 
 		UserRequest userLoginRequest = new UserRequest(username, password);	
 		UserResponse userResponse = sendRequest(userLoginRequest);
-		
-		//If the response has confirmed return user details to know the next operations for this user
+
 		if (userResponse.getResultCode().equals("OK")) {
 			user = userResponse.getUser();
 			return user;
@@ -32,9 +38,13 @@ public class ClientSessionManager {
 			throw new RuntimeException(userResponse.getResultCode());
 	}
 
-	//Send to the server request to logout user
+	/**
+	 * Logs out the given user.
+	 *
+	 * @param user The user to log out.
+	 * @throws Exception if the user is not logged in or if the logout failed.
+	 */
 	public void logoutUser(User user) throws Exception{
-		//Check if user is not loggedin
 		if (!isLoggedin()) {
 			throw new RuntimeException("User is not loggedin");
 		}
@@ -48,6 +58,11 @@ public class ClientSessionManager {
 			throw new RuntimeException(userResponse.getResultCode());
 	}
 	
+	/**
+	 * Determines if the user is logged in.
+	 *
+	 * @return `true` if the user is logged in, `false` if the user is not logged in or if an error occurred.
+	 */
 	public boolean isLoggedin() {
 		UserRequest userRequest = new UserRequest(UserRequestType.IS_LOGGEDIN, user.getUsername());
 		UserResponse userResponse = sendRequest(userRequest);
@@ -56,7 +71,12 @@ public class ClientSessionManager {
 		return false;
 	}
 	
-	
+	/**
+	 * Sends a request to the server.
+	 *
+	 * @param userLoginRequest The request to send.
+	 * @return The response from the server.
+	 */
 	private UserResponse sendRequest(UserRequest userLoginRequest) {
 		// TODO Auto-generated method stub
 		return null;
