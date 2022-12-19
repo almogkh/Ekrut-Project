@@ -72,10 +72,5 @@ public class ClientLoginController {
 		}
 		// LOGIN SUCCESS!
 	}
-	
-	// Press enter from anywhere in scene in order to logged in.
-	public void enterKeyForLogin() {
-		loginBtn.setDefaultButton(true);
-	}
 
 }
