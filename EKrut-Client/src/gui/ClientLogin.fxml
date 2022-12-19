@@ -49,7 +49,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClientLoginController">
+<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClientLoginController">
   <children>
       <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -137,7 +137,7 @@
                   <Image url="@gui-assets/key.png" />
                </image>
             </ImageView>
-            <Button fx:id="loginBtn" defaultButton="true" layoutX="75.0" layoutY="466.0" mnemonicParsing="false" onAction="#attemptLogin" text="Login">
+            <Button fx:id="loginBtn" defaultButton="true" layoutX="75.0" layoutY="478.0" mnemonicParsing="false" onAction="#attemptLogin" text="Login">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>

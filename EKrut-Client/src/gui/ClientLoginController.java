@@ -1,7 +1,6 @@
 package gui;
 
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,9 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
-import javax.swing.JButton;
-
-
 
 public class ClientLoginController {
 	
@@ -80,6 +76,6 @@ public class ClientLoginController {
 	// Press enter from anywhere in scene in order to logged in.
 	public void enterKeyForLogin() {
 		loginBtn.setDefaultButton(true);
-	}		
+	}
 
 }
