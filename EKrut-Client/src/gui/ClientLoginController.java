@@ -10,6 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.stage.WindowEvent;
+import javax.swing.JButton;
+
+
 
 public class ClientLoginController {
 	
@@ -54,7 +57,6 @@ public class ClientLoginController {
 	
 	public void setFocus(WindowEvent event) {
 		usernameTxt.requestFocus();
-		
 	}
 	
 	@FXML
@@ -68,14 +70,16 @@ public class ClientLoginController {
 			return;
 		}
 		
-		
 		if (username.equals(password)) { // TBD IMPLEMENT REAL USERNAME & PASSWORD CHECKING
 			incorrectUserPassLbl.setVisible(true);
 			return;
 		}
-		
 		// LOGIN SUCCESS!
-		
 	}
+	
+	// Press enter from anywhere in scene in order to logged in.
+	public void enterKeyForLogin() {
+		loginBtn.setDefaultButton(true);
+	}		
 
 }
