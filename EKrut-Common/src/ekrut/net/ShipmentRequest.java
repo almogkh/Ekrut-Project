@@ -22,13 +22,18 @@ public class ShipmentRequest implements Serializable {
 		this.area = area;
 	}
 	
-	public ShipmentRequest(OrderStatus awaitingDelivery, int orderId) {
-		this.status = awaitingDelivery;
+	public ShipmentRequest(ShipmentRequestType action, OrderStatus orderStatus, int orderId) {
+		this.action = action;
+		this.status = orderStatus;
 		this.orderId = orderId;
 	}
 	
 	public OrderStatus getStatus() {
 		return status;
+	}
+
+	public ShipmentRequestType getAction() {
+		return action;
 	}
 
 	public int getOrderId() {

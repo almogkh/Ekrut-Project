@@ -45,10 +45,12 @@ public class ClientShipmentManager {
 	}
 	
 	/**
-	 * Create request <b>to Delivery department</b> to approve sending shipment.
+	 * Creates a request to the delivery department to approve sending a shipment for the specified order.
 	 * 
-	 * @param order
-	 * @throws Exception
+	 * @param order the order to send a shipment request for
+	 * @throws IllegalArgumentException if a null order is provided
+	 * @throws Exception if the result of the shipment request is not {@link ResultType#OK}
+	 * or if an exception is thrown by the {@link #sendRequest(ShipmentRequest)} method
 	 */
 	public void confirmShipment(Order order) throws Exception {
 		if (order == null)
@@ -56,7 +58,7 @@ public class ClientShipmentManager {
 
 		// Prepare ShipmentRequest for sending.
 		ShipmentRequest shipmentRequest = 
-				new ShipmentRequest(OrderStatus.AWAITING_DELIVERY, order.getOrderId());
+				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS , OrderStatus.AWAITING_DELIVERY, order.getOrderId());
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
 		// In case resultType isn't "OK" exception will throws.
@@ -81,7 +83,7 @@ public class ClientShipmentManager {
 			throw new IllegalArgumentException("Null order was provided");
 		
 		ShipmentRequest shipmentRequest = 
-				new ShipmentRequest(OrderStatus.DELIVERY_CONFIRMED, order.getOrderId());
+				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS ,OrderStatus.DELIVERY_CONFIRMED, order.getOrderId());
 		
 		// add exception?
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
@@ -106,7 +108,7 @@ public class ClientShipmentManager {
 			throw new IllegalArgumentException("Null order was provided");
 		
 		ShipmentRequest shipmentRequest = 
-				new ShipmentRequest(OrderStatus.DONE, order.getOrderId());
+				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS ,OrderStatus.DONE, order.getOrderId());
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
 		// In case resultType isn't "OK" exception will throws.
