@@ -8,26 +8,31 @@ import ekrut.entity.OrderStatus;
 public class ShipmentRequest implements Serializable {
 
 	private static final long serialVersionUID = 5704922451119200259L;
-	private OrderStatus action;
+	private OrderStatus status;
+	private ShipmentRequestType action;
 	private int orderId;
 	private String clientAddress;
 	private LocalDateTime date;
+	private String area;
 	
-	public ShipmentRequest(int orderId, String clientAddress, LocalDateTime date) {
-		this.action = OrderStatus.AWAITING_DELIVERY;
-		this.orderId = orderId;
-		this.clientAddress = clientAddress;
-		this.date = date;
+	
+	// Worker Confirm deliveries.
+	public ShipmentRequest(ShipmentRequestType action, String area) {
+		this.action = action;
+		this.area = area;
 	}
 	
-	
-	public ShipmentRequest(OrderStatus awaitingDelivery, int orderId) {
-		this.action = awaitingDelivery;
+	public ShipmentRequest(ShipmentRequestType action, OrderStatus orderStatus, int orderId) {
+		this.action = action;
+		this.status = orderStatus;
 		this.orderId = orderId;
 	}
 	
+	public OrderStatus getStatus() {
+		return status;
+	}
 
-	public OrderStatus getAction() {
+	public ShipmentRequestType getAction() {
 		return action;
 	}
 
