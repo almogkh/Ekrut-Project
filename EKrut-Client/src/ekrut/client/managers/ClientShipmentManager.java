@@ -1,9 +1,12 @@
 package ekrut.client.managers;
 
+import java.util.ArrayList;
 import ekrut.entity.Order;
 import ekrut.entity.OrderStatus;
 import ekrut.entity.OrderType;
+import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
+import ekrut.net.ShipmentRequestType;
 import ekrut.net.ShipmentResponse;
 /**
  * 
@@ -12,30 +15,24 @@ import ekrut.net.ShipmentResponse;
  */
 public class ClientShipmentManager {
 	
-	
 	// C.Nir		 1) complete 'sendRequest'.
 	//				 2) complete comments.
-	
-	/**
-	 * Create request <b>to Delivery department</b> to make a shipment.
-	 * 
-	 * @param order
-	 * @throws Exception
-	 */
-	public boolean createShippingRequest(Order order){
-		if (order == null)
-			throw new IllegalArgumentException("Null order was provided.");
-		if (order.getType() != OrderType.SHIPMENT)
-			throw new IllegalArgumentException("Null order was provided."); // Q.Nir Do we need it? and if we do so the exception?
-		// YES
 
-		ShipmentRequest shipmentRequest = 
-				new ShipmentRequest(order.getOrderId(), order.getClientAddress(), order.getDate());
+	
+	public ArrayList<Order> fetchShipmentRequests(String area) throws Exception {
+		if (area == null)
+			throw new IllegalArgumentException("Null string was provided");
 		
+		// Prepare ShipmentRequest for sending.
+		ShipmentRequest shipmentRequest = new ShipmentRequest(ShipmentRequestType.FETCH_SHIPMENT_ORDERS, area);
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
-		if (!shipmentResponse.getResultCode().equals("OK"))
-			return false; // Q.Nir boolean or not to be
-		return true;
+		
+		// In case resultType isn't "OK" exception will throws.
+		ResultType resultType = shipmentResponse.getResultCode();
+		if (resultType != ResultType.OK)
+			throw new Exception(resultType.toString()); // Q.Nir exception??
+		
+		return shipmentResponse.getOrdersForShipment();
 	}
 	
 	/**
@@ -47,14 +44,18 @@ public class ClientShipmentManager {
 	public void confirmShipment(Order order) throws Exception {
 		if (order == null)
 			throw new IllegalArgumentException("Null order was provided");
-		
+
+		// Prepare ShipmentRequest for sending.
 		ShipmentRequest shipmentRequest = 
 				new ShipmentRequest(OrderStatus.AWAITING_DELIVERY, order.getOrderId());
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
-		if (!shipmentResponse.getResultCode().equals("OK"))
-			throw new Exception(shipmentResponse.getResultCode()); // Q.Nir exception??
+		// In case resultType isn't "OK" exception will throws.
+		ResultType resultType = shipmentResponse.getResultCode();
+		if (resultType != ResultType.OK)
+			throw new Exception(resultType.toString()); // Q.Nir exception??
 	}
+
 	
 	
 	// Q.Nir - do we need this class? Because Worker can only see the buyer confirmation
@@ -74,8 +75,10 @@ public class ClientShipmentManager {
 				new ShipmentRequest(OrderStatus.DELIVERY_CONFIRMED, order.getOrderId());
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
-		if (!shipmentResponse.getResultCode().equals("OK"))
-			throw new Exception(shipmentResponse.getResultCode()); // Q.Nir exception??
+		// In case resultType isn't "OK" exception will throws.
+		ResultType resultType = shipmentResponse.getResultCode();
+		if (resultType != ResultType.OK)
+			throw new Exception(resultType.toString()); // Q.Nir exception??
 	}
 	
 	/**
@@ -92,8 +95,10 @@ public class ClientShipmentManager {
 				new ShipmentRequest(OrderStatus.DONE, order.getOrderId());
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
-		if (!shipmentResponse.getResultCode().equals("OK"))
-			throw new Exception(shipmentResponse.getResultCode()); // Q.Nir exception??
+		// In case resultType isn't "OK" exception will throws.
+		ResultType resultType = shipmentResponse.getResultCode();
+		if (resultType != ResultType.OK)
+			throw new Exception(resultType.toString()); // Q.Nir exception??
 	}
 	
 	/**
