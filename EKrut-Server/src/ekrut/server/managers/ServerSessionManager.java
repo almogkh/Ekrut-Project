@@ -11,10 +11,10 @@ import ekrut.server.db.UserDAO;
  * The `ServerSessionManager` class provides methods for managing user sessions on the server side.
  */
 public class ServerSessionManager {
-	
+
 	private User user = null;
 	private ArrayList<User> connectedUsers;
-	
+	private UserDAO userDAO;
 	/**
 	 * Constructs a new `ServerSessionManager` with the given connected users and user.
 	 *
@@ -36,7 +36,7 @@ public class ServerSessionManager {
 	 */
 	public UserResponse loginUser(String username, String password) throws SQLException {
 		String result = null;
-		user = UserDAO.fetchUserByUsername(username);
+		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result,user);
 		if (user == null) {
 			result = "Couldn't locate subscriber";
@@ -64,7 +64,7 @@ public class ServerSessionManager {
 	 */
 	public UserResponse logoutUser(String username) throws SQLException {
 		String result = null;
-		user = UserDAO.fetchUserByUsername(username);
+		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result);
 		//Check if user not exist in DB
 		if (user == null) {
@@ -86,7 +86,7 @@ public class ServerSessionManager {
 	 * @throws SQLException if a database error occurred.
 	 */
 	public boolean isLoggedin(String username) throws SQLException {
-		user = UserDAO.fetchUserByUsername(username);
+		user = userDAO.fetchUserByUsername(username);
 		return connectedUsers.contains(user);
 	}
 
