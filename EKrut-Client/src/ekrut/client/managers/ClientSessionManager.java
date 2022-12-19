@@ -5,6 +5,9 @@ import ekrut.net.UserRequest;
 import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
 
+/**
+ * The `ClientSessionManager` class provides methods for managing user sessions on the client side.
+ */
 public class ClientSessionManager {
 	
 	private User user = null;	
