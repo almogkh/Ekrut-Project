@@ -17,15 +17,19 @@ import ekrut.server.db.DBController;
  */
 public class UserDAO {
 	
-	private static DBController con;
-	
+	private DBController con;
+
+	public UserDAO(DBController con) {
+		this.con = con;
+	}
+
 	/**
 	 * Fetches a user from the database by their username.
 	 *
 	 * @param username The username of the user to fetch.
 	 * @return The `User` object if found, or `null` if not found or an error occurred.
 	 */
-	public static User fetchUserByUsername(String username){
+	public User fetchUserByUsername(String username){
 		User user = null;
 		String query="SELECT * FROM users WHERE username = ?;";	
 		PreparedStatement ps= con.getPreparedStatement(query); 
@@ -35,9 +39,15 @@ public class UserDAO {
 			if(rs.next()) 
 				user = new User(rs.getString(1), rs.getString(2), UserType.valueOf(rs.getString(3)), rs.getString(4));
 			return user;
-		} catch (SQLException e) {
+		} catch (SQLException e1) {
 			return null;
+		}finally {
+		try {
+			ps.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		}
+	}
 	}
 	
 	/**
@@ -54,10 +64,9 @@ public class UserDAO {
 	 * @param area The area of the user.
 	 * @return `true` if the user was successfully created, `false` if an error occurred.
 	 */
-	public static boolean createUser
+	public boolean createUser
 	(String role, String username, String password, String firstName,
 			String lastName, String id, String email, String phoneNumber, String area){
-		
 		String query="INSERT INTO ekrut.users"
 				+ " (role, username, password, firstName, lastName, id, , phoneNumber, area)"
 				+ " VALUES (?,?,?,?,?,?,?,?,?)";
@@ -73,9 +82,15 @@ public class UserDAO {
 			ps.setString(8,phoneNumber);
 			ps.setString(9,area);
 			return 1==ps.executeUpdate();
-		} catch (SQLException e) {
+		} catch (SQLException e1) {
 			return false;
-		}	
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 }
 
