@@ -9,16 +9,25 @@ import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentRequestType;
 import ekrut.net.ShipmentResponse;
 /**
+ * This class represents the client side manager for handling shipments. It provides methods for fetching
+ * orders for shipment in a specific area, confirming shipment, and confirming delivery of an order.
  * 
  * @author Nir Betesh
- *
  */
 public class ClientShipmentManager {
 	
 	// C.Nir		 1) complete 'sendRequest'.
 	//				 2) complete comments.
 
-	
+	/**
+	 * Fetches a list of orders that are ready for shipment in the specified area.
+	 * 
+	 * @param area the area to fetch orders for
+	 * @return a list of orders ready for shipment
+	 * @throws IllegalArgumentException if a null string is provided as the area
+	 * @throws Exception if the result of the shipment request is not {@link ResultType#OK}
+	 * or if an exception is thrown by the {@link #sendRequest(ShipmentRequest)} method
+	 */
 	public ArrayList<Order> fetchShipmentRequests(String area) throws Exception {
 		if (area == null)
 			throw new IllegalArgumentException("Null string was provided");
@@ -56,16 +65,16 @@ public class ClientShipmentManager {
 			throw new Exception(resultType.toString()); // Q.Nir exception??
 	}
 
-	
-	
-	// Q.Nir - do we need this class? Because Worker can only see the buyer confirmation
-	// but setDone is the action. how it going to work for us?
-	
 	/**
-	 * Create request <b>to customer</b> to approve getting shipment.
+	 * Confirms the delivery of the specified order by sending a {@link ShipmentRequest} with the status set to 
+	 * {@link OrderStatus#DELIVERY_CONFIRMED} and the order ID to the {@link #sendRequest(ShipmentRequest)} method.
+	 * If the {@link ShipmentResponse#getResultCode()} is not {@link ResultType#OK},
+	 * an {@link Exception} is thrown with the {@link ResultType} as the message.
 	 * 
-	 * @param order
-	 * @throws Exception
+	 * @param order the order to confirm the delivery of
+	 * @throws IllegalArgumentException if the provided order is null
+	 * @throws Exception if the result of the shipment request is not {@link ResultType#OK} 
+	 * or if an exception is thrown by the {@link #sendRequest(ShipmentRequest)} method
 	 */
 	public void confirmDelivery(Order order) throws Exception {
 		if (order == null)
@@ -73,6 +82,8 @@ public class ClientShipmentManager {
 		
 		ShipmentRequest shipmentRequest = 
 				new ShipmentRequest(OrderStatus.DELIVERY_CONFIRMED, order.getOrderId());
+		
+		// add exception?
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
 		// In case resultType isn't "OK" exception will throws.
@@ -82,10 +93,13 @@ public class ClientShipmentManager {
 	}
 	
 	/**
-	 * Create request <b>to operates shipments</b> to set done the shipment.
+	 * Sets the status of the specified order to "done" by sending a {@link ShipmentRequest} with the
+	 * status set to {@link OrderStatus#DONE} and the order ID to the {@link #sendRequest(ShipmentRequest)} method.
+	 * In case the {@link ShipmentResponse#getResultCode()} is not {@link ResultType#OK}, an {@link Exception} is thrown.
 	 * 
-	 * @param order
-	 * @throws Exception
+	 * @param order the order to set the status to "done"
+	 * @throws IllegalArgumentException if the provided order is null
+	 * @throws Exception if the result of the shipment request is not {@link ResultType#OK}
 	 */
 	public void setDone(Order order) throws Exception {
 		if (order == null)
@@ -101,14 +115,7 @@ public class ClientShipmentManager {
 			throw new Exception(resultType.toString()); // Q.Nir exception??
 	}
 	
-	/**
-	 * Send request to server for one of the method in this class.
-	 * (see {@link #createShippingRequest()}, {@link #confirmShipment()},
-	 * 		{@link #confirmDelivery()}, {@link #setDone()}). 
-	 * 
-	 * @param shipmentRequest
-	 * @return ShipmentResponse response from server.
-	 */
+	// Will completed later
 	private ShipmentResponse sendRequest(ShipmentRequest shipmentRequest) {
 		
 		return null;
