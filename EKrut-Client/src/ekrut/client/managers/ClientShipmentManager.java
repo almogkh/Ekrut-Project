@@ -17,7 +17,7 @@ import ekrut.net.ShipmentResponse;
 public class ClientShipmentManager {
 	
 	// C.Nir		 1) complete 'sendRequest'.
-	//				 2) complete comments.
+	//				 2) complete comments for fetchShipmentRequests.
 
 	/**
 	 * Fetches a list of orders that are ready for shipment in the specified area.
