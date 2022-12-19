@@ -33,7 +33,6 @@
 -->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -94,51 +93,27 @@
       <children>
             <Label layoutX="97.0" layoutY="101.0" prefHeight="38.0" prefWidth="307.0" text="Choose report to view" textFill="#05445e">
                <font>
-                  <Font name="Cambria Bold" size="30.0" />
+                  <Font name="Arial Bold" size="30.0" />
                </font>
             </Label>
-            <Pane prefHeight="81.0" prefWidth="500.0" style="-fx-background-color: #189AB4;">
+            <Pane prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
                <children>
-                  <ImageView fitHeight="70.0" fitWidth="303.0" layoutX="131.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="98.0" fitWidth="192.0" layoutX="172.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@gui-assets/logo2-no-background.png" />
+                        <Image url="@gui-assets/logo.png" />
                      </image>
                   </ImageView>
-                  <Button alignment="CENTER" contentDisplay="TOP" layoutX="21.0" layoutY="6.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="75.0" style="-fx-border-color: gray; -fx-background-color: #189AB4;" text="Logout">
-                     <font>
-                        <Font name="Cambria" size="17.0" />
-                     </font>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@gui-assets/logout.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </Button>
+                  <Line endX="283.0" layoutX="217.0" layoutY="100.0" startX="-216.0" strokeWidth="2.0" />
                </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
             </Pane>
-            <Line endX="283.0" layoutX="216.0" layoutY="81.0" startX="-216.0" strokeWidth="2.0" />
             <Line endX="327.0" layoutX="172.0" layoutY="770.0" startX="-172.0" strokeWidth="2.0" />
-            <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #189AB4;">
+            <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
-               <children>
-                  <Label layoutX="20.0" layoutY="19.0" text="Loggedin as ..................." />
-                  <Label layoutX="294.0" layoutY="19.0" text="Server (192.168.125.55): " />
-                  <Label layoutX="426.0" layoutY="19.0" text="Connected" textFill="#5dff4e">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font>
-                  </Label>
-               </children>
             </Pane>
             <MenuButton layoutX="130.0" layoutY="266.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="144.0" text="Report type">
               <items>
