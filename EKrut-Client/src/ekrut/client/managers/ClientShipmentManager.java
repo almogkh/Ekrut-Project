@@ -15,9 +15,6 @@ import ekrut.net.ShipmentResponse;
  * @author Nir Betesh
  */
 public class ClientShipmentManager {
-	
-	// C.Nir		 1) complete 'sendRequest'.
-	//				 2) complete comments for fetchShipmentRequests.
 
 	/**
 	 * Fetches a list of orders that are ready for shipment in the specified area.
@@ -84,8 +81,7 @@ public class ClientShipmentManager {
 		
 		ShipmentRequest shipmentRequest = 
 				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS ,OrderStatus.DELIVERY_CONFIRMED, order.getOrderId());
-		
-		// add exception?
+
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
 		// In case resultType isn't "OK" exception will throws.
@@ -93,7 +89,7 @@ public class ClientShipmentManager {
 		if (resultType != ResultType.OK)
 			throw new Exception(resultType.toString()); // Q.Nir exception??
 	}
-	
+		
 	/**
 	 * Sets the status of the specified order to "done" by sending a {@link ShipmentRequest} with the
 	 * status set to {@link OrderStatus#DONE} and the order ID to the {@link #sendRequest(ShipmentRequest)} method.
