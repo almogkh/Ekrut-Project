@@ -5,13 +5,13 @@ import ekrut.entity.Report;
 
 public class ReportResponse implements Serializable{
 	private static final long serialVersionUID = -3756403993356581023L;
-	private int resultCode;
-	private Report report;
+	private String resultCode;
+	private Report report; 
 	
-	public int getResultCode() {
+	public String getResultCode() {
 		return resultCode;
 	}
-	public void setResultCode(int resultCode) {
+	public void setResultCode(String resultCode) {
 		this.resultCode = resultCode;
 	}
 	public Report getReport() {
