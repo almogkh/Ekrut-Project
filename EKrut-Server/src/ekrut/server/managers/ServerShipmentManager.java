@@ -1,53 +1,150 @@
 package ekrut.server.managers;
-import java.time.LocalDateTime;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import ekrut.entity.Order;
+import ekrut.entity.OrderStatus;
+import ekrut.entity.OrderType;
+import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentResponse;
+import ekrut.server.db.DBController;
+import ekrut.server.db.OrderDAO;
 import ekrut.server.intefaces.ShipmentManagerUtils;
 
+/**
+ * The {@code ServerShipmentManager} class is responsible for managing the
+ * server shipping requests. This includes fetching shipment requests for
+ * approval, confirming the shipment, confirming the delivery, and marking the
+ * order as done.
+ * 
+ * @author Nir Betesh
+ */
 public class ServerShipmentManager {
-	
+
+	OrderDAO orderDAO;
+
 	/**
-	 * Create shipping request for 
-	 * @param shipmentRequest
-	 * @return return if shipping request was successfully passed
+	 * 
+	 * Constructs a new {@code ServerShipmentManager} object.
+	 * 
+	 * @param con the database controller to use for accessing the database
 	 */
-	public ShipmentResponse createShippingRequest(ShipmentRequest shipmentRequest) {
+	public ServerShipmentManager(DBController con) {
+		orderDAO = new OrderDAO(con);
+	}
+
+	// Q.Nir , TBD - do we really need the area for get all fetchShipmentRequests?
+	// PLEASE, HOW CAN I DO IT?
+
+	/**
+	 * Fetches a list of shipment requests for approval.
+	 * 
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
+	 *                        request details
+	 * @return a {@code ShipmentResponse} object with the result of the operation
+	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
+	 */
+	public ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest) {
 		if (shipmentRequest == null)
-			throw new IllegalArgumentException("Null order was provided");
-		
+			throw new IllegalArgumentException("null shipmentRequest was provided.");
+
+		ArrayList<Order> ShippingForAppoval = orderDAO.fetchOrderShipmentList(shipmentRequest.getOrderId());
+		if (ShippingForAppoval == null)
+			return new ShipmentResponse(ResultType.NOT_FOUND);
+
+		return new ShipmentResponse(ResultType.OK);
+	}
+
+	/**
+	 * Confirms the shipment of an order by EKurt worker.
+	 * 
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
+	 *                        request details
+	 * @return a {@code ShipmentResponse} object with the result of the operation
+	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
+	 */
+	public ShipmentResponse confirmShipment(ShipmentRequest shipmentRequest) {
+		if (shipmentRequest == null)
+			throw new IllegalArgumentException("Null order was provided.");
+
 		int orderId = shipmentRequest.getOrderId();
 		LocalDateTime date = shipmentRequest.getDate();
 		String clientAddress = shipmentRequest.getClientAddress();
-		
-		// estimate delivery time.
+		Order order = orderDAO.fetchOrderById(orderId);
+
+		// In case the order null an exception will be thrown
+		if (order == null)
+			return new ShipmentResponse(ResultType.NOT_FOUND);
+
+		if (order.getType() != OrderType.SHIPMENT)
+			return new ShipmentResponse(ResultType.INVALID_INPUT);
+
+		if (order.getStatus() != OrderStatus.AWAITING_DELIVERY)
+			return new ShipmentResponse(ResultType.INVALID_INPUT);
+
+		// Estimate delivery time.
 		LocalDateTime estimateDeliveryTime = ShipmentManagerUtils.estimatedArrivalTime(date, clientAddress);
-	
-		// create shipping in DB.
-		//ShipmentDAO. // TBD Q.Nir
-		
-		return null;
-	}
-	
-	
+		order.setDueDate(estimateDeliveryTime);
 
-	
-	public boolean confirmDelivery() {
-		return false;
-		
-	}
-	
+		// Q.Nir , do we need to add another method in case the worker cancel?
+		// and for this we will need to add CANCELED_SHIPMENT in in OrderStatus
+		// what's happen in case the worker cancel the shipment? we can choose to cancel
+		// and continue with
+		// regular order process or we will delete the whole method
+		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.AWAITING_DELIVERY))
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
-	public boolean confirmShipment() {
-		return false;
-		
+		return new ShipmentResponse(ResultType.OK);
 	}
-	
 
-	public boolean setDone() {
-		return false;
+	/**
+	 * Confirms the delivery of an order.
+	 * 
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
+	 *                        request details
+	 * @return a {@code ShipmentResponse} object with the result of the operation
+	 */
+	public ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
+		int orderId = shipmentRequest.getOrderId();
+		Order order = orderDAO.fetchOrderById(orderId);
+		if (order == null)
+			return new ShipmentResponse(ResultType.NOT_FOUND);
+
+		if (order.getType() != OrderType.SHIPMENT)
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+
+		if (order.getStatus() != OrderStatus.AWAITING_DELIVERY)
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+
+		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.DELIVERY_CONFIRMED))
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+
+		return new ShipmentResponse(ResultType.OK);
+	}
+
+	/**
+	 * Marks an order as done.
+	 * 
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
+	 *                        request details
+	 * @return a {@code ShipmentResponse} object with the result of the operation
+	 */
+	public ShipmentResponse setDone(ShipmentRequest shipmentRequest) {
+		int orderId = shipmentRequest.getOrderId();
+		Order order = orderDAO.fetchOrderById(orderId);
+		if (order == null)
+			return new ShipmentResponse(ResultType.NOT_FOUND);
+
+		if (order.getType() != OrderType.SHIPMENT)
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+
+		if (order.getStatus() != OrderStatus.AWAITING_DELIVERY)
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+
+		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.DELIVERY_CONFIRMED))
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+
+		return new ShipmentResponse(ResultType.OK);
 	}
 }
-
-	
-
