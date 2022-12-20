@@ -1,29 +1,28 @@
 package ekrut.server.managers;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import ekrut.entity.User;
 import ekrut.net.UserResponse;
+import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
 
 /**
  * The `ServerSessionManager` class provides methods for managing user sessions on the server side.
+ * 
+ *  @author Yovel Gabay
  */
 public class ServerSessionManager {
 
 	private User user = null;
 	private ArrayList<User> connectedUsers;
 	private UserDAO userDAO;
+	
 	/**
-	 * Constructs a new `ServerSessionManager` with the given connected users and user.
-	 *
-	 * @param connectedUsers The list of connected users.
-	 * @param user The user.
+	 * Constructs a new ServerSessionManager.
 	 */
-	public ServerSessionManager(ArrayList<User> connectedUsers, User user) {
-		this.connectedUsers = new ArrayList<User>();
-		this.user = user;
+	public ServerSessionManager(DBController con) {
+		userDAO = new UserDAO(con);
 	}
 
 	/**
@@ -32,9 +31,8 @@ public class ServerSessionManager {
 	 * @param username The username of the user.
 	 * @param password The password of the user.
 	 * @return The `UserResponse` object with the login result and user details.
-	 * @throws SQLException if a database error occurred.
 	 */
-	public UserResponse loginUser(String username, String password) throws SQLException {
+	public UserResponse loginUser(String username, String password) {
 		String result = null;
 		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result,user);
@@ -60,9 +58,8 @@ public class ServerSessionManager {
 	 *
 	 * @param username The username of the user to log out.
 	 * @return The `UserResponse` object with the logout result.
-	 * @throws SQLException if a database error occurred.
 	 */
-	public UserResponse logoutUser(String username) throws SQLException {
+	public UserResponse logoutUser(String username) {
 		String result = null;
 		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result);
@@ -83,9 +80,8 @@ public class ServerSessionManager {
 	 *
 	 * @param username The username of the user.
 	 * @return `true` if the user is logged in, `false` if the user is not logged in or if a database error occurred.
-	 * @throws SQLException if a database error occurred.
 	 */
-	public boolean isLoggedin(String username) throws SQLException {
+	public boolean isLoggedin(String username) {
 		user = userDAO.fetchUserByUsername(username);
 		return connectedUsers.contains(user);
 	}
