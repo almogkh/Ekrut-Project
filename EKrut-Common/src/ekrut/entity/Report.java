@@ -14,17 +14,14 @@ public class Report {
 	private LocalDateTime date;
 	private String area;
 	private String ekrutLocation;
-	/* each data structure holds the relevant data to make a report
-	 * Only the data structure that corresponds to the type of report will be initialized,
-	 * this makes the possibility of expanding a report if necessary more convenient*/
-	// TBD.tal make the memory allocation in constructors
-	private Map<String, int[]> InventoryReportData = new HashMap<>();
-	private ArrayList<Integer> customerReportData = new ArrayList<Integer>();
-	private Map<String, Integer> orderReportData = new HashMap<>();
-	private Map<String, LocalDateTime> thresholdReportData = new HashMap<>();
+	// Each data structure holds the relevant data to make a report
+	private Map<String, int[]> InventoryReportData;
+	private ArrayList<Integer> customerReportData;
+	private Map<String, Integer> orderReportData;
 	private int avgSalesPerCustomer;
 	private int monthlyOrders;
 	private int monthlyOrdersInILS;
+
 	
 	public Report(Integer reportID, String reportType, LocalDateTime date, String area, String ekrutLocation) {
 		this.reportID = reportID;
@@ -33,28 +30,33 @@ public class Report {
 		this.area = area;
 		this.ekrutLocation = ekrutLocation;
 	}
-
-	public void setInventoryReportData(Map<String, int[]> inventoryReportData) {
-		InventoryReportData = inventoryReportData;
-	}
-
-	public void setMonthlyOrders(int monthlyOrders) {
+	
+	// Order report constructor
+	public Report(Integer reportID, String reportType, LocalDateTime date, String area,
+			String ekrutLocation, int monthlyOrders, int avgSalesPerCustomer,
+			int monthlyOrdersInILS, Map<String, Integer> orderReportData) {
+		this(reportID, reportType, date, area, ekrutLocation);
 		this.monthlyOrders = monthlyOrders;
-	}
-
-	public void setMonthlyOrdersInILS(int monthlyOrdersInILS) {
+		this.avgSalesPerCustomer = avgSalesPerCustomer;
 		this.monthlyOrdersInILS = monthlyOrdersInILS;
+		this.orderReportData = orderReportData; //?
+
+	}
+	
+	// Customer report constructor
+	public Report(Integer reportID, String reportType, LocalDateTime date, String area,
+		String ekrutLocation, ArrayList<Integer> customerReportData) {
+		this(reportID, reportType, date, area, ekrutLocation);
+		this.customerReportData = customerReportData;
+	}
+	
+	// Inventory report constructor
+	public Report(Integer reportID, String reportType, LocalDateTime date, String area,
+			String ekrutLocation, Map<String, int[]> InventoryReportData) {
+			this(reportID, reportType, date, area, ekrutLocation);
+			this.InventoryReportData = InventoryReportData;
+
 	}
 
-	public void setOrderReportData(Map<String, Integer> orderReportData) {
-		this.orderReportData = orderReportData;
-	}
-
-	public void setCustomerReportData(ArrayList<Integer> customerReportData) {
-		this.customerReportData = customerReportData; 
-	}
-	public void setThresholdReportData(Map<String, LocalDateTime> thresholdReportData) {
-		this.thresholdReportData = thresholdReportData;
-	}
 
 }
