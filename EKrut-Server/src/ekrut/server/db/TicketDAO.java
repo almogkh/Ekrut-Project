@@ -10,35 +10,45 @@ import com.mysql.cj.MysqlType;
 import ekrut.entity.Ticket;
 
 
-
-//Noy 
-//need to finish - createTicket 
+/**
+ * A Data Access Object (DAO) class that provides CRUD (Create, Read, Update, and Delete) 
+ * operations for the {@link Ticket} entity in a MySQL database.
+ * The DAO requires a {@link DBController} object to establish a connection to the database.
+ * 
+ * @author Noy Malka
+ */
 
 public class TicketDAO {
 	
 	private DBController con;
 	
 	
-	//Constructor - provides connection con to a new TicketDAO so we can use DBcontroller
+	/**
+	 * Constructs a new TicketDAO object and initializes the connection to the database.
+	 * 
+	 * @param con a DBController object used to establish a connection to the database
+	 */
 	public TicketDAO(DBController con) {
 		this.con = con;
 	}
+
 	
-	
-	/**  
-	 * Create new ticket line in DB and set its details
-	 * @param Ticket - the ticket that we want to add to DB
-	 * @return true if the addition succeeded , false if failed
+	/**
+	 * Creates a new ticket in the database.
+	 * 
+	 * @param ticket the Ticket object to be created in the database
+	 * @return true if the ticket was successfully created, false otherwise
+	 * @throws RuntimeException if there was an error executing the SQL statement
 	 */
 	public boolean createTicket(Ticket ticket) {
 		con.beginTransaction();
 		PreparedStatement ps = con.getPreparedStatement("INSERT INTO tickets " +
-                "(ticketID,status,location) " + "VALUES(?,?,?)");
+	            "(ticketID,status,location) " + "VALUES(?,?,?)");
 		try {
 			ps.setInt(1, ticket.getTicketId());
 			ps.setString(2, ticket.getStatus());
 			ps.setString(3, ticket.getEkrutLocation());
-			
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
@@ -50,14 +60,15 @@ public class TicketDAO {
 		}
 		return true;
 	}
-	
-	
+
 	
 	
 	/**
-	 * fetch a ticket from DB, by given ticketID
-	 * @param ticketID - the ID of the ticket we want to fetch
-	 * @return  ticket with the given ticketID , else NULL
+	 * Retrieves a ticket from the database based on its ID.
+	 * 
+	 * @param ticketID the ID of the ticket to be retrieved
+	 * @return a Ticket object if the ticket was found, null otherwise
+	 * @throws RuntimeException if there was an error executing the SQL statement
 	 */
 	public Ticket fetchTicket(int ticketID) {
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM tickets WHERE ticketID = ?;");
@@ -78,13 +89,16 @@ public class TicketDAO {
 			}
 		}
 	}
-	
+
 	
 	/**
-	 * fetch a list of tickets from DB, by given location
-	 * @param Ekrut location
-	 * @return list of all tickets from this Ekrut location
+	 * Retrieves a list of tickets from the database based on their location.
+	 * 
+	 * @param location the location of the tickets to be retrieved
+	 * @return a list of Ticket objects if tickets were found, null otherwise
+	 * @throws RuntimeException if there was an error executing the SQL statement
 	 */
+	
 	public ArrayList<Ticket> fetchTicketsByLocation(String location) {
 		ArrayList<Ticket> ticketsByLocation = new ArrayList<>();
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM tickets WHERE location = ?;");
@@ -109,35 +123,39 @@ public class TicketDAO {
 	}
 	
 	
+	
 	/**
-	 * Update ticket status in DB
-	 * @param ticketID - the ID of the ticket that we want to update its status
-	 * @param status - the status we want to update to 
-	 * @return true if the update succeeded , false if failed 
-	 */
+	* Updates the status of a ticket in the database with the specified ticket ID.
+	*
+	* @param ticketID The ID of the ticket to be updated.
+	* @param status The new status for the ticket.
+	* @return  true if the ticket was successfully updated, false otherwise.
+	* @throws RuntimeException if there was an error executing the SQL statement
+	*/
 	public boolean updateTicketStatus(int ticketID, String status) {
-		PreparedStatement ps = con.getPreparedStatement("UPDATE tickets SET status = ? WHERE ticketID = ?");
-		
-		try {
-			ps.setString(1, status.toString());
-			ps.setInt(2, ticketID);
+			PreparedStatement ps = con.getPreparedStatement("UPDATE tickets SET status = ? WHERE ticketID = ?");
 			
-			if (ps.executeUpdate() != 1)
-				return false;
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-			
-		} finally {
 			try {
-				ps.close();
+				ps.setString(1, status.toString());
+				ps.setInt(2, ticketID);
+				
+				if (ps.executeUpdate() != 1)
+					return false;
+				
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
+				
+			} finally {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			}
+			
+			return true;
 		}
-		
-		return true;
-	}
+
 	
 	
 }
