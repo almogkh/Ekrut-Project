@@ -2,8 +2,6 @@ package ekrut.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -39,7 +37,7 @@ public class Report {
 		this.monthlyOrders = monthlyOrders;
 		this.avgSalesPerCustomer = avgSalesPerCustomer;
 		this.monthlyOrdersInILS = monthlyOrdersInILS;
-		this.orderReportData = orderReportData; //?
+		this.orderReportData = orderReportData;
 
 	}
 	
