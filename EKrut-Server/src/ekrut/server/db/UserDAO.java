@@ -14,11 +14,12 @@ import ekrut.server.db.DBController;
 
 /**
  * The `UserDAO` class provides methods for fetching and creating users in a database.
+ * 
+ * @author Yovel Gabay
  */
 public class UserDAO {
 	
 	private DBController con;
-
 	public UserDAO(DBController con) {
 		this.con = con;
 	}
