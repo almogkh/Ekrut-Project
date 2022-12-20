@@ -17,33 +17,27 @@ import ekrut.entity.Ticket;
 public class TicketDAO {
 	
 	private DBController con;
-	private TicketDAO ticketDAO;
+	
 	
 	//Constructor - provides connection con to a new TicketDAO so we can use DBcontroller
 	public TicketDAO(DBController con) {
 		this.con = con;
-		ticketDAO=new TicketDAO(con);
 	}
 	
 	
-	/** NOT FINISHED - NEED TO CONTINUE 
+	/**  
 	 * Create new ticket line in DB and set its details
-	 * @param ticket - the ticket that we want to add to DB
+	 * @param Ticket - the ticket that we want to add to DB
 	 * @return true if the addition succeeded , false if failed
 	 */
 	public boolean createTicket(Ticket ticket) {
 		con.beginTransaction();
 		PreparedStatement ps = con.getPreparedStatement("INSERT INTO tickets " +
-                "(status,location) " + "VALUES(?,?)", true);
+                "(ticketID,status,location) " + "VALUES(?,?,?)");
 		try {
 			ps.setInt(1, ticket.getTicketId());
 			ps.setString(2, ticket.getStatus());
 			ps.setString(3, ticket.getEkrutLocation());
-			
-			// need to understand the syntex
-			
-			
-			
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -83,7 +77,6 @@ public class TicketDAO {
 				throw new RuntimeException(e);
 			}
 		}
-		
 	}
 	
 	
@@ -93,15 +86,14 @@ public class TicketDAO {
 	 * @return list of all tickets from this Ekrut location
 	 */
 	public ArrayList<Ticket> fetchTicketsByLocation(String location) {
+		ArrayList<Ticket> ticketsByLocation = new ArrayList<>();
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM tickets WHERE location = ?;");
 		try {
-			ArrayList<Ticket> ticketsByLocation = new ArrayList<>();
 			ps.setString(1, location);
 			ResultSet rs = con.executeQuery(ps);
 			while(rs.next()) { 
-				Ticket ticket = ticketDAO.fetchTicket(rs.getInt(1));
-				if (ticket != null)
-					ticketsByLocation.add(new Ticket(rs.getInt(1), rs.getString(2), rs.getString(3)));
+				Ticket ticket = new Ticket(rs.getInt(1), rs.getString(2), rs.getString(3));
+				ticketsByLocation.add(ticket);
 			}
 			return ticketsByLocation.size() != 0? ticketsByLocation : null;
 		} catch (SQLException e1) {

@@ -17,7 +17,7 @@ public class Ticket implements Serializable{
 	
 	
 	public Ticket(int ticketId, String status, String ekrutLocation) {
-		super();
+		
 		this.ticketId = ticketId;
 		this.status = status;
 		this.ekrutLocation = ekrutLocation;
