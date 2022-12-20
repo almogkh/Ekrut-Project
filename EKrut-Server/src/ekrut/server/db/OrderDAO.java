@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import com.mysql.cj.MysqlType;
 
+import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
@@ -204,4 +205,29 @@ public class OrderDAO {
 		
 		return true;
 	}
+
+	
+	
+	// For Almog: Added by Nir, get list of orders in Shipment status.
+	public ArrayList<Order> fetchOrderShipmentList(int orderId){
+		PreparedStatement ps = con.getPreparedStatement("SELECT orderId FROM orders WHERE type = SHIPMENT");
+		ArrayList<Order> orderList = new ArrayList<>();
+		try {
+			ResultSet rs = con.executeQuery(ps);
+			while(rs.next()) {
+				Order order = fetchOrderById(rs.getInt(1));
+				if (order.getStatus() == OrderStatus.SUBMITTED)
+					orderList.add(order);
+			}
+			if (orderList.size() == 0)
+				return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return orderList;	
+	}
 }
+
+
+
+
