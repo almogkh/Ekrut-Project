@@ -67,6 +67,11 @@ public class Order implements Serializable {
 		}
 		return sum;
 	}
+	
+	// For Almog: Added setter in order to set the dueDate
+	public void setDueDate(LocalDateTime estimateDeliveryTime) {
+		dueDate = estimateDeliveryTime;
+	}
 
 	public OrderStatus getStatus() {
 		return status;
