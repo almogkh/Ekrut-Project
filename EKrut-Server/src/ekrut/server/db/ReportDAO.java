@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.mysql.cj.MysqlType;
+
+import ekrut.entity.Order;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
 
@@ -60,14 +62,17 @@ import ekrut.entity.ReportType;
  */
 public class ReportDAO {
 	private DBController con;
+	private OrderDAO orderDAO;
 	
 	/**
 	 * Constructs a new reportDAO that uses the provided controller
 	 * 
 	 * @param con the database controller to use
+	 * @param orderDAO to use it to fetch orders
 	 */
-	public ReportDAO(DBController con) {
+	public ReportDAO(DBController con, OrderDAO orderDAO) {
 		this.con = con;
+		this.orderDAO = orderDAO;
 	}
 	
 	
@@ -318,29 +323,28 @@ public class ReportDAO {
 				}
 			}
 	}
-	//TBD.tal in progress
-	/*
+	
 	public Object fetchAllMonthlyOrders(LocalDateTime date, String location) {
-		//create a date instance of the month&year but is set to the first day of the month
+		// Create a date instance of the month&year but is set to the first day of the month
 		LocalDateTime fromDateTime = date;
 		fromDateTime = fromDateTime.withDayOfMonth(1);
 		fromDateTime = fromDateTime.withHour(0);
 		fromDateTime = fromDateTime.withMinute(0);
 
-		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM orders WHERE"
-				+ " date >= '?' AND date < '?' AND area = ?");
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT orderId FROM orders WHERE"
+				+ " date >= '?' AND date < '?' AND location = ?");
 		try {
 			ps1.setObject(1, fromDateTime, MysqlType.DATETIME);
 			ps1.setObject(2, date, MysqlType.DATETIME);
 			ps1.setString(3, location);
 			ResultSet rs1 = con.executeQuery(ps1);
 			
-			if (!rs1.next()) 
-				return null;
-			
-			
-			
-			return null;
+			ArrayList<Order> orders = new ArrayList<>();
+			// Fetch all the reports by ID and add them to orders ArrayList
+			while (rs1.next()) {
+				orders.add(orderDAO.fetchOrderById(rs1.getInt("reportId")));
+			} 
+			return orders;
 			 
 			}catch (SQLException e) {
 				return null;
@@ -351,7 +355,7 @@ public class ReportDAO {
 					throw new RuntimeException(e);
 				}
 			
+			}
 	}
-	}
-	*/
+	
 }
