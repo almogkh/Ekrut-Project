@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import com.mysql.cj.MysqlType;
 
 import ekrut.entity.Ticket;
+import ekrut.entity.TicketStatus;
 
 
 /**
- * A Data Access Object (DAO) class that provides CRUD (Create, Read, Update, and Delete) 
+ * A Data Access Object (DAO) class that provides CRU (Create, Read, Update) 
  * operations for the {@link Ticket} entity in a MySQL database.
  * The DAO requires a {@link DBController} object to establish a connection to the database.
  * 
@@ -40,14 +41,19 @@ public class TicketDAO {
 	 * @return true if the ticket was successfully created, false otherwise
 	 * @throws RuntimeException if there was an error executing the SQL statement
 	 */
+	
+	
 	public boolean createTicket(Ticket ticket) {
 		con.beginTransaction();
 		PreparedStatement ps = con.getPreparedStatement("INSERT INTO tickets " +
-	            "(ticketID,status,location) " + "VALUES(?,?,?)");
+	            "(ticketID,status,location,threshold,itemID,itemName) " + "VALUES(?,?,?,?,?,?)");
 		try {
 			ps.setInt(1, ticket.getTicketId());
-			ps.setString(2, ticket.getStatus());
+			ps.setString(2, ticket.getStatus().toString());
 			ps.setString(3, ticket.getEkrutLocation());
+			ps.setInt(4, ticket.getThreshold());
+			ps.setInt(5, ticket.getItemID());
+			ps.setString(6, ticket.getItemName());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -62,7 +68,6 @@ public class TicketDAO {
 	}
 
 	
-	
 	/**
 	 * Retrieves a ticket from the database based on its ID.
 	 * 
@@ -76,7 +81,7 @@ public class TicketDAO {
 			ps.setInt(1, ticketID);
 			ResultSet rs = con.executeQuery(ps);
 			if(rs.next()) { 
-				return new Ticket(rs.getInt(1), rs.getString(2), rs.getString(3)); 
+				return new Ticket(rs.getInt(1),TicketStatus.valueOf(rs.getString(2)), rs.getString(3),rs.getInt(4),rs.getInt(5),rs.getString(6)); 
 			}
 			return null;
 		} catch (SQLException e1) {
@@ -99,6 +104,7 @@ public class TicketDAO {
 	 * @throws RuntimeException if there was an error executing the SQL statement
 	 */
 	
+	
 	public ArrayList<Ticket> fetchTicketsByLocation(String location) {
 		ArrayList<Ticket> ticketsByLocation = new ArrayList<>();
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM tickets WHERE location = ?;");
@@ -106,7 +112,7 @@ public class TicketDAO {
 			ps.setString(1, location);
 			ResultSet rs = con.executeQuery(ps);
 			while(rs.next()) { 
-				Ticket ticket = new Ticket(rs.getInt(1), rs.getString(2), rs.getString(3));
+				Ticket ticket = new Ticket(rs.getInt(1),TicketStatus.valueOf(rs.getString(2)), rs.getString(3),rs.getInt(4),rs.getInt(5),rs.getString(6));
 				ticketsByLocation.add(ticket);
 			}
 			return ticketsByLocation.size() != 0? ticketsByLocation : null;
@@ -132,7 +138,7 @@ public class TicketDAO {
 	* @return  true if the ticket was successfully updated, false otherwise.
 	* @throws RuntimeException if there was an error executing the SQL statement
 	*/
-	public boolean updateTicketStatus(int ticketID, String status) {
+	public boolean updateTicketStatus(int ticketID, TicketStatus status) {
 			PreparedStatement ps = con.getPreparedStatement("UPDATE tickets SET status = ? WHERE ticketID = ?");
 			
 			try {
