@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.mysql.cj.MysqlType;
 import ekrut.entity.Report;
+import ekrut.entity.ReportType;
 
 /*This is how the DB look like:
  * reports table:
@@ -52,13 +53,18 @@ import ekrut.entity.Report;
  * #######################################################################
  **/
 
+/**
+ * Handles all direct database interactions with reports
+ * 
+ * @author Tal Gaon
+ */
 public class ReportDAO {
 	private DBController con;
 	
 	/**
 	 * Constructs a new reportDAO that uses the provided controller
 	 * 
-	 * @param con, the database controller to use
+	 * @param con the database controller to use
 	 */
 	public ReportDAO(DBController con) {
 		this.con = con;
@@ -76,7 +82,7 @@ public class ReportDAO {
 	 * @return the report ID of the report, or -1 if the report does not exist
 	 * @throws Exception if there is an error executing the SQL query
 	 */
-	public Integer getReportID(String date, String ekrutLocation, String area, String type) throws Exception {
+	public Integer getReportID(LocalDateTime date, String ekrutLocation, String area, ReportType type) throws Exception {
 		int reportid = -1;
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM reports WHERE date = ?"
 				+ " AND ekrutLocation = ? AND area = ? AND type = ?;");
@@ -84,7 +90,7 @@ public class ReportDAO {
 			ps.setObject(1, date, MysqlType.DATETIME); 
 			ps.setString(2, ekrutLocation);
 			ps.setString(3, area);
-			ps.setString(4, type);
+			ps.setString(4, type.toString()); 
 			ResultSet rs = con.executeQuery(ps);
 			
 			if (rs.first()) {
@@ -114,20 +120,22 @@ public class ReportDAO {
 	 * @param type ("order", "inventory", or "customer").
 	 * @return The report, or null if an error occurred.
 	 * */
-	public Report fetchReport(String date, String ekrutLocation, String area, String type) {
+	public Report fetchReport(LocalDateTime date, String ekrutLocation, String area, ReportType type) {
 		try {
 			int reportID = getReportID(date, ekrutLocation, area, type);
 			Report report = null;
 			// We will use the corresponding function according to the report type
-			if(type == "order") {
+			switch(type){
+			case ORDER:
 				report = fetchOrderReportByID(reportID);
-			}
-			else if(type == "inventory") {
+			case INVENTORY:
 				report = fetchInventoryReportByID(reportID);
-			}
-			else {
+			case CUSTOMER:
 				report = fetchCustomerReportByID(reportID);
+			default:
+				break;
 			}
+				
 			return report;
 			
 		//TBD.tal what to do here?
@@ -171,7 +179,7 @@ public class ReportDAO {
 			}
 			// Create a report instance
 			Report report = new Report(rs1.getInt("reportID"),
-					rs1.getString("type"), 
+					ReportType.valueOf(rs1.getString("type")), 
 					rs1.getObject(("date"), LocalDateTime.class),
 					rs1.getString("area"),
 					rs1.getString("ekrutLocation"),
@@ -223,6 +231,7 @@ public class ReportDAO {
 									rs2.getInt("numOfOrders"));
 			}
 			
+			ps3.setInt(1, reportID);
 			ResultSet rs3 = con.executeQuery(ps3);
 			// Get and save numberOfSales and numberOfSalesInILS
 			if (rs3.first()) {
@@ -234,7 +243,7 @@ public class ReportDAO {
 			}
 			// Create a report instance
 			Report report = new Report(rs1.getInt("reportID"),
-					rs1.getString("type"), 
+					ReportType.valueOf(rs1.getString("type")), 
 					rs1.getObject(("date"), LocalDateTime.class),
 					rs1.getString("area"),
 					rs1.getString("ekrutLocation"),
@@ -290,7 +299,7 @@ public class ReportDAO {
 			} 
 			// Create a report instance
 			Report report = new Report(rs1.getInt("reportID"),
-					rs1.getString("type"), 
+					ReportType.valueOf(rs1.getString("type")), 
 					rs1.getObject(("date"), LocalDateTime.class),
 					rs1.getString("area"),
 					rs1.getString("ekrutLocation"),
