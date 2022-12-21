@@ -14,9 +14,8 @@ public class ShipmentResponse implements Serializable {
 
 	/** The result code of the response. */
 	private ResultType resultCode;
-
 	/** A list of orders for shipment. */
-	private ArrayList<Order> OrderListForShipment;
+	private ArrayList<Order> orderListForShipment;
 
 	/**
 	 * 
@@ -46,6 +45,13 @@ public class ShipmentResponse implements Serializable {
 	 * @return the list of orders for shipment
 	 */
 	public ArrayList<Order> getOrdersForShipment() {
-		return OrderListForShipment;
+		return orderListForShipment;
 	}
+	
+	public void setOrdersForShipment(ArrayList<Order> ordersForShipmentFromServer) {
+		orderListForShipment = ordersForShipmentFromServer;
+	}
+	
+	
+	
 }
