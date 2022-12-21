@@ -18,7 +18,6 @@ public class ShipmentResponse implements Serializable {
 	private ArrayList<Order> orderListForShipment;
 
 	/**
-	 * 
 	 * Constructs a new {@code ShipmentResponse} object with the specified result
 	 * code.
 	 * 
@@ -27,9 +26,14 @@ public class ShipmentResponse implements Serializable {
 	public ShipmentResponse(ResultType resultCode) {
 		this.resultCode = resultCode;
 	}
+	
+	public ShipmentResponse(ResultType resultCode, ArrayList<Order> orderListForShipment) {
+		this.resultCode = resultCode;
+		this.orderListForShipment = orderListForShipment;
+	}
+
 
 	/**
-	 * 
 	 * Returns the result code of the response.
 	 * 
 	 * @return the result code of the response
@@ -39,19 +43,11 @@ public class ShipmentResponse implements Serializable {
 	}
 
 	/**
-	 * 
 	 * Returns the list of orders for shipment.
 	 * 
 	 * @return the list of orders for shipment
 	 */
 	public ArrayList<Order> getOrdersForShipment() {
 		return orderListForShipment;
-	}
-	
-	public void setOrdersForShipment(ArrayList<Order> ordersForShipmentFromServer) {
-		orderListForShipment = ordersForShipmentFromServer;
-	}
-	
-	
-	
+	}		
 }

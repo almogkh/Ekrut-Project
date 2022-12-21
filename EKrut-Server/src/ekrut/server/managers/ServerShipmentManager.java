@@ -50,12 +50,12 @@ public class ServerShipmentManager {
 			throw new IllegalArgumentException("null shipmentRequest was provided.");
 
 		ArrayList<Order> orderShipmentListForAppoval = orderDAO.fetchOrderShipmentList(shipmentRequest.getArea());
+		
 		if (orderShipmentListForAppoval == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
+		
+		return new ShipmentResponse(ResultType.OK, orderShipmentListForAppoval);
 
-		ShipmentResponse shipmentResponse = new ShipmentResponse(ResultType.OK);
-		shipmentResponse.setOrdersForShipment(orderShipmentListForAppoval);
-		return shipmentResponse;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class ServerShipmentManager {
 		if (order.getType() != OrderType.SHIPMENT)
 			return new ShipmentResponse(ResultType.INVALID_INPUT);
 
-		if (order.getStatus() != OrderStatus.AWAITING_DELIVERY)
+		if (order.getStatus() != OrderStatus.SUBMITTED)
 			return new ShipmentResponse(ResultType.INVALID_INPUT);
 
 		// Estimate delivery time.
@@ -93,7 +93,7 @@ public class ServerShipmentManager {
 		// what's happen in case the worker cancel the shipment? we can choose to cancel
 		// and continue with
 		// regular order process or we will delete the whole method
-		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.SUBMITTED))
+		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.AWAITING_DELIVERY))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 		
 		return new ShipmentResponse(ResultType.OK);
