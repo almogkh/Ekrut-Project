@@ -90,9 +90,8 @@ public class ServerShipmentManager {
 
 		// Q.Nir , do we need to add another method in case the worker cancel?
 		// and for this we will need to add CANCELED_SHIPMENT in in OrderStatus
-		// what's happen in case the worker cancel the shipment? we can choose to cancel
-		// and continue with
-		// regular order process or we will delete the whole method
+		// what's happen in case the worker cancel the shipment? we will choose to cancel
+		// and continue with regular order process? or we will delete the whole order?
 		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.AWAITING_DELIVERY))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 		
