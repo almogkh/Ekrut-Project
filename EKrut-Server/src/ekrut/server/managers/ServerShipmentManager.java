@@ -45,17 +45,16 @@ public class ServerShipmentManager {
 	 * @return a {@code ShipmentResponse} object with the result of the operation
 	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
-	public ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest) {
+	public ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest, String area) {
 		if (shipmentRequest == null)
 			throw new IllegalArgumentException("null shipmentRequest was provided.");
 
-		ArrayList<Order> orderShipmentListForAppoval = orderDAO.fetchOrderShipmentList(shipmentRequest.getArea());
+		ArrayList<Order> orderShipmentListForAppoval = orderDAO.fetchOrderShipmentList(area);
 		
 		if (orderShipmentListForAppoval == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 		
 		return new ShipmentResponse(ResultType.OK, orderShipmentListForAppoval);
-
 	}
 
 	/**

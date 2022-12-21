@@ -24,7 +24,6 @@ public class ShipmentRequest implements Serializable {
 	private String area;
 
 	/**
-	 * 
 	 * Constructs a {@code ShipmentRequest} object for fetching orders for approval.
 	 * 
 	 * @param action the type of request being made
@@ -36,7 +35,6 @@ public class ShipmentRequest implements Serializable {
 	}
 
 	/**
-	 * 
 	 * Constructs a {@code ShipmentRequest} object for confirming delivery or
 	 * marking an order as done.
 	 * 
@@ -51,7 +49,6 @@ public class ShipmentRequest implements Serializable {
 	}
 
 	/**
-	 * 
 	 * Returns the status of the order associated with this request.
 	 * 
 	 * @return the status of the order
@@ -61,7 +58,6 @@ public class ShipmentRequest implements Serializable {
 	}
 
 	/**
-	 * 
 	 * Returns the type of request being made.
 	 * 
 	 * @return the type of request
@@ -71,7 +67,6 @@ public class ShipmentRequest implements Serializable {
 	}
 
 	/**
-	 * 
 	 * Returns the ID of the order associated with this request.
 	 * 
 	 * @return the ID of the order
@@ -81,7 +76,6 @@ public class ShipmentRequest implements Serializable {
 	}
 
 	/**
-	 * 
 	 * Returns the address of the client associated with this request.
 	 * 
 	 * @return the client address
@@ -91,7 +85,6 @@ public class ShipmentRequest implements Serializable {
 	}
 
 	/**
-	 * 
 	 * Returns the date of shipment creation.
 	 * 
 	 * @return the date of the request
@@ -101,7 +94,6 @@ public class ShipmentRequest implements Serializable {
 	}
 	
 	/**
-	 * 
 	 * Returns the area of shipment.
 	 * 
 	 * @return the date of the request
