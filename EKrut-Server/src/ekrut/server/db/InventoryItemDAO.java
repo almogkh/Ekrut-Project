@@ -113,11 +113,11 @@ public class InventoryItemDAO {
 	 * ekrutLocation.
 	 * 
 	 * @param ekrutLocation the unique machine identifier.
-	 * @return {@link ArrayList}&lt;{@link InventoryItem}&gt; list with all the
+	 * @return {@link InventoryItem}&gt; list with all the
 	 *         inventory items assigned to the provided machine
 	 */
 	public ArrayList<InventoryItem> fetchAllItemsByLocation(String ekrutLocation) {
-		PreparedStatement ps = con.getPreparedStatement("SELECT itemId FROM inventory_items WHERE ekrutLocation = ?;");
+		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM inventory_items WHERE ekrutLocation = ?;");
 		try {
 			ps.setString(1, ekrutLocation);
 			ResultSet rs = con.executeQuery(ps);
