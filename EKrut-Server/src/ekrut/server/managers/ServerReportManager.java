@@ -22,109 +22,154 @@ public class ServerReportManager {
 	private ReportDAO reportDAO;
 	private InventoryItemDAO inventoryItemDAO;
 	
-	//TBD.tal what to do about orderDAO that reportDAO gets
 	public ServerReportManager(DBController con) {
 		reportDAO = new ReportDAO(con);
 		inventoryItemDAO = new InventoryItemDAO(con);
 	}
-	
-	
+	/*
+	 * TBD.tal create this
 	public void generateReport() {
 		
-	}
+	}*/
+	
 	//TBD.tal add avgSalesSerCustomer
-	// this method fetch all the relevant data to generate order report and process it into report
+	/**
+	 * Generates an order report for a given location and date.
+	 * 
+	 * @param date the date for which to generate the report
+	 * @param ekrutLocation the location for which to generate the report
+	 * @return the generated order report, or null if there are less than 6 items with orders in the given month and location
+	 */
 	public Report generateOrderReport(LocalDateTime date, String ekrutLocation) {
-		// Fetch all order from the past month at the given location
+		// Get a list of all orders made in the given month and location
 		ArrayList<Order> orders = reportDAO.fetchAllMonthlyOrders(date, ekrutLocation); 
-		
+		// Initialize the total order count and total order amount to 0
 		int totalOrders = orders.size();
-		
 		int totalOrdersInILS = 0;
-		
+		 // Iterate over the orders to calculate the total order amount
 		for (Order order : orders) {
-			// Calculate the order price and add it to totalOrderInILS
 			totalOrdersInILS += order.getSumAmount();
 		}
-		// Add for each item the quantity of sales in the current order to all the previous orders.
+		// Process the orders to count the quantity of each item ordered
 		Map<String, Integer> itemsQuantityInOrders = ProcessOrders(orders);
 		
 		// If less than 6 items have been ordered all month then we do not generate an order report
 		if (itemsQuantityInOrders.size() < 6) {
 			return null;
 		}
-		// Save the 5 best sellers items and save the rest of the items into 1 "item" that named "allRest"
+		// Save the 5 best sellers items and save the rest of the items into "item" that named "allRest"
 		Map<String, Integer> bestSellers = ProcessItemOrders(itemsQuantityInOrders);
-				
+		// Create a new report object with the generated data		
 		Report report = new Report(null, ReportType.CUSTOMER, date, ekrutLocation, totalOrders, totalOrdersInILS, bestSellers);
-		
+		// Return the report
 		return report;
 	}
 	
+	/**
+	 * Generates a customer report for a given location and date.
+	 * 
+	 * @param date the date for which to generate the report
+	 * @param ekrutLocation the location for which to generate the report
+	 * @return the generated customer report
+	 */
 	public Report generateCustomerReport(LocalDateTime date, String ekrutLocation) {
-		// Need to count how many orders has customer that made at least an order in the past month
-		ArrayList<String> allCustomersOrders;
-		
-		allCustomersOrders = reportDAO.getAllCustomersOrders(date, ekrutLocation);
-		// doc
+		// Get a list of all customer orders for the given date and location	
+		ArrayList<String> allCustomersOrders = reportDAO.getAllCustomersOrders(date, ekrutLocation);
+		// Process the customer orders to count the number of orders made by each customer
 		Map<String, Integer> customersOrders = ProcessCustomersOrders(allCustomersOrders);
-
-		/*
-		 * Now we will divide the customers into categories,
-		 * each customer will count in the category according
-		 * to the number of monthly orders he made
-		 */ 
-		
-		Map<String, Integer> customersHistogram = createcustomersHistogram(customersOrders);
-		
+		// Create a histogram of customer orders by dividing customers into categories based on their order count
+		Map<String, Integer> customersHistogram = createCustomersHistogram(customersOrders);
+		// Create a new report object with the generated data
 		Report report = new Report(null, ReportType.CUSTOMER, date, ekrutLocation, customersHistogram);
-		
+		// Return the report
 		return report;
 	}
 	
+	/**
+	 * Generates an inventory report for a given location and date.
+	 * 
+	 * @param date the date for which to generate the report
+	 * @param ekrutLocation the location for which to generate the report
+	 * @return the generated inventory report
+	 */
 	public Report generateInventoryReport(LocalDateTime date, String ekrutLocation) {
-		
+		// Get the list of threshold alert messages for the given date and location
 		ArrayList<String> thersholdAlerts = reportDAO.getThresholdAlert(date, ekrutLocation);
+		// Count the number of alerts for each item
+		Map<String, Integer> tresholdAlertCounted = CountAlerts(thersholdAlerts);
+		// Get the list of all items in the location
+		ArrayList<InventoryItem> allItemsInLocation = inventoryItemDAO.fetchAllItemsByLocation(ekrutLocation);
+		int facilityThreshold = 0;
+		// If the list of items is not empty, extract the facility threshold from the first item
+		if (!allItemsInLocation.isEmpty()) {
+			facilityThreshold = allItemsInLocation.get(0).getItemThreshold();
+		}
+		// Process the inventory data
+		Map<String, ArrayList<Integer>> inventoryReportData = 
+				ProcessInventoryData(allItemsInLocation, tresholdAlertCounted);
+		// Create a new report object with the generated data
+		Report report = new Report(null, ReportType.INVENTORY, date,
+				ekrutLocation, inventoryReportData, facilityThreshold);
+		// Return the report
+		return report;
+	}
+	
+	/**
+	 * Counts the number of threshold alerts for each item.
+	 * 
+	 * @param thersholdAlerts a list of item names for which threshold alerts have been triggered
+	 * @return a map of item names to the number of threshold alerts for that item
+	 */
+	private Map<String, Integer> CountAlerts(ArrayList<String> thersholdAlerts){
 		
 		Map<String, Integer> tresholdAlertCounted = new HashMap<>();
-
+		// Iterate over the list of item names
 		for (String itemName : thersholdAlerts) {
-
+			// If the item name is already present in the map, increment the alert count
 			if (tresholdAlertCounted.containsKey(itemName)) {
 				int currAlerts = tresholdAlertCounted.get(itemName);
 				tresholdAlertCounted.put(itemName, currAlerts + 1);
 			}
-
+			// If the item name is not yet present in the map, add it with an alert count of 0
 			else {
-				tresholdAlertCounted.put(itemName, 1);
+				tresholdAlertCounted.put(itemName, 0);
 			}
 		}
-		ArrayList<InventoryItem> allItemsInLocation = inventoryItemDAO.fetchAllItemsByLocation(ekrutLocation);
-		int facilityThreshold = 0;
-		if (!allItemsInLocation.isEmpty()) {
-			// Get the facility threshold from the first item
-			facilityThreshold = allItemsInLocation.get(0).getItemThreshold();
-		}
+		// Return the map of alert counts
+		return tresholdAlertCounted;
+	}
+	
+	/**
+	 * Processes inventory data for a given location.
+	 * 
+	 * @param allItemsInLocation a list of all inventory items in the location
+	 * @param tresholdAlertCounted a map of item names to threshold alert counts
+	 * @return a map of item names to lists containing the item quantity and threshold alert count
+	 */
+	private Map<String, ArrayList<Integer>> ProcessInventoryData(
+			ArrayList<InventoryItem> allItemsInLocation, 
+			Map<String, Integer> tresholdAlertCounted){
 		
 		Map<String, ArrayList<Integer>> inventoryReportData = new HashMap<>();
-		
+		 // Iterate over the list of inventory items
 		for (InventoryItem inventoryItem : allItemsInLocation) {
 			String itemName = inventoryItem.getItem().getItemName();
 			
 			int thresholdAlerts = 0;
+			// If the item name is present in the map of threshold alerts, extract the count
 			if (tresholdAlertCounted.containsKey(itemName)) {
 				thresholdAlerts = tresholdAlertCounted.get(itemName);
 			}
+			// Create a list containing the item quantity and threshold alert count
 			ArrayList<Integer> temp = new ArrayList<>();
 			temp.add(inventoryItem.getItemQuantity());
 			temp.add(thresholdAlerts);
+			
+			// Store the list in the inventory report data map using the item name as the key
 			inventoryReportData.put(itemName, temp);
 		}
-		
-		Report report = new Report(null, ReportType.INVENTORY, date,
-				ekrutLocation, inventoryReportData, facilityThreshold);
-
-		return report;
+		// Return the inventory report data map
+		return inventoryReportData;
 	}
 	
 	/**
@@ -133,7 +178,7 @@ public class ServerReportManager {
 	 * @param customersOrders a map containing customers as keys and their number of orders categories as values
 	 * @return a map containing keys for the number of orders (1, 2, 3, 4, 5, 6+) and values for the number of customers with that number of orders
 	 */
-	private Map<String, Integer> createcustomersHistogram(Map<String, Integer> customersOrders){
+	private Map<String, Integer> createCustomersHistogram(Map<String, Integer> customersOrders){
 		Map<String, Integer> customersHistogram = new HashMap<>();
 	    // Initialize the histogram map with keys "1" through "6+" and values of 0
 		customersHistogram.put("1", 0);
