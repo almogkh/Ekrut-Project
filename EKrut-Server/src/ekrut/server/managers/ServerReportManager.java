@@ -38,7 +38,7 @@ public class ServerReportManager {
 	 * 
 	 * @param date the date for which to generate the report
 	 * @param ekrutLocation the location for which to generate the report
-	 * @return the generated order report, or null if there are less than 6 items with orders in the given month and location
+	 * @return the generated order report, or null
 	 */
 	public Report generateOrderReport(LocalDateTime date, String ekrutLocation) {
 		// Get a list of all orders made in the given month and location
