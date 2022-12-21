@@ -3,7 +3,6 @@ package ekrut.client.managers;
 import java.util.ArrayList;
 import ekrut.entity.Order;
 import ekrut.entity.OrderStatus;
-import ekrut.entity.OrderType;
 import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentRequestType;
@@ -49,13 +48,14 @@ public class ClientShipmentManager {
 	 * @throws Exception if the result of the shipment request is not {@link ResultType#OK}
 	 * or if an exception is thrown by the {@link #sendRequest(ShipmentRequest)} method
 	 */
+	// Should return something? Q.Nir
 	public void confirmShipment(Order order) throws Exception {
 		if (order == null)
 			throw new IllegalArgumentException("Null order was provided");
 
 		// Prepare ShipmentRequest for sending.
 		ShipmentRequest shipmentRequest = 
-				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS , OrderStatus.AWAITING_DELIVERY, order.getOrderId());
+				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS, OrderStatus.AWAITING_DELIVERY, order.getOrderId());
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
 		// In case resultType isn't "OK" exception will throws.

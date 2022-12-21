@@ -2,7 +2,7 @@ package ekrut.entity;
 
 public enum OrderStatus {
 	NEW,
-	SUBMITTED, 	
+	SUBMITTED,
 	AWAITING_DELIVERY,
 	DELIVERY_CONFIRMED,
 	DONE

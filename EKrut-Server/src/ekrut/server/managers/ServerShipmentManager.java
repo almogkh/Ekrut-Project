@@ -40,8 +40,7 @@ public class ServerShipmentManager {
 	/**
 	 * Fetches a list of shipment requests for approval.
 	 * 
-	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
-	 *                        request details
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
 	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
@@ -49,7 +48,7 @@ public class ServerShipmentManager {
 		if (shipmentRequest == null)
 			throw new IllegalArgumentException("null shipmentRequest was provided.");
 
-		ArrayList<Order> ShippingForAppoval = orderDAO.fetchOrderShipmentList(shipmentRequest.getOrderId());
+		ArrayList<Order> ShippingForAppoval = orderDAO.fetchOrderShipmentList(shipmentRequest.getArea());
 		if (ShippingForAppoval == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 
@@ -59,8 +58,7 @@ public class ServerShipmentManager {
 	/**
 	 * Confirms the shipment of an order by EKurt worker.
 	 * 
-	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
-	 *                        request details
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
 	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
@@ -101,8 +99,7 @@ public class ServerShipmentManager {
 	/**
 	 * Confirms the delivery of an order.
 	 * 
-	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
-	 *                        request details
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
 	 */
 	public ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
