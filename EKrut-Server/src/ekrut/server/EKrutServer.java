@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import ekrut.entity.Order;
 import ekrut.entity.User;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
@@ -76,15 +77,18 @@ public class EKrutServer extends AbstractServer{
 				userResponse = serverSessionManager.loginUser(username,password);
 			case LOGOUT:	
 				userResponse = serverSessionManager.logoutUser(username);
+			case IS_LOGGEDIN:
+				String res = Boolean.toString(serverSessionManager.isLoggedin(username));
+				userResponse = new UserResponse(res);
 			default:
-				try {
-					client.sendToClient(userResponse);
-				} catch (IOException e) {
-					e.printStackTrace();
-					System.exit(-1);
-				}
 				break;
-		}		
+		}
+		try {
+			client.sendToClient(userResponse);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);}
+			
 	}
 	//Wait for the initialize of serverTicketManager class
 	/*
@@ -97,15 +101,15 @@ public class EKrutServer extends AbstractServer{
 				ticketResponse = serverTicketManager.updateTicketStatus();
 			case FETCH:	
 				ticketResponse = serverTicketManager.fetchTicket();
+		}		
 		default:
+			break;
 			try {
 				client.sendToClient(ticketResponse);
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
 			}
-			break;
-		}		
 	}*/
 
 	private void handleMessageInventory(InventoryItemRequest inventoryItemRequest, ConnectionToClient client) {
@@ -118,14 +122,14 @@ public class EKrutServer extends AbstractServer{
 			case UPDATE_ITEM_THRESHOLD:	
 				inventoryItemResponse = serverInventoryManager.updateItemThreshold(inventoryItemRequest);
 			default:
-				try {
-					client.sendToClient(inventoryItemResponse);
-				} catch (IOException e) {
-					e.printStackTrace();
-					System.exit(-1);
-				}
 				break;
 		}		
+		try {
+			client.sendToClient(inventoryItemResponse);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
 	}
 	//Wait for the initialize of serverOrderManager class
 	/*
@@ -139,36 +143,44 @@ public class EKrutServer extends AbstractServer{
 			case PICKUP:	
 				orderResponse = serverOrderManager.pickupOrder(orderRequest);
 			default:
-				try {
+				break;
+		}		
+		try {
 					client.sendToClient(orderResponse);
 				} catch (IOException e) {
 					e.printStackTrace();
 					System.exit(-1);
 				}
-				break;
-		}		
 	}
 	*/
 	//Wait for the initialize of serverShipmentManager class
-		/*
+	/*
 	private void handleMessageShipment(ShipmentRequest shipmentRequest, ConnectionToClient client) {
 		ShipmentResponse shipmentResponse = null;
+		Order order;
 		switch(shipmentRequest.getAction()) {
 			case FETCH_SHIPMENT_ORDERS:	
 				shipmentResponse = serverShipmentManager.fetchShipmentRequest(shipmentRequest);
 			case UPDATE_STATUS:	
-				shipmentResponse = serverShipmentManager.*****(shipmentRequest);
-			default:
-				try {
-					client.sendToClient(shipmentResponse);
-				} catch (IOException e) {
-					e.printStackTrace();
-					System.exit(-1);
+				switch(order.getStatus()) {
+					case SUBMITTED:
+						shipmentResponse = serverShipmentManager.confirmShipment(shipmentRequest);
+					case AWAITING_DELIVERY:
+						shipmentResponse = serverShipmentManager.confirmDelivery(shipmentRequest);
+					case DELIVERY_CONFIRMED:
+						shipmentResponse = serverShipmentManager.setDone(shipmentRequest);
 				}
+			default:
 				break;
 		}		
+		try {
+			client.sendToClient(shipmentResponse);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		
 	}*/
-
 	
 
 }
