@@ -50,9 +50,6 @@ public class InventoryItemDAO {
 	 * @throws RuntimeException if there is a problem closing the PreparedStatement object
 	 */
 	public boolean CreateInventoryItem(int itemId, int quantity, String ekrutLocation, int itemThreshold) {
-		// Check if InventoryItem Already exists.
-		if (fetchInventoryItem(itemId, ekrutLocation) != null)
-			return false;
 		PreparedStatement ps = con.getPreparedStatement(
 				"INSERT INTO inventory_items (itemId, quantity, ekrutLocation, itemThreshold) " + "VALUES(?, ?, ?, ?)");
 		try {
