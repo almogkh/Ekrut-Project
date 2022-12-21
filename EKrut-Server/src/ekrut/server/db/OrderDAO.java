@@ -209,10 +209,11 @@ public class OrderDAO {
 	
 	
 	// For Almog: Added by Nir, get list of orders in Shipment status.
-	public ArrayList<Order> fetchOrderShipmentList(int orderId){
-		PreparedStatement ps = con.getPreparedStatement("SELECT orderId FROM orders WHERE type = SHIPMENT");
+	public ArrayList<Order> fetchOrderShipmentList(String area){
+		PreparedStatement ps = con.getPreparedStatement("SELECT orderId FROM orders WHERE type = SHIPMENT, area = ?");
 		ArrayList<Order> orderList = new ArrayList<>();
 		try {
+			ps.setString(1, area);
 			ResultSet rs = con.executeQuery(ps);
 			while(rs.next()) {
 				Order order = fetchOrderById(rs.getInt(1));
