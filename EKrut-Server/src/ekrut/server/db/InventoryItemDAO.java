@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
-import ekrut.server.intefaces.iItemQuantityFetcher;
+import ekrut.server.intefaces.IItemQuantityFetcher;
 
 /**
  * InventoryItem DAO control all Inventory Item related DB interactions.
@@ -18,7 +18,7 @@ public class InventoryItemDAO {
 
 	private DBController con;
 	private ItemDAO itemDAO;
-	private iItemQuantityFetcher itemQuantityFetcher;
+	private IItemQuantityFetcher itemQuantityFetcher;
 
 	public InventoryItemDAO(DBController con) {
 		this.con = con;
@@ -33,7 +33,7 @@ public class InventoryItemDAO {
 	 * @param con                 a DBController object for interacting with the database
 	 * @param itemQuantityFetcher an iItemQuantityFetcher object for fetching items quantity via sensor
 	 */
-	public InventoryItemDAO(DBController con, iItemQuantityFetcher itemQuantityFetcher) {
+	public InventoryItemDAO(DBController con, IItemQuantityFetcher itemQuantityFetcher) {
 		this.con = con;
 		this.itemDAO = new ItemDAO(con);
 		this.itemQuantityFetcher = itemQuantityFetcher;

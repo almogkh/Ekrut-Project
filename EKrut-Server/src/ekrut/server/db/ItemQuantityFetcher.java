@@ -3,12 +3,12 @@ package ekrut.server.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import ekrut.server.intefaces.iItemQuantityFetcher;
+import ekrut.server.intefaces.IItemQuantityFetcher;
 
 /**
  * Fetches the quantity of an item from the inventory system.
  */
-public class ItemQuantityFetcher implements iItemQuantityFetcher {
+public class ItemQuantityFetcher implements IItemQuantityFetcher {
 
 	DBController con;
 
