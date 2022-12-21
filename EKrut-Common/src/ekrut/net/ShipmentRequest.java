@@ -21,7 +21,6 @@ public class ShipmentRequest implements Serializable {
 	private int orderId;
 	private String clientAddress;
 	private LocalDateTime date;
-	private LocalDateTime estimateDeliveryTime;
 	private String area;
 
 	/**
@@ -93,12 +92,22 @@ public class ShipmentRequest implements Serializable {
 
 	/**
 	 * 
-	 * Returns the date of the request.
+	 * Returns the date of shipment creation.
 	 * 
 	 * @return the date of the request
 	 */
 	public LocalDateTime getDate() {
 		return date;
+	}
+	
+	/**
+	 * 
+	 * Returns the area of shipment.
+	 * 
+	 * @return the date of the request
+	 */
+	public String getArea() {
+		return area;
 	}
 
 }

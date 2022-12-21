@@ -34,8 +34,9 @@ public class ServerShipmentManager {
 		orderDAO = new OrderDAO(con);
 	}
 
-	// Q.Nir , TBD - do we really need the area for get all fetchShipmentRequests?
+	// Q.Nir , TBD - Need to change after Yovel implementation?
 	// PLEASE, HOW CAN I DO IT?
+	// C.Nir - Message need to be sent after confirmation.
 
 	/**
 	 * Fetches a list of shipment requests for approval.
