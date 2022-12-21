@@ -67,7 +67,7 @@ public class ServerInventoryManager {
 			// TBD HOW TO SEND NOTIFICATIONS??
 		
 		// Try to commit the update in DB.
-		if (!inventoryItemDAO.updateItemQuantity(itemId, quantity, ekrutLocation))
+		if (!inventoryItemDAO.updateItemQuantity(ekrutLocation, itemId, quantity))
 			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		
 		// Updated successfully.
@@ -91,7 +91,7 @@ public class ServerInventoryManager {
 		
 		// Fetch InventoryItem(s) fromDB.
 		
-		ArrayList<InventoryItem> inventoryItems = inventoryItemDAO.fetchAllItemsByLocation(ekrutLocation);
+		ArrayList<InventoryItem> inventoryItems = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
 		
 		// Check if DB could not locate InventoryItem(s) for given ekrutLocation.
 		if (inventoryItems == null)
@@ -123,7 +123,7 @@ public class ServerInventoryManager {
 			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Try to update the InventoryItem's threshold.
-		if (!inventoryItemDAO.updateItemThreshold(itemId, ekrutLocation, threshold))
+		if (!inventoryItemDAO.updateEkrutLocationThreshold(ekrutLocation, threshold))
 			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		
 		return new InventoryItemResponse(ResultType.OK);
