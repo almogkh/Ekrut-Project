@@ -74,12 +74,15 @@ public class EKrutServer extends AbstractServer{
 		UserResponse userResponse = null;
 		switch(userRequest.getAction()) {
 			case LOGIN:	
-				userResponse = serverSessionManager.loginUser(username,password);
+				userResponse = serverSessionManager.loginUser(username,password,client);
+				break;
 			case LOGOUT:	
 				userResponse = serverSessionManager.logoutUser(username);
+				break;
 			case IS_LOGGEDIN:
 				String res = Boolean.toString(serverSessionManager.isLoggedin(username));
 				userResponse = new UserResponse(res);
+				break;
 			default:
 				break;
 		}
@@ -117,10 +120,13 @@ public class EKrutServer extends AbstractServer{
 		switch(inventoryItemRequest.getAction()) {
 			case UPDATE_ITEM_QUANTITY:	
 				inventoryItemResponse = serverInventoryManager.updateItemQuantity(inventoryItemRequest);
+				break;
 			case FETCH_ITEM:	
 				inventoryItemResponse = serverInventoryManager.getItems(inventoryItemRequest);
+				break;
 			case UPDATE_ITEM_THRESHOLD:	
 				inventoryItemResponse = serverInventoryManager.updateItemThreshold(inventoryItemRequest);
+				break;
 			default:
 				break;
 		}		
@@ -138,10 +144,13 @@ public class EKrutServer extends AbstractServer{
 		switch(orderRequest.getAction()) {
 			case CREATE:	
 				orderResponse = serverOrderManager.createOrder(orderRequest);
+				break;
 			case FETCH:	
 				orderResponse = serverOrderManager.fetchOrders(orderRequest);
+				break;
 			case PICKUP:	
 				orderResponse = serverOrderManager.pickupOrder(orderRequest);
+				break;
 			default:
 				break;
 		}		
@@ -152,23 +161,27 @@ public class EKrutServer extends AbstractServer{
 					System.exit(-1);
 				}
 	}
-	*/
+	
 	//Wait for the initialize of serverShipmentManager class
-	/*
+	
 	private void handleMessageShipment(ShipmentRequest shipmentRequest, ConnectionToClient client) {
 		ShipmentResponse shipmentResponse = null;
 		Order order;
 		switch(shipmentRequest.getAction()) {
 			case FETCH_SHIPMENT_ORDERS:	
-				shipmentResponse = serverShipmentManager.fetchShipmentRequest(shipmentRequest);
+				shipmentResponse = serverShipmentManager.fetchShipmentRequest(shipmentRequest);//add user.area
+				break;
 			case UPDATE_STATUS:	
 				switch(order.getStatus()) {
 					case SUBMITTED:
 						shipmentResponse = serverShipmentManager.confirmShipment(shipmentRequest);
+						break;
 					case AWAITING_DELIVERY:
 						shipmentResponse = serverShipmentManager.confirmDelivery(shipmentRequest);
+						break;
 					case DELIVERY_CONFIRMED:
 						shipmentResponse = serverShipmentManager.setDone(shipmentRequest);
+						break;
 				}
 			default:
 				break;
@@ -180,7 +193,7 @@ public class EKrutServer extends AbstractServer{
 			System.exit(-1);
 		}
 		
-	}*/
-	
+	}
+	*/
 
 }
