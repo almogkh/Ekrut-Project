@@ -125,15 +125,8 @@ public class ServerReportManager {
 		Map<String, Integer> tresholdAlertCounted = new HashMap<>();
 		// Iterate over the list of item names
 		for (String itemName : thersholdAlerts) {
-			// If the item name is already present in the map, increment the alert count
-			if (tresholdAlertCounted.containsKey(itemName)) {
-				int currAlerts = tresholdAlertCounted.get(itemName);
-				tresholdAlertCounted.put(itemName, currAlerts + 1);
-			}
-			// If the item name is not yet present in the map, add it with an alert count of 0
-			else {
-				tresholdAlertCounted.put(itemName, 0);
-			}
+			// change doc
+			tresholdAlertCounted.merge(itemName, 1, Integer::sum);
 		}
 		// Return the map of alert counts
 		return tresholdAlertCounted;
@@ -283,23 +276,13 @@ public class ServerReportManager {
 	private Map<String, Integer> ProcessOrders(ArrayList<Order> orders){
 		Map<String, Integer> itemsQuantityInOrders = new HashMap<>();
 		
-
 	    // Iterate through the orders and count the quantities of each item sold
 		for (Order order : orders) {
 			for (OrderItem orderItem : order.getItems()) {
 				Item item = orderItem.getItem();
 				String itemName = item.getItemName();
-				int quantity = orderItem.getItemQuantity();
 				
-		          // If the item is already in the map, add the quantity of this order to the previous quantity
-				if (itemsQuantityInOrders.containsKey(itemName)) {
-					int preQuantity = itemsQuantityInOrders.get(itemName);
-					itemsQuantityInOrders.put(itemName, preQuantity + quantity);
-				}
-	            // Otherwise, set the quantity of this item to be the quantity of this order
-				else {
-					itemsQuantityInOrders.put(itemName, quantity); 
-				}
+				itemsQuantityInOrders.merge(itemName, orderItem.getItemQuantity(), Integer::sum);
 			}
 		}
 		// Return the map of item quantities
