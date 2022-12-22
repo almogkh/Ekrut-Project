@@ -25,12 +25,14 @@ public class ItemDAO {
 	 * @return	an Item according to the provided itemId.
 	 */
 	public Item fetchItem(int itemId) {
-		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM items WHERE itemId = ?;");
+		PreparedStatement ps = con.getPreparedStatement(
+				"SELECT itemId, itemName, itemDescription, itemPrice FROM items WHERE itemId = ?;");
 		try {
 			ps.setInt(1, itemId);
 			ResultSet rs = con.executeQuery(ps);
 			if(rs.next())
-				return new Item(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getFloat(4));
+				return new Item(rs.getInt("itemId"), rs.getString("itemName"), 
+						rs.getString("itemDescription"), rs.getFloat("itemPrice"));
 			return null;
 		} catch (SQLException e1) {
 			return null;

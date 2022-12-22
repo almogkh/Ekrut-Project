@@ -25,14 +25,15 @@ public class ServerInventoryManager {
 		inventoryItemDAO = new InventoryItemDAO(con);
 	}
 	
+
 	/**
-	 * Handles Client's request to <b>update</b> InventoryItem's quantity.
-	 * 
-	 * @param inventoryUpdateItemRequest the InventoryItemRequest that was instantiated with:
-	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
-	 * @return response to be sent to the client.
+	 * Updates the quantity of an InventoryItem in the inventory system. 
+	 * If the updated quantity falls below the item's threshold, a notification may be sent to the appropriate parties.
+	 *
+	 * @param inventoryUpdateItemRequest an InventoryItemRequest object that contains the item ID, ekrut location, and new quantity value for the InventoryItem to be updated
+	 * @return an InventoryItemResponse object indicating the result of the update operation
+	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	// pub-sending notifications
 	public InventoryItemResponse updateItemQuantity(InventoryItemRequest inventoryUpdateItemRequest) {
 		if (inventoryUpdateItemRequest == null)
 			throw new IllegalArgumentException("null InventoryItemRequest was provided.");
@@ -58,29 +59,29 @@ public class ServerInventoryManager {
 		if (inventoryItemInDB == null)
 			return new InventoryItemResponse(ResultType.NOT_FOUND);
 		
-		//Check if new quantity is below the threshold of that InventoryItem.
-		if (quantity < inventoryItemInDB.getItemThreshold()) {}
+		//Check if new quantity is BREACING the threshold of that InventoryItem.
+		if ((inventoryItemInDB.getItemQuantity() > inventoryItemInDB.getItemThreshold()) && 
+				(quantity < inventoryItemInDB.getItemThreshold())) {}
 			// In order to send 'below threshold' notification we need access to UserNotifier &
 			// To know the Area manager's information (who is the manager of this machine??)
 			// TBD HOW TO SEND NOTIFICATIONS??
 		
 		// Try to commit the update in DB.
-		if (!inventoryItemDAO.updateItemQuantity(itemId,quantity, ekrutLocation))
+		if (!inventoryItemDAO.updateItemQuantity(ekrutLocation, itemId, quantity))
 			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		
 		// Updated successfully.
 		return new InventoryItemResponse(ResultType.OK);
 	}
 	
-	
 	/**
-	 * Handles Client's request to <b>get</b> InventoryItem(s).
-	 * 
-	 * @param inventoryGetItemsRequest the InventoryItemRequest that was instantiated with:
-	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
-	 * @return response to be sent to the client.
+	 * Retrieves all InventoryItem objects associated with a specific ekrut location from the inventory system.
+	 *
+	 * @param inventoryGetItemsRequest an InventoryItemRequest object that contains the ekrut location for the InventoryItem(s) to be retrieved
+	 * @return an InventoryItemResponse object that contains the result of the fetch operation and, if successful,
+	 * 			 a list of the retrieved InventoryItem objects
+	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	// pub+
 	public InventoryItemResponse getItems(InventoryItemRequest inventoryGetItemsRequest) {
 		if (inventoryGetItemsRequest == null)
 				throw new IllegalArgumentException("null InventoryItemRequest was provided.");
@@ -90,7 +91,7 @@ public class ServerInventoryManager {
 		
 		// Fetch InventoryItem(s) fromDB.
 		
-		ArrayList<InventoryItem> inventoryItems = inventoryItemDAO.fetchAllItemsByLocation(ekrutLocation);
+		ArrayList<InventoryItem> inventoryItems = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
 		
 		// Check if DB could not locate InventoryItem(s) for given ekrutLocation.
 		if (inventoryItems == null)
@@ -101,13 +102,13 @@ public class ServerInventoryManager {
 	}
 	
 	/**
-	 * Handles Client's request to <b>update</b> InventoryItem's <b>threshold</b>.
-	 * 
-	 * @param inventoryUpdateItemThresholdRequest the InventoryItemRequest that was instantiated with:
-	 * 			InventoryItemRequest(int itemId, int quantity, String ekrutLocation)
-	 * @return response to be sent to the client.
+	 * Updates the <b>threshold</b> of an InventoryItem in the inventory system.
+	 *
+	 * @param inventoryUpdateItemThresholdRequest an InventoryItemRequest object that contains the 
+	 * 			item ID, ekrut location, and new threshold value for the InventoryItem to be updated
+	 * @return an InventoryItemResponse object indicating the result of the update operation
+	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	// pub-
 	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryUpdateItemThresholdRequest) {
 		if (inventoryUpdateItemThresholdRequest == null)
 			throw new IllegalArgumentException("null InventoryItemRequest was provided.");
@@ -122,7 +123,7 @@ public class ServerInventoryManager {
 			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Try to update the InventoryItem's threshold.
-		if (!inventoryItemDAO.updateItemThreshold(itemId, ekrutLocation, threshold))
+		if (!inventoryItemDAO.updateEkrutLocationThreshold(ekrutLocation, threshold))
 			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		
 		return new InventoryItemResponse(ResultType.OK);
