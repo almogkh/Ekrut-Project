@@ -486,7 +486,6 @@ public class ReportDAO {
 					return false;
 				}
 			}
-			
 			con.commitTransaction();
 			return true;
 			
