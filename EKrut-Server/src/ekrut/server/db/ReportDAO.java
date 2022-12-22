@@ -335,7 +335,7 @@ public class ReportDAO {
 		fromDateTime = fromDateTime.withMinute(0);
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT orderId FROM orders WHERE"
-				+ " date >= '?' AND date < '?' AND location = ?");
+				+ " date >= ? AND date < ? AND location = ?");
 		try {
 			ps1.setObject(1, fromDateTime, MysqlType.DATETIME);
 			ps1.setObject(2, date, MysqlType.DATETIME);
@@ -422,7 +422,7 @@ public class ReportDAO {
 	public boolean createReport(Report report) {
 		con.beginTransaction();
 		
-		// Pass true so that we can get the new order ID
+		// Pass true so that we can get the new report ID
 		PreparedStatement p1 = con.getPreparedStatement("INSERT INTO reports " +
                                                         "(type,date,location) " +
                                                         "VALUES(?,?,?)", true);
@@ -432,7 +432,7 @@ public class ReportDAO {
 			p1.setObject(2, report.getDate(), MysqlType.DATETIME);
 			p1.setString(3, report.getEkrutLocation().toString());
 	
-			// Get the new order's ID
+			// Get the new report ID
 			ResultSet rs = p1.getGeneratedKeys();
 			if (!rs.next()) {
 				con.abortTransaction();
@@ -442,7 +442,7 @@ public class ReportDAO {
 			int reportID = rs.getInt(1);
 			rs.close();
 			
-			// Save the ID in the order object for later use
+			// Save the ID in the report object for later use
 			report.setReportID(reportID);
 			
 			con.commitTransaction();
@@ -464,22 +464,34 @@ public class ReportDAO {
 	public boolean createOrderReport(Report report) {
 		
 		con.beginTransaction();
+		/* * orders monthly sales table:
+ *   reportID  | totalOrders | totalOrdersInILS |
+ * --------------------------------------------
+ * 	  15678    |    3220    |       18550     |*/
 		
-		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO orderReports"
-													+ "(reportID,totalOrders,totalOrdersInILS) " +
+		
+		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO orderMonthlySales"
+														+ "(reportID,totalOrders,totalOrdersInILS) " +
+                    									"VALUES(?,?,?)");
+		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO orderReports"
+														+ "(reportID,itemName,quantity) " +
                                                         "VALUES(?,?,?)");
 		Integer reportID = report.getReportID();
 		
 		try {
-			
+			// TBD check if i have to handle an error and how
+			ps1.setInt(1,  reportID);
+			ps1.setInt(2, report.getMonthlyOrders());
+			ps1.setInt(3, report.getMonthlyOrdersInILS());
+				
 			for (Map.Entry<String, Integer> entry : report.getOrderReportData().entrySet()) {
-				ps1.setInt(1, reportID);
-				ps1.setString(2, entry.getKey());
-				ps1.setInt(3, entry.getValue());
-				ps1.addBatch();
+				ps2.setInt(1, reportID);
+				ps2.setString(2, entry.getKey());
+				ps2.setInt(3, entry.getValue());
+				ps2.addBatch();
 			}
 			
-			int[] results = ps1.executeBatch();
+			int[] results = ps2.executeBatch();
 			for (int i : results) {
 				if (i != 1) {
 					con.abortTransaction();
@@ -495,6 +507,7 @@ public class ReportDAO {
 		} finally {
 			try {
 				ps1.close();
+				ps2.close();
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}

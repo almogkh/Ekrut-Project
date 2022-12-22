@@ -60,7 +60,7 @@ public class ServerReportManager {
 		// Save the 5 best sellers items and save the rest of the items into "item" that named "allRest"
 		Map<String, Integer> bestSellers = ProcessItemOrders(itemsQuantityInOrders);
 		// Create a new report object with the generated data		
-		Report report = new Report(null, ReportType.CUSTOMER, date, ekrutLocation, totalOrders, totalOrdersInILS, bestSellers);
+		Report report = new Report(null, ReportType.ORDER, date, ekrutLocation, totalOrders, totalOrdersInILS, bestSellers);
 		// Return the report
 		return report;
 	}
@@ -228,17 +228,10 @@ public class ServerReportManager {
 		Map<String, Integer> customersOrders = new HashMap<>();
 		// Iterate through the list of customer orders
 		for (String username : allCustomersOrders) {
-		     // If the customer has already has an order, increment their order count
-			if (customersOrders.containsKey(username)) {
-				int currOrders = customersOrders.get(username);
-				customersOrders.put(username, currOrders + 1);
-			}
-	        // Otherwise, add the customer to the map with an order count of 1
-			else {
-				customersOrders.put(username, 1);
-			}
-		}
+			// Increment the count of orders for the corresponding customer in the map
+			customersOrders.merge(username, 1, Integer::sum);
 	    // Return the map of customer order counts
+		}
 		return customersOrders;
 	}
 	
