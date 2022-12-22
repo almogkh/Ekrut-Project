@@ -56,6 +56,10 @@ import ekrut.entity.ReportType;
  * 	   29993   | 256 | 324 |  122  |  70 | 104 | 152
  * 
  * #######################################################################
+ * SELECT * FROM ekrut.threshold_breaches
+WHERE EXTRACT(MONTH FROM datee) = EXTRACT(MONTH FROM '2020-12-30') 
+AND  EXTRACT(YEAR FROM datee) = EXTRACT(YEAR FROM '2022-12-30')
+
  **/
 
 /**
@@ -95,12 +99,16 @@ public class ReportDAO {
 	 */
 	public Integer getReportID(LocalDateTime date, String ekrutLocation, ReportType type) throws Exception {
 		int reportid = -1;
-		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM reports WHERE date = ?"
+		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM reports WHERE"
+				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?)"
+				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?)"
 				+ " AND ekrutLocation = ? AND type = ?;");
+		
 		try {
 			ps.setObject(1, date, MysqlType.DATETIME); 
-			ps.setString(2, ekrutLocation);
-			ps.setString(3, type.toString()); 
+			ps.setObject(2, date, MysqlType.DATETIME); 
+			ps.setString(3, ekrutLocation);
+			ps.setString(4, type.toString()); 
 			ResultSet rs = con.executeQuery(ps);
 			
 			if (rs.first()) {
@@ -328,16 +336,12 @@ public class ReportDAO {
 	}
 	
 	public ArrayList<Order> fetchAllMonthlyOrders(LocalDateTime date, String location) {
-		// Create a date instance of the month&year but is set to the first day of the month
-		LocalDateTime fromDateTime = date;
-		fromDateTime = fromDateTime.withDayOfMonth(1);
-		fromDateTime = fromDateTime.withHour(0);
-		fromDateTime = fromDateTime.withMinute(0);
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT orderId FROM orders WHERE"
-				+ " date >= ? AND date < ? AND location = ?");
+				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
 		try {
-			ps1.setObject(1, fromDateTime, MysqlType.DATETIME);
+			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setObject(2, date, MysqlType.DATETIME);
 			ps1.setString(3, location);
 			ResultSet rs1 = con.executeQuery(ps1);
@@ -364,7 +368,9 @@ public class ReportDAO {
 	
 	public ArrayList<String> getAllCustomersOrders(LocalDateTime date, String location) {
 		
-		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE date = ? AND location = ?");
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
+				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setString(2, location);
@@ -391,8 +397,10 @@ public class ReportDAO {
 	}
 	
 	public ArrayList<String> getThresholdAlert(LocalDateTime date, String ekrutLocation){
-		
-		PreparedStatement ps1 = con.getPreparedStatement("SELECT itemName FROM thresholdAlerts WHERE date = ? AND location = ?");
+
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT itemName FROM threshold_breaches WHERE"
+				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?)"
+				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setString(2, ekrutLocation);
@@ -432,6 +440,11 @@ public class ReportDAO {
 			p1.setObject(2, report.getDate(), MysqlType.DATETIME);
 			p1.setString(3, report.getEkrutLocation().toString());
 	
+			int res = p1.executeUpdate();
+			if(res != 1) {
+				con.abortTransaction();
+				return false; 
+			}
 			// Get the new report ID
 			ResultSet rs = p1.getGeneratedKeys();
 			if (!rs.next()) {
@@ -459,30 +472,32 @@ public class ReportDAO {
 				throw new RuntimeException(e);
 			}
 		}
-	}
+	} 
 	
 	public boolean createOrderReport(Report report) {
 		
 		con.beginTransaction();
-		/* * orders monthly sales table:
- *   reportID  | totalOrders | totalOrdersInILS |
- * --------------------------------------------
- * 	  15678    |    3220    |       18550     |*/
-		
 		
 		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO orderMonthlySales"
 														+ "(reportID,totalOrders,totalOrdersInILS) " +
                     									"VALUES(?,?,?)");
+		
 		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO orderReports"
 														+ "(reportID,itemName,quantity) " +
                                                         "VALUES(?,?,?)");
 		Integer reportID = report.getReportID();
 		
 		try {
-			// TBD check if i have to handle an error and how
+
 			ps1.setInt(1,  reportID);
 			ps1.setInt(2, report.getMonthlyOrders());
 			ps1.setInt(3, report.getMonthlyOrdersInILS());
+			
+			int res = ps1.executeUpdate();
+			if(res != 1) {
+				con.abortTransaction();
+				return false; 
+			}
 				
 			for (Map.Entry<String, Integer> entry : report.getOrderReportData().entrySet()) {
 				ps2.setInt(1, reportID);
