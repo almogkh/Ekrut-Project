@@ -3,6 +3,7 @@ package ekrut.server.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap; 
@@ -11,6 +12,8 @@ import java.util.Map;
 import com.mysql.cj.MysqlType;
 
 import ekrut.entity.Order;
+import ekrut.entity.OrderItem;
+import ekrut.entity.OrderType;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
 
@@ -414,7 +417,90 @@ public class ReportDAO {
 				}
 			}
 	}
-
+	
+	
+	public boolean createReport(Report report) {
+		con.beginTransaction();
+		
+		// Pass true so that we can get the new order ID
+		PreparedStatement p1 = con.getPreparedStatement("INSERT INTO reports " +
+                                                        "(type,date,location) " +
+                                                        "VALUES(?,?,?)", true);
+		
+		try {
+			p1.setString(1, report.getReportType().toString());
+			p1.setObject(2, report.getDate(), MysqlType.DATETIME);
+			p1.setString(3, report.getEkrutLocation().toString());
+	
+			// Get the new order's ID
+			ResultSet rs = p1.getGeneratedKeys();
+			if (!rs.next()) {
+				con.abortTransaction();
+				return false;
+			}
+			
+			int reportID = rs.getInt(1);
+			rs.close();
+			
+			// Save the ID in the order object for later use
+			report.setReportID(reportID);
+			
+			con.commitTransaction();
+			
+			return true;
+			
+		} catch (SQLException e) {
+			con.abortTransaction();
+			return false;
+		} finally {
+			try {
+				p1.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	public boolean createOrderReport(Report report) {
+		
+		con.beginTransaction();
+		
+		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO orderReports"
+													+ "(reportID,totalOrders,totalOrdersInILS) " +
+                                                        "VALUES(?,?,?)");
+		Integer reportID = report.getReportID();
+		
+		try {
+			
+			for (Map.Entry<String, Integer> entry : report.getOrderReportData().entrySet()) {
+				ps1.setInt(1, reportID);
+				ps1.setString(2, entry.getKey());
+				ps1.setInt(3, entry.getValue());
+				ps1.addBatch();
+			}
+			
+			int[] results = ps1.executeBatch();
+			for (int i : results) {
+				if (i != 1) {
+					con.abortTransaction();
+					return false;
+				}
+			}
+			
+			con.commitTransaction();
+			return true;
+			
+		} catch (SQLException e) {
+			con.abortTransaction();
+			return false;
+		} finally {
+			try {
+				ps1.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 }
 	
 
