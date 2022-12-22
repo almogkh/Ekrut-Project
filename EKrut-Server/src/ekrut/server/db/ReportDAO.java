@@ -56,10 +56,6 @@ import ekrut.entity.ReportType;
  * 	   29993   | 256 | 324 |  122  |  70 | 104 | 152
  * 
  * #######################################################################
- * SELECT * FROM ekrut.threshold_breaches
-WHERE EXTRACT(MONTH FROM datee) = EXTRACT(MONTH FROM '2020-12-30') 
-AND  EXTRACT(YEAR FROM datee) = EXTRACT(YEAR FROM '2022-12-30')
-
  **/
 
 /**
