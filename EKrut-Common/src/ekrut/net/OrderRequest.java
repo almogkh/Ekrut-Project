@@ -11,6 +11,10 @@ public class OrderRequest implements Serializable{
 	private int orderId;
 	private Order order;
 	
+	public OrderRequest(OrderRequestType action) {
+		this.action = action;
+	}
+	
 	public OrderRequest(OrderRequestType action, Order order) {
 		this.action = action;
 		this.order = order;

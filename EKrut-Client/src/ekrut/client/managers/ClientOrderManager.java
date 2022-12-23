@@ -133,6 +133,16 @@ public class ClientOrderManager {
 	}
 	
 	/**
+	 * Retrieves the list of orders that belong to this user.
+	 * 
+	 * @return the list of orders that belong to this user
+	 */
+	public ArrayList<Order> fetchOrders() {
+		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.FETCH));
+		return response.getOrders();
+	}
+	
+	/**
 	 * Sends a request to the server to pickup an order that was ordered remotely.
 	 * 
 	 * @param orderId   the ID of the order that should be picked up
