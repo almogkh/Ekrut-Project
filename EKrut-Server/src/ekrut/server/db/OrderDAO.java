@@ -56,8 +56,8 @@ public class OrderDAO {
 		
 		// Pass true so that we can get the new order ID
 		PreparedStatement p1 = con.getPreparedStatement("INSERT INTO orders " +
-                                                        "(date,status,type,dueDate,clientAddress,location) " +
-                                                        "VALUES(?,?,?,?,?,?)", true);
+                                                        "(date,status,type,dueDate,clientAddress,location,username) " +
+                                                        "VALUES(?,?,?,?,?,?,?)", true);
 		
 		PreparedStatement p2 = con.getPreparedStatement("INSERT INTO orderitems (orderId,itemId,itemQuantity) " +
                                                         "VALUES(?,?,?)");
@@ -65,14 +65,14 @@ public class OrderDAO {
 			p1.setObject(1, order.getDate(), MysqlType.DATETIME);
 			p1.setString(2, order.getStatus().toString());
 			p1.setString(3, order.getType().toString());
+			// Due date is set when the operator approves the shipment
+			p1.setNull(4, MysqlType.DATETIME.getJdbcType());
+			p1.setString(7, order.getUsername());
 			// Ekrut location is irrelevant for shipment type orders
 			if (order.getType() == OrderType.SHIPMENT) {
-				p1.setObject(4, order.getDueDate(), MysqlType.DATETIME);
 				p1.setString(5, order.getClientAddress());
 				p1.setNull(6, Types.VARCHAR);
 			} else {
-				// No due date and client address for non-shipment orders
-				p1.setNull(4, MysqlType.DATETIME.getJdbcType());
 				p1.setNull(5, Types.VARCHAR);
 				p1.setString(6, order.getEkrutLocation());
 			}
