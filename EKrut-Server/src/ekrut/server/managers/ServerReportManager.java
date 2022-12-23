@@ -32,7 +32,6 @@ public class ServerReportManager {
 		
 	}*/
 	
-	//TBD.tal add avgSalesSerCustomer
 	/**
 	 * Generates an order report for a given location and date.
 	 * 

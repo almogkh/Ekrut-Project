@@ -38,9 +38,9 @@ import ekrut.entity.ReportType;
  * 
  * #######################################################################
  * inventory report data table:
- * 	 reportID  | itemID | itemName | quantity | threshold | thresholdAlert
+ * 	 reportID  |  itemName | quantity | threshold | thresholdAlert
  * ------------------------------------------------------------------------
- * 	  32114    | 13332  |   PEPSI  |	120	  |     10	  |		5
+ * 	  32114    |    PEPSI  |	120	  |     10	  |		5
  *
  * #######################################################################
  * inventory items that reach their threshold
@@ -335,6 +335,14 @@ public class ReportDAO {
 			}
 	}
 	
+	/**
+	 * Fetches all orders from the database that have the same month and year as the given date,
+	 * and the same location as the given location.
+	 * 
+	 * @param date the reference date to filter the orders by month and year
+	 * @param location the location to filter the orders by
+	 * @return a list of all orders that meet the criteria, or null if an exception is thrown
+	 */
 	public ArrayList<Order> fetchAllMonthlyOrders(LocalDateTime date, String location) {
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT orderId FROM orders WHERE"
@@ -365,7 +373,14 @@ public class ReportDAO {
 			}
 	}
 
-	
+	/**
+	 * Fetches the username of all orders from the database that have the same month and year as the given date,
+	 * and the same location as the given location.
+	 * 
+	 * @param date the reference date to filter the orders by month and year
+	 * @param location the location to filter the orders by
+	 * @return a list of all usernames of orders that meet the criteria, or null if an exception is thrown
+	 */
 	public ArrayList<String> getAllCustomersOrders(LocalDateTime date, String location) {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
@@ -396,6 +411,14 @@ public class ReportDAO {
 			}
 	}
 	
+	/**
+	 * Fetches the item names of all threshold breaches from the database that have the same month and year as the given date,
+	 * and the same location as the given location.
+	 * 
+	 * @param date the reference date to filter the threshold breaches by month and year
+	 * @param ekrutLocation the location to filter the threshold breaches by
+	 * @return a list of all item names of threshold breaches that meet the criteria, or null if an exception is thrown
+	 */
 	public ArrayList<String> getThresholdAlert(LocalDateTime date, String ekrutLocation){
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT itemName FROM threshold_breaches WHERE"
@@ -426,7 +449,13 @@ public class ReportDAO {
 			}
 	}
 	
-	
+	/**
+	 * Creates a new report in the database with the given report object's type, date, and location.
+	 * Sets the report object's report ID to the ID of the new report in the database.
+	 * 
+	 * @param report the report object containing the type, date, and location to use for the new report
+	 * @return true if the report is successfully created, false otherwise
+	 */
 	public boolean createReport(Report report) {
 		con.beginTransaction();
 		
@@ -474,6 +503,13 @@ public class ReportDAO {
 		}
 	} 
 	
+	/**
+	 * Creates a new order report in the database with the given report object's data.
+	 * The report is inserted into the "orderMonthlySales" table and the "orderReports" table.
+	 * 
+	 * @param report the report object containing the data to use for the new order report
+	 * @return true if the report is successfully created, false otherwise
+	 */
 	public boolean createOrderReport(Report report) {
 		
 		con.beginTransaction();
@@ -528,6 +564,112 @@ public class ReportDAO {
 			}
 		}
 	}
+	/**
+	 * Creates a customer report and stores it in the database.
+	 *
+	 * @param report the report to be created and stored
+	 * @return true if the report was successfully created and stored, false otherwise
+	 */	
+	public boolean createCustomerReport(Report report) {
+		
+		con.beginTransaction();
+		
+		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO customerReports"
+													+ " (reportID,1,2,3,4,5,6+)"
+													+ " VALUES(?,?,?,?,?,?,?)");
+
+		Integer reportID = report.getReportID();
+		
+		try {
+
+			ps1.setInt(1,  reportID);
+			ps1.setInt(2, report.getCustomerReportData().get("1"));
+			ps1.setInt(3, report.getCustomerReportData().get("2"));
+			ps1.setInt(4, report.getCustomerReportData().get("3"));
+			ps1.setInt(5, report.getCustomerReportData().get("4"));
+			ps1.setInt(6, report.getCustomerReportData().get("5"));
+			ps1.setInt(7, report.getCustomerReportData().get("6+"));
+
+			int res = ps1.executeUpdate();
+			if(res != 1) {
+				con.abortTransaction();
+				return false; 
+			}
+				
+			con.commitTransaction();
+			return true;
+			
+		} catch (SQLException e) {
+			con.abortTransaction();
+			return false;
+		} finally {
+			try {
+				ps1.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	/**
+	 * Creates an inventory report in the database using the given report object.
+	 * 
+	 * @param report the report object containing the report data
+	 * @return true if the report was created successfully, false otherwise
+	 */
+	public boolean createInventoryReport(Report report) {
+	
+	con.beginTransaction();
+		
+	PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventoryReports"
+													+ "(reportID,itemName,quantity,threshold,thresholdBreaches) " +
+                                                    "VALUES(?,?,?,?,?)");
+	Integer reportID = report.getReportID();
+	
+	try {
+		 // Iterate over the entries in the Map contained in the report object
+		for (Map.Entry<String, ArrayList<Integer>> entry : report.getInventoryReportData().entrySet()) {
+			 // Get the item name and threshold data from the entry
+			String itemName = entry.getKey();
+			ArrayList<Integer> thresholdData = entry.getValue();
+			
+			if (thresholdData.size() != 2) {
+				return false;
+			}
+			//TresholdData(0) is threshold of the item's facility, tresholdData(1) is how many breaches that item "cause"
+			int threshold = thresholdData.get(0);
+			int thresholdBreaches = thresholdData.get(1);
+			
+			ps1.setInt(1, reportID);
+			ps1.setString(2, itemName);
+			ps1.setInt(3, threshold);
+			ps1.setInt(4, thresholdBreaches);
+			ps1.addBatch();
+
+		}
+		
+		int[] results = ps1.executeBatch();
+		for (int i : results) {
+			if (i != 1) {
+				con.abortTransaction();
+				return false;
+			}
+		}
+		con.commitTransaction();
+		return true;
+		
+	} catch (SQLException e) {
+		con.abortTransaction();
+		return false;
+	} finally {
+		try {
+			ps1.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+}
+	
 }
 	
 
