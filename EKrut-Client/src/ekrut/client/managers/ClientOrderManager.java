@@ -20,28 +20,42 @@ import ekrut.net.ResultType;
 public class ClientOrderManager {
 
 	private Order activeOrder;
+	private final String ekrutLocation;
+	
+	/**
+	 * Constructs a new client order manager.
+	 * 
+	 * @param ekrutLocation The location of the machine on which the client is running. If this is null, that
+	 *                      means the client is running the administrative section.
+	 */
+	public ClientOrderManager(String ekrutLocation) {
+		this.ekrutLocation = ekrutLocation;
+	}
 	
 	/**
 	 * Creates a new empty <b>pickup</b> order. There must not already be an active order  
 	 * 
 	 * @param ekrutLocation the machine from which the order is taken
 	 */
-	public void createOrder(String ekrutLocation) {
+	public void createOrder() {
 		if (activeOrder != null)
 			throw new IllegalStateException("An order is already in progress");
 		activeOrder = new Order(OrderType.PICKUP, ekrutLocation);
 	}
 	
 	/**
-	 * Creates a new empty <b>remote</b> order. There must not already be an active order (see {@link #isActiveOrder()}).
+	 * Creates a new empty <b>remote or shipment</b> order. There must not already be an active order (see {@link #isActiveOrder()}).
 	 * 
-	 * @param ekrutLocation the machine from which the order is taken
-	 * @param clientAddress the address to which the order should be shipped
+	 * @param param      the machine from which to pickup the order if this is a remote order or the client address
+	 *                   if this is a shipment order
+	 * @param isShipment is this a shipment order or a remote order
 	 */
-	public void createOrder(String ekrutLocation, String clientAddress) {
+	public void createOrder(String param, boolean isShipment) {
 		if (activeOrder != null)
 			throw new IllegalStateException("An order is already in progress");
-		activeOrder = new Order(OrderType.REMOTE, clientAddress, ekrutLocation);
+		
+		OrderType type = isShipment ? OrderType.SHIPMENT : OrderType.REMOTE;
+		activeOrder = new Order(type, param);
 	}
 	
 	/**
@@ -114,6 +128,7 @@ public class ClientOrderManager {
 			throw new IllegalStateException("No active order");
 		
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.CREATE, activeOrder));
+		activeOrder = null;
 		return response.getResult();
 	}
 	
