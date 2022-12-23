@@ -17,7 +17,7 @@ public class Report {
 	private Map<String, ArrayList<Integer>> InventoryReportData;
 	private Map<String, Integer> customerReportData;
 	private Map<String, Integer> orderReportData;
-	private int avgSalesPerCustomer;
+	private float avgOrderPrice;
 	private int monthlyOrders;
 	private int monthlyOrdersInILS;
 	private int threshold;
@@ -31,7 +31,7 @@ public class Report {
 
 	// Order report constructor
 	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation, int monthlyOrders,
-			int monthlyOrdersInILS, Map<String, Integer> orderReportData) {
+			int monthlyOrdersInILS, float avgOrderPrice, Map<String, Integer> orderReportData) {
 		this(reportID, reportType, date, ekrutLocation);
 		this.monthlyOrders = monthlyOrders;
 		this.monthlyOrdersInILS = monthlyOrdersInILS;
@@ -109,12 +109,12 @@ public class Report {
 		this.orderReportData = orderReportData;
 	}
 
-	public int getAvgSalesPerCustomer() {
-		return avgSalesPerCustomer;
+	public float getAvgOrderPrice() {
+		return avgOrderPrice;
 	}
 
-	public void setAvgSalesPerCustomer(int avgSalesPerCustomer) {
-		this.avgSalesPerCustomer = avgSalesPerCustomer;
+	public void setAvgOrderPrice(int avgSalesPerCustomer) {
+		this.avgOrderPrice = avgSalesPerCustomer;
 	}
 
 	public int getMonthlyOrders() {

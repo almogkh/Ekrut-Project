@@ -46,9 +46,13 @@ public class ServerReportManager {
 		// Initialize the total order count and total order amount to 0
 		int totalOrders = orders.size();
 		int totalOrdersInILS = 0;
+		float avgOrderPrice = -1;
 		 // Iterate over the orders to calculate the total order amount
 		for (Order order : orders) {
 			totalOrdersInILS += order.getSumAmount();
+		}
+		if (totalOrders > 0) {
+			avgOrderPrice = totalOrdersInILS / totalOrders;
 		}
 		// Process the orders to count the quantity of each item ordered
 		Map<String, Integer> itemsQuantityInOrders = ProcessOrders(orders);
@@ -60,7 +64,7 @@ public class ServerReportManager {
 		// Save the 5 best sellers items and save the rest of the items into "item" that named "allRest"
 		Map<String, Integer> bestSellers = ProcessItemOrders(itemsQuantityInOrders);
 		// Create a new report object with the generated data		
-		Report report = new Report(null, ReportType.ORDER, date, ekrutLocation, totalOrders, totalOrdersInILS, bestSellers);
+		Report report = new Report(null, ReportType.ORDER, date, ekrutLocation, totalOrders, totalOrdersInILS, avgOrderPrice, bestSellers);
 		// Return the report
 		return report;
 	}
