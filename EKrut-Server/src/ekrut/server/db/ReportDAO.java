@@ -32,9 +32,9 @@ import ekrut.entity.ReportType;
  * 
  * #######################################################################
  * orders monthly sales table:
- *   reportID  | totalOrders | totalOrdersInILS |
- * --------------------------------------------
- * 	  15678    |    3220    |       18550     |
+ *   reportID  | totalOrders | totalOrdersInILS | average
+ * ----------------------------------------------------
+ * 	  15678    |    3220    |       18550     |   X
  * 
  * #######################################################################
  * inventory report data table:
@@ -225,8 +225,10 @@ public class ReportDAO {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
 		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM order_reports WHERE reportID = ?");
 		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM order_sales_reports WHERE reportID = ?");
+		
 		int numberOfSales = -1;
 		int numberOfSalesInILS = -1;
+		float avgOrderPrice = -1;
 
 		try {
 			ps1.setInt(1, reportID);
@@ -252,6 +254,7 @@ public class ReportDAO {
 			if (rs3.first()) {
 				numberOfSales = rs3.getInt("numberOfSales");
 				numberOfSalesInILS = rs3.getInt("numberOfSalesInILS");
+				avgOrderPrice = rs3.getFloat("avgOrderPrice");
 			}
 			else {
 				return null; 
@@ -263,6 +266,7 @@ public class ReportDAO {
 					rs1.getString("ekrutLocation"),
 					numberOfSales, 
 					numberOfSalesInILS,
+					avgOrderPrice,
 					orderReportData); 
 
 			return report;
