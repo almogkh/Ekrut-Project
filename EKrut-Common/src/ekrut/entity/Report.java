@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
-
 /**
  * @author Tal Gaon
  */
@@ -15,48 +14,44 @@ public class Report {
 	private String area;
 	private String ekrutLocation;
 	// Each data structure holds the relevant data to make a report
-	private Map<String, int[]> InventoryReportData;
-	private ArrayList<Integer> customerReportData;
+	private Map<String, ArrayList<Integer>> InventoryReportData;
+	private Map<String, Integer> customerReportData;
 	private Map<String, Integer> orderReportData;
-	private int avgSalesPerCustomer;
+	private float avgOrderPrice;
 	private int monthlyOrders;
 	private int monthlyOrdersInILS;
+	private int threshold;
 
-	
-	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String area, String ekrutLocation) {
+	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation) {
 		this.reportID = reportID;
 		this.reportType = reportType;
 		this.date = date;
-		this.area = area;
 		this.ekrutLocation = ekrutLocation;
 	}
-	
+
 	// Order report constructor
-	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String area,
-			String ekrutLocation, int monthlyOrders, int avgSalesPerCustomer,
-			int monthlyOrdersInILS, Map<String, Integer> orderReportData) {
-		this(reportID, reportType, date, area, ekrutLocation);
+	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation, int monthlyOrders,
+			int monthlyOrdersInILS, float avgOrderPrice, Map<String, Integer> orderReportData) {
+		this(reportID, reportType, date, ekrutLocation);
 		this.monthlyOrders = monthlyOrders;
-		this.avgSalesPerCustomer = avgSalesPerCustomer;
 		this.monthlyOrdersInILS = monthlyOrdersInILS;
 		this.orderReportData = orderReportData;
 
 	}
-	
-	// Customer report constructor
-	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String area,
-		String ekrutLocation, ArrayList<Integer> customerReportData) {
-		this(reportID, reportType, date, area, ekrutLocation);
+
+	// Customer report report constructor
+	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation,
+			Map<String, Integer> customerReportData) {
+		this(reportID, reportType, date, ekrutLocation);
 		this.customerReportData = customerReportData;
 	}
-	
-	// Inventory report constructor
-	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String area,
-			String ekrutLocation, Map<String, int[]> InventoryReportData) {
-			this(reportID, reportType, date, area, ekrutLocation);
-			this.InventoryReportData = InventoryReportData;
 
-	}
+	// Inventory report constructor 
+	 public Report(Integer reportID, ReportType reportType, LocalDateTime date,
+			 String ekrutLocation, Map<String, ArrayList<Integer>> InventoryReportData, int threshold) {
+		 this(reportID, reportType, date, ekrutLocation);
+		 this.InventoryReportData = InventoryReportData;
+	 }
 
 	public Integer getReportID() {
 		return reportID;
@@ -78,16 +73,8 @@ public class Report {
 		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
-
 	public String getArea() {
 		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
 	}
 
 	public String getEkrutLocation() {
@@ -98,19 +85,19 @@ public class Report {
 		this.ekrutLocation = ekrutLocation;
 	}
 
-	public Map<String, int[]> getInventoryReportData() {
+	public Map<String, ArrayList<Integer>> getInventoryReportData() {
 		return InventoryReportData;
 	}
 
-	public void setInventoryReportData(Map<String, int[]> inventoryReportData) {
+	public void setInventoryReportData(Map<String, ArrayList<Integer>> inventoryReportData) {
 		InventoryReportData = inventoryReportData;
 	}
 
-	public ArrayList<Integer> getCustomerReportData() {
+	public Map<String, Integer> getCustomerReportData() {
 		return customerReportData;
 	}
 
-	public void setCustomerReportData(ArrayList<Integer> customerReportData) {
+	public void setCustomerReportData(Map<String, Integer> customerReportData) {
 		this.customerReportData = customerReportData;
 	}
 
@@ -122,12 +109,12 @@ public class Report {
 		this.orderReportData = orderReportData;
 	}
 
-	public int getAvgSalesPerCustomer() {
-		return avgSalesPerCustomer;
+	public float getAvgOrderPrice() {
+		return avgOrderPrice;
 	}
 
-	public void setAvgSalesPerCustomer(int avgSalesPerCustomer) {
-		this.avgSalesPerCustomer = avgSalesPerCustomer;
+	public void setAvgOrderPrice(int avgSalesPerCustomer) {
+		this.avgOrderPrice = avgSalesPerCustomer;
 	}
 
 	public int getMonthlyOrders() {
@@ -146,5 +133,12 @@ public class Report {
 		this.monthlyOrdersInILS = monthlyOrdersInILS;
 	}
 
+	public int getThreshold() {
+		return threshold;
+	}
+
+	public void setThreshold(int threshold) {
+		this.threshold = threshold;
+	}
 
 }

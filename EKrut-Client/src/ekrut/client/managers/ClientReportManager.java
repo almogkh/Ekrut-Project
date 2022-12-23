@@ -1,6 +1,7 @@
 package ekrut.client.managers;
 import ekrut.net.ReportRequest;
 import ekrut.net.ReportResponse;
+import ekrut.net.ResultType;
 
 import java.time.LocalDateTime;
 
@@ -28,17 +29,15 @@ public class ClientReportManager {
 	// Sending getReportRequest and receiving getReportResponse.
 	ReportResponse reportResponse = sendRequest(reportRequest);
 	// ResultCode is not "OK" meaning we encountered an error. 
-	String resultCode = reportResponse.getResultCode();
-	if (!resultCode.equals("OK"))
-		throw new Exception(resultCode); // TBD CHANGE TO SPESIFIC EXCEPTION
+	ResultType resultType = reportResponse.getResultCode();
+	
+	//TBD check of to handle result type
+	if (!resultType.equals("OK"))
+		throw new Exception(resultType.toString()); // TBD CHANGE TO SPESIFIC EXCEPTION
 	// Return the report that attached to the response.
 	return reportResponse.getReport();  
 	}
 	
-	
-	
-	
- 
 	private ReportResponse sendRequest(ReportRequest getReportsRequest) {
 		// TODO Auto-generated method stub
 		ReportResponse reportsResponse = new ReportResponse();
