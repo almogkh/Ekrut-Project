@@ -8,8 +8,7 @@ public class Order implements Serializable {
 
 	private static final long serialVersionUID = -1777296007338157917L;
 
-	private int orderId;
-	private boolean isValidId;
+	private Integer orderId;
 	private LocalDateTime date;
 	private OrderStatus status;
 	private OrderType type;
@@ -19,20 +18,17 @@ public class Order implements Serializable {
 	private String username;
 	private ArrayList<OrderItem> items;
 
-	public Order(OrderType type, String ekrutLocation) {
-		this(type, null, ekrutLocation);
-	}
-	
-	public Order(OrderType type, String clientAddress, String ekrutLocation) {
+	public Order(OrderType type, String param) {
 		this.type = type;
-		this.clientAddress = clientAddress;
-		this.ekrutLocation = ekrutLocation;
+		if (type == OrderType.PICKUP || type == OrderType.REMOTE)
+			this.ekrutLocation = param;
+		else
+			this.clientAddress = param;
 	}
 
 	public Order(int orderId, LocalDateTime date, OrderStatus status, OrderType type, LocalDateTime dueDate,
 			String clientAddress, String ekrutLocation, String username) {
 		this.orderId = orderId;
-		this.isValidId = true;
 		this.date = date;
 		this.status = status;
 		this.type = type;
@@ -43,20 +39,21 @@ public class Order implements Serializable {
 	}
 
 	public Integer getOrderId() {
-		if (isValidId)
-			return orderId;
-		return null;
+		return orderId;
 	}
 	
 	public void setOrderId(int orderId) {
-		if (isValidId)
+		if (this.orderId != null)
 			throw new IllegalStateException("Order ID already set");
 		this.orderId = orderId;
-		this.isValidId = true;
 	}
 
 	public LocalDateTime getDate() {
 		return date;
+	}
+	
+	public void setDate(LocalDateTime date) {
+		this.date = date;
 	}
 	
 	public int getSumAmount() {
@@ -71,6 +68,10 @@ public class Order implements Serializable {
 	public OrderStatus getStatus() {
 		return status;
 	}
+	
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
 
 	public OrderType getType() {
 		return type;
@@ -78,6 +79,10 @@ public class Order implements Serializable {
 
 	public LocalDateTime getDueDate() {
 		return dueDate;
+	}
+	
+	public void setDueDate(LocalDateTime dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	public String getClientAddress() {

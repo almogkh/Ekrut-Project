@@ -17,9 +17,19 @@ public class OrderResponse implements Serializable{
 		this.result = result;
 	}
 	
+	public OrderResponse(ResultType result, int orderId) {
+		this.result = result;
+		this.orderId = orderId;
+	}
+	
 	public OrderResponse(ResultType result, Order order) {
 		this.result = result;
 		this.order = order;
+	}
+	
+	public OrderResponse(ResultType result, ArrayList<Order> orders) {
+		this.result = result;
+		this.orders = orders;
 	}
 
 	public ResultType getResult() {
