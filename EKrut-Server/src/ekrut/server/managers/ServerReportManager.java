@@ -101,7 +101,7 @@ public class ServerReportManager {
 		// Count the number of alerts for each item
 		Map<String, Integer> tresholdAlertCounted = CountAlerts(thersholdAlerts);
 		// Get the list of all items in the location
-		ArrayList<InventoryItem> allItemsInLocation = inventoryItemDAO.fetchAllItemsByLocation(ekrutLocation);
+		ArrayList<InventoryItem> allItemsInLocation = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
 		int facilityThreshold = 0;
 		// If the list of items is not empty, extract the facility threshold from the first item
 		if (!allItemsInLocation.isEmpty()) {
