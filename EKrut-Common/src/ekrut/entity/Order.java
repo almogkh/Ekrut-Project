@@ -16,6 +16,7 @@ public class Order implements Serializable {
 	private LocalDateTime dueDate;
 	private String clientAddress;
 	private String ekrutLocation;
+	private String username;
 	private ArrayList<OrderItem> items;
 
 	public Order(OrderType type, String ekrutLocation) {
@@ -26,11 +27,10 @@ public class Order implements Serializable {
 		this.type = type;
 		this.clientAddress = clientAddress;
 		this.ekrutLocation = ekrutLocation;
-		this.items = new ArrayList<>();
 	}
 
 	public Order(int orderId, LocalDateTime date, OrderStatus status, OrderType type, LocalDateTime dueDate,
-			String clientAddress, String ekrutLocation) {
+			String clientAddress, String ekrutLocation, String username) {
 		this.orderId = orderId;
 		this.isValidId = true;
 		this.date = date;
@@ -39,7 +39,7 @@ public class Order implements Serializable {
 		this.dueDate = dueDate;
 		this.clientAddress = clientAddress;
 		this.ekrutLocation = ekrutLocation;
-		this.items = new ArrayList<>();
+		this.username = username;
 	}
 
 	public Integer getOrderId() {
@@ -90,5 +90,17 @@ public class Order implements Serializable {
 
 	public ArrayList<OrderItem> getItems() {
 		return items;
+	}
+
+	public void setItems(ArrayList<OrderItem> items) {
+		this.items = items;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 }

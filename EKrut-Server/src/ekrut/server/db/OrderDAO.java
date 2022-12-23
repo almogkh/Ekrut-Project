@@ -128,6 +128,33 @@ public class OrderDAO {
 		}
 	}
 	
+	private ArrayList<OrderItem> fetchOrderItems(int orderId) {
+		PreparedStatement p = con.getPreparedStatement("SELECT * FROM orderitems WHERE orderId = ?");
+		ArrayList<OrderItem> items = new ArrayList<>();
+		
+		try {
+			p.setInt(1, orderId);
+			ResultSet rs = p.executeQuery();
+			// Get the order items
+			while (rs.next()) {
+				Item item = itemDAO.fetchItem(rs.getInt(2));
+				OrderItem orderItem = new OrderItem(item, rs.getInt(3));
+				items.add(orderItem);
+			}
+			
+			return items;
+			
+		} catch (SQLException e) {
+			return null;
+		} finally {
+			try {
+				p.close();
+			} catch (SQLException e1) {
+				throw new RuntimeException(e1);
+			}
+		}
+	}
+	
 	/**
 	 * Returns the order with the specified ID.
 	 * 
@@ -135,39 +162,28 @@ public class OrderDAO {
 	 * @return          the desired order if found, null otherwise
 	 */
 	public Order fetchOrderById(int orderId) {
-		PreparedStatement p1 = con.getPreparedStatement("SELECT * FROM orders WHERE orderId = ?");
-		PreparedStatement p2 = con.getPreparedStatement("SELECT * FROM orderitems WHERE orderId = ?");
+		PreparedStatement p = con.getPreparedStatement("SELECT * FROM orders WHERE orderId = ?");
 		
 		try {
-			p1.setInt(1, orderId);
-			ResultSet rs1 = p1.executeQuery();
+			p.setInt(1, orderId);
+			ResultSet rs = p.executeQuery();
 			// No order with such an ID was found
-			if (!rs1.next()) 
+			if (!rs.next()) 
 				return null;
 			
 			// Construct the main order object
-			Order order = new Order(rs1.getInt(1), rs1.getObject(2, LocalDateTime.class),
-					                OrderStatus.valueOf(rs1.getString(3)), OrderType.valueOf(rs1.getString(4)),
-					                rs1.getObject(5, LocalDateTime.class), rs1.getString(6), rs1.getString(7));
-			ArrayList<OrderItem> items = order.getItems();
+			Order order = new Order(rs.getInt(1), rs.getObject(2, LocalDateTime.class),
+					                OrderStatus.valueOf(rs.getString(3)), OrderType.valueOf(rs.getString(4)),
+					                rs.getObject(5, LocalDateTime.class), rs.getString(6), rs.getString(7), rs.getString(8));
 			
-			p2.setInt(1, orderId);
-			ResultSet rs2 = p2.executeQuery();
-			// Get the order items
-			while (rs2.next()) {
-				Item item = itemDAO.fetchItem(rs2.getInt(2));
-				OrderItem orderItem = new OrderItem(item, rs2.getInt(3));
-				items.add(orderItem);
-			}
-			
+			order.setItems(fetchOrderItems(orderId));
 			return order;
 			
 		} catch (SQLException e) {
 			return null;
 		} finally {
 			try {
-				p1.close();
-				p2.close();
+				p.close();
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
