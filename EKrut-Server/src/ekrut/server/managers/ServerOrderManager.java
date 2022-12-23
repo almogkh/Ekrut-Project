@@ -50,7 +50,7 @@ public class ServerOrderManager {
 		order.setUsername(user.getUsername());
 		
 		if (!orderDAO.createOrder(order))
-				return new OrderResponse(ResultType.UNKNOWN_ERROR);
+			return new OrderResponse(ResultType.UNKNOWN_ERROR);
 		
 		// We need to return the order ID for remote orders.
 		return new OrderResponse(ResultType.OK, order.getOrderId());	
