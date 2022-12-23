@@ -191,6 +191,42 @@ public class OrderDAO {
 	}
 	
 	/**
+	 * Returns the orders that belong to the given user
+	 * 
+	 * @param username the username of the user whose orders should be fetched
+	 * @return         the list of orders that belong to the user
+	 */
+	public ArrayList<Order> fetchOrdersByUsername(String username) {
+		PreparedStatement p = con.getPreparedStatement("SELECT * FROM orders WHERE username = ?");
+		
+		try {
+			ResultSet rs = p.executeQuery();
+			ArrayList<Order> orders = new ArrayList<>();
+			
+			while (rs.next()) {
+				int orderId = rs.getInt(1);
+				Order order = new Order(orderId, rs.getObject(2, LocalDateTime.class),
+                                        OrderStatus.valueOf(rs.getString(3)), OrderType.valueOf(rs.getString(4)),
+                                        rs.getObject(5, LocalDateTime.class), rs.getString(6), rs.getString(7),
+                                        rs.getString(8));
+				order.setItems(fetchOrderItems(orderId));
+				orders.add(order);
+			}
+			
+			return orders;
+			
+		} catch (SQLException e) {
+			return null;
+		} finally {
+			try {
+				p.close();
+			} catch (SQLException e1) {
+				throw new RuntimeException(e1);
+			}
+		}
+	}
+	
+	/**
 	 * Updates the status of an order in the database.
 	 * 
 	 * @param orderId  the ID of the order whose status should be updated
