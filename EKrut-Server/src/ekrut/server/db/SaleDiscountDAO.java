@@ -9,26 +9,39 @@ import com.mysql.cj.MysqlType;
 import ekrut.entity.SaleDiscount;
 import ekrut.entity.SaleDiscountType;
 
-public class saleDiscountDAO {
+/**
+ * The saleDiscountDAO class is a data access object for handling sale discount data in the database.
+ * It provides methods for creating, fetching, and managing sale discount data in the database.
+ * 
+ * @author [Your Name]
+ * @since [12/25/2022]
+ */
+public class SaleDiscountDAO {
 
 	private DBController con;
 
-	public saleDiscountDAO(DBController con) {
+	public SaleDiscountDAO(DBController con) {
 		this.con = con;
 	}
 
+	/**
+	 * Creates a sale discount in the database.
+	 * 
+	 * @param saleDiscount the SaleDiscount object to be added to the database.
+	 * @return true if the discount was successfully created, false otherwise.
+	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
+	 */
 	public boolean createDiscount(SaleDiscount saleDiscount) {
 		if (saleDiscount == null)
 			return false;
 
 		PreparedStatement ps = con.getPreparedStatement(
-				"INSERT INTO saleDiscount (area,startTime,endTime,dayOfSale,saleType) VALUES(?,?,?,?,?)");
+				"INSERT INTO saleDiscount (startTime,endTime,dayOfSale,saleType) VALUES(?,?,?,?)");
 		try {
-			ps.setString(1, saleDiscount.getArea());
-			ps.setObject(2, saleDiscount.getStartTime(), MysqlType.TIME);
-			ps.setObject(3, saleDiscount.getEndTime(), MysqlType.TIME);
-			ps.setString(4, saleDiscount.getDayOfSale());
-			ps.setString(5, saleDiscount.getType().toString());
+			ps.setObject(1, saleDiscount.getStartTime(), MysqlType.TIME);
+			ps.setObject(2, saleDiscount.getEndTime(), MysqlType.TIME);
+			ps.setString(3, saleDiscount.getDayOfSale());
+			ps.setString(4, saleDiscount.getType().toString());
 			int count = con.executeUpdate(ps);
 			if (count != 1)
 				return false;
@@ -44,6 +57,13 @@ public class saleDiscountDAO {
 		return true;
 	}
 
+	/**
+	 * Fetches a sale discount from the database by its id.
+	 * 
+	 * @param discountId the id of the discount to be fetched.
+	 * @return a SaleDiscount object with the data of the discount with the given id, or null if the discount was not found.
+	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
+	 */
 	public SaleDiscount fetchSaleDiscountById(int discountId) {
 
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM saleDiscount WHERE discountId = ?");
@@ -67,7 +87,12 @@ public class saleDiscountDAO {
 		}
 	}
 
-	// Fetch all templates sales as a list.
+	/**
+	 * Fetches all templates sales as a list.
+	 * 
+	 * @return a list of SaleDiscount objects representing the sale discount templates in the database.
+	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
+	 */
 	public ArrayList<SaleDiscount> fetchSaleDiscountTemplatList() {
 
 		ArrayList<SaleDiscount> saleDiscountTemplateList = new ArrayList<>();
@@ -92,11 +117,18 @@ public class saleDiscountDAO {
 		}
 	}
 
-	// Fetch all activate sales as a list.
+	/**
+	 * Fetches all activate sales as a list for a given area.
+	 * 
+	 * @param area the area for which to fetch the active sales.
+	 * @return a list of SaleDiscount objects representing the active sales for the given area.
+	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
+	 */
 	public ArrayList<SaleDiscount> fetchActivateSaleDiscountListByArea(String area) {
 
 		PreparedStatement ps = con.getPreparedStatement("SELECT discountId FROM activeSales WHERE area = ?");
 		ArrayList<SaleDiscount> activeSaleList = new ArrayList<>();
+		
 		try {
 			ps.setString(1, area);
 			ResultSet rs = con.executeQuery(ps);
