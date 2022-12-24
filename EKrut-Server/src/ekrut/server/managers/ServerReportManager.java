@@ -26,11 +26,10 @@ public class ServerReportManager {
 		reportDAO = new ReportDAO(con);
 		inventoryItemDAO = new InventoryItemDAO(con);
 	}
-	/*
-	 * TBD.tal create this
-	public void generateReport() {
-		
-	}*/
+	
+	public Report fetchReport(LocalDateTime date, String location, ReportType type) {
+		return reportDAO.fetchReport(date, location, type);
+	}
 	
 	/**
 	 * Generates an order report for a given location and date.
