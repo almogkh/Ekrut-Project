@@ -224,6 +224,12 @@ public class OrderDAO {
 				return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		return orderList;	
 	}
