@@ -1,8 +1,6 @@
 package ekrut.server.managers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,11 +17,15 @@ import ocsf.server.ConnectionToClient;
  */
 public class ServerSessionManager {
 
+	//The user currently being managed by this session manager.
 	private User user = null;
-	private ArrayList<User> connectedUsers;
+	//A map of logged-in users and their corresponding timer tasks, which will log them out after a certain time period.
+	private HashMap<User, Timer> connectedUsers;
+	//The data access object for interacting with the database.
 	private UserDAO userDAO;
+	//A map of client connections and the users associated with them.
 	private HashMap<ConnectionToClient,User> clientUserMap;
-	private Timer timer;
+	//The time, in milliseconds, after which a user will be automatically logged out if they have not made any requests.
 	private static final long LOGOUT_TIME = 1800000; // 30 minutes
 
 	
@@ -35,14 +37,14 @@ public class ServerSessionManager {
      */
 	public ServerSessionManager(DBController con) {
 		userDAO = new UserDAO(con);
-		connectedUsers =  new ArrayList<>();
+		connectedUsers =  new HashMap<>();
 		clientUserMap = new HashMap<>();
 	}
 
 	 /**
      * Attempts to login the user with the given username and password. If successful, adds the user to
      * the list of connected users, adds the user and the associated {@link ConnectionToClient} object
-     * to the `clientUserMap` hash map, and starts a timer for the user's session.
+     * to the `clientUserMap` hash map, adds the user and and the new timer for him to the `connectedUsers` map.
      *
      * @param username the username of the user to login
      * @param password the password of the user to login
@@ -62,9 +64,8 @@ public class ServerSessionManager {
 		}
 		else {
 			userResponse.setUser(user);
-			connectedUsers.add(user);
+			connectedUsers.put(user,startTimer(username,client));
 			clientUserMap.put(client,user);
-			startTimer(username);
 			result= "OK";
 		}
 		userResponse.setResultCode(result);
@@ -75,10 +76,12 @@ public class ServerSessionManager {
      * the list of connected users, cancels the timer for the user's session, and removes the
      * {@link ConnectionToClient} object associated with the user from the `clientUserMap` hash map.
      *
-     * @param username the username of the user to logout
+     * @param username the username of the user to log out
+     * @param client   the client connection associated with the user
+     * @param reason   the reason for the logout (e.g. "Session expired")
      * @return a {@link UserResponse} object with the result of the logout attempt
      */
-	public UserResponse logoutUser(String username) {
+	public UserResponse logoutUser(String username, ConnectionToClient client, String reason) {
 		String result = null;
 		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result);
@@ -86,15 +89,16 @@ public class ServerSessionManager {
 		if (user == null) {
 			result = "Couldn't locate subscriber";
 		}
+		
 		else {
-			connectedUsers.remove(connectedUsers.indexOf(user));
-			timer.cancel();
-			result= "OK";
-			//Remove client-user from clientUserMap
-			for(Entry<ConnectionToClient, User> entry : clientUserMap.entrySet()) {
-				if(entry.getValue().equals(user))
-					clientUserMap.remove(entry.getKey());
+			if(reason!=null) {
+				result= "Session expired";
 			}
+			else
+				result= "OK";
+			connectedUsers.get(user).cancel(); //cancel timer
+			connectedUsers.remove(user);
+			clientUserMap.remove(client);
 		}
 		userResponse.setResultCode(result);
 		return userResponse;
@@ -108,7 +112,7 @@ public class ServerSessionManager {
 	 */
 	public boolean isLoggedin(String username) {
 		user = userDAO.fetchUserByUsername(username);
-		return connectedUsers.contains(user);
+		return connectedUsers.containsKey(user);
 	}
 	
 	/**
@@ -120,7 +124,7 @@ public class ServerSessionManager {
 	 */
 	public User getUser(ConnectionToClient client) {
 		user = clientUserMap.get(client);
-		resetTimer(user.getUsername());
+		resetTimer(user, client);
 		return user;
 		
 	}
@@ -128,28 +132,32 @@ public class ServerSessionManager {
 	/**
 	 * Resets the timer for the user's session.
 	 *
-	 * @param username the username of the user whose timer needs to be reset
+	 * @param user the user whose timer is being reset
+	 * @param client the client associated with the given user
 	 */
-	public void resetTimer(String username) {
+	public void resetTimer(User user, ConnectionToClient client) {
         // Cancel the current timer and start a new one
-        timer.cancel();
-        startTimer(username);
+		connectedUsers.get(user).cancel();
+        startTimer(user.getUsername(), client);
     }
 	
 	/**
 	 * Starts a timer for the user's session. If the timer expires, the user will be logged out.
 	 *
-	 * @param username the username of the user whose timer needs to be started
+	 * @param username the username of the user whose timer is being started
+	 * @param client the client associated with the given user
+	 * @return the timer that was started
 	 */
-    public void startTimer(String username) {
+    public Timer startTimer(String username,ConnectionToClient client) {
         // Start the timer
-        timer = new Timer();
+    	Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                logoutUser(username);
+                logoutUser(username,client,"Session expired");
             }
         }, LOGOUT_TIME);
+        return timer;
     }
 	
 	
