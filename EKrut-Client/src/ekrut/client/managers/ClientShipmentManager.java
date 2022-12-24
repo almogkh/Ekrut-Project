@@ -3,7 +3,6 @@ package ekrut.client.managers;
 import java.util.ArrayList;
 import ekrut.entity.Order;
 import ekrut.entity.OrderStatus;
-import ekrut.entity.OrderType;
 import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentRequestType;
@@ -15,9 +14,6 @@ import ekrut.net.ShipmentResponse;
  * @author Nir Betesh
  */
 public class ClientShipmentManager {
-	
-	// C.Nir		 1) complete 'sendRequest'.
-	//				 2) complete comments for fetchShipmentRequests.
 
 	/**
 	 * Fetches a list of orders that are ready for shipment in the specified area.
@@ -52,13 +48,14 @@ public class ClientShipmentManager {
 	 * @throws Exception if the result of the shipment request is not {@link ResultType#OK}
 	 * or if an exception is thrown by the {@link #sendRequest(ShipmentRequest)} method
 	 */
+	// Should return something? Q.Nir
 	public void confirmShipment(Order order) throws Exception {
 		if (order == null)
 			throw new IllegalArgumentException("Null order was provided");
 
 		// Prepare ShipmentRequest for sending.
 		ShipmentRequest shipmentRequest = 
-				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS , OrderStatus.AWAITING_DELIVERY, order.getOrderId());
+				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS, OrderStatus.AWAITING_DELIVERY, order.getOrderId());
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
 		// In case resultType isn't "OK" exception will throws.
@@ -84,8 +81,7 @@ public class ClientShipmentManager {
 		
 		ShipmentRequest shipmentRequest = 
 				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS ,OrderStatus.DELIVERY_CONFIRMED, order.getOrderId());
-		
-		// add exception?
+
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
 		// In case resultType isn't "OK" exception will throws.
@@ -93,7 +89,7 @@ public class ClientShipmentManager {
 		if (resultType != ResultType.OK)
 			throw new Exception(resultType.toString()); // Q.Nir exception??
 	}
-	
+		
 	/**
 	 * Sets the status of the specified order to "done" by sending a {@link ShipmentRequest} with the
 	 * status set to {@link OrderStatus#DONE} and the order ID to the {@link #sendRequest(ShipmentRequest)} method.

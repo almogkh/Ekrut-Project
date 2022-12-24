@@ -256,4 +256,36 @@ public class OrderDAO {
 		
 		return true;
 	}
+
+	
+	
+	// For Almog: Added by Nir, get list of orders in Shipment status.
+	public ArrayList<Order> fetchOrderShipmentList(String area){
+		PreparedStatement ps = con.getPreparedStatement("SELECT orderId FROM orders WHERE type = 'SHIPMENT' AND area = ?");
+		ArrayList<Order> orderList = new ArrayList<>();
+		try {
+			ps.setString(1, area);
+			ResultSet rs = con.executeQuery(ps);
+			while(rs.next()) {
+				Order order = fetchOrderById(rs.getInt(1));
+				if (order.getStatus() == OrderStatus.SUBMITTED)
+					orderList.add(order);
+			}
+			if (orderList.size() == 0)
+				return null;
+		} catch (SQLException e) {
+			return null;
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return orderList;	
+	}
 }
+
+
+
+

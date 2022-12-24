@@ -1,13 +1,11 @@
 package ekrut.server.db;
-import java.sql.Connection;
-
 
 public class saleDiscountDAO {
 
-	private Connection conn;
+	private DBController con;
 	
-	public saleDiscountDAO() {
-		
+	public saleDiscountDAO(DBController con) {
+		this.con = con;
 	}
 	
 	public void createDiscount() {
