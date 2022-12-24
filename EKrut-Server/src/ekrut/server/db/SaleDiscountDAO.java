@@ -13,8 +13,7 @@ import ekrut.entity.SaleDiscountType;
  * The saleDiscountDAO class is a data access object for handling sale discount data in the database.
  * It provides methods for creating, fetching, and managing sale discount data in the database.
  * 
- * @author [Your Name]
- * @since [12/25/2022]
+ * @author [Nir Betesh]
  */
 public class SaleDiscountDAO {
 
