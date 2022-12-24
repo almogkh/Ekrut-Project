@@ -142,10 +142,13 @@ public class ReportDAO {
 			switch(type){
 			case ORDER:
 				report = fetchOrderReportByID(reportID);
+				break;
 			case INVENTORY:
 				report = fetchInventoryReportByID(reportID);
+				break;
 			case CUSTOMER:
 				report = fetchCustomerReportByID(reportID);
+				break;
 			default:
 				break;
 			}
