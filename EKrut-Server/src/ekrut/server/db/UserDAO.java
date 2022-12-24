@@ -32,8 +32,7 @@ public class UserDAO {
 	 */
 	public User fetchUserByUsername(String username){
 		User user = null;
-		String query="SELECT * FROM users WHERE username = ?;";	
-		PreparedStatement ps= con.getPreparedStatement(query); 
+		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE username = ?"); 
 		try {
 			ps.setString(1,username);
 			ResultSet rs = ps.executeQuery();
@@ -43,12 +42,38 @@ public class UserDAO {
 		} catch (SQLException e1) {
 			return null;
 		}finally {
-		try {
-			ps.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
+	
+	/**
+	 * 	This method retrieves a user with the role of AREA_MANAGER from the database based on the specified area.
+	 * 
+	 * 	@param area The area for which the AREA_MANAGER is being retrieved.
+	 * 	@return The AREA_MANAGER user for the specified area, or null if no such user exists in the database.
+	*/
+	public User fetchManagerByArea(String area){
+		User user = null;
+		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE role = 'AREA_MANAGER' AND area = ?"); 
+		try {
+			ps.setString(1,area);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) 
+				user = new User(rs.getString(1), rs.getString(2), UserType.valueOf(rs.getString(3)), rs.getString(4));
+			return user;
+		} catch (SQLException e1) {
+			return null;
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 	
 	/**
@@ -69,7 +94,7 @@ public class UserDAO {
 	(String role, String username, String password, String firstName,
 			String lastName, String id, String email, String phoneNumber, String area){
 		String query="INSERT INTO ekrut.users"
-				+ " (role, username, password, firstName, lastName, id, , phoneNumber, area)"
+				+ " (role, username, password, firstName, lastName, id, email, phoneNumber, area)"
 				+ " VALUES (?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps= con.getPreparedStatement(query); 
 		try {
