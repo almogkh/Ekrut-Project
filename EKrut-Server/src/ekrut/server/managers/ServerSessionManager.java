@@ -149,7 +149,7 @@ public class ServerSessionManager {
 	public void resetTimer(User user, ConnectionToClient client) {
         // Cancel the current timer and start a new one
 		connectedUsers.get(user).cancel();
-        startTimer(user.getUsername(), client);
+		connectedUsers.put(user,startTimer(user.getUsername(),client));
     }
 	
 	/**
