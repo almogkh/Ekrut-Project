@@ -12,12 +12,15 @@ public class SaleDiscount {
 	private String dayOfSale;
 	private boolean isActive;
 
-	// Active sale
-	public SaleDiscount(int discountId, boolean isActive) {
+	// Active Sale
+	public SaleDiscount(int discountId, LocalTime startTime, LocalTime endTime,
+						String dayOfSale, SaleDiscountType type, String area) {
 		this.discountId = discountId;
-		this.isActive = isActive;
+		this.type = type;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.dayOfSale = dayOfSale;
 	}
-	
 	// Template
 	public SaleDiscount(int discountId, LocalTime startTime, LocalTime endTime,
 						String dayOfSale, SaleDiscountType type) {
