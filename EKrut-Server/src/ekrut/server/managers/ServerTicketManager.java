@@ -10,10 +10,6 @@ import ekrut.net.TicketResponse;
 import ekrut.server.db.DBController;
 import ekrut.server.db.TicketDAO;
 
-
-//need to add - CreateTicket()
-
-
 /**
  * Manages tickets on the server side.
  * Uses a TicketDAO for database operations.
@@ -37,13 +33,35 @@ public class ServerTicketManager {
 	}
 	
 	
+	/**
+	 * Creates a new ticket using the information provided in the TicketRequest.
+	 * 
+	 * @param ticketRequest the request containing the information for the ticket to be created
+	 * @return a TicketResponse indicating the result of the operation
+	 * @throws NullPointerException if the ticketRequest is null
+	 */
 	public TicketResponse CreateTicket(TicketRequest ticketRequest) throws NullPointerException {
 		if (ticketRequest==null) {
 			throw new NullPointerException("null ticketRequest");
 		}
-		//Question- why do we need it
-		return null;
+		//get ticket information from ticket request
+		int ticketId=ticketRequest.getTicketId();
+		TicketStatus status	=ticketRequest.getStatus();
+		String ekrutLocation =ticketRequest.getEkrutLocation();
+		int threshold =ticketRequest.getThreshold();
+		int itemID= ticketRequest.getItemID();
+		String itemName = ticketRequest.getItemName();
+		
+		//build new ticket to create 
+		Ticket newTicket = new Ticket(ticketId,status,ekrutLocation,threshold,itemID,itemName);
+		
+		if(!ticketDAO.createTicket(newTicket)) {
+			return new TicketResponse(ResultType.UNKNOWN_ERROR);
+		}
+		
+		return new TicketResponse(ResultType.OK);
 	}
+	
 	
 	/**
 	 * Updates the status of a ticket.
