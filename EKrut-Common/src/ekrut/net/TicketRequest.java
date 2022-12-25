@@ -11,9 +11,22 @@ public class TicketRequest implements Serializable{
 	private int ticketId;
 	private TicketStatus status;
 	private String ekrutLocation;
+	private int threshold;
+	private int itemID;
+	private String itemName;
 	
 	
-	
+	public TicketRequest(TicketRequestType action, int ticketId, TicketStatus status, String ekrutLocation,
+			int threshold, int itemID, String itemName) {
+		this.action = action;
+		this.ticketId = ticketId;
+		this.status = status;
+		this.ekrutLocation = ekrutLocation;
+		this.threshold = threshold;
+		this.itemID = itemID;
+		this.itemName = itemName;
+	}
+
 	public TicketRequest(TicketRequestType action, int ticketId) {
 		this.action = action;
 		this.ticketId = ticketId;
@@ -39,6 +52,16 @@ public class TicketRequest implements Serializable{
 		return ekrutLocation;
 	}
 
-	
+	public int getThreshold() {
+		return threshold;
+	}
+
+	public int getItemID() {
+		return itemID;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
 	
 }
