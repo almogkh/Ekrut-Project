@@ -17,6 +17,7 @@ import ekrut.server.managers.ServerReportManager;
 import ekrut.server.managers.ServerSessionManager;
 import ekrut.server.managers.ServerShipmentManager;
 //import ekrut.server.managers.ServerTicketManager;
+import ekrut.server.intefaces.IUserNotifier;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
@@ -36,7 +37,27 @@ public class EKrutServer extends AbstractServer{
 		dbCon = new DBController(url, username, password);
 		dbCon.connect(); //need to check return value		
 		serverSessionManager = new ServerSessionManager(dbCon);
-		serverInventoryManager = new ServerInventoryManager(dbCon);
+		serverInventoryManager = new ServerInventoryManager(dbCon, new IUserNotifier() {
+
+			@Override
+			public boolean sendSMS(String notificationMsg, String phoneNumber) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean sendEmail(String notificationMsg, String email) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean sendNotification(String notificationMsg, String email, String phoneNumber) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+		});
 		//serverTicketManager = new ServerTicketManager(dbCon);
 		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager);
 		serverShipmentManager = new ServerShipmentManager(dbCon);

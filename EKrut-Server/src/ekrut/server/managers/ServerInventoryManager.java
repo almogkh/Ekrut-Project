@@ -2,8 +2,14 @@ package ekrut.server.managers;
 
 import ekrut.server.db.DBController;
 import ekrut.server.db.InventoryItemDAO;
+import ekrut.server.db.UserDAO;
+import ekrut.server.intefaces.IUserNotifier;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import ekrut.entity.InventoryItem;
+import ekrut.entity.User;
+import ekrut.entity.UserType;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
 import ekrut.net.ResultType;
@@ -17,12 +23,16 @@ import ekrut.net.ResultType;
 public class ServerInventoryManager {
 	
 	private InventoryItemDAO inventoryItemDAO;
+	private UserDAO userDAO;
+	private IUserNotifier userNotifier;
 	
 	/**
 	 * Constructs a new ServerInventoryManager.
 	 */
-	public ServerInventoryManager(DBController con) {
+	public ServerInventoryManager(DBController con, IUserNotifier userNotifier) {
 		inventoryItemDAO = new InventoryItemDAO(con);
+		userDAO = new UserDAO(con);
+		this.userNotifier = userNotifier;
 	}
 	
 
@@ -59,12 +69,20 @@ public class ServerInventoryManager {
 		if (inventoryItemInDB == null)
 			return new InventoryItemResponse(ResultType.NOT_FOUND);
 		
-		//Check if new quantity is BREACING the threshold of that InventoryItem.
+		//Check if new quantity is breaching the threshold of a machine.
 		if ((inventoryItemInDB.getItemQuantity() > inventoryItemInDB.getItemThreshold()) && 
-				(quantity < inventoryItemInDB.getItemThreshold())) {}
-			// In order to send 'below threshold' notification we need access to UserNotifier &
-			// To know the Area manager's information (who is the manager of this machine??)
-			// TBD HOW TO SEND NOTIFICATIONS??
+				(quantity < inventoryItemInDB.getItemThreshold())) {
+			String notificationMsg = "The quantity of: " + inventoryItemInDB.getItem().getItemName() 
+									+ " in the machine: " + inventoryItemInDB.getEkrutLocation()
+									+ " is below the specified threshold of " + inventoryItemInDB.getItemThreshold() 
+									+ " and currently has " + inventoryItemInDB.getItemQuantity() 
+									+ " units.";
+			User areaManagerUser = userDAO.fetchManagerByArea(inventoryItemInDB.getArea());
+			userNotifier.sendNotification(notificationMsg, areaManagerUser.getEmail(), areaManagerUser.getPhoneNumber());
+			
+			inventoryItemDAO.addThresholdBreach(LocalDateTime.now(), inventoryItemInDB.getItem().getItemName(), 
+					inventoryItemInDB.getEkrutLocation(), inventoryItemInDB.getArea());
+		}
 		
 		// Try to commit the update in DB.
 		if (!inventoryItemDAO.updateItemQuantity(ekrutLocation, itemId, quantity))

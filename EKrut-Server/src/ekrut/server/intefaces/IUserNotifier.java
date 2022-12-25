@@ -6,8 +6,8 @@ package ekrut.server.intefaces;
  *
  */
 public interface IUserNotifier {
-	public boolean sendSMS();
-	public boolean sendEmail();
-	public boolean sendNotification();
+	public boolean sendSMS(String notificationMsg, String phoneNumber);
+	public boolean sendEmail(String notificationMsg, String email);
+	public boolean sendNotification(String notificationMsg, String email, String phoneNumber);
 
 }
