@@ -7,25 +7,25 @@ import ekrut.entity.User;
 public class UserResponse implements Serializable{
 	
 	private static final long serialVersionUID = 7315210241925632873L;
-	private String resultCode;
+	private ResultType resultCode;
 	private User user;
 
 	//Constructor for loginUser
-	public UserResponse(String resultCode, User user) {
+	public UserResponse(ResultType resultCode, User user) {
 		this.resultCode = resultCode;
 		this.user = user;
 	}
 	
 	//Constructor for logoutUser
-	public UserResponse(String resultCode) {
+	public UserResponse(ResultType resultCode) {
 		this.resultCode = resultCode;
 	}
 
-	public String getResultCode() {
+	public ResultType getResultCode() {
 		return resultCode;
 	}
 
-	public void setResultCode(String resultCode) {
+	public void setResultCode(ResultType resultCode) {
 		this.resultCode = resultCode;
 	}
 
