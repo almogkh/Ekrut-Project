@@ -1,6 +1,7 @@
 package ekrut.client.managers;
 
 import ekrut.entity.User;
+import ekrut.net.ResultType;
 import ekrut.net.UserRequest;
 import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
@@ -30,12 +31,12 @@ public class ClientSessionManager {
 		UserRequest userLoginRequest = new UserRequest(username, password);	
 		UserResponse userResponse = sendRequest(userLoginRequest);
 
-		if (userResponse.getResultCode().equals("OK")) {
+		if (userResponse.getResultCode().equals(ResultType.OK)) {
 			user = userResponse.getUser();
 			return user;
 		}
 		else
-			throw new RuntimeException(userResponse.getResultCode());
+			throw new RuntimeException(userResponse.getResultCode().toString());
 	}
 
 	/**
@@ -52,10 +53,10 @@ public class ClientSessionManager {
 		UserRequest userRequest = new UserRequest(UserRequestType.LOGOUT, user.getUsername());
 		UserResponse userResponse = sendRequest(userRequest);
 		
-		if (userResponse.getResultCode().equals("OK")) 
+		if (userResponse.getResultCode().equals(ResultType.OK)) 
 			return;
 		else
-			throw new RuntimeException(userResponse.getResultCode());
+			throw new RuntimeException(userResponse.getResultCode().toString());
 	}
 	
 	/**
@@ -66,7 +67,7 @@ public class ClientSessionManager {
 	public boolean isLoggedin() {
 		UserRequest userRequest = new UserRequest(UserRequestType.IS_LOGGEDIN, user.getUsername());
 		UserResponse userResponse = sendRequest(userRequest);
-		if (userResponse.getResultCode().equals("OK")) 
+		if (userResponse.getResultCode().equals(ResultType.OK)) 
 			return true;
 		return false;
 	}
@@ -80,5 +81,9 @@ public class ClientSessionManager {
 	private UserResponse sendRequest(UserRequest userLoginRequest) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private void reciveMassageFromServer(UserRequest userRequest) {
+		//display to user "Your session has expired. You have been logged out."
 	}
 }

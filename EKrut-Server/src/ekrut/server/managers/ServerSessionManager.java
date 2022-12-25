@@ -1,81 +1,116 @@
 package ekrut.server.managers;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ekrut.entity.User;
+import ekrut.net.ResultType;
+import ekrut.net.UserRequest;
+import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
+import ekrut.server.EKrutServer;
+import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
+import ocsf.server.ConnectionToClient;
 
 /**
  * The `ServerSessionManager` class provides methods for managing user sessions on the server side.
+ * 
+ *  @author Yovel Gabay
  */
 public class ServerSessionManager {
 
+	//The user currently being managed by this session manager.
 	private User user = null;
-	private ArrayList<User> connectedUsers;
+	//A map of logged-in users and their corresponding timer tasks, which will log them out after a certain time period.
+	private HashMap<User, Timer> connectedUsers;
+	//The data access object for interacting with the database.
 	private UserDAO userDAO;
+	//A map of client connections and the users associated with them.
+	private HashMap<ConnectionToClient,User> clientUserMap;
+	//The time, in milliseconds, after which a user will be automatically logged out if they have not made any requests.
+	private static final long LOGOUT_TIME = 1800000; // 30 minutes
+
+	
 	/**
-	 * Constructs a new `ServerSessionManager` with the given connected users and user.
-	 *
-	 * @param connectedUsers The list of connected users.
-	 * @param user The user.
-	 */
-	public ServerSessionManager(ArrayList<User> connectedUsers, User user) {
-		this.connectedUsers = new ArrayList<User>();
-		this.user = user;
+     * Constructs a new `ServerSessionManager` object and initializes the `connectedUsers` list,
+     * `clientUserMap` hash map, and `userDAO` object.
+     *
+     * @param con the {@link DBController} object to use for database operations
+     */
+	public ServerSessionManager(DBController con) {
+		userDAO = new UserDAO(con);
+		connectedUsers =  new HashMap<>();
+		clientUserMap = new HashMap<>();
 	}
 
-	/**
-	 * Attempts to login a user with the given username and password.
-	 *
-	 * @param username The username of the user.
-	 * @param password The password of the user.
-	 * @return The `UserResponse` object with the login result and user details.
-	 * @throws SQLException if a database error occurred.
-	 */
-	public UserResponse loginUser(String username, String password) throws SQLException {
-		String result = null;
+	 /**
+     * Attempts to login the user with the given username and password. If successful, adds the user to
+     * the list of connected users, adds the user and the associated {@link ConnectionToClient} object
+     * to the `clientUserMap` hash map, adds the user and and the new timer for him to the `connectedUsers` map.
+     *
+     * @param username the username of the user to login
+     * @param password the password of the user to login
+     * @param client the {@link ConnectionToClient} object associated with the user
+     * @return a {@link UserResponse} object with the result of the login attempt and the {@link User} object, if successful
+     */
+	public UserResponse loginUser(String username, String password, ConnectionToClient client) {
+		ResultType result = null;
 		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result,user);
 		if (user == null) {
-			result = "Couldn't locate subscriber";
+			result = ResultType.NOT_FOUND;
 		}
 		//if password isn't correct 
 		else if	(!user.getPassword().equals(password)){	
-			result = "Incorrect username or password";
+			result = ResultType.INVALID_INPUT;
 		}
-		//Else, add user to the connected users list, and return the connected user with response message OK
 		else {
 			userResponse.setUser(user);
-			connectedUsers.add(user);
-			result= "OK";
+			connectedUsers.put(user,startTimer(username,client));
+			clientUserMap.put(client,user);
+			result= ResultType.OK;
 		}
 		userResponse.setResultCode(result);
 		return userResponse;
 	}
-	
-	/**
-	 * Logs out the user with the given username.
-	 *
-	 * @param username The username of the user to log out.
-	 * @return The `UserResponse` object with the logout result.
-	 * @throws SQLException if a database error occurred.
-	 */
-	public UserResponse logoutUser(String username) throws SQLException {
-		String result = null;
+    /**
+     * Logs out the user with the given username. If the logout is successful, removes the user from
+     * the list of connected users, cancels the timer for the user's session, and removes the
+     * {@link ConnectionToClient} object associated with the user from the `clientUserMap` hash map.
+     *
+     * @param username the username of the user to log out
+     * @param client   the client connection associated with the user
+     * @param reason   the reason for the logout (e.g. "Session expired")
+     * @return a {@link UserResponse} object with the result of the logout attempt
+     */
+	public UserResponse logoutUser(String username, ConnectionToClient client, String reason) {
+		ResultType result = null;
 		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result);
 		//Check if user not exist in DB
 		if (user == null) {
-			result = "Couldn't locate subscriber";
+			result = ResultType.NOT_FOUND;
 		}
+		
 		else {
-			connectedUsers.remove(connectedUsers.indexOf(user));
-			result= "OK";
+			//the session has expired
+			if(reason!=null) {
+				sendRequestToClient(new UserRequest(UserRequestType.LOGOUT,username),client);
+			}
+			else
+			result= ResultType.OK;
+			connectedUsers.get(user).cancel(); //cancel timer
+			connectedUsers.remove(user);
+			clientUserMap.remove(client);
 		}
 		userResponse.setResultCode(result);
 		return userResponse;
+	}
+
+	private void sendRequestToClient(UserRequest userRequest,ConnectionToClient client) {
+		 EKrutServer.sendRequestToClient(userRequest,client);
 	}
 
 	/**
@@ -83,15 +118,59 @@ public class ServerSessionManager {
 	 *
 	 * @param username The username of the user.
 	 * @return `true` if the user is logged in, `false` if the user is not logged in or if a database error occurred.
-	 * @throws SQLException if a database error occurred.
 	 */
-	public boolean isLoggedin(String username) throws SQLException {
+	public UserResponse isLoggedin(String username) {
 		user = userDAO.fetchUserByUsername(username);
-		return connectedUsers.contains(user);
+		if(connectedUsers.containsKey(user))
+			return new UserResponse(ResultType.OK);
+		return new UserResponse(ResultType.NOT_FOUND);
 	}
-
 	
-
-
-
+	/**
+	 * Returns the {@link User} object associated with the given {@link ConnectionToClient} object.
+	 * Also resets the timer for the user's session.
+	 *
+	 * @param client the {@link ConnectionToClient} object associated with the user
+	 * @return the {@link User} object associated with the given {@link ConnectionToClient} object
+	 */
+	public User getUser(ConnectionToClient client) {
+		user = clientUserMap.get(client);
+		resetTimer(user, client);
+		return user;
+		
+	}
+	
+	/**
+	 * Resets the timer for the user's session.
+	 *
+	 * @param user the user whose timer is being reset
+	 * @param client the client associated with the given user
+	 */
+	public void resetTimer(User user, ConnectionToClient client) {
+        // Cancel the current timer and start a new one
+		connectedUsers.get(user).cancel();
+		connectedUsers.put(user,startTimer(user.getUsername(),client));
+    }
+	
+	/**
+	 * Starts a timer for the user's session. If the timer expires, the user will be logged out.
+	 *
+	 * @param username the username of the user whose timer is being started
+	 * @param client the client associated with the given user
+	 * @return the timer that was started
+	 */
+    public Timer startTimer(String username,ConnectionToClient client) {
+        // Start the timer
+    	Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                logoutUser(username,client,"Session expired");
+            }
+        }, LOGOUT_TIME);
+        return timer;
+    }
+    
+	
+	
 }

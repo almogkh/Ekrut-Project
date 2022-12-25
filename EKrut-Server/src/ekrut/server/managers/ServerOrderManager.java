@@ -11,6 +11,7 @@ import ekrut.net.OrderRequest;
 import ekrut.net.OrderRequestType;
 import ekrut.net.OrderResponse;
 import ekrut.net.ResultType;
+import ekrut.server.db.DBController;
 import ekrut.server.db.OrderDAO;
 import ocsf.server.ConnectionToClient;
 
@@ -24,8 +25,8 @@ public class ServerOrderManager {
 	private OrderDAO orderDAO;
 	private ServerSessionManager sessionManager;
 	
-	public ServerOrderManager(OrderDAO orderDAO, ServerSessionManager sessionManager) {
-		this.orderDAO = orderDAO;
+	public ServerOrderManager(DBController dbCon, ServerSessionManager sessionManager) {
+		this.orderDAO = new OrderDAO(dbCon);
 		this.sessionManager = sessionManager;
 	}
 	
