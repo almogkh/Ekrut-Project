@@ -22,6 +22,7 @@ import ekrut.net.UserResponse;
 
 public class ClientTicketManager {
 
+	
 	/**
      * Updates the status of a given ticket.
      * 
@@ -33,7 +34,7 @@ public class ClientTicketManager {
 	
 	public ResultType updateTicketStatus(Ticket ticket) throws Exception{
 		if (ticket==null) {
-			throw new NullPointerException("provided null ticket");
+			throw new IllegalArgumentException("provided null ticket");
 		}
 		
 		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.UPDATE_STATUS,ticket.getTicketId()); 
@@ -56,7 +57,7 @@ public class ClientTicketManager {
      */
 	
 	public ArrayList<Ticket> fetchTickets() throws Exception{
-		
+		// WAIT FOR USER MANAGMENT TO BE FIXED
 		//question - what do we need to get? 
 		//question - we will do fetch by what? location? item? maybe cases of each one?
 		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH); 
