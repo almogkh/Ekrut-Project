@@ -10,6 +10,7 @@ import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
 import ekrut.net.OrderRequest;
 import ekrut.net.OrderResponse;
+import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentResponse;
 import ekrut.net.TicketRequest;
@@ -77,13 +78,13 @@ public class EKrutServer extends AbstractServer{
 				userResponse = serverSessionManager.loginUser(username,password,client);
 				break;
 			case LOGOUT:	
-				userResponse = serverSessionManager.logoutUser(username);
+				userResponse = serverSessionManager.logoutUser(username, client, null);
 				break;
 			case IS_LOGGEDIN:
-				String res = Boolean.toString(serverSessionManager.isLoggedin(username));
-				userResponse = new UserResponse(res);
+				userResponse = serverSessionManager.isLoggedin(username);
 				break;
 			default:
+				userResponse = new UserResponse(ResultType.UNKNOWN_ERROR);
 				break;
 		}
 		try {
@@ -106,7 +107,6 @@ public class EKrutServer extends AbstractServer{
 				ticketResponse = serverTicketManager.fetchTicket();
 		}		
 		default:
-			break;
 			try {
 				client.sendToClient(ticketResponse);
 			} catch (IOException e) {
@@ -128,6 +128,7 @@ public class EKrutServer extends AbstractServer{
 				inventoryItemResponse = serverInventoryManager.updateItemThreshold(inventoryItemRequest);
 				break;
 			default:
+				inventoryItemResponse = new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 				break;
 		}		
 		try {
@@ -152,7 +153,7 @@ public class EKrutServer extends AbstractServer{
 				orderResponse = serverOrderManager.pickupOrder(orderRequest);
 				break;
 			default:
-				break;
+			
 		}		
 		try {
 					client.sendToClient(orderResponse);
@@ -184,7 +185,7 @@ public class EKrutServer extends AbstractServer{
 						break;
 				}
 			default:
-				break;
+			
 		}		
 		try {
 			client.sendToClient(shipmentResponse);
@@ -195,5 +196,16 @@ public class EKrutServer extends AbstractServer{
 		
 	}
 	*/
+
+	public static void sendRequestToClient(Object msg,ConnectionToClient client) {
+		if(msg instanceof UserRequest) {
+			try {
+				client.sendToClient((UserRequest)msg);
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit(-1);
+			}	
+		}
+	}
 
 }
