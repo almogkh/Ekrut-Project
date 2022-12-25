@@ -1,4 +1,4 @@
-package gui;
+package ekrut.client.gui;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
