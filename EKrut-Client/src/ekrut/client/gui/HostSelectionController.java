@@ -1,6 +1,9 @@
 package ekrut.client.gui;
 
+import java.io.IOException;
 import java.sql.SQLException;
+
+import ekrut.client.EKrutClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,11 +39,7 @@ public class HostSelectionController {
     	incorrectValLbl.setVisible(false);
     	String server = hostTxt.getText().trim();
     	String portText = portTxt.getText().trim();
-    	
-    	
-    	
 		int port;
-
 		if (portText.isEmpty() || server.isEmpty()) {
 			blankLbl.setVisible(true);
 			return;
@@ -51,13 +50,24 @@ public class HostSelectionController {
 				incorrectValLbl.setVisible(true);
 				return;
 			}
-
+			
+			if (!EKrutClientUI.connectToServer(server, port)) {
+				incorrectValLbl.setVisible(true);
+				return;
+			}
+			
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			if (loader == null) {
-				loader = new FXMLLoader(getClass().getResource("/gui/ClientLogin.fxml"));
-				//loader.load();
+				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ClientLogin.fxml"));
+				try {
+					loader.load();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
 			}
 			Parent root = loader.getRoot();
+			ClientLoginController clientLoginController = loader.getController();
+			clientLoginController.setServerDetails(server, portText, true);
 			stage.getScene().setRoot(root); // If server was launch, change scene.
 		}
     		

@@ -3,6 +3,9 @@ package ekrut.client;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -20,10 +23,23 @@ public class EKrutClientUI extends Application {
 	}
 	
 	
+	public static boolean connectToServer(String ip, int port) {
+		ekrutClient = new EKrutClient(ip, port);
+		try {
+			ekrutClient.openConnection();
+		} catch (IOException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
-		// ekrutClient = new EKrutClient();
+		Parent root = FXMLLoader.load(getClass().getResource("/ekrut/client/gui/HostSelection.fxml"));
+		Scene scene = new Scene(root);
+		primaryStage.setScene(scene);
+		primaryStage.show();
 	}
 	
 	
@@ -31,7 +47,6 @@ public class EKrutClientUI extends Application {
 	@Override
 	public void stop() throws IOException {
 		if (ekrutClient != null)
-			// logout?
 			ekrutClient.closeConnection();
 	}
 	

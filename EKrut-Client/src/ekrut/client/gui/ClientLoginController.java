@@ -36,14 +36,7 @@ public class ClientLoginController {
 	private final Color GREEN = Color.web("#23a423");
 	private final Color RED = Color.web("#e13838");
 	
-//	private String serverIp;
-//	private String serverPort;
-//	private boolean connectionStatus;
-	
 	public void setServerDetails(String serverIp, String serverPort, boolean connectionStatus){
-//		this.serverIp = serverIp;
-//		this.serverPort = serverPort;
-//		this.connectionStatus = connectionStatus;
 		usernameOrPasswdBlankLbl.setVisible(false);
 		incorrectUserPassLbl.setVisible(false);
 		serverIpPortLbl.setText("Server (" + serverIp + ":" + serverPort + "):");
