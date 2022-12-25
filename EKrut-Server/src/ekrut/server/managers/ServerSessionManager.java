@@ -5,7 +5,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import ekrut.entity.User;
+import ekrut.net.ResultType;
+import ekrut.net.UserRequest;
+import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
+import ekrut.server.EKrutServer;
 import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
 import ocsf.server.ConnectionToClient;
@@ -52,21 +56,21 @@ public class ServerSessionManager {
      * @return a {@link UserResponse} object with the result of the login attempt and the {@link User} object, if successful
      */
 	public UserResponse loginUser(String username, String password, ConnectionToClient client) {
-		String result = null;
+		ResultType result = null;
 		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result,user);
 		if (user == null) {
-			result = "Couldn't locate subscriber";
+			result = ResultType.NOT_FOUND;
 		}
 		//if password isn't correct 
 		else if	(!user.getPassword().equals(password)){	
-			result = "Incorrect username or password";
+			result = ResultType.INVALID_INPUT;
 		}
 		else {
 			userResponse.setUser(user);
 			connectedUsers.put(user,startTimer(username,client));
 			clientUserMap.put(client,user);
-			result= "OK";
+			result= ResultType.OK;
 		}
 		userResponse.setResultCode(result);
 		return userResponse;
@@ -82,20 +86,21 @@ public class ServerSessionManager {
      * @return a {@link UserResponse} object with the result of the logout attempt
      */
 	public UserResponse logoutUser(String username, ConnectionToClient client, String reason) {
-		String result = null;
+		ResultType result = null;
 		user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result);
 		//Check if user not exist in DB
 		if (user == null) {
-			result = "Couldn't locate subscriber";
+			result = ResultType.NOT_FOUND;
 		}
 		
 		else {
+			//the session has expired
 			if(reason!=null) {
-				result= "Session expired";
+				sendRequestToClient(new UserRequest(UserRequestType.LOGOUT,username),client);
 			}
 			else
-				result= "OK";
+			result= ResultType.OK;
 			connectedUsers.get(user).cancel(); //cancel timer
 			connectedUsers.remove(user);
 			clientUserMap.remove(client);
@@ -104,15 +109,21 @@ public class ServerSessionManager {
 		return userResponse;
 	}
 
+	private void sendRequestToClient(UserRequest userRequest,ConnectionToClient client) {
+		 EKrutServer.sendRequestToClient(userRequest,client);
+	}
+
 	/**
 	 * Determines if the user with the given username is logged in.
 	 *
 	 * @param username The username of the user.
 	 * @return `true` if the user is logged in, `false` if the user is not logged in or if a database error occurred.
 	 */
-	public boolean isLoggedin(String username) {
+	public UserResponse isLoggedin(String username) {
 		user = userDAO.fetchUserByUsername(username);
-		return connectedUsers.containsKey(user);
+		if(connectedUsers.containsKey(user))
+			return new UserResponse(ResultType.OK);
+		return new UserResponse(ResultType.NOT_FOUND);
 	}
 	
 	/**
@@ -159,6 +170,7 @@ public class ServerSessionManager {
         }, LOGOUT_TIME);
         return timer;
     }
+    
 	
 	
 }
