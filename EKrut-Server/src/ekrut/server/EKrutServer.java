@@ -53,8 +53,10 @@ public class EKrutServer extends AbstractServer{
 
 			@Override
 			public boolean sendNotification(String notificationMsg, String email, String phoneNumber) {
-				// TODO Auto-generated method stub
-				return false;
+				// find the user -> client
+				
+				// client.sendToClient(new UserNotification(notificationMsg));
+				return true;
 			}
 			
 		});

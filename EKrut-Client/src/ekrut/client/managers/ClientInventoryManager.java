@@ -1,6 +1,9 @@
 package ekrut.client.managers;
 
+import ekrut.client.EKrutClient;
 import ekrut.entity.InventoryItem;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
@@ -12,6 +15,19 @@ import ekrut.net.ResultType;
  * @author Ofek Malka
  */
 public class ClientInventoryManager {
+	
+	private EKrutClient client;
+	private Object lock = new Object();
+	private InventoryItemResponse response;
+	
+	public ClientInventoryManager() {
+		client.registerHandler(InventoryItemResponse.class, (res) -> {
+			synchronized(lock) {
+				response = res;
+				lock.notify();
+			}
+		});
+	}
 
 	/**
 	 * Handles Client's request to <b>update</b> InventoryItem's <b>quantity</b>.
@@ -83,15 +99,23 @@ public class ClientInventoryManager {
 		return inventoryUpdateItemThresholdResponse.getResultType();
 	}
 	
+	
 	/**
 	 * Send Client's request to the server, returns the server's response.
 	 * 
 	 * @param request the InventoryItemRequest instance representing the request.
 	 * @return the server's response for the given request.
 	 */
-	@SuppressWarnings("unused")
 	private InventoryItemResponse sendRequest(InventoryItemRequest request) {
-		// TBD Implementation will be added later.
-		return null;
+		this.response = null;
+		client.sendRequestToServer(request);
+		synchronized(lock) {
+			while (response == null) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {}
+			}
+		}
+		return response;
 	}
 }
