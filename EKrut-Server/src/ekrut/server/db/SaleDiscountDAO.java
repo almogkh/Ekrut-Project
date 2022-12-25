@@ -136,7 +136,7 @@ public class SaleDiscountDAO {
 		PreparedStatement ps = con.getPreparedStatement(
 				"SELECT sd.discountId, sd.startTime, sd.endTime, sd.dayOfSale, sd.saleType, a.area "
 				+ "FROM active_sales a, sale_discount sd " 
-				+ "WHERE a.discountId = sd.discountId and area = ?");
+				+ "WHERE a.discountId = sd.discountId AND area = ?");
 		ArrayList<SaleDiscount> activeSaleList = new ArrayList<>();
 
 		try {
