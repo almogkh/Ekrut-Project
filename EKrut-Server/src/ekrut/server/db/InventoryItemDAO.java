@@ -3,7 +3,11 @@ package ekrut.server.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import com.mysql.cj.MysqlType;
+
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.server.intefaces.IItemQuantityFetcher;
@@ -13,6 +17,8 @@ import ekrut.server.intefaces.IItemQuantityFetcher;
  * 
  * @author Ofek Malka
  *
+ * SQL tables that might be affected by this class:
+ * 	ekrut_machines, inventory_items, threshold_breaches.
  */
 public class InventoryItemDAO {
 
@@ -37,6 +43,38 @@ public class InventoryItemDAO {
 		this.con = con;
 		this.itemDAO = new ItemDAO(con);
 		this.itemQuantityFetcher = itemQuantityFetcher;
+	}
+	
+	
+	/**
+	 * Adds a record to the threshold_breaches table in a database with the given date, item name, ekrut location, and area.
+	 *
+	 * @param date a LocalDateTime object representing the date and time of the threshold breach
+	 * @param itemName a String representing the name of the item associated with the threshold breach
+	 * @param ekrutLocation a String representing the location of the ekrut associated with the threshold breach
+	 * @param area a String representing the area associated with the threshold breach
+	 * @return a boolean value indicating whether the insertion was successful or not
+	 * @throws RuntimeException if an SQLException is thrown while trying to close the prepared statement
+	 * @see java.time.LocalDateTime
+	 */
+	public boolean addThresholdBreach(LocalDateTime date, String itemName, String ekrutLocation, String area) {
+		PreparedStatement ps = con.getPreparedStatement(
+				"INSERT INTO threshold_breaches (date, itemName, ekrutLocation, area) VALUES(?, ?, ?, ?);");
+		try {
+			ps.setObject(1, date, MysqlType.DATETIME);
+			ps.setString(2, itemName);
+			ps.setString(3, ekrutLocation);
+			ps.setString(4, area);
+			return 1 == con.executeUpdate(ps);
+		} catch (SQLException e) {
+			return false;
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 	
 	/**
@@ -176,8 +214,8 @@ public class InventoryItemDAO {
 				"SELECT ii.area, ii.ekrutLocation, ii.itemId, ii.quantity, em.threshold "
 				+ "FROM inventory_items ii, ekrut_machines em "
 				+ "WHERE ii.ekrutLocation = em.ekrutLocation AND  "
-						+ "ii.area = em.area AND "
-						+ "ii.ekrutLocation = ?;");
+				+ "ii.area = em.area AND "
+				+ "ii.ekrutLocation = ?;");
 		try {
 			ps.setString(1, ekrutLocation);
 			ResultSet rs = con.executeQuery(ps);
@@ -186,7 +224,7 @@ public class InventoryItemDAO {
 				Item item = itemDAO.fetchItem(rs.getInt("itemId"));
 				int itemActualQuantity = itemQuantityFetcher.fetchQuantity(rs.getInt("itemId"), ekrutLocation);
 				if (item != null && itemActualQuantity != -1)
-					inventoryItems.add(new InventoryItem(item, itemActualQuantity, ekrutLocation, rs.getInt("threshold")));
+					inventoryItems.add(new InventoryItem(item, itemActualQuantity, ekrutLocation, rs.getString("area"), rs.getInt("threshold")));
 			}
 			return inventoryItems.size() != 0 ? inventoryItems : null;
 		} catch (SQLException e1) {
@@ -209,7 +247,7 @@ public class InventoryItemDAO {
 	 * @throws RuntimeException if there is a problem closing the Prepared Statement object
 	 */
 	public InventoryItem fetchInventoryItem(int itemId, String ekrutLocation) {
-		PreparedStatement ps = con.getPreparedStatement("SELECT threshold FROM ekrut_machines WHERE ekrutLocation = ?;");
+		PreparedStatement ps = con.getPreparedStatement("SELECT area, threshold FROM ekrut_machines WHERE ekrutLocation = ?;");
 		
 		try {
 			ps.setString(1, ekrutLocation);
@@ -223,7 +261,7 @@ public class InventoryItemDAO {
 			// Check if any results are available.
 			if (rs.next()) {
 				int itemActualQuantity = itemQuantityFetcher.fetchQuantity(itemId, ekrutLocation);
-				return new InventoryItem(item, itemActualQuantity, ekrutLocation, rs.getInt("threshold"));
+				return new InventoryItem(item, itemActualQuantity, ekrutLocation, rs.getString("area"), rs.getInt("threshold"));
 			}
 			return null;
 		} catch (SQLException e1) {
