@@ -46,15 +46,21 @@ public class TicketDAO {
 	public boolean createTicket(Ticket ticket) {
 		con.beginTransaction();
 		PreparedStatement ps = con.getPreparedStatement("INSERT INTO tickets " +
-	            "(ticketID,status,location,threshold,itemID,itemName) " + "VALUES(?,?,?,?,?,?)");
+	            "(status,location,threshold,itemID,itemName) " + "VALUES(?,?,?,?,?)",true);
 		try {
-			ps.setInt(1, ticket.getTicketId());
-			ps.setString(2, ticket.getStatus().toString());
-			ps.setString(3, ticket.getEkrutLocation());
-			ps.setInt(4, ticket.getThreshold());
-			ps.setInt(5, ticket.getItemID());
-			ps.setString(6, ticket.getItemName());
-			ps.executeUpdate();
+			
+			ps.setString(1, ticket.getStatus().toString());
+			ps.setString(2, ticket.getEkrutLocation());
+			ps.setInt(3, ticket.getThreshold());
+			ps.setInt(4, ticket.getItemID());
+			ps.setString(5, ticket.getItemName());
+			int res= ps.executeUpdate();
+			if (res!=1) {
+				con.abortTransaction();
+				return false;
+			}
+			
+			ResultSet rs=ps.getGeneratedKeys();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {
