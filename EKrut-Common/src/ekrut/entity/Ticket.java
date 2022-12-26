@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class Ticket implements Serializable{
 	
 	private static final long serialVersionUID = -1064172186085363642L;
-	private int ticketId;
+	private Integer ticketId;
 	private TicketStatus status;
 	private String ekrutLocation;
 	private int threshold;
@@ -21,7 +21,7 @@ public class Ticket implements Serializable{
 	private String itemName;
 	
 	
-	public Ticket(int ticketId, TicketStatus status, String ekrutLocation, int threshold, int itemID, String itemName) {
+	public Ticket(Integer ticketId, TicketStatus status, String ekrutLocation, int threshold, int itemID, String itemName) {
 		this.ticketId = ticketId;
 		this.status = status;
 		this.ekrutLocation = ekrutLocation;
