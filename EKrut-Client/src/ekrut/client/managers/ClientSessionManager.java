@@ -1,6 +1,8 @@
 package ekrut.client.managers;
 
+import ekrut.client.EKrutClient;
 import ekrut.entity.User;
+import ekrut.net.InventoryItemResponse;
 import ekrut.net.ResultType;
 import ekrut.net.UserRequest;
 import ekrut.net.UserRequestType;
@@ -11,7 +13,20 @@ import ekrut.net.UserResponse;
  */
 public class ClientSessionManager {
 	
-	private User user = null;	
+	private User user = null;
+	private EKrutClient client;
+	private Object lock = new Object();
+	private UserResponse response;
+	
+	public ClientSessionManager(EKrutClient client){
+		this.client = client;
+		client.registerHandler(UserResponse.class, (res) -> {
+			synchronized(lock) {
+				response = res;
+				lock.notify();
+			}
+		});
+	}
 	
 	/**
 	 * Attempts to login a user with the given username and password.
@@ -24,7 +39,7 @@ public class ClientSessionManager {
 	public User loginUser(String username, String password) throws Exception{
 		if (user != null)
 			throw new RuntimeException("User is already loggedin");
-
+		
 		else if (username == null || password == null)
 			throw new NullPointerException("Null Item was provided");
 		
@@ -78,9 +93,17 @@ public class ClientSessionManager {
 	 * @param userLoginRequest The request to send.
 	 * @return The response from the server.
 	 */
-	private UserResponse sendRequest(UserRequest userLoginRequest) {
-		// TODO Auto-generated method stub
-		return null;
+	private UserResponse sendRequest(UserRequest request) {
+		this.response = null;
+		client.sendRequestToServer(request);
+		synchronized(lock) {
+			while (response == null) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {}
+			}
+		}
+		return response;
 	}
 	
 	private void reciveMassageFromServer(UserRequest userRequest) {
