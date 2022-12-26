@@ -2,12 +2,16 @@ package ekrut.server.managers;
 
 import java.util.ArrayList;
 
+import ekrut.entity.InventoryItem;
+import ekrut.entity.Item;
 import ekrut.entity.Ticket;
 import ekrut.entity.TicketStatus;
 import ekrut.net.ResultType;
 import ekrut.net.TicketRequest;
 import ekrut.net.TicketResponse;
 import ekrut.server.db.DBController;
+import ekrut.server.db.InventoryItemDAO;
+import ekrut.server.db.ItemDAO;
 import ekrut.server.db.TicketDAO;
 
 /**
@@ -21,15 +25,19 @@ import ekrut.server.db.TicketDAO;
 public class ServerTicketManager {
 
 	private TicketDAO ticketDAO;
+	private ItemDAO itemDAO;
+	private InventoryItemDAO inventoryItemDAO;
 	
 	
 	/**
-     * Constructs a new ServerTicketManager with the given DBController.
+     * Constructs a new ServerTicketManager object with the given DBController.
      *
      * @param con the DBController to use for database operations
      */
 	public ServerTicketManager(DBController con) {
 		ticketDAO = new TicketDAO(con);
+		itemDAO = new ItemDAO(con);
+		inventoryItemDAO =new InventoryItemDAO(con);
 	}
 	
 	
@@ -45,15 +53,19 @@ public class ServerTicketManager {
 			throw new NullPointerException("null ticketRequest");
 		}
 		//get ticket information from ticket request
-		int ticketId=ticketRequest.getTicketId();
-		TicketStatus status	=ticketRequest.getStatus();
 		String ekrutLocation =ticketRequest.getEkrutLocation();
-		int threshold =ticketRequest.getThreshold();
 		int itemID= ticketRequest.getItemID();
-		String itemName = ticketRequest.getItemName();
+		
+		//get item details 
+		Item thisItem=itemDAO.fetchItem(itemID);
+		String itemName = thisItem.getItemName();
+		
+		//get ekrutLocation's threshold
+		InventoryItem thisInventoryItem = inventoryItemDAO.fetchInventoryItem(itemID,ekrutLocation);
+		int threshold = thisInventoryItem.getItemThreshold();
 		
 		//build new ticket to create 
-		Ticket newTicket = new Ticket(ticketId,status,ekrutLocation,threshold,itemID,itemName);
+		Ticket newTicket = new Ticket(null,TicketStatus.IN_PROGRESS,ekrutLocation,threshold,itemID,itemName);
 		
 		if(!ticketDAO.createTicket(newTicket)) {
 			return new TicketResponse(ResultType.UNKNOWN_ERROR);
@@ -101,6 +113,12 @@ public class ServerTicketManager {
 		}
 		//get ticket Ekrut location from ticket request
 		String ticketEkrutLocation=ticketRequest.getEkrutLocation();
+		
+		/*
+		 * Question - I think that I need to add another case of ResultType in case the fetch method didnt successed(Unknown Error)
+		 * but I'm not sure if I should activate fetchTicketsByLocation() method again. 
+		 * Almog, you probably have a better idea ...
+		*/
 		
 		//fetch tickets by given location and save them in ArrayList
 		ArrayList<Ticket> ticketsByLocation = ticketDAO.fetchTicketsByLocation(ticketEkrutLocation);
