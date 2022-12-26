@@ -482,8 +482,8 @@ public class ReportDAO {
 			if (!rs.next()) {
 				con.abortTransaction();
 				return false;
-			}
-			
+			} 
+			// TBD check, probably this is'nt required
 			int reportID = rs.getInt(1);
 			rs.close();
 			
@@ -672,6 +672,33 @@ public class ReportDAO {
 		}
 	}
 }
+	public ArrayList<String> fetchFacilitiesByArea(String area){
+
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT ekrutLocation FROM ekrut_machines WHERE area = ?");
+		
+		try {
+			ps1.setString(1, area);
+			
+			ResultSet rs1 = con.executeQuery(ps1);
+			
+			ArrayList<String> facilities = new ArrayList<>();	
+			
+			while (rs1.next()) {
+				facilities.add(rs1.getString("ekrutLocation"));
+			}
+			
+			return facilities;
+			
+			}catch (SQLException e) {
+				return null;
+			} finally { 
+				try {
+					ps1.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+	}
 	
 }
 	

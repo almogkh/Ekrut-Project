@@ -14,6 +14,8 @@ import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
+import ekrut.net.ReportResponse;
+import ekrut.net.ResultType;
 import ekrut.server.db.DBController;
 import ekrut.server.db.InventoryItemDAO;
 import ekrut.server.db.ReportDAO;
@@ -27,8 +29,24 @@ public class ServerReportManager {
 		inventoryItemDAO = new InventoryItemDAO(con);
 	}
 	
-	public Report fetchReport(LocalDateTime date, String location, ReportType type) {
-		return reportDAO.fetchReport(date, location, type);
+	public ReportResponse fetchReport(LocalDateTime date, String location, ReportType type) {
+		
+		Report report = reportDAO.fetchReport(date, location, type);
+		
+		if (report == null) 
+			return new ReportResponse(ResultType.NOT_FOUND);
+	
+		return new ReportResponse(ResultType.OK, report); 
+	}
+	
+	public ReportResponse fetchFacilitiesByArea(String area){
+		
+		ArrayList<String> facilities = reportDAO.fetchFacilitiesByArea(area);
+			
+		if (facilities == null) 
+			return new ReportResponse(ResultType.NOT_FOUND);
+		
+		return new ReportResponse(ResultType.OK, facilities); 
 	}
 	
 	/**
@@ -229,6 +247,7 @@ public class ServerReportManager {
 		}
 		return customersOrders;
 	}
+
 	
 	/**
 	 * Processes a given map of items and their quantities and returns a new map containing the 5 best-selling items
@@ -268,7 +287,7 @@ public class ServerReportManager {
 		
 	    // Return the map of best-selling items
 		return bestSellers;
-	}
+	} 
 	
 	/**
 	 * Processes a list of orders by counting the total quantities of each item sold.
