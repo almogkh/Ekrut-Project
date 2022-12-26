@@ -24,6 +24,13 @@ public class EKrutClientUI extends Application {
 	}
 	
 	
+	
+	public static EKrutClient getEkrutClient() {
+		return ekrutClient;
+	}
+
+
+
 	public static boolean connectToServer(String ip, int port) {
 		ekrutClient = new EKrutClient(ip, port);
 		try {
