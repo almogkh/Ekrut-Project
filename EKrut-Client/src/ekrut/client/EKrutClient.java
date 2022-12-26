@@ -43,6 +43,7 @@ public class EKrutClient extends AbstractClient{
 	protected void handleMessageFromServer(Object msg) {
 		if (msg instanceof UserNotification) {
 			clientUI.popupUserNotification(((UserNotification) msg).getNotificationMsg());
+			return;
 		}
 		
 		Consumer<Object> handler = handlers.get(msg.getClass());

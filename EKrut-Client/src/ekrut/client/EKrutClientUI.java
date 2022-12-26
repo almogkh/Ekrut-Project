@@ -3,6 +3,7 @@ package ekrut.client;
 import java.io.IOException;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -53,8 +54,10 @@ public class EKrutClientUI extends Application {
 	
 	
 	public void popupUserNotification(String notificationMsg) {
-		Alert alert = new Alert(AlertType.INFORMATION, notificationMsg, ButtonType.OK);
-		alert.showAndWait();
+		Platform.runLater(() -> {
+			Alert alert = new Alert(AlertType.INFORMATION, notificationMsg, ButtonType.OK);
+			alert.showAndWait();
+		});
 	}
 
 }
