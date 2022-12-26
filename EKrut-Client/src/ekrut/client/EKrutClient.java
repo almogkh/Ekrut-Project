@@ -23,13 +23,39 @@ public class EKrutClient extends AbstractClient{
 	
 	public EKrutClient(String host, int port) {
 		super(host, port);
-		clientInventoryManager = new ClientInventoryManager();
-		clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
-		clientReportManager = new ClientReportManager();
-		clientSessionManager = new ClientSessionManager();
-		clientShipmentManager = new ClientShipmentManager();
+		//clientInventoryManager = new ClientInventoryManager();
+		//clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
+		//clientReportManager = new ClientReportManager();
+		clientSessionManager = new ClientSessionManager(this);
+		//clientShipmentManager = new ClientShipmentManager();
 	}
 	
+	
+	
+	
+	public ClientInventoryManager getClientInventoryManager() {
+		return clientInventoryManager;
+	}
+
+	public ClientOrderManager getClientOrderManager() {
+		return clientOrderManager;
+	}
+
+	public ClientReportManager getClientReportManager() {
+		return clientReportManager;
+	}
+
+	public ClientSessionManager getClientSessionManager() {
+		return clientSessionManager;
+	}
+
+	public ClientShipmentManager getClientShipmentManager() {
+		return clientShipmentManager;
+	}
+
+
+
+
 	public <T> void registerHandler(Class<T> klass, Consumer<T> handler) {
 		handlers.put(klass, (response) -> handler.accept(klass.cast(response)));
 	}
