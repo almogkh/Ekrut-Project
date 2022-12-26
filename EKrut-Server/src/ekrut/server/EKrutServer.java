@@ -37,29 +37,8 @@ public class EKrutServer extends AbstractServer{
 		dbCon = new DBController(url, username, password);
 		dbCon.connect(); //need to check return value		
 		serverSessionManager = new ServerSessionManager(dbCon);
-		serverInventoryManager = new ServerInventoryManager(dbCon, new IUserNotifier() {
-
-			@Override
-			public boolean sendSMS(String notificationMsg, String phoneNumber) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public boolean sendEmail(String notificationMsg, String email) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public boolean sendNotification(String notificationMsg, String email, String phoneNumber) {
-				// find the user -> client
-				
-				// client.sendToClient(new UserNotification(notificationMsg));
-				return true;
-			}
-			
-		});
+		IUserNotifier userNotifier = new PopupUserNotifier(dbCon, serverSessionManager);
+		serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
 		//serverTicketManager = new ServerTicketManager(dbCon);
 		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager);
 		serverShipmentManager = new ServerShipmentManager(dbCon);
@@ -213,13 +192,11 @@ public class EKrutServer extends AbstractServer{
 	*/
 
 	public static void sendRequestToClient(Object msg,ConnectionToClient client) {
-		if(msg instanceof UserRequest) {
-			try {
-				client.sendToClient((UserRequest)msg);
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(-1);
-			}	
+		try {
+			client.sendToClient((UserRequest)msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 

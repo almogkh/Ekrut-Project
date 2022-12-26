@@ -1,6 +1,7 @@
 package ekrut.server.managers;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -138,6 +139,23 @@ public class ServerSessionManager {
 		resetTimer(user, client);
 		return user;
 		
+	}
+	
+	/**
+	 * Retrieves the client connection that's associated with a given user.
+	 * Also resets the timer for the user's session.
+	 * 
+	 * @param user the user whose connection should be retrieved
+	 * @return     the user's client connection
+	 */
+	public ConnectionToClient getUsersConnection(User user) {
+		for (Map.Entry<ConnectionToClient, User> entry : clientUserMap.entrySet()) {
+			if (entry.getValue().getUsername().equals(user.getUsername())) {
+				resetTimer(entry.getValue(), entry.getKey());
+				return entry.getKey();
+			}
+		}
+		return null;
 	}
 	
 	/**

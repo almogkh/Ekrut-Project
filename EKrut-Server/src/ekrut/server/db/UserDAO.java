@@ -52,6 +52,68 @@ public class UserDAO {
 	}
 	
 	/**
+	 * Fetches a user from the database by their phone number.
+	 *
+	 * @param phoneNumber The phone number of the user to fetch.
+	 * @return The `User` object if found, or `null` if not found or an error occurred.
+	 */
+	public User fetchUserByPhoneNumber(String phoneNumber) {
+		User user = null;
+		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE phoneNumber = ?"); 
+		try {
+			ps.setString(1, phoneNumber);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) 
+				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
+				user = new User(UserType.valueOf(rs.getString(1)),rs.getString(2),
+						rs.getString(3), rs.getString(4),rs.getString(5),
+						rs.getString(6),  rs.getString(7),
+						phoneNumber, rs.getString(9));
+				
+			return user;
+		} catch (SQLException e1) {
+			return null;
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	/**
+	 * Fetches a user from the database by their email.
+	 *
+	 * @param email The email of the user to fetch.
+	 * @return The `User` object if found, or `null` if not found or an error occurred.
+	 */
+	public User fetchUserByEmail(String email) {
+		User user = null;
+		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE email = ?"); 
+		try {
+			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) 
+				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
+				user = new User(UserType.valueOf(rs.getString(1)),rs.getString(2),
+						rs.getString(3), rs.getString(4),rs.getString(5),
+						rs.getString(6),  email,
+						rs.getString(8), rs.getString(9));
+				
+			return user;
+		} catch (SQLException e1) {
+			return null;
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	/**
 	 * 	This method retrieves a user with the role of AREA_MANAGER from the database based on the specified area.
 	 * 
 	 * 	@param area The area for which the AREA_MANAGER is being retrieved.
