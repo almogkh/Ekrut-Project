@@ -2,7 +2,6 @@ package ekrut.client.managers;
 
 import ekrut.client.EKrutClient;
 import ekrut.entity.User;
-import ekrut.net.InventoryItemResponse;
 import ekrut.net.ResultType;
 import ekrut.net.UserRequest;
 import ekrut.net.UserRequestType;
@@ -108,5 +107,7 @@ public class ClientSessionManager {
 	
 	private void reciveMassageFromServer(UserRequest userRequest) {
 		//display to user "Your session has expired. You have been logged out."
+		// TBD OFEK: this method won't be needed here, the session-timer-logout
+		//				is not initiated by this class and won't be handled by it(?)
 	}
 }
