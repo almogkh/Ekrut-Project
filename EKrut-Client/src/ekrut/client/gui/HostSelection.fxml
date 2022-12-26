@@ -38,7 +38,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -48,7 +47,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClientLoginController">
+<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.HostSelectionController">
   <children>
       <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -92,66 +91,68 @@
                </opaqueInsets>
             </Pane>
             
-            <Label layoutX="55.0" layoutY="260.0" text="In order to use the system, Please login." textFill="#05445e">
+            <Label layoutX="69.0" layoutY="240.0" text="Please provide Server's IP and Port" textFill="#05445e">
                <font>
                   <Font name="Arial" size="23.0" />
                </font>
             </Label>
-            <PasswordField fx:id="passwordTxt" layoutX="75.0" layoutY="407.0" prefHeight="39.0" prefWidth="221.0" promptText="Password">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </PasswordField>
-            <TextField fx:id="usernameTxt" layoutX="75.0" layoutY="344.0" prefHeight="39.0" prefWidth="221.0" promptText="Username">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </TextField>
-            <ImageView fitHeight="39.0" fitWidth="48.0" layoutX="21.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@gui-assets/user.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="21.0" layoutY="409.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@gui-assets/key.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="loginBtn" defaultButton="true" layoutX="75.0" layoutY="466.0" mnemonicParsing="false" onAction="#attemptLogin" text="Login">
-               <font>
-                  <Font name="Arial" size="18.0" />
-               </font>
-            </Button>
-            <Label fx:id="incorrectUserPassLbl" layoutX="109.0" layoutY="591.0" text="Incorrect Username or Password" textFill="#ff5555" underline="true">
+            <Label fx:id="blankLbl" layoutX="99.0" layoutY="591.0" text="Server or Port cannot remain blank" textFill="#ff5555" underline="true" visible="false">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="usernameOrPasswdBlankLbl" layoutX="60.0" layoutY="612.0" text="Username and Password cannot remain blank" textFill="#ff5555" underline="true">
+            <Label fx:id="incorrectValLbl" layoutX="118.0" layoutY="612.0" prefHeight="21.0" prefWidth="263.0" text="Port or IP values are incorrent" textFill="#ff5555" underline="true" visible="false">
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
             <Line endX="327.0" layoutX="172.0" layoutY="770.0" startX="-172.0" strokeWidth="2.0" />
-            <Label layoutX="75.0" layoutY="326.0" text="Username" />
-            <Label layoutX="75.0" layoutY="389.0" text="Password" />
             <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+            </Pane>
+            <VBox alignment="CENTER" layoutX="126.0" layoutY="300.0" prefHeight="272.0" prefWidth="250.0" spacing="10.0">
                <children>
-                  <Label fx:id="serverIpPortLbl" layoutX="14.0" layoutY="19.0" text="Server(196.168.57.53:5555):">
+                  <Label text="Server">
+                     <VBox.margin>
+                        <Insets bottom="-10.0" />
+                     </VBox.margin>
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="serverConnectionStatusLbl" layoutX="203.0" layoutY="19.0" text="Connected" textFill="#23a423">
+                  <TextField fx:id="hostTxt" prefHeight="39.0" prefWidth="221.0" promptText="Server">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label text="Port">
+                     <VBox.margin>
+                        <Insets bottom="-10.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="15.0" />
                      </font>
                   </Label>
+                  <TextField fx:id="portTxt" prefHeight="39.0" prefWidth="300.0" promptText="Port">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <Button fx:id="connectBtn" defaultButton="true" mnemonicParsing="false" onAction="#connect" text="Connect">
+                     <font>
+                        <Font name="Arial" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Button>
                </children>
-            </Pane>
+            </VBox>
       </children>
     </AnchorPane>
   </children>
