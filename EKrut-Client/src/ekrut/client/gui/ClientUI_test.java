@@ -15,7 +15,7 @@ public class ClientUI_test extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// Load first screen
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("ClientLogin.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ClientLogin.fxml"));
 		Parent root = loader.load();
 		ClientLoginController controller = loader.getController();
 		Scene scene = new Scene(root);
