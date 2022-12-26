@@ -20,7 +20,8 @@ public class ClientInventoryManager {
 	private Object lock = new Object();
 	private InventoryItemResponse response;
 	
-	public ClientInventoryManager() {
+	public ClientInventoryManager(EKrutClient client) {
+		this.client = client;
 		client.registerHandler(InventoryItemResponse.class, (res) -> {
 			synchronized(lock) {
 				response = res;
