@@ -26,15 +26,28 @@ public class TicketRequest implements Serializable{
 		this.itemID = itemID;
 		this.itemName = itemName;
 	}
-
+	
+	public TicketRequest(TicketRequestType action, String ekrutLocation) {
+		this.action = action;
+		this.ekrutLocation = ekrutLocation;
+	}
+	
 	public TicketRequest(TicketRequestType action, int ticketId) {
 		this.action = action;
 		this.ticketId = ticketId;
 	}
 
+	
+	public TicketRequest(TicketRequestType action, String ekrutLocation, int itemID) {
+		this.action = action;
+		this.ekrutLocation = ekrutLocation;
+		this.itemID = itemID;
+	}
+
 	public TicketRequest(TicketRequestType action) {
 		this.action = action;
 	}
+
 
 	public TicketRequestType getAction() {
 		return action;
