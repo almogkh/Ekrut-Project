@@ -33,7 +33,6 @@
 -->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -48,7 +47,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -91,7 +90,7 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
       <children>
-            <Label layoutX="97.0" layoutY="101.0" prefHeight="38.0" prefWidth="307.0" text="Choose report to view" textFill="#05445e">
+            <Label layoutX="97.0" layoutY="101.0" prefHeight="38.0" prefWidth="319.0" text="Choose report to view" textFill="#05445e">
                <font>
                   <Font name="Arial Bold" size="30.0" />
                </font>
@@ -115,7 +114,7 @@
                   <Insets />
                </opaqueInsets>
             </Pane>
-            <MenuButton layoutX="130.0" layoutY="266.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="144.0" text="Report type">
+            <MenuButton fx:id="ReportTypeDropDown" layoutX="130.0" layoutY="266.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="144.0" text="Report type">
               <items>
                 <MenuItem mnemonicParsing="false" text="Order report" />
                 <MenuItem mnemonicParsing="false" text="Inventory report" />
@@ -135,12 +134,60 @@
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <Label layoutX="60.0" layoutY="375.0" prefHeight="38.0" prefWidth="60.0" text="Date:">
+            <MenuButton fx:id="ReportAreaDropDown" layoutX="130.0" layoutY="322.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="144.0" text="Report Area">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </MenuButton>
+            <Label layoutX="59.0" layoutY="381.0" prefHeight="38.0" prefWidth="80.0" text="Facility:">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font>
             </Label>
-            <DatePicker layoutX="132.0" layoutY="382.0" promptText="Choose report date" />
+            <MenuButton fx:id="ReportFacilityDropDown" layoutX="149.0" layoutY="380.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="163.0" text="Report Facility">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </MenuButton>
+            <Label layoutX="59.0" layoutY="436.0" prefHeight="38.0" prefWidth="80.0" text="Month:">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="57.0" layoutY="490.0" prefHeight="38.0" prefWidth="80.0" text="Year:">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font>
+            </Label>
+            <MenuButton fx:id="ReportMonthDropDown" layoutX="139.0" layoutY="435.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="163.0" text="Report Month">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="January" />
+                  <MenuItem mnemonicParsing="false" text="February" />
+                  <MenuItem mnemonicParsing="false" text="March" />
+                  <MenuItem mnemonicParsing="false" text="April" />
+                  <MenuItem mnemonicParsing="false" text="May" />
+                  <MenuItem mnemonicParsing="false" text="June" />
+                  <MenuItem mnemonicParsing="false" text="July" />
+                  <MenuItem mnemonicParsing="false" text="August" />
+                  <MenuItem mnemonicParsing="false" text="September" />
+                  <MenuItem mnemonicParsing="false" text="October" />
+                  <MenuItem mnemonicParsing="false" text="November" />
+                  <MenuItem mnemonicParsing="false" text="December" />
+               </items>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </MenuButton>
+            <MenuButton fx:id="ReportYearDropDown" layoutX="130.0" layoutY="488.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="144.0" text="Report Year">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="2020" />
+                  <MenuItem mnemonicParsing="false" text="2021" />
+                  <MenuItem mnemonicParsing="false" text="2022" />
+               </items>
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </MenuButton>
       </children>
     </AnchorPane>
   </children>
