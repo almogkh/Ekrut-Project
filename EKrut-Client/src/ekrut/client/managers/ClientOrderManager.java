@@ -2,6 +2,7 @@ package ekrut.client.managers;
 
 import java.util.ArrayList;
 
+import ekrut.client.EKrutClient;
 import ekrut.entity.Item;
 import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
@@ -22,14 +23,26 @@ public class ClientOrderManager {
 	private Order activeOrder;
 	private final String ekrutLocation;
 	
+	private EKrutClient client;
+	private Object lock = new Object();
+	private OrderResponse response;
+	
 	/**
 	 * Constructs a new client order manager.
 	 * 
 	 * @param ekrutLocation The location of the machine on which the client is running. If this is null, that
 	 *                      means the client is running the administrative section.
 	 */
-	public ClientOrderManager(String ekrutLocation) {
+	public ClientOrderManager(EKrutClient client, String ekrutLocation) {
+		this.client = client;
 		this.ekrutLocation = ekrutLocation;
+		
+		client.registerHandler(OrderResponse.class, (res) -> {
+			synchronized(lock) {
+				response = res;
+				lock.notify();
+			}
+		});
 	}
 	
 	/**
@@ -115,7 +128,18 @@ public class ClientOrderManager {
 	}
 	
 	private OrderResponse sendRequest(OrderRequest request) {
-		return null;
+		response = null;
+		client.sendRequestToServer(request);
+		
+		synchronized(lock) {
+			while (response == null) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {}
+			}
+		}
+		
+		return response;
 	}
 	
 	/**
