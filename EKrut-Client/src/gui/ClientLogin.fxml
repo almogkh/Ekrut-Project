@@ -35,123 +35,138 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClientLoginController">
+<VBox prefHeight="750.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClientLoginController">
   <children>
-      <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
+      <VBox prefHeight="200.0" prefWidth="100.0">
+         <padding>
+            <Insets bottom="7.0" left="7.0" top="7.0" />
+         </padding>
+      </VBox>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
       <children>
-            <Label layoutX="125.0" layoutY="141.0" prefHeight="92.0" prefWidth="250.0" text="Welcome!" textFill="#05445e">
+            <Label layoutX="106.0" layoutY="120.0" prefHeight="92.0" prefWidth="337.0" text="Welcome user!" textFill="#2f88ff">
                <font>
-                  <Font name="Arial Bold" size="50.0" />
+                  <Font name="Candara Bold Italic" size="50.0" />
                </font>
             </Label>
             
-            <Pane prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
+            <Pane prefHeight="100.0" prefWidth="550.0" style="-fx-background-color: #94C0FB;">
                <children>
-                  <ImageView fitHeight="98.0" fitWidth="192.0" layoutX="172.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="98.0" fitWidth="192.0" layoutX="191.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@gui-assets/logo.png" />
+                        <Image url="@gui-assets/Group%2010.png" />
                      </image>
                   </ImageView>
-                  <Line endX="283.0" layoutX="217.0" layoutY="100.0" startX="-216.0" strokeWidth="2.0" />
+                  <Line endX="333.0" layoutX="217.0" layoutY="100.0" startX="-216.0" strokeWidth="2.0" />
+                  <Line endX="333.0" layoutX="217.0" layoutY="1.0" startX="-216.0" strokeWidth="2.0" />
                </children>
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
+               <effect>
+                  <DropShadow />
+               </effect>
             </Pane>
             
-            <Label layoutX="55.0" layoutY="260.0" text="In order to use the system, Please login." textFill="#05445e">
+            <Label layoutX="57.0" layoutY="238.0" text="In order to use the system, Please login">
                <font>
-                  <Font name="Arial" size="23.0" />
+                  <Font name="Candara Bold" size="23.0" />
                </font>
             </Label>
-            <PasswordField fx:id="passwordTxt" layoutX="75.0" layoutY="407.0" prefHeight="39.0" prefWidth="221.0" promptText="Password">
+            <PasswordField fx:id="passwordTxt" layoutX="111.0" layoutY="376.0" prefHeight="39.0" prefWidth="221.0" promptText="Password">
                <font>
-                  <Font size="18.0" />
+                  <Font name="Candara Bold" size="18.0" />
                </font>
+               <effect>
+                  <DropShadow height="10.0" radius="7.25">
+                     <color>
+                        <Color opacity="0.4770992398262024" />
+                     </color>
+                  </DropShadow>
+               </effect>
             </PasswordField>
-            <TextField fx:id="usernameTxt" layoutX="75.0" layoutY="344.0" prefHeight="39.0" prefWidth="221.0" promptText="Username">
+            <TextField fx:id="usernameTxt" layoutX="111.0" layoutY="305.0" prefHeight="39.0" prefWidth="221.0" promptText="Username">
                <font>
-                  <Font size="18.0" />
+                  <Font name="Candara Bold" size="18.0" />
                </font>
+               <effect>
+                  <DropShadow height="10.0" radius="7.25">
+                     <color>
+                        <Color opacity="0.4770992398262024" />
+                     </color>
+                  </DropShadow>
+               </effect>
             </TextField>
-            <ImageView fitHeight="39.0" fitWidth="48.0" layoutX="21.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="39.0" fitWidth="48.0" layoutX="57.0" layoutY="305.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@gui-assets/user.png" />
+                  <Image url="@gui-assets/Group%203.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="21.0" layoutY="409.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="57.0" layoutY="378.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@gui-assets/key.png" />
+                  <Image url="@gui-assets/Group%208.png" />
                </image>
             </ImageView>
-            <Button fx:id="loginBtn" defaultButton="true" layoutX="75.0" layoutY="466.0" mnemonicParsing="false" onAction="#attemptLogin" text="Login">
+            <Button fx:id="loginBtn" layoutX="114.0" layoutY="438.0" mnemonicParsing="false" onAction="#attemptLogin" text="Login" textFill="WHITE">
                <font>
-                  <Font name="Arial" size="18.0" />
+                  <Font name="Candara Bold Italic" size="18.0" />
                </font>
+               <effect>
+                  <DropShadow height="19.12" radius="9.530000000000001">
+                     <color>
+                        <Color opacity="0.47999998927116394" />
+                     </color>
+                  </DropShadow>
+               </effect>
             </Button>
-            <Label fx:id="incorrectUserPassLbl" layoutX="109.0" layoutY="591.0" text="Incorrect Username or Password" textFill="#ff5555" underline="true">
+            <Label fx:id="incorrectUserPassLbl" layoutX="148.0" layoutY="503.0" text="Incorrect Username or Password" textFill="#ff5555" underline="true">
                <font>
-                  <Font name="Arial Bold" size="18.0" />
+                  <Font name="Candara Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="usernameOrPasswdBlankLbl" layoutX="60.0" layoutY="612.0" text="Username and Password cannot remain blank" textFill="#ff5555" underline="true">
+            <Label fx:id="usernameOrPasswdBlankLbl" layoutX="99.0" layoutY="524.0" text="Username and Password cannot remain blank" textFill="#ff5555" underline="true">
                <font>
-                  <Font name="Arial Bold" size="18.0" />
+                  <Font name="Candara Bold" size="18.0" />
                </font>
             </Label>
-            <Line endX="327.0" layoutX="172.0" layoutY="770.0" startX="-172.0" strokeWidth="2.0" />
-            <Label layoutX="75.0" layoutY="326.0" text="Username" />
-            <Label layoutX="75.0" layoutY="389.0" text="Password" />
-            <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
+            <Label layoutX="111.0" layoutY="283.0" text="Username">
+               <font>
+                  <Font name="Candara Bold" size="18.0" />
+               </font></Label>
+            <Label layoutX="111.0" layoutY="354.0" text="Password">
+               <font>
+                  <Font name="Candara Bold" size="18.0" />
+               </font></Label>
+            <Pane layoutY="772.0" prefHeight="54.0" prefWidth="550.0" style="-fx-background-color: #94C0FB;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <children>
                   <Label fx:id="serverIpPortLbl" layoutX="14.0" layoutY="19.0" text="Server(196.168.57.53:5555):">
                      <font>
-                        <Font size="15.0" />
+                        <Font name="Candara" size="18.0" />
                      </font>
                   </Label>
-                  <Label fx:id="serverConnectionStatusLbl" layoutX="203.0" layoutY="19.0" text="Connected" textFill="#23a423">
+                  <Label fx:id="serverConnectionStatusLbl" layoutX="234.0" layoutY="20.0" text="Connected" textFill="#23a423">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font name="Candara Bold" size="18.0" />
                      </font>
                   </Label>
                </children>
             </Pane>
+            <Line endX="333.0" layoutX="216.0" layoutY="772.0" startX="-216.0" strokeWidth="2.0" />
       </children>
     </AnchorPane>
   </children>
