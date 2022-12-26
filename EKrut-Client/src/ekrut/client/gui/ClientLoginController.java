@@ -47,8 +47,6 @@ public class ClientLoginController {
 		usernameOrPasswdBlankLbl.setVisible(false);
 		incorrectUserPassLbl.setVisible(false);
 		serverIpPortLbl.setText("Server (" + serverIp + ":" + serverPort + "):");
-		//serverConnectionStatusLbl.setText("Connected");
-		//serverConnectionStatusLbl.setTextFill(GREEN);
 	}
 	
 	public void setFocus(WindowEvent event) {
