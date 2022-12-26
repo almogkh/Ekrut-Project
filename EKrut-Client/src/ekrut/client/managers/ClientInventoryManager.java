@@ -2,8 +2,6 @@ package ekrut.client.managers;
 
 import ekrut.client.EKrutClient;
 import ekrut.entity.InventoryItem;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
@@ -20,6 +18,12 @@ public class ClientInventoryManager {
 	private Object lock = new Object();
 	private InventoryItemResponse response;
 	
+	
+	/**
+	 * Constructs a new ClientInventoryManager instance and registers an InventoryItemResponse handler.
+	 * 
+	 * @param client the EKrutClient for which to register the InventoryItemResponse handler
+	 */
 	public ClientInventoryManager(EKrutClient client) {
 		this.client = client;
 		client.registerHandler(InventoryItemResponse.class, (res) -> {
@@ -39,9 +43,10 @@ public class ClientInventoryManager {
 	 * @throws IllegalArgumentException when a null item is provided.
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public ResultType updateInventoryQuantity(int itemId, String ekrutLocation, int quantity) throws RuntimeException {
+	public ResultType updateInventoryQuantity(int itemId, String ekrutLocation, int quantity) {
 		if (quantity < 0)
-			return ResultType.INVALID_INPUT;
+			throw new IllegalArgumentException("Quantity must be a non-negative integer.");
+			// TBD OFEK or rather should i :return ResultType.INVALID_INPUT;
 		
 		// Prepare a InventoryItemRequest to send to server.
 		InventoryItemRequest inventoryUpdateItemRequest = 
@@ -59,10 +64,9 @@ public class ClientInventoryManager {
 	 * @throws IllegalArgumentException when a null item is provided.
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public ArrayList<InventoryItem> getItems(String ekrutLocation) throws Exception {
+	public ArrayList<InventoryItem> getItems(String ekrutLocation) {
 		// Prepare a InventoryItemRequest to send to server.
-		InventoryItemRequest inventoryGetItemsRequest = 
-				new InventoryItemRequest(ekrutLocation);
+		InventoryItemRequest inventoryGetItemsRequest = new InventoryItemRequest(ekrutLocation);
 		
 		// Sending InventoryItemRequest and receiving InventoryItemResponse.
 		InventoryItemResponse inventoryGetItemsResponse = sendRequest(inventoryGetItemsRequest);
@@ -70,7 +74,7 @@ public class ClientInventoryManager {
 		// ResultCode is not "OK" meaning we encountered an error.
 		ResultType resultType = inventoryGetItemsResponse.getResultType();
 		if (resultType != ResultType.OK)
-			throw new Exception(resultType.toString());
+			throw new RuntimeException(resultType.toString());
 		
 		// return the InventoryItem(s) attached to the response.
 		return inventoryGetItemsResponse.getInventoryItems();
@@ -85,7 +89,7 @@ public class ClientInventoryManager {
 	 * @throws IllegalArgumentException when a null item is provided.
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public ResultType updateItemThreshold(int itemId, String ekrutLocation, int threshold) {
+	public void updateItemThreshold(int itemId, String ekrutLocation, int threshold) {
 		if (threshold < 0)
 			throw new IllegalArgumentException("Threshold must be a non-negative integer.");
 		
@@ -97,7 +101,9 @@ public class ClientInventoryManager {
 		InventoryItemResponse inventoryUpdateItemThresholdResponse = sendRequest(inventoryUpdateItemThresholdRequest);
 		
 		// ResultCode is not "OK" meaning we encountered an error.
-		return inventoryUpdateItemThresholdResponse.getResultType();
+		ResultType resultType = inventoryUpdateItemThresholdResponse.getResultType();
+		if (resultType != ResultType.OK)
+			throw new RuntimeException(resultType.toString());
 	}
 	
 	
