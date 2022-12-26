@@ -1,13 +1,20 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
+
+import ekrut.client.EKrutClient;
+import ekrut.client.EKrutClientUI;
+import ekrut.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class ClientLoginController {
@@ -48,8 +55,11 @@ public class ClientLoginController {
 		usernameTxt.requestFocus();
 	}
 	
+	private FXMLLoader loader;
+	private EKrutClient ekrutClient;
+	
 	@FXML
-	void attemptLogin(ActionEvent event) throws IOException {
+	void attemptLogin(ActionEvent event) throws Exception {
 		usernameOrPasswdBlankLbl.setVisible(false);
 		incorrectUserPassLbl.setVisible(false);
 		String username = usernameTxt.getText().trim();
@@ -58,12 +68,33 @@ public class ClientLoginController {
 			usernameOrPasswdBlankLbl.setVisible(true);
 			return;
 		}
+		User me = null;
 		
-		if (username.equals(password)) { // TBD IMPLEMENT REAL USERNAME & PASSWORD CHECKING
+		
+		if (ekrutClient == null)
+			ekrutClient = EKrutClientUI.getEkrutClient();
+		
+		me = ekrutClient.getClientSessionManager().loginUser(username, password);
+		
+		System.out.println(me);
+		if (me == null) {
 			incorrectUserPassLbl.setVisible(true);
 			return;
 		}
 		// LOGIN SUCCESS!
+		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		if (loader == null) {
+			loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/MainMenu.fxml"));
+			try {
+				loader.load();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		Parent root = loader.getRoot();
+		//ClientLoginController clientLoginController = loader.getController();
+		//clientLoginController.setServerDetails(server, portText);
+		stage.getScene().setRoot(root);
 	}
 
 }
