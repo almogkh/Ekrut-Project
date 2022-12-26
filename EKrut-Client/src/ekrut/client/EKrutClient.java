@@ -23,6 +23,11 @@ public class EKrutClient extends AbstractClient{
 	
 	public EKrutClient(String host, int port) {
 		super(host, port);
+		clientInventoryManager = new ClientInventoryManager();
+		clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
+		clientReportManager = new ClientReportManager();
+		clientSessionManager = new ClientSessionManager();
+		clientShipmentManager = new ClientShipmentManager();
 	}
 	
 	public <T> void registerHandler(Class<T> klass, Consumer<T> handler) {
