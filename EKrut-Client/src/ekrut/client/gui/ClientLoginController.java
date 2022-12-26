@@ -36,12 +36,12 @@ public class ClientLoginController {
 	private final Color GREEN = Color.web("#23a423");
 	private final Color RED = Color.web("#e13838");
 	
-	public void setServerDetails(String serverIp, String serverPort, boolean connectionStatus){
+	public void setServerDetails(String serverIp, String serverPort){
 		usernameOrPasswdBlankLbl.setVisible(false);
 		incorrectUserPassLbl.setVisible(false);
 		serverIpPortLbl.setText("Server (" + serverIp + ":" + serverPort + "):");
-		serverConnectionStatusLbl.setText(connectionStatus ? "Connected" : "Disconnected");
-		serverConnectionStatusLbl.setTextFill(connectionStatus ? GREEN : RED);
+		//serverConnectionStatusLbl.setText("Connected");
+		//serverConnectionStatusLbl.setTextFill(GREEN);
 	}
 	
 	public void setFocus(WindowEvent event) {
