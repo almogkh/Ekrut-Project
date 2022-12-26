@@ -39,15 +39,30 @@ public class ClientTicketManager {
 		
 		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.UPDATE_STATUS,ticket.getTicketId()); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
-		if (ticketResponse.getResultType().toString()!="OK") {
-			throw new RuntimeException("Error updating ticket's status"); //**Need to think whats better then Runtime here
-			//maybe just return the ResultType? so it will show the problem (INVALID..)
-		}
 		
 		return ticketResponse.getResultType();
 	}
 	
 	
+	
+	/**
+	 * Creates a ticket for a given item at a specified location.
+	 *
+	 * @param ekrutLocation the location where the ticket is to be created
+	 * @param itemID the ID of the item for which the ticket is to be created
+	 * @return the result of the ticket creation request
+	 * @throws Exception if an error occurs while sending the ticket creation request
+	 */
+	public ResultType CreateTicket(String ekrutLocation , int itemID) throws Exception{
+		if (itemID==0) {
+			throw new IllegalArgumentException("provided null itemID");
+		}
+		
+		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.CREATE,ekrutLocation,itemID); 
+		TicketResponse ticketResponse = sendRequest(ticketRequest);
+		
+		return ticketResponse.getResultType();
+	}
 	
 	/**
      * Fetches a list of tickets.
@@ -56,16 +71,12 @@ public class ClientTicketManager {
      * @throws Exception if there is an error fetching the tickets
      */
 	
-	public ArrayList<Ticket> fetchTickets() throws Exception{
+	public ArrayList<Ticket> fetchTickets(String ekrutLocation) throws Exception{
 		// WAIT FOR USER MANAGMENT TO BE FIXED
 		//question - what do we need to get? 
 		//question - we will do fetch by what? location? item? maybe cases of each one?
-		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH); 
+		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH,ekrutLocation); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
-		
-		if (ticketResponse.getResultType().toString()!="OK") {
-			throw new Exception("Error fetching tickets"); //**Need to think whats better then RuntimeException here
-		}
 		
 		return ticketResponse.getTicketsList();
 		
