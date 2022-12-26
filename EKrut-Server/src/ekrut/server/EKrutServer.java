@@ -32,16 +32,17 @@ public class EKrutServer extends AbstractServer{
 	private ServerReportManager serverReportManager;
 	private ServerShipmentManager serverShipmentManager;
 	
-	public EKrutServer(int port) {
+	public EKrutServer(int port, String dbUsername, String dbPassword) {
 		super(port);
-		dbCon = new DBController(url, username, password);
-		dbCon.connect(); //need to check return value		
+		dbCon = new DBController("jdbc:mysql://localhost/ekrut?serverTimezone=IST" , dbUsername, dbPassword);
+		if (!dbCon.connect()) //need to check return value
+			System.exit(1); // TBD OFEK: different behaviour might be more suited
 		serverSessionManager = new ServerSessionManager(dbCon);
-		IUserNotifier userNotifier = new PopupUserNotifier(dbCon, serverSessionManager);
-		serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
+		//IUserNotifier userNotifier = new PopupUserNotifier(dbCon, serverSessionManager);
+		//serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
 		//serverTicketManager = new ServerTicketManager(dbCon);
-		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager);
-		serverShipmentManager = new ServerShipmentManager(dbCon);
+		//serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager);
+		//serverShipmentManager = new ServerShipmentManager(dbCon);
 	}
 
 	@Override
@@ -69,13 +70,15 @@ public class EKrutServer extends AbstractServer{
 		UserResponse userResponse = null;
 		switch(userRequest.getAction()) {
 			case LOGIN:	
-				userResponse = serverSessionManager.loginUser(username,password,client);
+				userResponse = serverSessionManager.loginUser(
+						userRequest.getUsername(), userRequest.getPassword(), client);
 				break;
 			case LOGOUT:	
-				userResponse = serverSessionManager.logoutUser(username, client, null);
+				userResponse = serverSessionManager.logoutUser(
+						userRequest.getUsername(), client, null);
 				break;
 			case IS_LOGGEDIN:
-				userResponse = serverSessionManager.isLoggedin(username);
+				userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
 				break;
 			default:
 				userResponse = new UserResponse(ResultType.UNKNOWN_ERROR);
