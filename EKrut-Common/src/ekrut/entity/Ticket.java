@@ -16,68 +16,57 @@ public class Ticket implements Serializable{
 	private Integer ticketId;
 	private TicketStatus status;
 	private String ekrutLocation;
+	private String area;
 	private int threshold;
 	private int itemID;
 	private String itemName;
+	private String username ;
 	
 	
-	public Ticket(Integer ticketId, TicketStatus status, String ekrutLocation, int threshold, int itemID, String itemName) {
+	public Ticket(Integer ticketId, TicketStatus status, String ekrutLocation,String area,
+					int threshold, int itemID, String itemName,String username) {
+		
 		this.ticketId = ticketId;
 		this.status = status;
 		this.ekrutLocation = ekrutLocation;
+		this.area=area;
 		this.itemID = itemID;
 		this.itemName = itemName;
 		this.threshold = threshold;
+		this.username=username;
 	}
 
 	public int getTicketId() {
 		return ticketId;
 	}
 
-	public void setTicketId(int ticketId) {
-		this.ticketId = ticketId;
-	}
-
 	public TicketStatus getStatus() {
 		return status;
-	}
-
-	public void setStatus(TicketStatus status) {
-		this.status = status;
 	}
 
 	public String getEkrutLocation() {
 		return ekrutLocation;
 	}
-
-	public void setEkrutLocation(String ekrutLocation) {
-		this.ekrutLocation = ekrutLocation;
+	
+	public String getArea() {
+		return area;
 	}
 
 	public int getItemID() {
 		return itemID;
 	}
 
-	public void setItemID(int itemID) {
-		this.itemID = itemID;
-	}
-
 	public String getItemName() {
 		return itemName;
-	}
-
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
 	}
 
 	public int getThreshold() {
 		return threshold;
 	}
-
-	public void setThreshold(int threshold) {
-		this.threshold = threshold;
+	
+	public String getUsername() {
+		return username;
 	}
-	
-	
+
 	
 }
