@@ -304,6 +304,7 @@ public class ReportDAO {
 					ps1.close();
 					ps2.close();
 					ps3.close();
+					ps4.close();
 				} catch (SQLException e) {
 					throw new RuntimeException(e);
 				}
