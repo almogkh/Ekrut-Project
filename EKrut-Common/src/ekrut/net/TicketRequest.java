@@ -11,43 +11,37 @@ public class TicketRequest implements Serializable{
 	private int ticketId;
 	private TicketStatus status;
 	private String ekrutLocation;
+	private String area;
 	private int threshold;
 	private int itemID;
 	private String itemName;
+	private String username;
 	
 	
-	public TicketRequest(TicketRequestType action, int ticketId, TicketStatus status, String ekrutLocation,
-			int threshold, int itemID, String itemName) {
+	//FETCH 
+	public TicketRequest(TicketRequestType action, String areaOrUsername) {
 		this.action = action;
-		this.ticketId = ticketId;
-		this.status = status;
-		this.ekrutLocation = ekrutLocation;
-		this.threshold = threshold;
-		this.itemID = itemID;
-		this.itemName = itemName;
-	}
+		if (action.equals(TicketRequestType.FETCH_BY_AREA)) {
+			this.area = areaOrUsername;
+		} 
+		else
+			this.username=areaOrUsername;
+		} 
 	
-	public TicketRequest(TicketRequestType action, String ekrutLocation) {
-		this.action = action;
-		this.ekrutLocation = ekrutLocation;
-	}
-	
+	//UPDATE
 	public TicketRequest(TicketRequestType action, int ticketId) {
 		this.action = action;
 		this.ticketId = ticketId;
 	}
 
-	
-	public TicketRequest(TicketRequestType action, String ekrutLocation, int itemID) {
+	//CREATE 
+	public TicketRequest(TicketRequestType action, String ekrutLocation, int itemID, String username) {
 		this.action = action;
 		this.ekrutLocation = ekrutLocation;
-		this.itemID = itemID;
+		this.itemID=itemID;
+		this.username=username;
+		
 	}
-
-	public TicketRequest(TicketRequestType action) {
-		this.action = action;
-	}
-
 
 	public TicketRequestType getAction() {
 		return action;
@@ -64,6 +58,10 @@ public class TicketRequest implements Serializable{
 	public String getEkrutLocation() {
 		return ekrutLocation;
 	}
+	
+	public String getArea() {
+		return area;
+	}
 
 	public int getThreshold() {
 		return threshold;
@@ -75,6 +73,10 @@ public class TicketRequest implements Serializable{
 
 	public String getItemName() {
 		return itemName;
+	}
+	
+	public String getUsername() {
+		return username;
 	}
 	
 }
