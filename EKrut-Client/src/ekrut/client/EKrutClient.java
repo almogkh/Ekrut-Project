@@ -16,21 +16,18 @@ public class EKrutClient extends AbstractClient{
 	private ClientReportManager clientReportManager; 
 	private ClientSessionManager clientSessionManager;
 	private ClientShipmentManager clientShipmentManager;
-	
 	private Map<Class<?>, Consumer<Object>> handlers = new HashMap<>();
 	
 	
 	
 	public EKrutClient(String host, int port) {
 		super(host, port);
-		//clientInventoryManager = new ClientInventoryManager();
-		//clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
-		//clientReportManager = new ClientReportManager();
+		clientInventoryManager = new ClientInventoryManager(this);
+		clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
+		//clientReportManager = new ClientReportManager(this);
 		clientSessionManager = new ClientSessionManager(this);
-		//clientShipmentManager = new ClientShipmentManager();
+		//clientShipmentManager = new ClientShipmentManager(this);
 	}
-	
-	
 	
 	
 	public ClientInventoryManager getClientInventoryManager() {
@@ -82,5 +79,4 @@ public class EKrutClient extends AbstractClient{
 			throw new RuntimeException("Unknown message received");
 		handler.accept(msg);
 	}
-
 }
