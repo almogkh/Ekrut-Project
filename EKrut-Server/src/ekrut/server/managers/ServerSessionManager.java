@@ -88,7 +88,8 @@ public class ServerSessionManager {
      */
 	public UserResponse logoutUser(String username, ConnectionToClient client, String reason) {
 		ResultType result = null;
-		user = userDAO.fetchUserByUsername(username);
+		User user = clientUserMap.get(client);
+		
 		UserResponse userResponse = new UserResponse(result);
 		//Check if user not exist in DB
 		if (user == null) {
@@ -97,11 +98,11 @@ public class ServerSessionManager {
 		
 		else {
 			//the session has expired
-			if(reason!=null) {
-				sendRequestToClient(new UserRequest(UserRequestType.LOGOUT,username),client);
+			if(reason != null) {
+				sendRequestToClient(new UserRequest(UserRequestType.LOGOUT, username), client);
 			}
 			else
-			result= ResultType.OK;
+			result = ResultType.OK;
 			connectedUsers.get(user).cancel(); //cancel timer
 			connectedUsers.remove(user);
 			clientUserMap.remove(client);
@@ -110,8 +111,8 @@ public class ServerSessionManager {
 		return userResponse;
 	}
 
-	private void sendRequestToClient(UserRequest userRequest,ConnectionToClient client) {
-		 EKrutServer.sendRequestToClient(userRequest,client);
+	private void sendRequestToClient(UserRequest userRequest, ConnectionToClient client) {
+		 EKrutServer.sendRequestToClient(userRequest, client);
 	}
 
 	/**
