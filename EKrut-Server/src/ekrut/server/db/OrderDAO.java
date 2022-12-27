@@ -14,6 +14,7 @@ import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
 import ekrut.entity.OrderStatus;
 import ekrut.entity.OrderType;
+import ekrut.entity.User;
 
 /**
  * Handles all direct database interactions with orders
@@ -24,7 +25,8 @@ public class OrderDAO {
 
 	private DBController con;
 	private ItemDAO itemDAO;
-	
+	private UserDAO userDAO;
+
 	/**
 	 * Constructs a new OrderDAO that uses the provided controller
 	 * 
@@ -33,6 +35,7 @@ public class OrderDAO {
 	public OrderDAO(DBController con) {
 		this.con = con;
 		this.itemDAO = new ItemDAO(con);
+		this.userDAO = new UserDAO(con);
 	}
 	
 	/**
@@ -257,22 +260,30 @@ public class OrderDAO {
 		return true;
 	}
 
-	
-	
 	// For Almog: Added by Nir, get list of orders in Shipment status.
-	public ArrayList<Order> fetchOrderShipmentList(String area){
-		PreparedStatement ps = con.getPreparedStatement("SELECT orderId FROM orders WHERE type = 'SHIPMENT' AND area = ?");
+	public ArrayList<Order> fetchOrderShipmentListByArea(String area) {
+		PreparedStatement ps = con.getPreparedStatement(
+				"SELECT orderId, date, status, type, dueDate, clientAddress, location, username "
+				+ "FROM orders "
+				+ "WHERE type = 'SHIPMENT'");
 		ArrayList<Order> orderList = new ArrayList<>();
 		try {
-			ps.setString(1, area);
+			// Get all orders that their status is SHIPMENT
 			ResultSet rs = con.executeQuery(ps);
-			while(rs.next()) {
-				Order order = fetchOrderById(rs.getInt(1));
-				if (order.getStatus() == OrderStatus.SUBMITTED)
-					orderList.add(order);
+			while (rs.next()) {
+				// Get customer area in order to match the requested area with manager area.
+				User user = userDAO.fetchUserByUsername(rs.getString(8));
+				// if areas matches add the order to list.
+				if (user.getArea().equals(area)) {
+					orderList.add(new Order(rs.getInt(1), rs.getObject(2, LocalDateTime.class),
+							OrderStatus.valueOf(rs.getString(3)), OrderType.valueOf(rs.getString(4)),
+							rs.getObject(5, LocalDateTime.class), rs.getString(6), rs.getString(7), rs.getString(8)));
+				}
 			}
 			if (orderList.size() == 0)
 				return null;
+
+			return orderList;
 		} catch (SQLException e) {
 			return null;
 		} finally {
@@ -282,10 +293,5 @@ public class OrderDAO {
 				throw new RuntimeException(e);
 			}
 		}
-		return orderList;	
 	}
 }
-
-
-
-

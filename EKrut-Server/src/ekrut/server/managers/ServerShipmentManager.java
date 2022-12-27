@@ -49,7 +49,7 @@ public class ServerShipmentManager {
 		if (shipmentRequest == null)
 			throw new IllegalArgumentException("null shipmentRequest was provided.");
 
-		ArrayList<Order> orderShipmentListForAppoval = orderDAO.fetchOrderShipmentList(area);
+		ArrayList<Order> orderShipmentListForAppoval = orderDAO.fetchOrderShipmentListByArea(area);
 		
 		if (orderShipmentListForAppoval == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
