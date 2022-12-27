@@ -262,16 +262,16 @@ public class OrderDAO {
 	// For Almog: Added by Nir, get list of orders in Shipment status.
 	public ArrayList<Order> fetchOrderShipmentListByArea(String area) {
 		PreparedStatement ps = con.getPreparedStatement(
-				"SELECT o.orderId, o.date, o.status, o.type, o.dueDate, o.clientAddress, o.location, o.username "
-				+ "FROM orders o, ekrut_machines e "
-				+ "WHERE o.type = 'SHIPMENT'");
+				"SELECT orderId, date, status, type, dueDate, clientAddress, location, username "
+				+ "FROM orders "
+				+ "WHERE type = 'SHIPMENT'");
 		ArrayList<Order> orderList = new ArrayList<>();
 		try {
 			// Get all orders that their status is SHIPMENT
 			ResultSet rs = con.executeQuery(ps);
 			while (rs.next()) {
 				// Get customer area in order to match the requested area with manager area.
-				User user = userDAO.fetchUserByUsername(rs.getString(7));
+				User user = userDAO.fetchUserByUsername(rs.getString(8));
 				// if areas matches add the order to list.
 				if (user.getArea().equals(area)) {
 					orderList.add(new Order(rs.getInt(1), rs.getObject(2, LocalDateTime.class),
