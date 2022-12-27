@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
-/**
- * @author Tal Gaon
- */
 public class Report {
 	private Integer reportID;
 	private ReportType reportType;

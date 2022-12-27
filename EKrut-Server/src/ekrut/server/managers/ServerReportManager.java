@@ -21,6 +21,10 @@ import ekrut.server.db.DBController;
 import ekrut.server.db.InventoryItemDAO;
 import ekrut.server.db.ReportDAO;
 
+/**
+ * Manages Report management on the server side.
+ * @author Tal Gaon
+ */
 public class ServerReportManager {
 	private ReportDAO reportDAO;
 	private InventoryItemDAO inventoryItemDAO;

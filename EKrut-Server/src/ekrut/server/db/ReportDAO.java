@@ -3,17 +3,12 @@ package ekrut.server.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap; 
 import java.util.Map;
-
 import com.mysql.cj.MysqlType;
-
 import ekrut.entity.Order;
-import ekrut.entity.OrderItem;
-import ekrut.entity.OrderType;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
 
