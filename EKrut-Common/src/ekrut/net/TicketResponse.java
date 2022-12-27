@@ -35,10 +35,5 @@ public class TicketResponse implements Serializable{
 	public ArrayList<Ticket> getTicketsList() {
 		return ticketsList;
 	}
-
-
-	public void setTicketsList(ArrayList<Ticket> ticketsList) {
-		this.ticketsList = ticketsList;
-	}
 	
 }
