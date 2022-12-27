@@ -202,5 +202,11 @@ public class EKrutServer extends AbstractServer{
 			System.exit(-1);
 		}
 	}
+	
+	@Override
+	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
+		// logout the user connected from 'client'
+	}
+	
 
 }
