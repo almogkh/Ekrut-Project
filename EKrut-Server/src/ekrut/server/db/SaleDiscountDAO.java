@@ -30,7 +30,7 @@ public class SaleDiscountDAO {
 	 * @param saleDiscount the SaleDiscount object to be added to the database.
 	 * @return true if the discount was successfully created, false otherwise.
 	 * @throws SQLException if there is a problem executing the SQL query or
-	 *                      processing the result set.
+	 * 		   processing the result set.
 	 */
 	public boolean createDiscount(SaleDiscount saleDiscount) {
 		if (saleDiscount == null)
@@ -44,8 +44,10 @@ public class SaleDiscountDAO {
 			ps.setString(3, saleDiscount.getDayOfSale());
 			ps.setString(4, saleDiscount.getType().toString());
 			int count = con.executeUpdate(ps);
+			
 			if (count != 1)
 				return false;
+			
 		} catch (SQLException e) {
 			return false;
 		} finally {
@@ -63,9 +65,9 @@ public class SaleDiscountDAO {
 	 * 
 	 * @param discountId the id of the discount to be fetched.
 	 * @return a SaleDiscount object with the data of the discount with the given
-	 *         id, or null if the discount was not found.
+	 * 		   id, or null if the discount was not found.
 	 * @throws SQLException if there is a problem executing the SQL query or
-	 *                      processing the result set.
+	 * 		   processing the result set.
 	 */
 	public SaleDiscount fetchSaleDiscountById(int discountId) {
 
@@ -94,9 +96,9 @@ public class SaleDiscountDAO {
 	 * Fetches all templates sales as a list.
 	 * 
 	 * @return a list of SaleDiscount objects representing the sale discount
-	 *         templates in the database.
+	 * 		   templates in the database.
 	 * @throws SQLException if there is a problem executing the SQL query or
-	 *                      processing the result set.
+	 * 		   processing the result set.
 	 */
 	public ArrayList<SaleDiscount> fetchSaleDiscountTemplatList() {
 
@@ -129,7 +131,7 @@ public class SaleDiscountDAO {
 	 * @return a list of SaleDiscount objects representing the active sales for the
 	 *         given area.
 	 * @throws SQLException if there is a problem executing the SQL query or
-	 *                      processing the result set.
+	 *         processing the result set.
 	 */
 	public ArrayList<SaleDiscount> fetchActivateSaleDiscountListByArea(String area) {
 
