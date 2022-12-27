@@ -58,23 +58,24 @@ public class ClientLoginController {
 	
 	@FXML
 	void attemptLogin(ActionEvent event) throws Exception {
+		// reset red error labels
 		usernameOrPasswdBlankLbl.setVisible(false);
 		incorrectUserPassLbl.setVisible(false);
+		
 		String username = usernameTxt.getText().trim();
 		String password = passwordTxt.getText();
 		if (username.isEmpty() || password.isEmpty()) {
 			usernameOrPasswdBlankLbl.setVisible(true);
 			return;
 		}
+		
 		User me = null;
-		
-		
+
 		if (ekrutClient == null)
 			ekrutClient = EKrutClientUI.getEkrutClient();
 		
 		me = ekrutClient.getClientSessionManager().loginUser(username, password);
 		
-		System.out.println(me);
 		if (me == null) {
 			incorrectUserPassLbl.setVisible(true);
 			return;
@@ -90,8 +91,20 @@ public class ClientLoginController {
 			}
 		}
 		Parent root = loader.getRoot();
-		//ClientLoginController clientLoginController = loader.getController();
-		//clientLoginController.setServerDetails(server, portText);
+		MainMenuController mainMenuController = loader.getController();
+
+		mainMenuController.setUser(me);
+
+		//mainMenuController.setLabels(me.getFirstName(), me.getUserType().toString(), 
+		//		EKrutClientUI.ekrutLocation);
+
+		
+		if (EKrutClientUI.ekrutLocation == null) {
+			// client runs as On-Line (remote) client
+		}else {
+			// client runs as ekrut machine!
+			
+		}
 		stage.getScene().setRoot(root);
 	}
 
