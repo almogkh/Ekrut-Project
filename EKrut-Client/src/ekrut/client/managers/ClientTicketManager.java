@@ -53,29 +53,45 @@ public class ClientTicketManager {
 	 * @return the result of the ticket creation request
 	 * @throws Exception if an error occurs while sending the ticket creation request
 	 */
-	public ResultType CreateTicket(String ekrutLocation , int itemID) throws Exception{
+	public ResultType CreateTicket(String ekrutLocation , int itemID, String username) throws Exception{
 		if (itemID==0) {
 			throw new IllegalArgumentException("provided null itemID");
 		}
 		
-		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.CREATE,ekrutLocation,itemID); 
+		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.CREATE,ekrutLocation,itemID,username); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
 		return ticketResponse.getResultType();
 	}
 	
+	
 	/**
-     * Fetches a list of tickets.
+     * Fetches a list of tickets by area.
      * 
      * @return a list of tickets
      * @throws Exception if there is an error fetching the tickets
      */
 	
-	public ArrayList<Ticket> fetchTickets(String ekrutLocation) throws Exception{
+	public ArrayList<Ticket> fetchTicketsByArea(String area) throws Exception{
 		// WAIT FOR USER MANAGMENT TO BE FIXED
-		//question - what do we need to get? 
-		//question - we will do fetch by what? location? item? maybe cases of each one?
-		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH,ekrutLocation); 
+		
+		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH_BY_AREA,area); 
+		TicketResponse ticketResponse = sendRequest(ticketRequest);
+		
+		return ticketResponse.getTicketsList();
+		
+	}
+	
+	
+	/**
+     * Fetches a list of tickets by username.
+     * 
+     * @return a list of tickets
+     * @throws Exception if there is an error fetching the tickets
+     */
+	public ArrayList<Ticket> fetchTicketsByUsername(String username) throws Exception{
+	
+		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH_BY_USERNAME,username); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
 		return ticketResponse.getTicketsList();
