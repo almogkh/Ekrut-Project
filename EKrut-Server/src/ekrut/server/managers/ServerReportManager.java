@@ -12,6 +12,7 @@ import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
+import ekrut.entity.OrderType;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
 import ekrut.net.ReportResponse;
@@ -29,9 +30,19 @@ public class ServerReportManager {
 		inventoryItemDAO = new InventoryItemDAO(con);
 	}
 	
-	public ReportResponse fetchReport(LocalDateTime date, String location, ReportType type) {
+	/**
+	 * This method fetches a report from the database based on the provided date, location, area, and type.
+	 * 
+	 * @param date the date of the report to fetch
+	 * @param location the location of the report to fetch
+	 * @param area the area of the report to fetch
+	 * @param type the type of the report to fetch
+	 * @return a ReportResponse object containing the report, or a ResultType value indicating if the report was not found
+	 * @throws SQLException if a database error occurs while executing the SQL query
+	 */
+	public ReportResponse fetchReport(LocalDateTime date, String location, String area, ReportType type) {
 		
-		Report report = reportDAO.fetchReport(date, location, type);
+		Report report = reportDAO.fetchReport(date, location, area, type);
 		
 		if (report == null) 
 			return new ReportResponse(ResultType.NOT_FOUND);
@@ -39,6 +50,13 @@ public class ServerReportManager {
 		return new ReportResponse(ResultType.OK, report); 
 	}
 	
+	/**
+	 * This method fetches a list of facilities in a specific area from the database.
+	 * 
+	 * @param area the area to fetch facilities from
+	 * @return a ReportResponse object containing the list of facilities, or a ResultType value indicating if the list was not found
+	 * @throws SQLException if a database error occurs while executing the SQL query
+	 */
 	public ReportResponse fetchFacilitiesByArea(String area){
 		
 		ArrayList<String> facilities = reportDAO.fetchFacilitiesByArea(area);
@@ -50,37 +68,58 @@ public class ServerReportManager {
 	}
 	
 	/**
-	 * Generates an order report for a given location and date.
+	 * This method generates an Order report for a given month and area.
 	 * 
-	 * @param date the date for which to generate the report
-	 * @param ekrutLocation the location for which to generate the report
-	 * @return the generated order report, or null
+	 * @param date the month for which the report is being generated
+	 * @param ekrutLocation the location of the report
+	 * @param area the area for which the report is being generated
+	 * @return a Report object containing the generated data for the Order report
+	 * @throws SQLException if a database error occurs while executing the SQL query
 	 */
-	public Report generateOrderReport(LocalDateTime date, String ekrutLocation) {
-		// Get a list of all orders made in the given month and location
-		ArrayList<Order> orders = reportDAO.fetchAllMonthlyOrders(date, ekrutLocation); 
-		// Initialize the total order count and total order amount to 0
-		int totalOrders = orders.size();
-		int totalOrdersInILS = 0;
-		float avgOrderPrice = -1;
-		 // Iterate over the orders to calculate the total order amount
-		for (Order order : orders) {
-			totalOrdersInILS += order.getSumAmount();
+	public Report generateOrderReport(LocalDateTime date, String ekrutLocation, String area) {
+		// Get all the locations of the given area
+		ArrayList<String> areaLocations = reportDAO.fetchFacilitiesByArea(area);
+		// Create a new Map to hold all the orders at the given area
+		Map<String, ArrayList<Order>> areaOrders = new HashMap<>();
+		// Iterate trough each location at the area
+		for(String location : areaLocations) {
+			
+			// Get a list of all orders at the given month and location
+			ArrayList<Order> locationOrders = reportDAO.fetchAllMonthlyOrders(date, location);
+			// Put those orders at areaOrders
+			areaOrders.put(location, locationOrders);
 		}
-		if (totalOrders > 0) {
-			avgOrderPrice = totalOrdersInILS / totalOrders;
-		}
-		// Process the orders to count the quantity of each item ordered
-		Map<String, Integer> itemsQuantityInOrders = ProcessOrders(orders);
+		// Create a new Map to hold the topSellers items at the given area and month
+		Map<String, Integer> topSellers = new HashMap<>();
+		// proccesOrderArea process all the Orders into a order report
+		Map<String, ArrayList<Integer>> orderReportData = processOrdersArea(areaOrders);
 		
-		// If less than 6 items have been ordered all month then we do not generate an order report
-		if (itemsQuantityInOrders.size() < 6) {
-			return null;
+		// Create those for later calculation
+		int areaTotalOrders = 0;
+		int areaTotalOrdersInILS = 0;
+		// Iterate  trough each list of orders(by location)
+		for (Map.Entry<String, ArrayList<Order>> entry : areaOrders.entrySet()) {	
+			// Process each list of orders: Adds to each item the number of times it was ordered in the list
+			topSellers = processOrdersLocation(entry.getValue(), topSellers);
+			
+			int totalOrders = 0;
+			int totalOrdersInILS = 0;	
+			// Calculate totalOrders and totalOrdersInILS for each order at the current location
+			for (Order order : entry.getValue()) {
+				totalOrders += 1;
+				totalOrdersInILS += order.getSumAmount();
+			}
+			// After calculation for each location add to areaTotal..
+			areaTotalOrders += totalOrders;
+			areaTotalOrdersInILS += totalOrdersInILS;
 		}
-		// Save the 5 best sellers items and save the rest of the items into "item" that named "allRest"
-		Map<String, Integer> bestSellers = ProcessItemOrders(itemsQuantityInOrders);
-		// Create a new report object with the generated data		
-		Report report = new Report(null, ReportType.ORDER, date, ekrutLocation, totalOrders, totalOrdersInILS, avgOrderPrice, bestSellers);
+		
+		// Sort out the top 5 best sellers
+		topSellers = processItemOrders(topSellers);
+		
+		// Create a new report object with the generated data
+		Report report = new Report(null, ReportType.ORDER, date, ekrutLocation, area,
+				areaTotalOrders, areaTotalOrdersInILS, orderReportData, topSellers);
 		// Return the report
 		return report;
 	}
@@ -92,7 +131,7 @@ public class ServerReportManager {
 	 * @param ekrutLocation the location for which to generate the report
 	 * @return the generated customer report
 	 */
-	public Report generateCustomerReport(LocalDateTime date, String ekrutLocation) {
+	public Report generateCustomerReport(LocalDateTime date, String ekrutLocation, String area) {
 		// Get a list of all customer orders for the given date and location	
 		ArrayList<String> allCustomersOrders = reportDAO.getAllCustomersOrders(date, ekrutLocation);
 		// Process the customer orders to count the number of orders made by each customer
@@ -100,7 +139,7 @@ public class ServerReportManager {
 		// Create a histogram of customer orders by dividing customers into categories based on their order count
 		Map<String, Integer> customersHistogram = createCustomersHistogram(customersOrders);
 		// Create a new report object with the generated data
-		Report report = new Report(null, ReportType.CUSTOMER, date, ekrutLocation, customersHistogram);
+		Report report = new Report(null, ReportType.CUSTOMER, date, ekrutLocation, area, customersHistogram);
 		// Return the report
 		return report;
 	}
@@ -112,7 +151,7 @@ public class ServerReportManager {
 	 * @param ekrutLocation the location for which to generate the report
 	 * @return the generated inventory report
 	 */
-	public Report generateInventoryReport(LocalDateTime date, String ekrutLocation) {
+	public Report generateInventoryReport(LocalDateTime date, String ekrutLocation, String area) {
 		// Get the list of threshold alert messages for the given date and location
 		ArrayList<String> thersholdAlerts = reportDAO.getThresholdAlert(date, ekrutLocation);
 		// Count the number of alerts for each item
@@ -129,7 +168,7 @@ public class ServerReportManager {
 				ProcessInventoryData(allItemsInLocation, tresholdAlertCounted);
 		// Create a new report object with the generated data
 		Report report = new Report(null, ReportType.INVENTORY, date,
-				ekrutLocation, inventoryReportData, facilityThreshold);
+				ekrutLocation, area, inventoryReportData, facilityThreshold);
 		// Return the report
 		return report;
 	}
@@ -250,13 +289,12 @@ public class ServerReportManager {
 
 	
 	/**
-	 * Processes a given map of items and their quantities and returns a new map containing the 5 best-selling items
-	 * and a single entry for all the rest of the items. The new map is sorted in descending order by item quantity.
-	 *
-	 * @param itemsQuantityInOrders a map of items and their quantities
-	 * @return a new map containing the 5 best-selling items and a single entry for all the rest of the items
-	 */	
-	private Map<String, Integer> ProcessItemOrders(Map<String, Integer> itemsQuantityInOrders){
+	 * This method processes a map of item quantities and generates a map of the top 5 best-selling items.
+	 * 
+	 * @param itemsQuantityInOrders the map of item quantities to process
+	 * @return the map of the top 5 best-selling items
+	 */
+	private Map<String, Integer> processItemOrders(Map<String, Integer> itemsQuantityInOrders){
 		// Sort the items by quantity in descending order
 		List<Map.Entry<String, Integer>> sortedItemsInOrders = new ArrayList<>(itemsQuantityInOrders.entrySet());
 		
@@ -268,34 +306,28 @@ public class ServerReportManager {
 		    }
 		    
 		});
-		// Add the 5 best-selling items to the map and sum the quantities of all other items
+
 		Map<String, Integer> bestSellers = new HashMap<>();
 		
-		int allRestQuantity = 0;
-		
-		for (int i = 0; i < sortedItemsInOrders.size(); i++) {
+		for (int i = 0; i < 5; i++) {
 		    Map.Entry<String, Integer> entry = sortedItemsInOrders.get(i);
 		    if (i < 5) {
 		    	bestSellers.put(entry.getKey(), entry.getValue());
 		    }
-		    else {
-		    	allRestQuantity += entry.getValue();
-		    }
 		}
-		 // Add the total quantity of all other items to the map under the key "allRest"
-		bestSellers.put("allRest", allRestQuantity);
 		
 	    // Return the map of best-selling items
 		return bestSellers;
 	} 
 	
 	/**
-	 * Processes a list of orders by counting the total quantities of each item sold.
-	 * @param orders a list of orders
-	 * @return a map where the keys are item names and the values are the quantities of those items sold
+	 * This method processes a list of orders and generates a map of item quantities.
+	 * 
+	 * @param orders the list of orders to process
+	 * @param itemsQuantityInOrders the map to store the quantities of each item
+	 * @return the map of item quantities
 	 */
-	private Map<String, Integer> ProcessOrders(ArrayList<Order> orders){
-		Map<String, Integer> itemsQuantityInOrders = new HashMap<>();
+	private Map<String, Integer> processOrdersLocation(ArrayList<Order> orders, Map<String, Integer> itemsQuantityInOrders){
 		
 	    // Iterate through the orders and count the quantities of each item sold
 		for (Order order : orders) {
@@ -308,6 +340,50 @@ public class ServerReportManager {
 		}
 		// Return the map of item quantities
 		return itemsQuantityInOrders;
+	}
+	
+	private Map<String, ArrayList<Integer>> processOrdersArea(Map<String, ArrayList<Order>> areaOrders){
+
+		Map<String, ArrayList<Integer>> orderReportData = new HashMap<>();
+		
+		for (Map.Entry<String, ArrayList<Order>> entry : areaOrders.entrySet()) {
+			// Iterate trough orders of given location
+			ArrayList<Integer> locationOrdersData = new ArrayList<>();
+			
+			//init locationOrdersData
+			for (int i = 0; i < 8; i++) 
+				locationOrdersData.add(0);
+			
+			int totalOrders = 0;
+			int totalOrdersInILS = 0;
+			
+			for (Order order : entry.getValue()) {
+				//locationOrdersData(0) and (4) saved for total
+				totalOrders += 1;
+				totalOrdersInILS += order.getSumAmount();
+				switch (order.getType()) {
+					case SHIPMENT:
+						locationOrdersData.add(1, 1);
+				    	locationOrdersData.add(5, order.getSumAmount());
+				    	break;
+				    case PICKUP:
+				    	locationOrdersData.add(2, 1);
+				    	locationOrdersData.add(6, order.getSumAmount());
+				    	break;
+				    case REMOTE:
+				    	locationOrdersData.add(3, 1);
+				    	locationOrdersData.add(7, order.getSumAmount());
+				    	break;
+				    default:
+				    	break;
+				  }
+			}
+			
+			locationOrdersData.add(0, totalOrders);
+			locationOrdersData.add(4, totalOrdersInILS);
+			orderReportData.put(entry.getKey(), locationOrdersData);
+		}
+		return orderReportData;
 	}
 	
 }

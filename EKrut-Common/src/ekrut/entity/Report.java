@@ -16,40 +16,43 @@ public class Report {
 	// Each data structure holds the relevant data to make a report
 	private Map<String, ArrayList<Integer>> InventoryReportData;
 	private Map<String, Integer> customerReportData;
-	private Map<String, Integer> orderReportData;
-	private float avgOrderPrice;
-	private int monthlyOrders;
-	private int monthlyOrdersInILS;
+	private Map<String, ArrayList<Integer>> orderReportData;
+	private Map<String, Integer> topSellersData;
 	private int threshold;
+	private int totalOrders;
+	private int totalOrdersInILS;
 
-	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation) {
+	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation, String area) {
 		this.reportID = reportID;
 		this.reportType = reportType;
 		this.date = date;
 		this.ekrutLocation = ekrutLocation;
+		this.area = area;
 	}
 
 	// Order report constructor
-	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation, int monthlyOrders,
-			int monthlyOrdersInILS, float avgOrderPrice, Map<String, Integer> orderReportData) {
-		this(reportID, reportType, date, ekrutLocation);
-		this.monthlyOrders = monthlyOrders;
-		this.monthlyOrdersInILS = monthlyOrdersInILS;
+	public Report(
+			Integer reportID, ReportType reportType, LocalDateTime date,
+			String ekrutLocation, String area, int totalOrders, int totalOrdersInILS,
+			Map<String, ArrayList<Integer>> orderReportData, Map<String, Integer> topSellersData) {
+		this(reportID, reportType, date, ekrutLocation, area);
+		this.totalOrders = totalOrders; 
+		this.totalOrdersInILS = totalOrdersInILS;
 		this.orderReportData = orderReportData;
-
+		this.topSellersData = topSellersData;
 	}
 
 	// Customer report report constructor
-	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation,
+	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation, String area,
 			Map<String, Integer> customerReportData) {
-		this(reportID, reportType, date, ekrutLocation);
+		this(reportID, reportType, date, ekrutLocation, area);
 		this.customerReportData = customerReportData;
 	}
 
 	// Inventory report constructor 
 	 public Report(Integer reportID, ReportType reportType, LocalDateTime date,
-			 String ekrutLocation, Map<String, ArrayList<Integer>> InventoryReportData, int threshold) {
-		 this(reportID, reportType, date, ekrutLocation);
+			 String ekrutLocation, String area, Map<String, ArrayList<Integer>> InventoryReportData, int threshold) {
+		 this(reportID, reportType, date, ekrutLocation, area);
 		 this.InventoryReportData = InventoryReportData;
 	 }
 
@@ -101,36 +104,11 @@ public class Report {
 		this.customerReportData = customerReportData;
 	}
 
-	public Map<String, Integer> getOrderReportData() {
+	public Map<String, ArrayList<Integer>>  getOrderReportData() {
 		return orderReportData;
 	}
-
-	public void setOrderReportData(Map<String, Integer> orderReportData) {
+	public void setOrderReportData(Map<String, ArrayList<Integer>> orderReportData) {
 		this.orderReportData = orderReportData;
-	}
-
-	public float getAvgOrderPrice() {
-		return avgOrderPrice;
-	}
-
-	public void setAvgOrderPrice(int avgSalesPerCustomer) {
-		this.avgOrderPrice = avgSalesPerCustomer;
-	}
-
-	public int getMonthlyOrders() {
-		return monthlyOrders;
-	}
-
-	public void setMonthlyOrders(int monthlyOrders) {
-		this.monthlyOrders = monthlyOrders;
-	}
-
-	public int getMonthlyOrdersInILS() {
-		return monthlyOrdersInILS;
-	}
-
-	public void setMonthlyOrdersInILS(int monthlyOrdersInILS) {
-		this.monthlyOrdersInILS = monthlyOrdersInILS;
 	}
 
 	public int getThreshold() {
@@ -139,6 +117,30 @@ public class Report {
 
 	public void setThreshold(int threshold) {
 		this.threshold = threshold;
+	}
+
+	public Map<String, Integer> getTopSellersData() {
+		return topSellersData;
+	}
+
+	public void setTopSellersData(Map<String, Integer> topSellersData) {
+		this.topSellersData = topSellersData;
+	}
+
+	public int getTotalOrders() {
+		return totalOrders;
+	}
+
+	public void setTotalOrders(int totalOrders) {
+		this.totalOrders = totalOrders;
+	}
+
+	public int getTotalOrdersInILS() {
+		return totalOrdersInILS;
+	}
+
+	public void setTotalOrdersInILS(int totalOrdersInILS) {
+		this.totalOrdersInILS = totalOrdersInILS;
 	}
 
 }

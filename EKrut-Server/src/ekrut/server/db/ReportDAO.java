@@ -20,21 +20,28 @@ import ekrut.entity.ReportType;
 /*This is how the DB look like:
  * reports table:
  * 
- * 		ID	 | 		type 	|	 date  	| ekrutLocation
+ * 		ID	 | 		type 	|	 date  	| ekrutLocation | area
  * -------------------------------------------------------------------
- * 	  15678  |     order    |  28.12.22 |       U-TLV
+ * 	  15678  |     order    |  28.12.22 |       U-TLV   | NORTH
  * 
  * #######################################################################
  * orders report data table:
- *  reportID |   itemName |	numOfOrders |
- * ------------------------------------------
- * 	  15678  |     COKE   |     130     |
+ *  reportID |   location  |totalOrders | shipment | pickup | remote | totalOrdersInILS |shipmentInILS | pickupInILS | remoteInILS  |
+ * -----------------------------------------------------------------------------------------------------------------------------------
+ * 	  15678  |     U-TLV   |     130    |    40   |   50   |    40   |        12000     |       4000     |     5000    |    4000     | 
  * 
  * #######################################################################
- * orders monthly sales table:
- *   reportID  | totalOrders | totalOrdersInILS | average
- * ----------------------------------------------------
- * 	  15678    |    3220    |       18550     |   X
+ * orders top sellers table: 
+ *   reportID  | itemName  | totalSales
+ * -----------------------------------------
+ * 	  15678    |    COKE   |  679
+ * 
+ * #######################################################################
+ * orders monthly data table: 
+ *   reportID  | totalOrders  | totalOrdersInILS
+ * ---------------------------------------------
+ * 	  15678    |      1362    |  340988
+ * 
  * 
  * #######################################################################
  * inventory report data table:
@@ -89,22 +96,24 @@ public class ReportDAO {
 	 * 
 	 * @param date
 	 * @param ekrutLocation
+	 * @param area
 	 * @param type
 	 * @return the report ID of the report, or -1 if the report does not exist
 	 * @throws Exception if there is an error executing the SQL query
 	 */
-	public Integer getReportID(LocalDateTime date, String ekrutLocation, ReportType type) throws Exception {
+	public Integer getReportID(LocalDateTime date, String ekrutLocation, String area, ReportType type) throws Exception {
 		int reportid = -1;
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM reports WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?)"
 				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?)"
-				+ " AND ekrutLocation = ? AND type = ?;");
+				+ " AND ekrutLocation = ? AND type = ? AND area = ?");
 		
 		try {
 			ps.setObject(1, date, MysqlType.DATETIME); 
 			ps.setObject(2, date, MysqlType.DATETIME); 
 			ps.setString(3, ekrutLocation);
 			ps.setString(4, type.toString()); 
+			ps.setString(5, area);
 			ResultSet rs = con.executeQuery(ps);
 			
 			if (rs.first()) {
@@ -134,9 +143,9 @@ public class ReportDAO {
 	 * @param type ("order", "inventory", or "customer").
 	 * @return The report, or null if an error occurred.
 	 * */
-	public Report fetchReport(LocalDateTime date, String ekrutLocation, ReportType type) {
+	public Report fetchReport(LocalDateTime date, String ekrutLocation, String area, ReportType type) {
 		try {
-			int reportID = getReportID(date, ekrutLocation, type);
+			int reportID = getReportID(date, ekrutLocation, area, type);
 			Report report = null;
 			// We will use the corresponding function according to the report type
 			switch(type){
@@ -201,6 +210,7 @@ public class ReportDAO {
 					ReportType.valueOf(rs1.getString("type")), 
 					rs1.getObject(("date"), LocalDateTime.class),
 					rs1.getString("ekrutLocation"),
+					rs1.getString("area"),
 					customersHistogram); 	
 			
 			return report;
@@ -218,60 +228,73 @@ public class ReportDAO {
 	}
 
 	/**
-	 * Return an order report with the given report ID.
+	 * This method fetches a report from the database based on its ID.
 	 * 
-	 * @param reportID the ID of the report to retrieve
-	 * @return a {@link Report} object containing the report data, or null if the report does not exist
-	 * @throws Exception if there is an error executing the SQL query
+	 * @param reportID the ID of the report to fetch
+	 * @return a Report object representing the report with the specified ID, or null if no such report exists in the database
+	 * @throws SQLException if a database error occurs while executing the SQL queries
 	 */
 	public Report fetchOrderReportByID(int reportID) {
-		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
-		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM order_reports WHERE reportID = ?");
-		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM order_sales_reports WHERE reportID = ?");
 		
-		int numberOfSales = -1;
-		int numberOfSalesInILS = -1;
-		float avgOrderPrice = -1;
-
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
+		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM orderReports WHERE reportID = ?");
+		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM orderTopSellers WHERE reportID = ?");
+		PreparedStatement ps4 = con.getPreparedStatement("SELECT * FROM ordersMonthlyData WHERE reportID = ?");
+		
 		try {
+			
 			ps1.setInt(1, reportID);
 			ResultSet rs1 = con.executeQuery(ps1);
 			
 			if (!rs1.next()) 
 				return null;
 			
+			
 			ps2.setInt(1, reportID);
 			ResultSet rs2 = con.executeQuery(ps2);
 			
-			Map<String, Integer> orderReportData = new HashMap<>();
-		
-			// Put items into the map: for each itemName -> numOfOrders
+			Map<String, ArrayList<Integer>> orderReportData = new HashMap<>();
+			
 			while (rs2.next()) {
-				orderReportData.put(rs2.getString("itemName"),
-									rs2.getInt("numOfOrders"));
+				ArrayList<Integer> temp = new ArrayList<>();
+				temp.add(rs2.getInt("totalOrders"));
+				temp.add(rs2.getInt("shipment"));
+				temp.add(rs2.getInt("pickup"));
+				temp.add(rs2.getInt("remote"));
+				temp.add(rs2.getInt("toalOrdersInILS"));
+				temp.add(rs2.getInt("shipmentInILS"));
+				temp.add(rs2.getInt("pickupInILS"));
+				temp.add(rs2.getInt("remoteInILS"));
+				orderReportData.put(rs2.getString("ekrutLocation"), temp);
 			}
 			
-			ps3.setInt(1, reportID);
+			ps3.setInt(1,  reportID);
 			ResultSet rs3 = con.executeQuery(ps3);
-			// Get and save numberOfSales and numberOfSalesInILS
-			if (rs3.first()) {
-				numberOfSales = rs3.getInt("numberOfSales");
-				numberOfSalesInILS = rs3.getInt("numberOfSalesInILS");
-				avgOrderPrice = rs3.getFloat("avgOrderPrice");
+			
+			//fetch top sellers
+			Map<String, Integer> topSellersData = new HashMap<>();
+			
+			while(rs3.next()) {
+				topSellersData.put(rs2.getString("itemName"),
+						rs2.getInt("totalOrders")); 
 			}
-			else {
-				return null; 
-			}
-			// Create a report instance
+			
+			ps4.setInt(1, reportID);
+			ResultSet rs4 = con.executeQuery(ps4);
+			
+			if (!rs4.next()) 
+				return null;
+			
 			Report report = new Report(rs1.getInt("reportID"),
 					ReportType.valueOf(rs1.getString("type")), 
 					rs1.getObject(("date"), LocalDateTime.class),
 					rs1.getString("ekrutLocation"),
-					numberOfSales, 
-					numberOfSalesInILS,
-					avgOrderPrice,
-					orderReportData); 
-
+					rs1.getString("area"),
+					rs4.getInt("totalOrders"),
+					rs4.getInt("totalOrdersInILS"),
+					orderReportData, 
+					topSellersData);
+			
 			return report;
 			 
 			}catch (SQLException e) {
@@ -322,7 +345,9 @@ public class ReportDAO {
 					ReportType.valueOf(rs1.getString("type")), 
 					rs1.getObject(("date"), LocalDateTime.class),
 					rs1.getString("ekrutLocation"),
-					inventoryReportData, rs2.getInt("threshold")); 
+					rs1.getString("area"),
+					inventoryReportData,
+					rs2.getInt("threshold")); 
 			
 			return report;
 			 
@@ -350,7 +375,7 @@ public class ReportDAO {
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT orderId FROM orders WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
-				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND area = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setObject(2, date, MysqlType.DATETIME);
@@ -507,18 +532,18 @@ public class ReportDAO {
 	} 
 	
 	/**
-	 * Creates a new order report in the database with the given report object's data.
-	 * The report is inserted into the "orderMonthlySales" table and the "orderReports" table.
+	 * This method creates a new order report in the database based on the provided report object.
 	 * 
-	 * @param report the report object containing the data to use for the new order report
-	 * @return true if the report is successfully created, false otherwise
+	 * @param report the report to be created in the database
+	 * @return true if the report was successfully created, false otherwise
+	 * @throws SQLException if a database error occurs while executing the SQL queries
 	 */
 	public boolean createOrderReport(Report report) {
 		
 		con.beginTransaction();
 		
 		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO orderMonthlySales"
-														+ "(reportID,totalOrders,totalOrdersInILS) " +
+														+ "(reportID,itemName,totalOrders) " +
                     									"VALUES(?,?,?)");
 		
 		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO orderReports"
@@ -527,26 +552,39 @@ public class ReportDAO {
 		Integer reportID = report.getReportID();
 		
 		try {
+			//Insert topSellers
+			for (Map.Entry<String, Integer> entry : report.getTopSellersData().entrySet()) {
+				ps1.setInt(1,  reportID);
+				ps1.setString(2, entry.getKey());
+				ps1.setInt(2, entry.getValue());
+				ps1.addBatch();
+			}
 
-			ps1.setInt(1,  reportID);
-			ps1.setInt(2, report.getMonthlyOrders());
-			ps1.setInt(3, report.getMonthlyOrdersInILS());
-			
-			int res = ps1.executeUpdate();
-			if(res != 1) {
-				con.abortTransaction();
-				return false; 
+			int[] results1 = ps1.executeBatch();
+			for (int i : results1) {
+				if (i != 1) {
+					con.abortTransaction();
+					return false;
+				}
 			}
 				
-			for (Map.Entry<String, Integer> entry : report.getOrderReportData().entrySet()) {
+			for (Map.Entry<String, ArrayList<Integer>>  entry : report.getOrderReportData().entrySet()) { 
 				ps2.setInt(1, reportID);
 				ps2.setString(2, entry.getKey());
-				ps2.setInt(3, entry.getValue());
-				ps2.addBatch();
+				ps2.setInt(3, entry.getValue().get(0));
+				ps2.setInt(4, entry.getValue().get(1));
+				ps2.setInt(5, entry.getValue().get(2));
+				ps2.setInt(6, entry.getValue().get(3));
+				ps2.setInt(7, entry.getValue().get(4));
+				ps2.setInt(8, entry.getValue().get(5));
+				ps2.setInt(9, entry.getValue().get(6));
+				ps2.setInt(9, entry.getValue().get(7));
+				ps2.addBatch(); 
 			}
 			
-			int[] results = ps2.executeBatch();
-			for (int i : results) {
+			
+			int[] results2 = ps2.executeBatch();
+			for (int i : results2) {
 				if (i != 1) {
 					con.abortTransaction();
 					return false;
@@ -671,7 +709,15 @@ public class ReportDAO {
 			throw new RuntimeException(e);
 		}
 	}
-}
+	}
+	
+	/**
+	 * Retrieves a list of facilities in a given area.
+	 *
+	 * @param area a string representing the area to search for facilities
+	 * @return an ArrayList of strings, each representing a facility in the given area.
+	 *         If no facilities are found or there is an error, the method returns null.
+	 */
 	public ArrayList<String> fetchFacilitiesByArea(String area){
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT ekrutLocation FROM ekrut_machines WHERE area = ?");
@@ -683,6 +729,7 @@ public class ReportDAO {
 			
 			ArrayList<String> facilities = new ArrayList<>();	
 			
+			 
 			while (rs1.next()) {
 				facilities.add(rs1.getString("ekrutLocation"));
 			}
