@@ -1,7 +1,6 @@
 package ekrut.client;
 
 import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -23,13 +22,9 @@ public class EKrutClientUI extends Application {
 		launch(args);
 	}
 	
-	
-	
 	public static EKrutClient getEkrutClient() {
 		return ekrutClient;
 	}
-
-
 
 	public static boolean connectToServer(String ip, int port) {
 		ekrutClient = new EKrutClient(ip, port);
@@ -41,7 +36,6 @@ public class EKrutClientUI extends Application {
 		return true;
 	}
 	
-	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Parent root = FXMLLoader.load(getClass().getResource("/ekrut/client/gui/HostSelection.fxml"));
@@ -50,15 +44,11 @@ public class EKrutClientUI extends Application {
 		primaryStage.show();
 	}
 	
-	
-	
 	@Override
 	public void stop() throws IOException {
 		if (ekrutClient != null)
 			ekrutClient.closeConnection();
 	}
-	
-	
 	
 	public void popupUserNotification(String notificationMsg) {
 		Platform.runLater(() -> {
