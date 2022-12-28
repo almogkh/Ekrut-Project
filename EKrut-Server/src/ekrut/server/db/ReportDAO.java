@@ -270,8 +270,8 @@ public class ReportDAO {
 			Map<String, Integer> topSellersData = new HashMap<>();
 			
 			while(rs3.next()) {
-				topSellersData.put(rs2.getString("itemName"),
-						rs2.getInt("totalOrders")); 
+				topSellersData.put(rs3.getString("itemName"),
+						rs3.getInt("totalOrders")); 
 			}
 			
 			ps4.setInt(1, reportID);
