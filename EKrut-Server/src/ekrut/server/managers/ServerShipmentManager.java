@@ -34,7 +34,7 @@ public class ServerShipmentManager {
 		orderDAO = new OrderDAO(con);
 	}
 
-	// Q.Nir , TBD - Need to change after Yovel implementation area at fetch.... method?
+	// Q.Nir , TBD - Need to change after Yovel implementation area at fetch... method?
 	// PLEASE, HOW CAN I DO IT?
 	// C.Nir - Message need to be sent after confirmation.
 
