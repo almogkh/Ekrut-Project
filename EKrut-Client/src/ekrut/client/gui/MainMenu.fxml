@@ -47,7 +47,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.MainMenuController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -114,15 +114,7 @@
                </font>
             </Label>
             <Line endX="327.0" layoutX="172.0" layoutY="770.0" startX="-172.0" strokeWidth="2.0" />
-            <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <children>
-                  <Label fx:id="userPrivilegeLbl" layoutX="20.0" layoutY="19.0" text="Loggedin as ..................." />
-               </children>
-            </Pane>
-            <Button fx:id="pickupOrderBtn" layoutX="41.0" layoutY="325.0" mnemonicParsing="false" text="Pickup exising order">
+            <Button fx:id="pickupOrderBtn" layoutX="42.0" layoutY="339.0" mnemonicParsing="false" text="Pickup exising order">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
@@ -132,22 +124,46 @@
                   <Font name="Arial" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="RegistrationRequestsBtn" layoutX="266.0" layoutY="273.0" mnemonicParsing="false" text="Registration requests">
+            <Button fx:id="RegistrationRequestsBtn" layoutX="41.0" layoutY="306.0" mnemonicParsing="false" text="Registration requests">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="viewMonthlyReportsBtn" layoutX="264.0" layoutY="325.0" mnemonicParsing="false" text="View monthly reports">
+            <Button fx:id="viewMonthlyReportsBtn" layoutX="42.0" layoutY="372.0" mnemonicParsing="false" text="View monthly reports">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="approveShipmentArrivalBtn" layoutX="41.0" layoutY="379.0" mnemonicParsing="false" text="Approve shipment arrival">
+            <Button fx:id="approveShipmentArrivalBtn" layoutX="41.0" layoutY="438.0" mnemonicParsing="false" text="Approve shipment arrival">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="viewShipmentRequestsBtn" layoutX="45.0" layoutY="500.0" mnemonicParsing="false" text="View shipment requests">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="viewTicketsBtn" layoutX="45.0" layoutY="552.0" mnemonicParsing="false" text="View tickets">
+               <font>
+                  <Font name="Arial" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="viewReportsBtn" layoutX="45.0" layoutY="617.0" mnemonicParsing="false" text="View reports">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </Button>
       </children>
     </AnchorPane>
+      <Pane prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <children>
+            <Label fx:id="userPrivilegeLbl" layoutX="20.0" layoutY="19.0" text="Loggedin as ..................." />
+            <Label fx:id="ekrutLocationLbl" layoutX="351.0" layoutY="19.0" text="EKrut Machine ..................." />
+         </children>
+      </Pane>
   </children>
 </VBox>

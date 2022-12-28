@@ -16,15 +16,43 @@ public class EKrutClient extends AbstractClient{
 	private ClientReportManager clientReportManager; 
 	private ClientSessionManager clientSessionManager;
 	private ClientShipmentManager clientShipmentManager;
-	
 	private Map<Class<?>, Consumer<Object>> handlers = new HashMap<>();
 	
 	
 	
 	public EKrutClient(String host, int port) {
 		super(host, port);
+		clientInventoryManager = new ClientInventoryManager(this);
+		clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
+		//clientReportManager = new ClientReportManager(this);
+		clientSessionManager = new ClientSessionManager(this);
+		//clientShipmentManager = new ClientShipmentManager(this);
 	}
 	
+	
+	public ClientInventoryManager getClientInventoryManager() {
+		return clientInventoryManager;
+	}
+
+	public ClientOrderManager getClientOrderManager() {
+		return clientOrderManager;
+	}
+
+	public ClientReportManager getClientReportManager() {
+		return clientReportManager;
+	}
+
+	public ClientSessionManager getClientSessionManager() {
+		return clientSessionManager;
+	}
+
+	public ClientShipmentManager getClientShipmentManager() {
+		return clientShipmentManager;
+	}
+
+
+
+
 	public <T> void registerHandler(Class<T> klass, Consumer<T> handler) {
 		handlers.put(klass, (response) -> handler.accept(klass.cast(response)));
 	}
@@ -51,5 +79,4 @@ public class EKrutClient extends AbstractClient{
 			throw new RuntimeException("Unknown message received");
 		handler.accept(msg);
 	}
-
 }

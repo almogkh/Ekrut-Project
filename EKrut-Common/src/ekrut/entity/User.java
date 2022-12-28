@@ -1,7 +1,10 @@
 package ekrut.entity;
 
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
+
+	private static final long serialVersionUID = 7107357504490406916L;
 	private UserType userType;
 	private String username;
 	private String password;
@@ -11,7 +14,8 @@ public class User {
 	private String email;
 	private String phoneNumber;
 	private String area;
-	//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
+	// this entity on DB: (userType, username, password, firstName, lastName, 
+	//						id, email, phoneNumber, area)
 	
 	public User(UserType userType, String username, String password, String firstName, String lastName, String id,
 			String email, String phoneNumber, String area) {

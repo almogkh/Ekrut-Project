@@ -67,8 +67,8 @@ public class HostSelectionController {
 			}
 			Parent root = loader.getRoot();
 			ClientLoginController clientLoginController = loader.getController();
-			clientLoginController.setServerDetails(server, portText, true);
-			stage.getScene().setRoot(root); // If server was launch, change scene.
+			clientLoginController.setServerDetails(server, portText);
+			stage.getScene().setRoot(root);
 		}
     		
     	
