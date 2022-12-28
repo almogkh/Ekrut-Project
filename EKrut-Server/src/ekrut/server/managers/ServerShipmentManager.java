@@ -34,7 +34,7 @@ public class ServerShipmentManager {
 		orderDAO = new OrderDAO(con);
 	}
 
-	// Q.Nir , TBD - Need to change after Yovel implementation?
+	// Q.Nir , TBD - Need to change after Yovel implementation area at fetch... method?
 	// PLEASE, HOW CAN I DO IT?
 	// C.Nir - Message need to be sent after confirmation.
 
@@ -46,11 +46,13 @@ public class ServerShipmentManager {
 	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
 	public ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest, String area) {
+		// Check if shipmentRequest is null.
 		if (shipmentRequest == null)
 			throw new IllegalArgumentException("null shipmentRequest was provided.");
 
 		ArrayList<Order> orderShipmentListForAppoval = orderDAO.fetchOrderShipmentListByArea(area);
 		
+		// Check if there any shipments on DB.
 		if (orderShipmentListForAppoval == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 		
@@ -65,32 +67,34 @@ public class ServerShipmentManager {
 	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
 	public ShipmentResponse confirmShipment(ShipmentRequest shipmentRequest) {
+		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			throw new IllegalArgumentException("Null order was provided.");
-
+		
+		// Prepare fields in order to calculate due date.
 		int orderId = shipmentRequest.getOrderId();
 		LocalDateTime date = shipmentRequest.getDate();
 		String clientAddress = shipmentRequest.getClientAddress();
 		Order order = orderDAO.fetchOrderById(orderId);
-
-		// In case the order null an exception will be thrown
+		
+		// In case order is null return not found result.
 		if (order == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 
+		// In case order is not for shipping return invalid input result.
 		if (order.getType() != OrderType.SHIPMENT)
 			return new ShipmentResponse(ResultType.INVALID_INPUT);
 
+		// In case order status not submitted return invalid input result.
 		if (order.getStatus() != OrderStatus.SUBMITTED)
 			return new ShipmentResponse(ResultType.INVALID_INPUT);
 
 		// Estimate delivery time.
 		LocalDateTime estimateDeliveryTime = ShipmentManagerUtils.estimatedArrivalTime(date, clientAddress);
+		// Set due date in order.
 		order.setDueDate(estimateDeliveryTime);
 
-		// Q.Nir , do we need to add another method in case the worker cancel?
-		// and for this we will need to add CANCELED_SHIPMENT in in OrderStatus
-		// what's happen in case the worker cancel the shipment? we will choose to cancel
-		// and continue with regular order process? or we will delete the whole order?
+		// Try to confirm shipment and update order status to awaiting for delivery.
 		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.AWAITING_DELIVERY))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 		
@@ -98,23 +102,33 @@ public class ServerShipmentManager {
 	}
 
 	/**
-	 * Confirms the delivery of an order.
+	 * Customer confirmation of shipment arrival.
 	 * 
-	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details
-	 * @return a {@code ShipmentResponse} object with the result of the operation
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details.
+	 * @return a {@code ShipmentResponse} object with the result of the operation.
 	 */
 	public ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
+		// In case the shipment request null an exception will be thrown.
+		if (shipmentRequest == null)
+			throw new IllegalArgumentException("Null order was provided.");
+		
+		// Get order by ID from DB.
 		int orderId = shipmentRequest.getOrderId();
 		Order order = orderDAO.fetchOrderById(orderId);
+		
+		// In case order is null return not found result.
 		if (order == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 
+		// In case order is not for shipping return invalid input result.
 		if (order.getType() != OrderType.SHIPMENT)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
+		// In case order status not awaiting for delivery return unknown result.
 		if (order.getStatus() != OrderStatus.AWAITING_DELIVERY)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
+		// Try to update order status to confirmed.
 		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.DELIVERY_CONFIRMED))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
@@ -122,24 +136,33 @@ public class ServerShipmentManager {
 	}
 
 	/**
-	 * Marks an order as done.
+	 * Worker marks an order as done.
 	 * 
-	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
-	 *                        request details
-	 * @return a {@code ShipmentResponse} object with the result of the operation
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details.
+	 * @return a {@code ShipmentResponse} object with the result of the operation.
 	 */
 	public ShipmentResponse setDone(ShipmentRequest shipmentRequest) {
+		// In case the shipment request null an exception will be thrown.
+		if (shipmentRequest == null)
+			throw new IllegalArgumentException("Null order was provided.");
+		
+		// Get order by ID from DB.
 		int orderId = shipmentRequest.getOrderId();
 		Order order = orderDAO.fetchOrderById(orderId);
+		
+		// In case order is null return not found result.
 		if (order == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 
+		// In case order is not for shipping return invalid input result.
 		if (order.getType() != OrderType.SHIPMENT)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
+		// In case order status not confirmed return unknown result.
 		if (order.getStatus() != OrderStatus.DELIVERY_CONFIRMED)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
+		// Try to update order status to done.
 		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.DONE))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
