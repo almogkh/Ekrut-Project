@@ -354,7 +354,7 @@ public class ServerReportManager {
 			// Iterate trough orders of given location
 			ArrayList<Integer> locationOrdersData = new ArrayList<>();
 			
-			//init locationOrdersData
+			// Initialize locationOrdersData
 			for (int i = 0; i < 8; i++) 
 				locationOrdersData.add(0);
 			
@@ -367,26 +367,28 @@ public class ServerReportManager {
 				totalOrdersInILS += order.getSumAmount();
 				switch (order.getType()) {
 					case SHIPMENT:
-						locationOrdersData.add(1, 1);
-				    	locationOrdersData.add(5, order.getSumAmount());
+						locationOrdersData.add(1, locationOrdersData.get(1) + 1);
+				    	locationOrdersData.add(5, locationOrdersData.get(5) + order.getSumAmount());
 				    	break;
 				    case PICKUP:
-				    	locationOrdersData.add(2, 1);
-				    	locationOrdersData.add(6, order.getSumAmount());
+				    	locationOrdersData.add(2, locationOrdersData.get(2) + 1);
+				    	locationOrdersData.add(6, locationOrdersData.get(6) + order.getSumAmount());
 				    	break;
 				    case REMOTE:
-				    	locationOrdersData.add(3, 1);
-				    	locationOrdersData.add(7, order.getSumAmount());
+				    	locationOrdersData.add(3, locationOrdersData.get(3) + 1);
+				    	locationOrdersData.add(7, locationOrdersData.get(7) + order.getSumAmount());
 				    	break;
 				    default:
 				    	break;
 				  }
 			}
 			
-			locationOrdersData.add(0, totalOrders);
-			locationOrdersData.add(4, totalOrdersInILS);
+			locationOrdersData.add(0, locationOrdersData.get(0) + totalOrders);
+			locationOrdersData.add(4, locationOrdersData.get(4) + totalOrdersInILS);
+			
 			orderReportData.put(entry.getKey(), locationOrdersData);
 		}
+		
 		return orderReportData;
 	}
 	
