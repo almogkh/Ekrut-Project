@@ -9,6 +9,7 @@ public class Item implements Serializable{
 	private String itemName;
 	private String itemDescription;
 	private float itemPrice;
+	private byte[] imgByteArray;
 	
 	// constructor 
 	public Item(int itemId, String itemName, String itemDescription, float itemPrice) {
@@ -17,7 +18,15 @@ public class Item implements Serializable{
 		this.itemDescription = itemDescription;
 		this.itemPrice = itemPrice;
 	}
+	
+	public void setImg(byte[] imgByteArray) {
+		this.imgByteArray = imgByteArray;
+	}
 
+	public byte[] getImg() {
+		return imgByteArray;
+	}
+	
 	public int getItemId() {
 		return itemId;
 	}

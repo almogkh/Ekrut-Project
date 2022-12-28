@@ -5,9 +5,15 @@ import ekrut.server.db.InventoryItemDAO;
 import ekrut.server.db.UserDAO;
 import ekrut.server.intefaces.IUserNotifier;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import ekrut.entity.InventoryItem;
+import ekrut.entity.Item;
 import ekrut.entity.User;
 import ekrut.entity.UserType;
 import ekrut.net.InventoryItemRequest;
@@ -108,12 +114,26 @@ public class ServerInventoryManager {
 		String ekrutLocation = inventoryGetItemsRequest.getEkrutLocation();
 		
 		// Fetch InventoryItem(s) fromDB.
-		
 		ArrayList<InventoryItem> inventoryItems = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
-		
+
 		// Check if DB could not locate InventoryItem(s) for given ekrutLocation.
 		if (inventoryItems == null)
 			return new InventoryItemResponse(ResultType.NOT_FOUND);
+		
+		// Attaching images to each Item.
+		for (InventoryItem inventoryItem : inventoryItems) {
+			Item item = inventoryItem.getItem();
+			File imgFile = new File(item.getItemId() + ".jpg");
+			try (FileInputStream fis = new FileInputStream(imgFile);
+				BufferedInputStream bis = new BufferedInputStream(fis)) {
+				byte [] imgByteArray  = new byte [(int)imgFile.length()];
+				bis.read(imgByteArray, 0, imgByteArray.length);
+				item.setImg(imgByteArray);
+			} catch (IOException e) {
+				System.out.println("Cant attach image for itemId: " + item.getItemId() 
+				+ ". Error:" + e.getMessage());
+			}
+		}
 		
 		// Return the InventoryItems(s) fetched from DB.
 		return new InventoryItemResponse(ResultType.OK, inventoryItems);
