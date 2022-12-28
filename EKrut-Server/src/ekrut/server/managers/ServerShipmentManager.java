@@ -82,11 +82,11 @@ public class ServerShipmentManager {
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 
 		// In case order is not for shipping return invalid input result.
-		if (order.getType().equals(OrderType.SHIPMENT))
+		if (!order.getType().equals(OrderType.SHIPMENT))
 			return new ShipmentResponse(ResultType.INVALID_INPUT);
 
 		// In case order status not submitted return invalid input result.
-		if (order.getStatus().equals(OrderStatus.SUBMITTED))
+		if (!order.getStatus().equals(OrderStatus.SUBMITTED))
 			return new ShipmentResponse(ResultType.INVALID_INPUT);
 
 		// Estimate delivery time.
@@ -121,11 +121,11 @@ public class ServerShipmentManager {
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 
 		// In case order is not for shipping return invalid input result.
-		if (order.getType().equals(OrderType.SHIPMENT))
+		if (!order.getType().equals(OrderType.SHIPMENT))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		// In case order status not awaiting for delivery return unknown result.
-		if (order.getStatus().equals(OrderStatus.AWAITING_DELIVERY))
+		if (!order.getStatus().equals(OrderStatus.AWAITING_DELIVERY))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		// Try to update order status to confirmed.
@@ -155,11 +155,11 @@ public class ServerShipmentManager {
 			return new ShipmentResponse(ResultType.NOT_FOUND);
 
 		// In case order is not for shipping return invalid input result.
-		if (order.getType().equals(OrderType.SHIPMENT))
+		if (!order.getType().equals(OrderType.SHIPMENT))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		// In case order status not confirmed return unknown result.
-		if (order.getStatus().equals(OrderStatus.DELIVERY_CONFIRMED))
+		if (!order.getStatus().equals(OrderStatus.DELIVERY_CONFIRMED))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		// Try to update order status to done.
