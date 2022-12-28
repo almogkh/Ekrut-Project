@@ -1,0 +1,48 @@
+.button:hover {
+  -fx-background-color: #68f4fd;
+  -fx-text-fill: black;
+}
+.button {
+  -fx-background-color: #2f88ff;
+  -fx-border-color: black;
+  -fx-border-radius: 20;
+  -fx-background-radius: 20;
+}
+
+.button:pressed {
+  -fx-background-color: #c3fbff;
+  -fx-text-fill: black;
+}
+
+.text_field,
+.password_field {
+  -fx-border-radius: 20px;
+  -fx-background-radius: 20px;
+  -fx-background-color: white;
+  -fx-border-color: black;
+}
+
+.gradient-background {
+  -fx-background-color: linear-gradient(
+    from 25% 25% to 100% 100%,
+    #60a4ff,
+    #c3fbff
+  );
+}
+.container {
+  -fx-background-color: rgba(255, 255, 255, 0.25);
+  -fx-border-radius: 60;
+  -fx-background-radius: 10;
+}
+
+.menu_button_list {
+  -fx-pref-width: 100;
+}
+.menu_button_list:hover {
+  -fx-pref-width: 100;
+}
+
+.table {
+  -fx-border-color: black;
+  -fx-background-color: rgba(255, 255, 255, 0.25);
+}
