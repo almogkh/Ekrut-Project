@@ -552,7 +552,7 @@ public class ReportDAO {
 			for (Map.Entry<String, Integer> entry : report.getTopSellersData().entrySet()) {
 				ps1.setInt(1,  reportID);
 				ps1.setString(2, entry.getKey());
-				ps1.setInt(2, entry.getValue());
+				ps1.setInt(3, entry.getValue());
 				ps1.addBatch();
 			}
 
@@ -574,7 +574,7 @@ public class ReportDAO {
 				ps2.setInt(7, entry.getValue().get(4));
 				ps2.setInt(8, entry.getValue().get(5));
 				ps2.setInt(9, entry.getValue().get(6));
-				ps2.setInt(9, entry.getValue().get(7));
+				ps2.setInt(10, entry.getValue().get(7));
 				ps2.addBatch(); 
 			}
 			
