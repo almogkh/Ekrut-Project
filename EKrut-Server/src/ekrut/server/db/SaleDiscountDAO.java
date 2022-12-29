@@ -11,8 +11,7 @@ import ekrut.entity.SaleDiscountType;
 
 /**
  * The saleDiscountDAO class is a data access object for handling sale discount
- * data in the database. It provides methods for creating, fetching, and
- * managing sale discount data in the database.
+ * data in the DB. It provides methods for creating, fetching, and managing sale discount data in DB.
  * 
  * @author Nir Betesh
  */
@@ -25,14 +24,14 @@ public class SaleDiscountDAO {
 	}
 
 	/**
-	 * Creates a sale discount in the database.
+	 * Creates a discount template in the DB.
 	 * 
-	 * @param saleDiscount the SaleDiscount object to be added to the database.
-	 * @return true if the discount was successfully created, false otherwise.
-	 * @throws SQLException if there is a problem executing the SQL query or
-	 *                      processing the result set.
-	 */
-	public boolean createDiscount(SaleDiscount saleDiscount) {
+	 * @param saleDiscount the discount template to create
+	 * @return true if the discount template was successfully created, false otherwise
+	 * @throws RuntimeException if there is an error closing the prepared statement
+	 * @throws SQLException if there is an error executing the prepared statement
+	*/
+	public boolean createDiscountTemplate(SaleDiscount saleDiscount) {
 		if (saleDiscount == null)
 			return false;
 
@@ -43,13 +42,17 @@ public class SaleDiscountDAO {
 			ps.setObject(2, saleDiscount.getEndTime(), MysqlType.TIME);
 			ps.setString(3, saleDiscount.getDayOfSale());
 			ps.setString(4, saleDiscount.getType().toString());
+			
+			// Check executeUpdate result.
 			int count = con.executeUpdate(ps);
 			if (count != 1)
 				return false;
+			
 		} catch (SQLException e) {
 			return false;
 		} finally {
 			try {
+				// Close statement
 				ps.close();
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
@@ -59,13 +62,12 @@ public class SaleDiscountDAO {
 	}
 
 	/**
-	 * Fetches a sale discount from the database by its id.
+	 * Fetches a sale discount from the DB by its id.
 	 * 
 	 * @param discountId the id of the discount to be fetched.
-	 * @return a SaleDiscount object with the data of the discount with the given
-	 *         id, or null if the discount was not found.
-	 * @throws SQLException if there is a problem executing the SQL query or
-	 *                      processing the result set.
+	 * @return a SaleDiscount object with the data of the discount with the given id, or null if the discount was not found.
+	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
+	 * @throws RuntimeException if there is an error closing the prepared statement
 	 */
 	public SaleDiscount fetchSaleDiscountById(int discountId) {
 
@@ -93,10 +95,9 @@ public class SaleDiscountDAO {
 	/**
 	 * Fetches all templates sales as a list.
 	 * 
-	 * @return a list of SaleDiscount objects representing the sale discount
-	 *         templates in the database.
-	 * @throws SQLException if there is a problem executing the SQL query or
-	 *                      processing the result set.
+	 * @return a list of SaleDiscount objects representing the sale discount templates in the database.
+	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
+	 * @throws RuntimeException if there is an error closing the prepared statement
 	 */
 	public ArrayList<SaleDiscount> fetchSaleDiscountTemplatList() {
 
@@ -126,10 +127,9 @@ public class SaleDiscountDAO {
 	 * Fetches all activate sales as a list for a given area.
 	 * 
 	 * @param area the area for which to fetch the active sales.
-	 * @return a list of SaleDiscount objects representing the active sales for the
-	 *         given area.
-	 * @throws SQLException if there is a problem executing the SQL query or
-	 *                      processing the result set.
+	 * @return a list of SaleDiscount objects representing the active sales for the given area.
+	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
+	 * @throws RuntimeException if there is an error closing the prepared statement
 	 */
 	public ArrayList<SaleDiscount> fetchActivateSaleDiscountListByArea(String area) {
 
