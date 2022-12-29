@@ -33,7 +33,6 @@
 -->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
@@ -46,11 +45,11 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderReportViewController">
+<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
   <children>
       <HBox prefHeight="700.0" prefWidth="100.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="442.0" prefWidth="200.0" style="-fx-background-radius: 10;" styleClass="container">
+            <VBox alignment="TOP_CENTER" prefHeight="442.0" prefWidth="200.0" style="-fx-background-radius: 10;" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <children>
                   <ImageView fitHeight="98.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -68,7 +67,7 @@
                               </DropShadow>
                            </effect>
                         </Circle>
-                        <Label layoutX="57.0" layoutY="20.0" prefHeight="98.0" prefWidth="86.0" text="YG" textFill="#ffffffd3">
+                        <Label fx:id="nameInitialsLbl" layoutX="57.0" layoutY="20.0" prefHeight="98.0" prefWidth="86.0" text="TG" textFill="#ffffffd3">
                            <font>
                               <Font name="Candara Bold" size="73.0" />
                            </font>
@@ -82,26 +81,36 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Label alignment="CENTER" text="ID:">
+                  <Label fx:id="roleLbl" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="CEO" textAlignment="JUSTIFY" textFill="WHITE">
                      <font>
-                        <Font name="Candara Bold" size="18.0" />
+                        <Font name="Candara Bold" size="39.0" />
                      </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.7022900581359863" />
+                           </color>
+                        </DropShadow>
+                     </effect>
                   </Label>
-                  <Label alignment="CENTER" text="UserName:">
+                  <Label fx:id="areaLbl" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Area" textAlignment="JUSTIFY" textFill="WHITE">
                      <font>
-                        <Font name="Candara Bold" size="18.0" />
+                        <Font name="Candara Bold" size="32.0" />
                      </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.7022900581359863" />
+                           </color>
+                        </DropShadow>
+                     </effect>
                   </Label>
                </children>
                <HBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </VBox>
-          <AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@Styles.css">
-               <children>
-                  <PieChart layoutX="6.0" layoutY="336.0" prefHeight="364.0" prefWidth="410.0" title="Orders Chart" />
-               </children>
-          </AnchorPane>
+          <AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
          </children>
       </HBox>
   </children>
