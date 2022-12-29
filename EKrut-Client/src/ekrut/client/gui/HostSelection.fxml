@@ -35,125 +35,109 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="850.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.HostSelectionController">
+<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.HostSelectionController">
   <children>
-      <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
-      <children>
-            <Label layoutX="125.0" layoutY="141.0" prefHeight="92.0" prefWidth="250.0" text="Welcome!" textFill="#05445e">
-               <font>
-                  <Font name="Arial Bold" size="50.0" />
-               </font>
-            </Label>
-            
-            <Pane prefHeight="100.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
+      <HBox prefHeight="700.0" prefWidth="100.0">
+         <children>
+            <VBox alignment="TOP_CENTER" prefHeight="442.0" prefWidth="200.0" style="-fx-background-radius: 10;" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <children>
-                  <ImageView fitHeight="98.0" fitWidth="192.0" layoutX="172.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="98.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@gui-assets/logo.png" />
+                        <Image url="@gui-assets/Group%2010.png" />
                      </image>
                   </ImageView>
-                  <Line endX="283.0" layoutX="217.0" layoutY="100.0" startX="-216.0" strokeWidth="2.0" />
                </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Pane>
-            
-            <Label layoutX="69.0" layoutY="240.0" text="Please provide Server's IP and Port" textFill="#05445e">
-               <font>
-                  <Font name="Arial" size="23.0" />
-               </font>
-            </Label>
-            <Label fx:id="blankLbl" layoutX="99.0" layoutY="591.0" text="Server or Port cannot remain blank" textFill="#ff5555" underline="true" visible="false">
-               <font>
-                  <Font name="Arial Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="incorrectValLbl" layoutX="118.0" layoutY="612.0" prefHeight="21.0" prefWidth="263.0" text="Port or IP values are incorrent" textFill="#ff5555" underline="true" visible="false">
-               <font>
-                  <Font name="Arial Bold" size="18.0" />
-               </font>
-            </Label>
-            <Line endX="327.0" layoutX="172.0" layoutY="770.0" startX="-172.0" strokeWidth="2.0" />
-            <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Pane>
-            <VBox alignment="CENTER" layoutX="126.0" layoutY="300.0" prefHeight="272.0" prefWidth="250.0" spacing="10.0">
-               <children>
-                  <Label text="Server">
-                     <VBox.margin>
-                        <Insets bottom="-10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="hostTxt" prefHeight="39.0" prefWidth="221.0" promptText="Server">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label text="Port">
-                     <VBox.margin>
-                        <Insets bottom="-10.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <TextField fx:id="portTxt" prefHeight="39.0" prefWidth="300.0" promptText="Port">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </TextField>
-                  <Button fx:id="connectBtn" defaultButton="true" mnemonicParsing="false" onAction="#connect" text="Connect">
-                     <font>
-                        <Font name="Arial" size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
             </VBox>
-      </children>
-    </AnchorPane>
+          <AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+               <children>
+                  <VBox alignment="CENTER" layoutY="10.0" prefHeight="120.0" prefWidth="771.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
+                     <children>
+                        <Label contentDisplay="CENTER" text="Connect to server" textFill="WHITE">
+                           <font>
+                              <Font name="Candara Bold" size="50.0" />
+                           </font>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.699999988079071" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox alignment="TOP_CENTER" layoutY="142.0" prefHeight="550.0" prefWidth="771.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Label text="Please provide Server's IP and Port" textFill="WHITE">
+                           <font>
+                              <Font name="Candara Bold" size="30.0" />
+                           </font>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.699999988079071" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Label>
+                        <Pane prefHeight="244.0" prefWidth="751.0">
+                           <children>
+                              <TextField fx:id="serverTxt" layoutX="276.0" layoutY="54.0" prefHeight="41.0" prefWidth="200.0" promptText="Server IP" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="portTxt" layoutX="276.0" layoutY="147.0" prefHeight="41.0" prefWidth="200.0" promptText="Server Port" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <Label layoutX="338.0" layoutY="32.0" text="Server IP">
+                                 <font>
+                                    <Font name="Candara" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="333.0" layoutY="125.0" text="Server Port">
+                                 <font>
+                                    <Font name="Candara" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Button fx:id="connectBtn" defaultButton="true" mnemonicParsing="false" onAction="#connect" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Connect">
+                           <font>
+                              <Font name="Candara Bold" size="20.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="redErrorLbl" text="ERROR" textFill="RED" underline="true" visible="false">
+                           <VBox.margin>
+                              <Insets top="50.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Candara Bold" size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
+         </children>
+      </HBox>
   </children>
 </VBox>

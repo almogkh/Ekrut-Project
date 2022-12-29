@@ -28,25 +28,35 @@ public class ClientLoginController {
 	@FXML
 	private Button loginBtn;
 	
-	@FXML
-	private Label incorrectUserPassLbl;
-	
-	@FXML
-	private Label usernameOrPasswdBlankLbl;
-	
-	@FXML
-	private Label serverIpPortLbl;
-	
-	@FXML
-	private Label serverConnectionStatusLbl;
-	
+    @FXML
+    private Label ekrutLocationLbl;
+
+    @FXML
+    private Label ekrutmachineLbl;
+
+    @FXML
+    private Label errorLbl;
+
+    @FXML
+    private Label serverLbl;
+
+
 	private final Color GREEN = Color.web("#23a423");
 	private final Color RED = Color.web("#e13838");
+	private static final String BLANK_USER_OR_PASS_ERROR = "Username or password cannot remain blank.";
+	private static final String INCORRECT_USER_PASS_ERROR = "Incorrect username and password combination.";
 	
 	public void setServerDetails(String serverIp, String serverPort){
-		usernameOrPasswdBlankLbl.setVisible(false);
-		incorrectUserPassLbl.setVisible(false);
-		serverIpPortLbl.setText("Server (" + serverIp + ":" + serverPort + "):");
+		if (EKrutClientUI.ekrutLocation == null) {
+			ekrutLocationLbl.setVisible(false);
+			ekrutmachineLbl.setVisible(false);
+		}else {
+			ekrutLocationLbl.setVisible(true);
+			ekrutmachineLbl.setText(EKrutClientUI.ekrutLocation.replace("_", " "));
+			ekrutmachineLbl.setVisible(true);
+		}
+		errorLbl.setVisible(false);
+		serverLbl.setText("Server (" + serverIp + ":" + serverPort + "):");
 	}
 	
 	public void setFocus(WindowEvent event) {
@@ -59,13 +69,13 @@ public class ClientLoginController {
 	@FXML
 	void attemptLogin(ActionEvent event) throws Exception {
 		// reset red error labels
-		usernameOrPasswdBlankLbl.setVisible(false);
-		incorrectUserPassLbl.setVisible(false);
+		errorLbl.setVisible(false);
 		
 		String username = usernameTxt.getText().trim();
 		String password = passwordTxt.getText();
 		if (username.isEmpty() || password.isEmpty()) {
-			usernameOrPasswdBlankLbl.setVisible(true);
+			errorLbl.setText(BLANK_USER_OR_PASS_ERROR);
+			errorLbl.setVisible(true);
 			return;
 		}
 		
@@ -77,7 +87,8 @@ public class ClientLoginController {
 		me = ekrutClient.getClientSessionManager().loginUser(username, password);
 		
 		if (me == null) {
-			incorrectUserPassLbl.setVisible(true);
+			errorLbl.setText(INCORRECT_USER_PASS_ERROR);
+			errorLbl.setVisible(true);
 			return;
 		}
 		// LOGIN SUCCESS!
