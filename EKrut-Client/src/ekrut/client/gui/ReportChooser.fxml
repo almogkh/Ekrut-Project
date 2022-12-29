@@ -48,7 +48,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ClientLoginController">
+<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController1">
   <children>
       <HBox prefHeight="700.0" prefWidth="100.0">
          <children>
@@ -70,7 +70,7 @@
                               </DropShadow>
                            </effect>
                         </Circle>
-                        <Label layoutX="57.0" layoutY="20.0" prefHeight="98.0" prefWidth="86.0" text="YG" textFill="#ffffffd3">
+                        <Label fx:id="nameInitialsLabel" layoutX="57.0" layoutY="20.0" prefHeight="98.0" prefWidth="86.0" text="--" textFill="#ffffffd3">
                            <font>
                               <Font name="Candara Bold" size="73.0" />
                            </font>
@@ -101,7 +101,7 @@
             </VBox>
           <AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@Styles.css">
             <children>
-                  <Text layoutX="290.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report ">
+                  <Text layoutX="164.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report ">
                      <font>
                         <Font name="Candara Bold" size="78.0" />
                      </font>
@@ -118,7 +118,7 @@
                         <Font name="Candara Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="loginBtn" layoutX="322.0" layoutY="378.0" mnemonicParsing="false" onAction="#attemptLogin" text="View Report" textFill="WHITE">
+                  <Button fx:id="viewReportButton" layoutX="322.0" layoutY="378.0" mnemonicParsing="false" onAction="#viewReport" text="View Report" textFill="WHITE">
                      <font>
                         <Font name="Candara Bold Italic" size="18.0" />
                      </font>
@@ -130,9 +130,9 @@
                         </DropShadow>
                      </effect>
                   </Button>
-                  <Label fx:id="incorrectUserPassLbl" layoutX="269.0" layoutY="446.0" text="error m" textFill="#ff5555" underline="true">
+                  <Label fx:id="reportErrorLabel" layoutX="167.0" layoutY="453.0" text="Report Doesn't exsits" textAlignment="CENTER" textFill="#ff5555" underline="true">
                      <font>
-                        <Font name="Candara Bold" size="18.0" />
+                        <Font name="Candara Bold" size="47.0" />
                      </font>
                   </Label>
                   <Label alignment="CENTER" layoutX="65.0" layoutY="183.0" text="Area:">
@@ -155,11 +155,11 @@
                         <Font name="Candara Bold" size="18.0" />
                      </font>
                   </Label>
-                  <ComboBox layoutX="178.0" layoutY="132.0" prefWidth="150.0" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-                  <ComboBox layoutX="178.0" layoutY="182.0" prefWidth="150.0" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-                  <ComboBox layoutX="496.0" layoutY="132.0" prefWidth="150.0" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-                  <ComboBox layoutX="496.0" layoutY="184.0" prefWidth="150.0" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-                  <ComboBox layoutX="382.0" layoutY="330.0" prefWidth="150.0" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="typeComboBox" layoutX="178.0" layoutY="132.0" prefWidth="150.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="areaComboBox" layoutX="178.0" layoutY="182.0" prefWidth="150.0" promptText="Choose Area" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="locationComboBox" disable="true" layoutX="496.0" layoutY="132.0" prefWidth="150.0" promptText="Choose Location" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="monthComboBox" layoutX="496.0" layoutY="184.0" prefWidth="150.0" promptText="Choose Month" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="yearComboBox" layoutX="382.0" layoutY="330.0" prefWidth="150.0" promptText="Choose Year" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
             </children>
           </AnchorPane>
          </children>
