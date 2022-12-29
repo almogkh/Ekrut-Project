@@ -34,6 +34,10 @@ public class ServerSessionManager {
 	private static final long LOGOUT_TIME = 1800000; // 30 minutes
 
 	
+	public HashMap<ConnectionToClient, User> getClientUserMap() {
+		return clientUserMap;
+	}
+
 	/**
      * Constructs a new `ServerSessionManager` object and initializes the `connectedUsers` list,
      * `clientUserMap` hash map, and `userDAO` object.

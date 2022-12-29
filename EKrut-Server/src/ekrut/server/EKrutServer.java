@@ -205,8 +205,7 @@ public class EKrutServer extends AbstractServer{
 	
 	@Override
 	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
-		// logout the user connected from 'client'
+		String username = serverSessionManager.getClientUserMap().get(client).getUsername();
+		serverSessionManager.logoutUser(username, client, "Connection terminated");
 	}
-	
-
 }
