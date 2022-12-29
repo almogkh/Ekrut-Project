@@ -5,16 +5,23 @@ import java.time.LocalDateTime;
 
 public class ReportRequest implements Serializable{
 	private static final long serialVersionUID = -7271037236386122944L;
+	private ReportRequestType reportRequestType;
 	private String area;
+	private String location;
 	private String reportType;
 	private LocalDateTime date;
-	
-	public ReportRequest(String area, String reportType, LocalDateTime date) {
+	 
+	public ReportRequest(String area, String location, String reportType, LocalDateTime date) {
+		this.reportRequestType = ReportRequestType.FETCH_REPORT; 
 		this.area = area;
+		this.location = location;
 		this.reportType = reportType;
 		this.date = date;
 	}
-	
+	public ReportRequest(String area) {
+		this.area = area;
+		this.reportRequestType = ReportRequestType.FETCH_FACILITIES; 
+	}
 	public String getArea() {
 		return area;
 	}
@@ -32,5 +39,21 @@ public class ReportRequest implements Serializable{
 	}
 	public void setDate(LocalDateTime date) {
 		this.date = date;
+	}
+
+	public ReportRequestType getReportRequestType() {
+		return reportRequestType;
+	}
+
+	public void setReportRequestType(ReportRequestType reportRequestType) {
+		this.reportRequestType = reportRequestType;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }
