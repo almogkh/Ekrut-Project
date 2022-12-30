@@ -1,6 +1,8 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
+
+import ekrut.client.EKrutClientUI;
 import ekrut.entity.User;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -43,6 +45,22 @@ public class BaseTemplateController {
     
     @FXML
     void logout(ActionEvent event) {
+    	try {
+			EKrutClientUI.getEkrutClient().getClientSessionManager().logoutUser();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ClientLogin.fxml"));
+			try {
+				loader.load();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			Parent root = loader.getRoot();
+			setRightWindow(root);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	ObservableList<Node> vboxChildren = navigationVbox.getChildren();
+    	vboxChildren.clear();
+    	infoPane.setVisible(false);
     }
     
     static BaseTemplateController getBaseTemplateController() {
@@ -70,10 +88,13 @@ public class BaseTemplateController {
     	nameInitialsLbl.setText((me.getFirstName().substring(0, 1) +
     			me.getLastName().substring(0, 1)).toUpperCase());
     	roleLbl.setText(me.getUserType().toString().replace("_", " "));
+    	
+    	navigationVbox.setVisible(true);
     	ObservableList<Node> vboxChildren = navigationVbox.getChildren();
     	switch (me.getUserType()) {
     	case SUBSCRIBER:
-    		vboxChildren.add(new Hyperlink("Create Order"));
+    		vboxChildren.add(new Hyperlink("Create Order")); 
+    		// TBD EVERY CONTROLLER WILL HAVE A STATIC METHOD THAT RETURN A Hyperlink						
     		vboxChildren.add(new Hyperlink("Pickup Order"));
     		break;
     	case CUSTOMER:
@@ -96,7 +117,7 @@ public class BaseTemplateController {
     	}
     }
     
-    
+
     
 }
 
