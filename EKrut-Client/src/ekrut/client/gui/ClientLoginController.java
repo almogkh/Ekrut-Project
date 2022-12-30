@@ -8,13 +8,10 @@ import ekrut.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class ClientLoginController {
@@ -27,26 +24,15 @@ public class ClientLoginController {
 	
 	@FXML
 	private Button loginBtn;
-	
-	@FXML
-	private Label incorrectUserPassLbl;
-	
-	@FXML
-	private Label usernameOrPasswdBlankLbl;
-	
-	@FXML
-	private Label serverIpPortLbl;
-	
-	@FXML
-	private Label serverConnectionStatusLbl;
-	
-	private final Color GREEN = Color.web("#23a423");
-	private final Color RED = Color.web("#e13838");
+
+    @FXML
+    private Label errorLbl;
+
+	private static final String BLANK_USER_OR_PASS_ERROR = "Username or password cannot remain blank.";
+	private static final String INCORRECT_USER_PASS_ERROR = "Incorrect username and password combination.";
 	
 	public void setServerDetails(String serverIp, String serverPort){
-		usernameOrPasswdBlankLbl.setVisible(false);
-		incorrectUserPassLbl.setVisible(false);
-		serverIpPortLbl.setText("Server (" + serverIp + ":" + serverPort + "):");
+		errorLbl.setVisible(false);
 	}
 	
 	public void setFocus(WindowEvent event) {
@@ -59,13 +45,13 @@ public class ClientLoginController {
 	@FXML
 	void attemptLogin(ActionEvent event) throws Exception {
 		// reset red error labels
-		usernameOrPasswdBlankLbl.setVisible(false);
-		incorrectUserPassLbl.setVisible(false);
-		
+		errorLbl.setVisible(false);
+		// gather info from the form
 		String username = usernameTxt.getText().trim();
 		String password = passwordTxt.getText();
 		if (username.isEmpty() || password.isEmpty()) {
-			usernameOrPasswdBlankLbl.setVisible(true);
+			errorLbl.setText(BLANK_USER_OR_PASS_ERROR);
+			errorLbl.setVisible(true);
 			return;
 		}
 		
@@ -75,13 +61,13 @@ public class ClientLoginController {
 			ekrutClient = EKrutClientUI.getEkrutClient();
 		
 		me = ekrutClient.getClientSessionManager().loginUser(username, password);
-		
 		if (me == null) {
-			incorrectUserPassLbl.setVisible(true);
+			errorLbl.setText(INCORRECT_USER_PASS_ERROR);
+			errorLbl.setVisible(true);
 			return;
 		}
+		
 		// LOGIN SUCCESS!
-		Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		if (loader == null) {
 			loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/MainMenu.fxml"));
 			try {
@@ -91,21 +77,8 @@ public class ClientLoginController {
 			}
 		}
 		Parent root = loader.getRoot();
-		MainMenuController mainMenuController = loader.getController();
-
-		mainMenuController.setUser(me);
-
-		//mainMenuController.setLabels(me.getFirstName(), me.getUserType().toString(), 
-		//		EKrutClientUI.ekrutLocation);
-
-		
-		if (EKrutClientUI.ekrutLocation == null) {
-			// client runs as On-Line (remote) client
-		}else {
-			// client runs as ekrut machine!
-			
-		}
-		stage.getScene().setRoot(root);
+		BaseTemplateController.getBaseTemplateController().setUser(me);
+		BaseTemplateController.getBaseTemplateController().setRightWindow(root);
 	}
 
 }

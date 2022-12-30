@@ -2,6 +2,7 @@ package ekrut.server;
 
 import java.io.IOException;
 
+import ekrut.entity.User;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
 import ekrut.net.OrderRequest;
@@ -74,8 +75,7 @@ public class EKrutServer extends AbstractServer{
 						userRequest.getUsername(), userRequest.getPassword(), client);
 				break;
 			case LOGOUT:	
-				userResponse = serverSessionManager.logoutUser(
-						userRequest.getUsername(), client, null);
+				userResponse = serverSessionManager.logoutUser(client, null);
 				break;
 			case IS_LOGGEDIN:
 				userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
@@ -205,8 +205,6 @@ public class EKrutServer extends AbstractServer{
 	
 	@Override
 	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
-		// logout the user connected from 'client'
+		serverSessionManager.logoutUser(client, null);
 	}
-	
-
 }

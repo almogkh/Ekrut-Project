@@ -1,6 +1,8 @@
 package ekrut.client;
 
 import java.io.IOException;
+
+import ekrut.client.gui.BaseTemplateController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +40,10 @@ public class EKrutClientUI extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("/ekrut/client/gui/HostSelection.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/BaseTemplate.fxml"));
+		Parent root = loader.load();
+		BaseTemplateController baseTemplateController = loader.getController();
+		baseTemplateController.loadHostSelection();
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.show();
