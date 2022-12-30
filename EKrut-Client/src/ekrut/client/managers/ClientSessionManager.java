@@ -59,7 +59,7 @@ public class ClientSessionManager {
 	 * @param user The user to log out.
 	 * @throws Exception if the user is not logged in or if the logout failed.
 	 */
-	public void logoutUser(User user) throws Exception{
+	public void logoutUser() throws Exception{ ////////////// TBD OFEK NO INPUT NEEDED
 		if (!isLoggedin()) {
 			throw new RuntimeException("User is not loggedin");
 		}
@@ -68,7 +68,7 @@ public class ClientSessionManager {
 		UserResponse userResponse = sendRequest(userRequest);
 		
 		if (userResponse.getResultCode().equals(ResultType.OK)) 
-			return;
+			user = null;
 		else
 			throw new RuntimeException(userResponse.getResultCode().toString());
 	}

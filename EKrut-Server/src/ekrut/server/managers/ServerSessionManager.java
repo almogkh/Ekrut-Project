@@ -90,7 +90,7 @@ public class ServerSessionManager {
      * @param reason   the reason for the logout (e.g. "Session expired")
      * @return a {@link UserResponse} object with the result of the logout attempt
      */
-	public UserResponse logoutUser(String username, ConnectionToClient client, String reason) {
+	public UserResponse logoutUser(ConnectionToClient client, String reason) {
 		ResultType result = null;
 		User user = clientUserMap.get(client);
 		
@@ -103,7 +103,7 @@ public class ServerSessionManager {
 		else {
 			//the session has expired
 			if(reason != null) {
-				sendRequestToClient(new UserRequest(UserRequestType.LOGOUT, username), client);
+				sendRequestToClient(new UserRequest(UserRequestType.LOGOUT, user.getUsername()), client);
 			}
 			else
 			result = ResultType.OK;
@@ -127,8 +127,9 @@ public class ServerSessionManager {
 	 */
 	public UserResponse isLoggedin(String username) {
 		user = userDAO.fetchUserByUsername(username);
-		if(connectedUsers.containsKey(user))
-			return new UserResponse(ResultType.OK);
+		for (User connectedUser : connectedUsers.keySet())
+			if (connectedUser.getUsername().equals(username))
+				return new UserResponse(ResultType.OK);
 		return new UserResponse(ResultType.NOT_FOUND);
 	}
 	
@@ -188,7 +189,7 @@ public class ServerSessionManager {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                logoutUser(username,client,"Session expired");
+                logoutUser(client,"Session expired");
             }
         }, LOGOUT_TIME);
         return timer;

@@ -2,6 +2,7 @@ package ekrut.server;
 
 import java.io.IOException;
 
+import ekrut.entity.User;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
 import ekrut.net.OrderRequest;
@@ -74,8 +75,7 @@ public class EKrutServer extends AbstractServer{
 						userRequest.getUsername(), userRequest.getPassword(), client);
 				break;
 			case LOGOUT:	
-				userResponse = serverSessionManager.logoutUser(
-						userRequest.getUsername(), client, null);
+				userResponse = serverSessionManager.logoutUser(client, null);
 				break;
 			case IS_LOGGEDIN:
 				userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
@@ -199,13 +199,12 @@ public class EKrutServer extends AbstractServer{
 			client.sendToClient((UserRequest)msg);
 		} catch (IOException e) {
 			e.printStackTrace();
-			//System.exit(-1); // TBD OFEK THIS KEEP CRACHING MY SRVR
+			System.exit(-1);
 		}
 	}
 	
 	@Override
 	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
-		String username = serverSessionManager.getClientUserMap().get(client).getUsername();
-		serverSessionManager.logoutUser(username, client, "Connection terminated");
+		serverSessionManager.logoutUser(client, null);
 	}
 }
