@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ekrut.entity.ConnectedClient;
 import ekrut.entity.User;
 import ekrut.net.ResultType;
 import ekrut.net.UserRequest;
@@ -13,6 +14,8 @@ import ekrut.net.UserResponse;
 import ekrut.server.EKrutServer;
 import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.ObservableList;
 import ocsf.server.ConnectionToClient;
 
 /**
@@ -29,9 +32,10 @@ public class ServerSessionManager {
 	//The data access object for interacting with the database.
 	private UserDAO userDAO;
 	//A map of client connections and the users associated with them.
-	private HashMap<ConnectionToClient,User> clientUserMap;
+	private static HashMap<ConnectionToClient,User> clientUserMap;
 	//The time, in milliseconds, after which a user will be automatically logged out if they have not made any requests.
 	private static final long LOGOUT_TIME = 1800000; // 30 minutes
+	private ObservableList<ConnectedClient> connectedClientList; 
 
 	
 	/**
@@ -41,9 +45,14 @@ public class ServerSessionManager {
      * @param con the {@link DBController} object to use for database operations
      */
 	public ServerSessionManager(DBController con) {
+		connectedClientList = new SimpleListProperty<>();
 		userDAO = new UserDAO(con);
 		connectedUsers =  new HashMap<>();
 		clientUserMap = new HashMap<>();
+	}
+	
+	public ObservableList<ConnectedClient> getConnectedClientList(){
+		return connectedClientList;
 	}
 
 	 /**
@@ -71,6 +80,7 @@ public class ServerSessionManager {
 			userResponse.setUser(user);
 			connectedUsers.put(user,startTimer(username,client));
 			clientUserMap.put(client,user);
+			connectedClientList.add(new ConnectedClient(client.getInetAddress().toString(), username, user.getUserType()));
 			result= ResultType.OK;
 		}
 		userResponse.setResultCode(result);
@@ -106,6 +116,7 @@ public class ServerSessionManager {
 			connectedUsers.get(user).cancel(); //cancel timer
 			connectedUsers.remove(user);
 			clientUserMap.remove(client);
+			connectedClientList.remove(new ConnectedClient(client.getInetAddress().toString(), username, user.getUserType()));
 		}
 		userResponse.setResultCode(result);
 		return userResponse;
@@ -190,6 +201,8 @@ public class ServerSessionManager {
         return timer;
     }
     
-	
+	public static HashMap<ConnectionToClient, User> getConnectedUsers(){
+		return clientUserMap;
+	}
 	
 }
