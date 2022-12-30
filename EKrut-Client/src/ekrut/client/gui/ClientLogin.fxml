@@ -40,157 +40,115 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ClientLoginController">
-  <children>
-      <HBox prefHeight="700.0" prefWidth="100.0">
+<VBox spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ClientLoginController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="126.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="209.0" prefWidth="200.0" style="-fx-background-radius: 10;" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <Label contentDisplay="CENTER" text="Login" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="50.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.699999988079071" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="TOP_CENTER" prefHeight="549.0" prefWidth="765.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Label text="Welcome!" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="30.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.699999988079071" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Label text="in order to use the EKrut system, please login" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="30.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.699999988079071" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Pane prefHeight="241.0" prefWidth="745.0">
                <children>
-                  <ImageView fitHeight="98.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
+                  <TextField fx:id="usernameTxt" layoutX="269.0" layoutY="77.0" prefHeight="41.0" prefWidth="200.0" promptText="Username" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <PasswordField fx:id="passwordTxt" layoutX="272.0" layoutY="151.0" prefHeight="41.0" prefWidth="200.0" promptText="Password" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </PasswordField>
+                  <Label layoutX="285.0" layoutY="56.0" text="Username">
+                     <font>
+                        <Font name="Candara" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="284.0" layoutY="131.0" text="Password">
+                     <font>
+                        <Font name="Candara" size="18.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="207.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@gui-assets/Group%2010.png" />
+                        <Image url="@gui-assets/user.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="ekrutmachineLbl" text="EKrut machine:">
-                     <VBox.margin>
-                        <Insets top="30.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font name="Candara" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="ekrutLocationLbl" text="braude_l">
-                     <font>
-                        <Font name="Candara" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="serverLbl" text="Server(192.168.55.55):">
-                     <VBox.margin>
-                        <Insets top="450.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </Label>
-                  <Label text="Connected" textFill="#0ea43b">
-                     <font>
-                        <Font name="System Bold" size="15.0" />
-                     </font>
-                  </Label>
+                  <ImageView fitHeight="60.0" fitWidth="55.0" layoutX="207.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@gui-assets/key.png" />
+                     </image>
+                  </ImageView>
                </children>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </VBox>
-          <AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-               <children>
-                  <VBox alignment="CENTER" layoutY="11.0" prefHeight="120.0" prefWidth="765.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <Label contentDisplay="CENTER" text="Login" textFill="WHITE">
-                           <font>
-                              <Font name="Candara Bold" size="50.0" />
-                           </font>
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color opacity="0.699999988079071" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" layoutY="142.0" prefHeight="549.0" prefWidth="765.0" styleClass="container">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <Label text="Welcome!" textFill="WHITE">
-                           <font>
-                              <Font name="Candara Bold" size="30.0" />
-                           </font>
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color opacity="0.699999988079071" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Label>
-                        <Label text="in order to use the EKrut system, please login" textFill="WHITE">
-                           <font>
-                              <Font name="Candara Bold" size="30.0" />
-                           </font>
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color opacity="0.699999988079071" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Label>
-                        <Pane prefHeight="241.0" prefWidth="745.0">
-                           <children>
-                              <TextField fx:id="usernameTxt" layoutX="269.0" layoutY="77.0" prefHeight="41.0" prefWidth="200.0" promptText="Username" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font></TextField>
-                              <PasswordField fx:id="passwordTxt" layoutX="272.0" layoutY="151.0" prefHeight="41.0" prefWidth="200.0" promptText="Password" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font></PasswordField>
-                              <Label layoutX="285.0" layoutY="56.0" text="Username">
-                                 <font>
-                                    <Font name="Candara" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="284.0" layoutY="131.0" text="Password">
-                                 <font>
-                                    <Font name="Candara" size="18.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="207.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@gui-assets/user.png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fitHeight="60.0" fitWidth="55.0" layoutX="207.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@gui-assets/key.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </Pane>
-                        <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#attemptLogin" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Login">
-                           <font>
-                              <Font name="Candara Bold" size="20.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Label fx:id="errorLbl" text="ERROR" textFill="RED" underline="true" visible="false">
-                           <VBox.margin>
-                              <Insets top="80.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="Candara Bold" size="20.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children></AnchorPane>
+            </Pane>
+            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#attemptLogin" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Login">
+               <font>
+                  <Font name="Candara Bold" size="20.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Label fx:id="errorLbl" text="ERROR" textFill="RED" underline="true" visible="false">
+               <VBox.margin>
+                  <Insets top="80.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Candara Bold" size="20.0" />
+               </font>
+            </Label>
          </children>
-      </HBox>
-  </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </VBox>
+   </children>
 </VBox>

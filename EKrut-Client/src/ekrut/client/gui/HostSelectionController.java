@@ -1,18 +1,14 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
 import ekrut.client.EKrutClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 public class HostSelectionController {
 
@@ -32,6 +28,9 @@ public class HostSelectionController {
     private static final String INVALID_PORT_ERROR = "Port or IP values are incorrent.";
     private static final String BLANK_VAL_ERROR = "Server or Port cannot remain blank";
     private static final String CANNOT_CONNECT_ERROR = "Unable to connect to server.";
+    
+    
+    
     
     @FXML
     void connect(ActionEvent event) {
@@ -58,7 +57,7 @@ public class HostSelectionController {
 				return;
 			}
 			
-			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
 			if (loader == null) {
 				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ClientLogin.fxml"));
 				try {
@@ -70,7 +69,7 @@ public class HostSelectionController {
 			Parent root = loader.getRoot();
 			ClientLoginController clientLoginController = loader.getController();
 			clientLoginController.setServerDetails(server, portText);
-			stage.getScene().setRoot(root);
+			BaseTemplateController.getBaseTemplateController().setRightWindow(root);
 		}
     }
 }

@@ -199,7 +199,7 @@ public class EKrutServer extends AbstractServer{
 			client.sendToClient((UserRequest)msg);
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.exit(-1);
+			//System.exit(-1); // TBD OFEK THIS KEEP CRACHING MY SRVR
 		}
 	}
 	

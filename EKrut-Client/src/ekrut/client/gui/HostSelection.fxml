@@ -37,107 +37,88 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.HostSelectionController">
-  <children>
-      <HBox prefHeight="700.0" prefWidth="100.0">
+<AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="680.0" prefWidth="770.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.HostSelectionController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="126.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="442.0" prefWidth="200.0" style="-fx-background-radius: 10;" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-               <children>
-                  <ImageView fitHeight="98.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@gui-assets/Group%2010.png" />
-                     </image>
-                  </ImageView>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </VBox>
-          <AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-               <children>
-                  <VBox alignment="CENTER" layoutY="10.0" prefHeight="120.0" prefWidth="771.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
-                     <children>
-                        <Label contentDisplay="CENTER" text="Connect to server" textFill="WHITE">
-                           <font>
-                              <Font name="Candara Bold" size="50.0" />
-                           </font>
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color opacity="0.699999988079071" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Label>
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER" layoutY="142.0" prefHeight="550.0" prefWidth="771.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <children>
-                        <Label text="Please provide Server's IP and Port" textFill="WHITE">
-                           <font>
-                              <Font name="Candara Bold" size="30.0" />
-                           </font>
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color opacity="0.699999988079071" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Label>
-                        <Pane prefHeight="244.0" prefWidth="751.0">
-                           <children>
-                              <TextField fx:id="serverTxt" layoutX="276.0" layoutY="54.0" prefHeight="41.0" prefWidth="200.0" promptText="Server IP" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </TextField>
-                              <TextField fx:id="portTxt" layoutX="276.0" layoutY="147.0" prefHeight="41.0" prefWidth="200.0" promptText="Server Port" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </TextField>
-                              <Label layoutX="338.0" layoutY="32.0" text="Server IP">
-                                 <font>
-                                    <Font name="Candara" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="333.0" layoutY="125.0" text="Server Port">
-                                 <font>
-                                    <Font name="Candara" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </Pane>
-                        <Button fx:id="connectBtn" defaultButton="true" mnemonicParsing="false" onAction="#connect" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Connect">
-                           <font>
-                              <Font name="Candara Bold" size="20.0" />
-                           </font>
-                        </Button>
-                        <Label fx:id="redErrorLbl" text="ERROR" textFill="RED" underline="true" visible="false">
-                           <VBox.margin>
-                              <Insets top="50.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="Candara Bold" size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </children></AnchorPane>
+            <Label contentDisplay="CENTER" text="Connect to server" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="50.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.699999988079071" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
          </children>
-      </HBox>
-  </children>
-</VBox>
+      </VBox>
+      <VBox alignment="TOP_CENTER" layoutY="142.0" prefHeight="538.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Label text="Please provide Server's IP and Port" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="30.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.699999988079071" />
+                     </color>
+                  </DropShadow>
+               </effect>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </Label>
+            <Pane prefHeight="244.0" prefWidth="770.0">
+               <children>
+                  <TextField fx:id="serverTxt" layoutX="276.0" layoutY="54.0" prefHeight="41.0" prefWidth="200.0" promptText="Server IP" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="127.0.0.1">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="portTxt" layoutX="276.0" layoutY="147.0" prefHeight="41.0" prefWidth="200.0" promptText="Server Port" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="5555">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </TextField>
+                  <Label layoutX="338.0" layoutY="32.0" text="Server IP">
+                     <font>
+                        <Font name="Candara" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="333.0" layoutY="125.0" text="Server Port">
+                     <font>
+                        <Font name="Candara" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button fx:id="connectBtn" defaultButton="true" mnemonicParsing="false" onAction="#connect" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Connect">
+               <font>
+                  <Font name="Candara Bold" size="20.0" />
+               </font>
+            </Button>
+            <Label fx:id="redErrorLbl" text="ERROR" textFill="RED" underline="true" visible="false">
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Candara Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
