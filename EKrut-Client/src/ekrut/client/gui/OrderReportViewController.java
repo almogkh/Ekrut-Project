@@ -21,31 +21,25 @@ import javafx.scene.layout.Pane;
 public class OrderReportViewController implements Initializable{
 
     @FXML
-    private BarChart<?, ?> OrdersHistogram;
+    private Label areaLbl;
 
     @FXML
-    private PieChart OrdersPieChart;
+    private Label dateLbl;
 
     @FXML
-    private Pane TopSellersPane;
+    private BarChart<?, ?> ordersBarChart;
 
     @FXML
-    private Pane TotalOrdersInILSPane;
+    private PieChart ordersPieChart;
 
     @FXML
-    private Pane TotalOrdersPane;
+    private BarChart<?, ?> topSellersBarChart;
 
     @FXML
-    private Label serverConnectionStatusLbl;
+    private Label totalOrdersInILSLbl;
 
     @FXML
-    private Label serverIpPortLbl;
-
-    @FXML
-    private Label totalOrdersInILSLabel;
-
-    @FXML
-    private Label totalOrdersLabel;
+    private Label totalOrdersLbl;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -57,8 +51,8 @@ public class OrderReportViewController implements Initializable{
 						new PieChart.Data("Nazereth", 30),
 						new PieChart.Data("Afula", 10));
 		
-		OrdersPieChart.setData(PieChartData);
-		OrdersPieChart.setTitle("pie orders");
+		ordersPieChart.setData(PieChartData);
+		ordersPieChart.setTitle("pie orders");
 		
 		//Defining the x axis               
 		CategoryAxis xAxis = new CategoryAxis();   
@@ -72,7 +66,7 @@ public class OrderReportViewController implements Initializable{
 		yAxis.setLabel("Total in ILS");
 		
 		//OrdersHistogram = new BarChart<>(xAxis, yAxis);  
-		OrdersHistogram.setTitle("Orders total sum sepretad into types"); 
+		ordersPieChart.setTitle("Orders total sum sepretad into types"); 
 		
 		
 		//Prepare XYChart.Series objects by setting data        
@@ -94,7 +88,20 @@ public class OrderReportViewController implements Initializable{
 		series3.getData().add(new XYChart.Data<>("Akko", 850)); 
 		series3.getData().add(new XYChart.Data<>("Nahariya", 930)); 
 
-		OrdersHistogram.getData().addAll(series1, series2, series3);
-	}
+		ordersBarChart.getData().addAll(series1, series2, series3);
+		
+		//Prepare XYChart.Series objects by setting data        
+		XYChart.Series series11 = new XYChart.Series<>(); 
+		series11.setName("Item"); 
+		series11.getData().add(new XYChart.Data<>(1200, "Bamba")); 
+		series11.getData().add(new XYChart.Data<>(900, "Bisli")); 
+		series11.getData().add(new XYChart.Data<>(1400, "Coke"));
+		series11.getData().add(new XYChart.Data<>(1400, "Pepsi")); 
+		series11.getData().add(new XYChart.Data<>(1300, "Pasta")); 
 
+
+		topSellersBarChart.getData().addAll(series11);
+	}
 }
+
+
