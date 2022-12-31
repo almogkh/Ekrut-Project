@@ -78,14 +78,11 @@
          <children>
             <ImageView fitHeight="540.0" fitWidth="512.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@gui-assets/DALL·E%202022-12-09%2012.34.06.png" />
+                  <Image url="@gui-assets/vendinf%20machine.gif" />
                </image>
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin>
-               <effect>
-                  <DropShadow radius="31.9825" spread="0.03" width="108.93" />
-               </effect>
             </ImageView>
          </children>
       </VBox>

@@ -32,137 +32,122 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
   <children>
-      <HBox prefHeight="700.0" prefWidth="100.0">
+      <Pane prefHeight="120.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="442.0" prefWidth="200.0" style="-fx-background-radius: 10;" styleClass="container">
-               <children>
-                  <ImageView fitHeight="98.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@gui-assets/Group%2010.png" />
-                     </image>
-                  </ImageView>
-                  <Pane prefHeight="138.0" prefWidth="116.0">
-                     <children>
-                        <Circle fill="DODGERBLUE" layoutX="100.0" layoutY="69.0" radius="57.0" stroke="BLACK" strokeType="INSIDE">
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color red="0.013401559554040432" green="0.10006497800350189" blue="0.1315789520740509" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Circle>
-                        <Label fx:id="nameInitialsLabel" layoutX="57.0" layoutY="20.0" prefHeight="98.0" prefWidth="86.0" text="TG" textFill="#ffffffd3">
-                           <font>
-                              <Font name="Candara Bold" size="73.0" />
-                           </font>
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color red="0.4788571298122406" green="0.47519999742507935" blue="0.47999998927116394" opacity="0.25" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Label alignment="CENTER" text="ID:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" text="UserName:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
-               </children>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </VBox>
-          <AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@Styles.css">
-            <children>
-                  <Text layoutX="164.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report ">
-                     <font>
-                        <Font name="Candara Bold" size="78.0" />
-                     </font>
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color opacity="0.4198473393917084" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </Text>
-                  <Label alignment="CENTER" layoutX="64.0" layoutY="133.0" text="Type:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="viewReportButton" layoutX="322.0" layoutY="378.0" mnemonicParsing="false" onAction="#viewReport" text="View Report" textFill="WHITE">
-                     <font>
-                        <Font name="Candara Bold Italic" size="18.0" />
-                     </font>
-                     <effect>
-                        <DropShadow height="19.12" radius="9.530000000000001">
-                           <color>
-                              <Color opacity="0.47999998927116394" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </Button>
-                  <Label fx:id="reportErrorLabel" layoutX="167.0" layoutY="453.0" text="Report Doesn't exsits" textAlignment="CENTER" textFill="#ff5555" underline="true">
-                     <font>
-                        <Font name="Candara Bold" size="47.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="65.0" layoutY="183.0" text="Area:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="382.0" layoutY="133.0" text="Location:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="383.0" layoutY="185.0" text="Month:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" layoutX="270.0" layoutY="331.0" text="Year:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <ComboBox fx:id="typeComboBox" layoutX="178.0" layoutY="132.0" prefWidth="150.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-                  <ComboBox fx:id="areaComboBox" layoutX="178.0" layoutY="182.0" prefWidth="150.0" promptText="Choose Area" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-                  <ComboBox fx:id="locationComboBox" disable="true" layoutX="496.0" layoutY="132.0" prefWidth="150.0" promptText="Choose Location" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-                  <ComboBox fx:id="monthComboBox" layoutX="496.0" layoutY="184.0" prefWidth="150.0" promptText="Choose Month" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-                  <ComboBox fx:id="yearComboBox" layoutX="382.0" layoutY="330.0" prefWidth="150.0" promptText="Choose Year" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-            </children>
-          </AnchorPane>
+            <Text layoutX="137.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report " wrappingWidth="495.1552734375">
+               <font>
+                  <Font name="Candara Bold" size="78.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.29770994186401367" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Text>
+            <Line endX="-6.0" layoutX="115.0" layoutY="59.0" startX="-100.0" stroke="WHITE" />
+            <Line endX="-6.0" layoutX="761.0" layoutY="59.0" startX="-100.0" stroke="WHITE" />
          </children>
-      </HBox>
+      </Pane>
+      <Pane prefHeight="555.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <children>
+            <Label alignment="CENTER" layoutX="125.0" layoutY="48.0" text="Type:" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="19.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.3015267252922058" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Label alignment="CENTER" layoutX="126.0" layoutY="123.0" text="Area:" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="19.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.2977099120616913" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <ComboBox fx:id="areaComboBox" disable="true" layoutX="123.0" layoutY="147.0" onAction="#areaSelected" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <Label alignment="CENTER" layoutX="124.0" layoutY="193.0" text="Location:" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.2977099120616913" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <ComboBox fx:id="locationComboBox" disable="true" layoutX="123.0" layoutY="215.0" onAction="#locationSelected" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <Label alignment="CENTER" layoutX="124.0" layoutY="262.0" text="Year:" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="19.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.2977099120616913" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <ComboBox fx:id="yearComboBox" layoutX="123.0" layoutY="285.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Year" styleClass="combo-box" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <Label alignment="CENTER" layoutX="124.0" layoutY="335.0" text="Month:" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="19.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.2977099120616913" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <ComboBox fx:id="monthComboBox" layoutX="123.0" layoutY="358.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Month" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <Button fx:id="viewReportButton" layoutX="304.0" layoutY="440.0" mnemonicParsing="false" onAction="#viewReport" prefHeight="48.0" prefWidth="153.0" text="View Report" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold Italic" size="18.0" />
+               </font>
+               <effect>
+                  <DropShadow height="19.12" radius="9.530000000000001">
+                     <color>
+                        <Color opacity="0.47999998927116394" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Button>
+            <Label fx:id="reportErrorLabel" layoutX="164.0" layoutY="478.0" prefWidth="432.0" text="Report Doesn't exsits" textAlignment="CENTER" textFill="#ff5555" underline="true" visible="false">
+               <font>
+                  <Font name="Candara Bold" size="47.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="typeComboBox" layoutX="123.0" layoutY="75.0" onAction="#reportTypeSelected" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+         </children>
+      </Pane>
   </children>
 </VBox>
