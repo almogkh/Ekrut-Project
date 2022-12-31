@@ -43,52 +43,51 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderReportViewController">
   <children>
       <Pane prefHeight="130.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <VBox alignment="CENTER" layoutX="1.0" layoutY="-5.0" prefHeight="144.0" prefWidth="755.0">
-               <children>
-                  <Label alignment="CENTER" text="Order Report" textAlignment="RIGHT" textFill="WHITE">
-                     <font>
-                        <Font name="Candara Bold" size="38.0" />
-                     </font>
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color opacity="0.6984732747077942" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </Label>
-                  <Label fx:id="areaLbl" text="North" textFill="WHITE">
-                     <font>
-                        <Font name="Candara Bold" size="28.0" />
-                     </font>
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color opacity="0.7022900581359863" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </Label>
-                  <Label fx:id="dateLbl" text="01/2023" textFill="WHITE">
-                     <font>
-                        <Font name="Candara Bold" size="28.0" />
-                     </font>
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color opacity="0.6984732747077942" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </Label>
-               </children>
-            </VBox>
+            <Label alignment="CENTER" layoutX="270.0" layoutY="10.0" text="Order Report" textAlignment="RIGHT">
+               <font>
+                  <Font name="Candara Bold" size="38.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.3015266954898834" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Line endX="100.0" layoutX="148.0" layoutY="33.0" startX="-142.0" stroke="WHITE" />
+            <Label fx:id="areaLbl" layoutX="343.0" layoutY="57.0" text="North">
+               <font>
+                  <Font name="Candara Bold" size="28.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30305343866348267" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Label fx:id="dateLbl" layoutX="335.0" layoutY="91.0" text="01/2023">
+               <font>
+                  <Font name="Candara Bold" size="28.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30305343866348267" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Line endX="107.0" layoutX="655.0" layoutY="32.0" startX="-142.0" stroke="WHITE" />
          </children>
       </Pane>
       <HBox prefHeight="200.0" prefWidth="200.0" spacing="10.0">
@@ -97,7 +96,7 @@
                <children>
                   <VBox alignment="CENTER" layoutX="-8.0" layoutY="-6.0" prefHeight="200.0" prefWidth="252.0">
                      <children>
-                        <Label text="Total Order">
+                        <Label text="Total Orders">
                            <font>
                               <Font name="Candara Bold" size="26.0" />
                            </font>
@@ -109,15 +108,25 @@
                               </DropShadow>
                            </effect>
                         </Label>
-                        <Label fx:id="totalOrdersLbl" text="999" textFill="WHITE">
+                        <Line endX="100.0" startX="-100.0" />
+                        <Label fx:id="totalOrdersLbl" text="5,738" textFill="WHITE">
                            <font>
-                              <Font name="Arial Black" size="36.0" />
+                              <Font name="Arial" size="34.0" />
                            </font>
                            <effect>
-                              <DropShadow />
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.4000000059604645" />
+                                 </color></DropShadow>
                            </effect>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
                         </Label>
-                        <Label text="TotalOrders In ILS">
+                        <Label text="Total Orders In ILS">
                            <font>
                               <Font name="Candara Bold" size="25.0" />
                            </font>
@@ -129,13 +138,21 @@
                               </DropShadow>
                            </effect>
                         </Label>
-                        <Label fx:id="totalOrdersInILSLbl" text="88,888₪" textFill="WHITE">
+                        <Line endX="100.0" startX="-100.0" startY="0.7928932309150696" />
+                        <Label fx:id="totalOrdersInILSLbl" text="42,356₪" textFill="WHITE">
                            <font>
-                              <Font name="Arial Bold Italic" size="36.0" />
+                              <Font name="Arial" size="34.0" />
                            </font>
                            <effect>
-                              <DropShadow />
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.40458014607429504" />
+                                 </color>
+                              </DropShadow>
                            </effect>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
                         </Label>
                      </children>
                   </VBox>
