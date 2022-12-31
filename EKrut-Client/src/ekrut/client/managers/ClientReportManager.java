@@ -1,4 +1,6 @@
 package ekrut.client.managers;
+import ekrut.net.InventoryItemRequest;
+import ekrut.net.InventoryItemResponse;
 import ekrut.net.ReportRequest;
 import ekrut.net.ReportRequestType;
 import ekrut.net.ReportResponse;
@@ -7,7 +9,9 @@ import ekrut.net.ResultType;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import ekrut.entity.Report; 
+import ekrut.client.EKrutClient;
+import ekrut.entity.Report;
+import ekrut.entity.ReportType; 
 
 /**
  * This class manages reports on the client side.
@@ -16,16 +20,25 @@ import ekrut.entity.Report;
  *
  */
 
-public class ClientReportManager {
+public class ClientReportManager { 
+	
+	private EKrutClient client;
+	private Object lock = new Object();
+	private ReportResponse response;
+	
+	public ClientReportManager(EKrutClient client) {
+		this.client = client;
+		client.registerHandler(ReportResponse.class, (res) -> {
+			synchronized(lock) {
+				response = res;
+				lock.notify();
+			}
+		});
+	}
 	
 	//redo document
-	/**
-	 * Returns the report according to the inputs if such a report exists. 
-	 * @param String area, String reportType, LocalDateTime date.
-	 * @throws Exception when the servers response is anything but "OK".
-	 * @return report.
-	 */
-	public Report getReport(String area, String location, String reportType, LocalDateTime date) throws Exception { 
+
+	public Report getReport(String area, String location, ReportType reportType, LocalDateTime date) throws Exception { 
 	// Prepare a getReportRequest to send to server.
 	ReportRequest reportRequest = new ReportRequest(area, location, reportType, date);
 	// Sending getReportRequest and receiving getReportResponse.
@@ -53,9 +66,17 @@ public class ClientReportManager {
 		return reportResponse.getFacilities();  
 	}
 	
-	public ReportResponse sendRequest(ReportRequest getReportsRequest) {
-		// TODO Auto-generated method stub
-		return null;
+	private ReportResponse sendRequest(ReportRequest request) {
+		this.response = null;
+		client.sendRequestToServer(request);
+		synchronized(lock) {
+			while (response == null) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {}
+			}
+		}
+		return response;
 	}
 	
 	public ArrayList<String> fetchFacilitiesByArea(String area){
