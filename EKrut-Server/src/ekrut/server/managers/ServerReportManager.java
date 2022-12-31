@@ -15,6 +15,7 @@ import ekrut.entity.OrderItem;
 import ekrut.entity.OrderType;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
+import ekrut.net.ReportRequest;
 import ekrut.net.ReportResponse;
 import ekrut.net.ResultType;
 import ekrut.server.db.DBController;
@@ -44,9 +45,10 @@ public class ServerReportManager {
 	 * @return a ReportResponse object containing the report, or a ResultType value indicating if the report was not found
 	 * @throws SQLException if a database error occurs while executing the SQL query
 	 */
-	public ReportResponse fetchReport(LocalDateTime date, String location, String area, ReportType type) {
+	public ReportResponse fetchReport(ReportRequest request) {
 		
-		Report report = reportDAO.fetchReport(date, location, area, type);
+		Report report = reportDAO.fetchReport(request.getDate(), request.getLocation(),
+				request.getArea(), request.getReportType());
 		
 		if (report == null) 
 			return new ReportResponse(ResultType.NOT_FOUND);
