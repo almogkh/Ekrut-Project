@@ -55,8 +55,14 @@
   -fx-text-fill: black;
 }
 
-
 .table {
   -fx-border-color: black;
   -fx-background-color: rgba(255, 255, 255, 0.25);
+}
+
+.item {
+	-fx-background-color: #D0EEFE;
+	-fx-border-color: black;
+	-fx-border-radius: 20;
+	-fx-background-radius: 20;
 }
