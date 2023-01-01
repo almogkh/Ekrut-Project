@@ -10,10 +10,10 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="729.0" style="-fx-background-radius: 20;" styleClass="item" stylesheets="@gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="729.0" style="-fx-background-radius: 20;" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="itemImage" fitHeight="157.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true" />
-      <Pane prefHeight="156.0" prefWidth="390.0" stylesheets="@gui-assets/styles/Styles.css">
+      <Pane prefHeight="156.0" prefWidth="390.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
             <Text fx:id="saleType" fill="RED" layoutX="5.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SaleType" wrappingWidth="111.47006225585938">
                <font>

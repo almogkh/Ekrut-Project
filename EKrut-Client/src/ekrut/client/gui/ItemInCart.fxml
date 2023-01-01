@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<fx:root fx:id="itemCartVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="729.0" style="-fx-background-radius: 20;" styleClass="item" stylesheets="@gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="itemCartVBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="729.0" style="-fx-background-radius: 20;" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane prefHeight="63.0" prefWidth="727.0" stylesheets="@gui-assets/styles/Styles.css">
+      <Pane prefHeight="63.0" prefWidth="727.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
             <Button fx:id="deleteItemBtn" layoutX="13.0" layoutY="18.0" mnemonicParsing="false" onAction="#deleteItem" prefHeight="26.0" prefWidth="27.0" style="-fx-background-color: #F77D6E; -fx-border-radius: 5; -fx-background-radius: 7;" text="X">
                <font>
@@ -26,7 +26,7 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <TextField fx:id="quantityTxt" alignment="CENTER" layoutX="491.0" layoutY="6.0" prefHeight="18.0" prefWidth="57.0" styleClass="text_field" stylesheets="@gui-assets/styles/Styles.css" text="0">
+            <TextField fx:id="quantityTxt" alignment="CENTER" layoutX="491.0" layoutY="6.0" prefHeight="18.0" prefWidth="57.0" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
