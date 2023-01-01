@@ -17,13 +17,13 @@ public class EKrutClientUI extends Application {
 
 	private static EKrutClient ekrutClient;
 	public static String ekrutLocation;
-	
+
 	public static void main(String[] args) {
 		if (args.length == 1)
 			ekrutLocation = args[0];
 		launch(args);
 	}
-	
+
 	public static EKrutClient getEkrutClient() {
 		return ekrutClient;
 	}
@@ -37,7 +37,7 @@ public class EKrutClientUI extends Application {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/BaseTemplate.fxml"));
@@ -48,18 +48,19 @@ public class EKrutClientUI extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-	
+
 	@Override
 	public void stop() throws IOException {
 		if (ekrutClient != null)
 			ekrutClient.closeConnection();
 	}
-	
-	public void popupUserNotification(String notificationMsg) {
-		Platform.runLater(() -> {
-			Alert alert = new Alert(AlertType.INFORMATION, notificationMsg, ButtonType.OK);
-			alert.showAndWait();
-		});
+
+	public static void popupUserNotification(String notificationMsg) {
+
+		Alert alert = new Alert(AlertType.INFORMATION, notificationMsg, ButtonType.OK);
+		alert.showAndWait();
+		// getEkrutClient().getClientSessionManager().logoutUser();
+
 	}
 
 }
