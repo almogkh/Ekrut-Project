@@ -74,25 +74,21 @@ public class ItemController extends HBox {
 
 	@FXML
 	void addToCart(ActionEvent event) {
-		Integer textQuantity = null;
+		noDigitError.setVisible(false);
 		try {
-			textQuantity = Integer.parseInt(quantityTxt.getText());
+			int textQuantity = Integer.parseInt(quantityTxt.getText());
 			cartQuantity = textQuantity;
 			setQuantityTxtStyle("#FFFFFF");
 		} catch (NumberFormatException e) { 
-		} finally {
-			if (textQuantity == null) 
-				noDigitError.setVisible(true);
-			else
-				noDigitError.setVisible(false);
+			noDigitError.setVisible(true);
 		}
 	}
 
 	@FXML
 	void minusItem(ActionEvent event) {
-		Integer textQuantity = null;
+		noDigitError.setVisible(false);
 		try {
-			textQuantity = Integer.parseInt(quantityTxt.getText());
+			int textQuantity = Integer.parseInt(quantityTxt.getText());
 			if (textQuantity > 0) {
 				quantityTxt.setText(Integer.toString(textQuantity - 1));
 				textQuantity--;
@@ -101,33 +97,24 @@ public class ItemController extends HBox {
 				else
 					setQuantityTxtStyle("#FFB4AB");
 			}
-		} catch (NumberFormatException e) {
-		} finally {
-			if (textQuantity == null)
-				noDigitError.setVisible(true);
-			else
-				noDigitError.setVisible(false);
+		} catch (NumberFormatException e) { 
+			noDigitError.setVisible(true);
 		}
 	}
 
 	@FXML
 	void plusItem(ActionEvent event) {
-		Integer textQuantity = null;
+		noDigitError.setVisible(false);
 		try {
-			textQuantity = Integer.parseInt(quantityTxt.getText());
+			int textQuantity = Integer.parseInt(quantityTxt.getText());
 			quantityTxt.setText(Integer.toString(textQuantity + 1));
 			textQuantity++;
 			if (cartQuantity == textQuantity)
 				setQuantityTxtStyle("#FFFFFF");
 			else
 				setQuantityTxtStyle("#FFB4AB");
-		} catch (NumberFormatException e) {
+		} catch (NumberFormatException e) { 
 			noDigitError.setVisible(true);
-		}finally {
-			if (textQuantity == null)
-				noDigitError.setVisible(true);
-			else
-				noDigitError.setVisible(false);
 		}
 
 	}

@@ -6,8 +6,6 @@ import ekrut.entity.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -45,7 +43,7 @@ public class ItemInCartController extends HBox {
 	
 
 	private final static String DOTS_AFTER_ITEM_NAME = "....................................."
-													 + ".....................................";
+                                                     + ".....................................";
 	
 	// order manager
 	private Integer cartQuantity = 0;
@@ -73,9 +71,9 @@ public class ItemInCartController extends HBox {
 
 	@FXML
 	void minusItem(ActionEvent event) {
-		Integer textQuantity = null;
+		noDigitError.setVisible(false);
 		try {
-			textQuantity = Integer.parseInt(quantityTxt.getText());
+			int textQuantity = Integer.parseInt(quantityTxt.getText());
 			if (textQuantity > 0) {
 				quantityTxt.setText(Integer.toString(textQuantity - 1));
 				textQuantity--;
@@ -85,19 +83,15 @@ public class ItemInCartController extends HBox {
 					setQuantityTxtStyle("#FFB4AB");
 			}
 		} catch (NumberFormatException e) {
-		} finally {
-			if (textQuantity == null)
-				noDigitError.setVisible(true);
-			else
-				noDigitError.setVisible(false);
+			noDigitError.setVisible(true);
 		}
 	}
 
 	@FXML
 	void plusItem(ActionEvent event) {
-		Integer textQuantity = null;
+		noDigitError.setVisible(false);
 		try {
-			textQuantity = Integer.parseInt(quantityTxt.getText());
+			int textQuantity = Integer.parseInt(quantityTxt.getText());
 			quantityTxt.setText(Integer.toString(textQuantity + 1));
 			textQuantity++;
 			if (cartQuantity == textQuantity)
@@ -106,11 +100,6 @@ public class ItemInCartController extends HBox {
 				setQuantityTxtStyle("#FFB4AB");
 		} catch (NumberFormatException e) {
 			noDigitError.setVisible(true);
-		}finally {
-			if (textQuantity == null)
-				noDigitError.setVisible(true);
-			else
-				noDigitError.setVisible(false);
 		}
 	}
 
@@ -121,17 +110,13 @@ public class ItemInCartController extends HBox {
 	
 	@FXML
 	void updateItemQuantity(ActionEvent event) {
-		Integer textQuantity = null;
+		noDigitError.setVisible(false);
 		try {
-			textQuantity = Integer.parseInt(quantityTxt.getText());
+			int textQuantity = Integer.parseInt(quantityTxt.getText());
 			cartQuantity = textQuantity;
 			setQuantityTxtStyle("#FFFFFF");
 		} catch (NumberFormatException e) { 
-		} finally {
-			if (textQuantity == null) 
-				noDigitError.setVisible(true);
-			else
-				noDigitError.setVisible(false);
+			noDigitError.setVisible(true);
 		}
 	}
 	
