@@ -122,7 +122,7 @@ public class ServerController {
 	@FXML
 	void Connect(final ActionEvent event) {
 		this.ErrorConnection.setVisible(false);
-		if (!ServerUI.runServer(5555, this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
+		if (!ServerUI.runServer(5555,this.DBNameTXTfield.getText(), this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
 			this.ErrorConnection.setVisible(true);
 			this.ConnectToServerBTN.setVisible(true);
 			this.DisconnectBTN.setVisible(false);

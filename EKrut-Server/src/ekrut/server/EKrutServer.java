@@ -38,10 +38,9 @@ public class EKrutServer extends AbstractServer {
 	private ServerReportManager serverReportManager;
 	private ServerShipmentManager serverShipmentManager;
 
-	public EKrutServer(int port, String dbUsername, String dbPassword) {
+	public EKrutServer(int port,String DBuserName, String dbUsername, String dbPassword) {
 		super(port);
-		dbCon = new DBController("jdbc:mysql://localhost/ekrut?serverTimezone=IST", dbUsername, dbPassword);
-
+		dbCon = new DBController(DBuserName, dbUsername, dbPassword);
 		serverSessionManager = new ServerSessionManager(dbCon);
 		IUserNotifier userNotifier = new PopupUserNotifier(dbCon, serverSessionManager);
 		serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
