@@ -46,9 +46,6 @@
 	-fx-background-color: none;
 	-fx-border-color: none;
 }
-body {
-  font-family: Algerian;
-}
 
 .image_button:hover {
 	-fx-background-color: none;
@@ -70,5 +67,3 @@ body {
 	-fx-border-radius: 20;
 	-fx-background-radius: 20;
 }
-
-
