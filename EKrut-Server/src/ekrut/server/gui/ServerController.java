@@ -120,9 +120,9 @@ public class ServerController {
 	}
 
 	@FXML
-	void Connect(final ActionEvent event) throws InterruptedException {
+	void Connect(final ActionEvent event) {
 		this.ErrorConnection.setVisible(false);
-		while (!ServerUI.runServer(5555, this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
+		if (!ServerUI.runServer(5555, this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
 			this.ErrorConnection.setVisible(true);
 			this.ConnectToServerBTN.setVisible(true);
 			this.DisconnectBTN.setVisible(false);
