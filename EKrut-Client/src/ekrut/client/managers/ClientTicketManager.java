@@ -2,7 +2,10 @@ package ekrut.client.managers;
 
 import java.util.ArrayList;
 
+import ekrut.client.EKrutClient;
 import ekrut.entity.Ticket;
+import ekrut.net.InventoryItemRequest;
+import ekrut.net.InventoryItemResponse;
 import ekrut.net.ResultType;
 import ekrut.net.TicketRequest;
 import ekrut.net.TicketRequestType;
@@ -23,6 +26,23 @@ import ekrut.net.UserResponse;
 public class ClientTicketManager {
 
 	
+	private EKrutClient client;
+	private Object lock = new Object();
+	private TicketResponse response;
+	
+	public ClientTicketManager(EKrutClient client) {
+		this.client = client;
+		client.registerHandler(TicketResponse.class, (res) -> {
+			synchronized(lock) {
+				response = res;
+				lock.notify();
+			}
+		});
+	}
+	
+	
+	
+	
 	/**
      * Updates the status of a given ticket.
      * 
@@ -36,7 +56,6 @@ public class ClientTicketManager {
 		if (ticket==null) {
 			throw new IllegalArgumentException("provided null ticket");
 		}
-		
 		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.UPDATE_STATUS,ticket.getTicketId()); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
@@ -107,8 +126,17 @@ public class ClientTicketManager {
      * @return the response to the request
      */
 
-	private TicketResponse sendRequest(TicketRequest ticketRequest) {
-		// TODO Auto-generated method stub
-		return null;
+
+	private TicketResponse sendRequest(TicketRequest request) {
+		this.response = null;
+		client.sendRequestToServer(request);
+		synchronized(lock) {
+			while (response == null) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {}
+			}
+		}
+		return response;
 	}
 }

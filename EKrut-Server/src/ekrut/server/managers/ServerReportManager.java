@@ -15,11 +15,13 @@ import ekrut.entity.OrderItem;
 import ekrut.entity.OrderType;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
+import ekrut.net.ReportRequest;
 import ekrut.net.ReportResponse;
 import ekrut.net.ResultType;
 import ekrut.server.db.DBController;
 import ekrut.server.db.InventoryItemDAO;
 import ekrut.server.db.ReportDAO;
+import ocsf.server.ConnectionToClient;
 
 /**
  * Manages Report management on the server side.
@@ -44,9 +46,9 @@ public class ServerReportManager {
 	 * @return a ReportResponse object containing the report, or a ResultType value indicating if the report was not found
 	 * @throws SQLException if a database error occurs while executing the SQL query
 	 */
-	public ReportResponse fetchReport(LocalDateTime date, String location, String area, ReportType type) {
+	public ReportResponse fetchReport(ReportRequest reportRequest, ConnectionToClient client) {
 		
-		Report report = reportDAO.fetchReport(date, location, area, type);
+		Report report = reportDAO.fetchReport(reportRequest.getDate(), reportRequest.getLocation(), reportRequest.getArea(), reportRequest.getReportType());
 		
 		if (report == null) 
 			return new ReportResponse(ResultType.NOT_FOUND);
@@ -61,13 +63,10 @@ public class ServerReportManager {
 	 * @return a ReportResponse object containing the list of facilities, or a ResultType value indicating if the list was not found
 	 * @throws SQLException if a database error occurs while executing the SQL query
 	 */
-	public ReportResponse fetchFacilitiesByArea(String area){
-		
-		ArrayList<String> facilities = reportDAO.fetchFacilitiesByArea(area);
-			
+	public ReportResponse fetchFacilitiesByArea(ReportRequest reportRequest, ConnectionToClient client){
+		ArrayList<String> facilities = reportDAO.fetchFacilitiesByArea(reportRequest.getArea());
 		if (facilities == null) 
 			return new ReportResponse(ResultType.NOT_FOUND);
-		
 		return new ReportResponse(ResultType.OK, facilities); 
 	}
 	

@@ -6,6 +6,8 @@ import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
 import ekrut.net.OrderRequest;
 import ekrut.net.OrderResponse;
+import ekrut.net.ReportRequest;
+import ekrut.net.ReportResponse;
 import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentResponse;
@@ -17,6 +19,7 @@ import ekrut.server.db.DBController;
 import ekrut.server.intefaces.IUserNotifier;
 import ekrut.server.managers.ServerInventoryManager;
 import ekrut.server.managers.ServerOrderManager;
+import ekrut.server.managers.ServerReportManager;
 import ekrut.server.managers.ServerSessionManager;
 import ekrut.server.managers.ServerShipmentManager;
 import ekrut.server.managers.ServerTicketManager;
@@ -32,7 +35,7 @@ public class EKrutServer extends AbstractServer {
 	private ServerTicketManager serverTicketManager;
 	private ServerOrderManager serverOrderManager;
 	private ServerInventoryManager serverInventoryManager;
-	// private ServerReportManager serverReportManager;
+	private ServerReportManager serverReportManager;
 	private ServerShipmentManager serverShipmentManager;
 
 
@@ -46,6 +49,7 @@ public class EKrutServer extends AbstractServer {
 		serverTicketManager = new ServerTicketManager(dbCon);
 		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager);
 		serverShipmentManager = new ServerShipmentManager(dbCon);
+		serverReportManager = new ServerReportManager(dbCon);
 	}
 
 	@Override
@@ -199,28 +203,27 @@ public class EKrutServer extends AbstractServer {
 
 	}
 	
-	/*
+
 	private void handleMessageRepor(ReportRequest reportRequest, ConnectionToClient client) {
 		ReportResponse reportResponse = null;
-		switch (reportRequest.getAction()) {
+		switch (reportRequest.getReportRequestType()) {
 		case FETCH_FACILITIES:
-			reportResponse = serverReportManager.createOrder(orderRequest, client);
+			reportResponse = serverReportManager.fetchFacilitiesByArea(reportRequest, client);
 			break;
 		case FETCH_REPORT:
-			reportResponse = serverReportManager.fetchOrders(orderRequest, client);
+			reportResponse = serverReportManager.fetchReport(reportRequest, client);
 			break;
-
 		default:
 			reportResponse = new ReportResponse(ResultType.UNKNOWN_ERROR);
 			break;
 		}
 		try {
-			client.sendToClient(orderResponse);
+			client.sendToClient(reportResponse);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-	}*/
+	}
 
 	public static void sendRequestToClient(Object msg, ConnectionToClient client) {
 		try {

@@ -71,27 +71,7 @@ public class ReportChooserController implements Initializable{
  		setAreaComboBox();
  		
 	}
-    
-	
-    @FXML
-    void aaaa(ActionEvent event) {
-    	System.out.println();
-    }
-    
-    @FXML
-    void areaSelected(ActionEvent event) {
-    	// TBD OFEK IS THIS NEEDED??
-    }
 
-    @FXML
-    void locationSelected(ActionEvent event) {
-    	// TBD OFEK IS THIS NEEDED??
-    }
-
-    @FXML
-    void reportTypeSelected(ActionEvent event) {
-    	// TBD OFEK IS THIS NEEDED??
-    }
 
     
     @FXML
@@ -118,7 +98,7 @@ public class ReportChooserController implements Initializable{
     		ReportType type = ReportType.valueOf(typeComboBox.getValue().toUpperCase());
     		
     		Report report = clientReportManager.getReport(
-    				areaComboBox.getValue(), locationComboBox.getValue(), type.toString(), date); // TBD OFEK type -> type.toString()
+    				areaComboBox.getValue(), locationComboBox.getValue(), type, date); // TBD OFEK type -> type.toString()
     		
     		if (report == null) {
     			reportErrorLabel.setText("Error, there is not such report");
@@ -164,9 +144,9 @@ public class ReportChooserController implements Initializable{
  		areaComboBox.getItems().addAll(areas);
     }
     
-    private void setLocationComboBox(String area) {
+    private void setLocationComboBox(String area) throws Exception {
     	
-    	 ArrayList<String> locations = clientReportManager.fetchFacilitiesByArea(area);
+    	 ArrayList<String> locations = clientReportManager.getFacilitiesByArea(area);
     	 // Convert array list into a array
     	 String[] locationsArr = locations.toArray(new String[locations.size()]);
     	 locationComboBox.getItems().addAll(locationsArr);
@@ -186,7 +166,7 @@ public class ReportChooserController implements Initializable{
     
     // Set the locations by the chosen area if the report type is not order
     @FXML
-    void setLocationsByArea(ActionEvent event) {
+    void setLocationsByArea(ActionEvent event) throws Exception {
     	String type = typeComboBox.getValue();
     	String area = areaComboBox.getValue();
     	if (!type.equals("Orders Report")) {

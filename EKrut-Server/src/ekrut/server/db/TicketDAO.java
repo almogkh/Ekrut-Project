@@ -90,9 +90,13 @@ public class TicketDAO {
 			ps.setString(1, area);
 			ResultSet rs = con.executeQuery(ps);
 			while(rs.next()) { 
-				Ticket ticket = new Ticket(rs.getInt(1),TicketStatus.valueOf(rs.getString(2)), rs.getString(3),rs.getString(4),rs.getInt(5),rs.getInt(6),rs.getString(7),rs.getString(8));
+				// ticketID, status, area, ekrutLocation, itemID, itemName, threshold, username
+				Ticket ticket = new Ticket(rs.getInt("ticketID"),TicketStatus.valueOf(rs.getString("status")), rs.getString("ekrutLocation"),rs.getString("area"),rs.getInt("threshold"),rs.getInt("itemID"),rs.getString("itemName"),rs.getString("username"));
 				ticketsByArea.add(ticket);
 			}
+			
+
+			
 			return ticketsByArea.size() != 0? ticketsByArea : null;
 		} catch (SQLException e1) {
 			return null;

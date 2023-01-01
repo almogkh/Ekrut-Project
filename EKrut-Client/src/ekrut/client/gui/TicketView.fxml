@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="740.0" spacing="7.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.TicketViewController">
+<fx:root alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="740.0" spacing="7.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="284.0" spacing="10.0">
+      <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="242.0" spacing="10.0">
          <children>
-            <Label fx:id="assignedForLbl" prefHeight="40.0" style="-fx-border-color: black; -fx-background-color: #2f88ff; -fx-border-radius: 20; -fx-background-radius: 20;" text="Assigned for:  Kruskalsdsdsdsdsd" textFill="WHITE">
+            <Label fx:id="assignedForLbl" prefHeight="40.0" style="-fx-border-color: black; -fx-background-color: #2f88ff; -fx-border-radius: 20; -fx-background-radius: 20;" text="Assigned for:  Kruskal" textFill="WHITE">
                <font>
                   <Font name="Candara Bold" size="18.0" />
                </font>
@@ -38,9 +38,9 @@
             <Insets left="10.0" />
          </HBox.margin>
       </VBox>
-      <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="335.0" spacing="10.0">
+      <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="376.0" spacing="10.0">
          <children>
-            <Label fx:id="ticketMsgLbl" prefHeight="100.0" prefWidth="336.0" text="Add 16 units of Mana Hama" wrapText="true">
+            <Label fx:id="ticketMsgLbl" prefHeight="100.0" prefWidth="374.0" text="Add 16 units of Mana Hama" wrapText="true">
                <font>
                   <Font name="Candara Bold" size="25.0" />
                </font>
@@ -66,4 +66,4 @@
          </HBox.margin>
       </Button>
    </children>
-</HBox>
+</fx:root>

@@ -101,6 +101,16 @@ public class BaseTemplateController {
     }
     
     public void loadViewTickets(){
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/TicketBrowser.fxml"));
+		try {
+			loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Parent root = loader.getRoot();
+		TicketBrowserController ticketBrowserController = loader.getController();
+		setRightWindow(root);
+    	
     }
     
     public void loadregistrationRequests(){

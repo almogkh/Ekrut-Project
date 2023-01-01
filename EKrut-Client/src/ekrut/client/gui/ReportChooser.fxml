@@ -89,7 +89,7 @@
                   </DropShadow>
                </effect>
             </Label>
-            <ComboBox fx:id="areaComboBox" disable="true" layoutX="123.0" layoutY="147.0" onAction="#areaSelected" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="areaComboBox" disable="true" layoutX="123.0" layoutY="147.0" onAction="#setLocationsByArea" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
             <Label alignment="CENTER" layoutX="124.0" layoutY="193.0" text="Location:" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Candara Bold" size="18.0" />
@@ -102,7 +102,7 @@
                   </DropShadow>
                </effect>
             </Label>
-            <ComboBox fx:id="locationComboBox" disable="true" layoutX="123.0" layoutY="215.0" onAction="#locationSelected" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="locationComboBox" disable="true" layoutX="123.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
             <Label alignment="CENTER" layoutX="124.0" layoutY="262.0" text="Year:" textFill="WHITE">
                <font>
                   <Font name="Candara Bold" size="19.0" />
@@ -146,7 +146,7 @@
                   <Font name="Candara Bold" size="47.0" />
                </font>
             </Label>
-            <ComboBox fx:id="typeComboBox" layoutX="123.0" layoutY="75.0" onAction="#reportTypeSelected" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="typeComboBox" layoutX="123.0" layoutY="75.0" onAction="#setLocationsByType" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
          </children>
       </Pane>
   </children>

@@ -65,7 +65,7 @@
       </VBox>
       <VBox alignment="TOP_CENTER" prefHeight="549.0" prefWidth="765.0">
          <children>
-            <ScrollPane blendMode="HARD_LIGHT" prefHeight="423.0" prefWidth="770.0">
+            <ScrollPane prefHeight="423.0" prefWidth="770.0">
               <content>
                   <VBox fx:id="ticketsContainerVbox" alignment="TOP_CENTER" prefHeight="407.0" prefWidth="755.0" spacing="10.0" />
               </content>

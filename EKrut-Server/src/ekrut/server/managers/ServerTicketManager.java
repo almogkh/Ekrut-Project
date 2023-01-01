@@ -118,7 +118,7 @@ public class ServerTicketManager {
 			throw new NullPointerException("null ticketRequest");
 		}
 		//get ticket Ekrut location from ticket request
-		String ticketArea=ticketRequest.getArea();
+		String ticketArea = ticketRequest.getArea();
 		
 		//fetch tickets by given location and save them in ArrayList
 		ArrayList<Ticket> ticketsByArea = ticketDAO.fetchTicketsByArea(ticketArea);
