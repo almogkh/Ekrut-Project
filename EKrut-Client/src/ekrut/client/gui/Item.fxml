@@ -65,6 +65,11 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
+            <Label fx:id="noDigitError" layoutX="14.0" layoutY="130.0" prefHeight="20.0" prefWidth="154.0" text="Please input only digits!" textFill="RED" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>

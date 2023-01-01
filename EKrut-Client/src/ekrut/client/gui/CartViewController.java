@@ -34,7 +34,7 @@ public class CartViewController {
 
     
     public void AddItemViewToCartVBox(){
-    	ItemInCartController item = new ItemInCartController();
+    	ItemInCartController item = new ItemInCartController(null, null);
     	ObservableList<Node> children = itemCartVBox.getChildren();
         children.add(item);
     }

@@ -47,10 +47,13 @@ public class ItemController extends HBox {
 	@FXML
 	private Label quantityInCart;
 
+	@FXML
+	private Label noDigitError;
+
 	private Integer cartQuantity = 0;
 
 	Image image;
-	
+
 	public ItemController(Item item) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
 		fxmlLoader.setRoot(this);
@@ -61,50 +64,80 @@ public class ItemController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+
 		/*
-		// Q.Nir - this.itemImage = item.getImg();
-		// initialize ItemView
-		image = new Image(new ByteArrayInputStream(item.getImg()));
-		itemName.setText(item.getItemName());
-		itemDiscription.setText(item.getItemDescription());
-		itemPrice.setText(Float.toString(item.getItemPrice()));
-		*/
+		  // Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
+		  Image(new ByteArrayInputStream(item.getImg()));
+		  itemName.setText(item.getItemName());
+		  itemDiscription.setText(item.getItemDescription());
+		  itemPrice.setText(Float.toString(item.getItemPrice()));
+		 */
 	}
 
 	@FXML
 	void addToCart(ActionEvent event) {
-		int textQuantity = Integer.parseInt(quantityTxt.getText());
-		cartQuantity = textQuantity;
-		setQuantityTxtStyle("#FFFFFF");
-
+		Integer textQuantity = null;
+		try {
+			textQuantity = Integer.parseInt(quantityTxt.getText());
+			cartQuantity = textQuantity;
+			setQuantityTxtStyle("#FFFFFF");
+		} catch (NumberFormatException e) { 
+		} finally {
+			if (textQuantity == null) 
+				noDigitError.setVisible(true);
+			else
+				noDigitError.setVisible(false);
+		}
 	}
 
 	@FXML
 	void minusItem(ActionEvent event) {
-		int textQuantity = Integer.parseInt(quantityTxt.getText());
-		if (textQuantity > 0) {
-			quantityTxt.setText(Integer.toString(textQuantity - 1));
-			textQuantity--;
-			if (cartQuantity == textQuantity)
-				setQuantityTxtStyle("#FFFFFF");
+		Integer textQuantity = null;
+		try {
+			textQuantity = Integer.parseInt(quantityTxt.getText());
+			if (textQuantity > 0) {
+				quantityTxt.setText(Integer.toString(textQuantity - 1));
+				textQuantity--;
+				if (cartQuantity == textQuantity)
+					setQuantityTxtStyle("#FFFFFF");
+				else
+					setQuantityTxtStyle("#FFB4AB");
+			}
+		} catch (NumberFormatException e) {
+		} finally {
+			if (textQuantity == null)
+				noDigitError.setVisible(true);
 			else
-				setQuantityTxtStyle("#FFB4AB");
+				noDigitError.setVisible(false);
 		}
 	}
 
 	@FXML
 	void plusItem(ActionEvent event) {
-		int textQuantity = Integer.parseInt(quantityTxt.getText());
-		quantityTxt.setText(Integer.toString(textQuantity + 1));
-		textQuantity++;
-		if (cartQuantity == textQuantity)
-			setQuantityTxtStyle("#FFFFFF");
-		else
-			setQuantityTxtStyle("#FFB4AB");
+		Integer textQuantity = null;
+		try {
+			textQuantity = Integer.parseInt(quantityTxt.getText());
+			quantityTxt.setText(Integer.toString(textQuantity + 1));
+			textQuantity++;
+			if (cartQuantity == textQuantity)
+				setQuantityTxtStyle("#FFFFFF");
+			else
+				setQuantityTxtStyle("#FFB4AB");
+		} catch (NumberFormatException e) {
+			noDigitError.setVisible(true);
+		}finally {
+			if (textQuantity == null)
+				noDigitError.setVisible(true);
+			else
+				noDigitError.setVisible(false);
+		}
+
 	}
 
 	private void setQuantityTxtStyle(String color) {
-		quantityTxt.setStyle("-fx-border-color: #000000; -fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: " + color + ";");
+		quantityTxt.setStyle(
+				"-fx-border-color: #000000; -fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: "
+						+ color + ";");
 	}
 
 	public Integer getCartQuantity() {

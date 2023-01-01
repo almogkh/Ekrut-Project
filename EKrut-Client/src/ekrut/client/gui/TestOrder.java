@@ -12,6 +12,8 @@ public class TestOrder extends Application{
 		launch(args);
 	}
 
+	
+	// PaymentView
 //	@Override
 //	public void start(Stage primaryStage) throws Exception {
 //		FXMLLoader loader = new FXMLLoader(getClass().getResource("PaymentView.fxml"));
@@ -22,27 +24,29 @@ public class TestOrder extends Application{
 //		primaryStage.show();
 //	}	
 	
-//	@Override
-//	public void start(Stage primaryStage) throws Exception {
-//		FXMLLoader loader = new FXMLLoader(getClass().getResource("CartView.fxml"));
-//		Parent root = loader.load();
-//		CartViewController controller = loader.getController();
-//		Scene scene = new Scene(root);
-//		controller.AddItemViewToCartVBox();
-//		primaryStage.setTitle("EKrut cart");
-//		primaryStage.setScene(scene);
-//		primaryStage.show();
-//	}
-	
+	// CratBrowser
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemBrowser.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("CartView.fxml"));
 		Parent root = loader.load();
-		ItemBrowserController controller = loader.getController();
+		CartViewController controller = loader.getController();
 		Scene scene = new Scene(root);
-		controller.AddItemViewToOrderVBox();
+		controller.AddItemViewToCartVBox();
 		primaryStage.setTitle("EKrut cart");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
+	
+//	// ItemBrowser
+//	@Override
+//	public void start(Stage primaryStage) throws Exception {
+//		FXMLLoader loader = new FXMLLoader(getClass().getResource("ItemBrowser.fxml"));
+//		Parent root = loader.load();
+//		ItemBrowserController controller = loader.getController();
+//		Scene scene = new Scene(root);
+//		controller.AddItemViewToOrderVBox();
+//		primaryStage.setTitle("EKrut cart");
+//		primaryStage.setScene(scene);
+//		primaryStage.show();
+//	}
 }
