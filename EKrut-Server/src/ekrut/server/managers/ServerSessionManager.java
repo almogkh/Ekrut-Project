@@ -121,7 +121,7 @@ public class ServerSessionManager {
 			connectedUsers.get(user).cancel(); //cancel timer
 			connectedUsers.remove(user);
 			clientUserMap.remove(client);
-			connectedClientList.remove(new ConnectedClient(client.getInetAddress().toString(), user.getUsername(), user.getUserType()));
+			connectedClientList.remove(new ConnectedClient(/* not relevant */ null, user.getUsername(), user.getUserType()));
 		}
 		userResponse.setResultCode(result);
 		return userResponse;
