@@ -55,6 +55,19 @@
   -fx-text-fill: black;
 }
 
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
+}
+.scroll-pane {
+   -fx-background-color: transparent;
+}
+
+.outlinedContainer {
+  -fx-border-color: white;
+  -fx-border-radius: 60;
+  -fx-background-radius: 10;
+}
+
 
 .table {
   -fx-border-color: black;
