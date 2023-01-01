@@ -124,15 +124,15 @@ public class ReportChooserController implements Initializable{
  			areas[2] = "UAE";
  		}
  		else if(user.getUserType().equals(UserType.AREA_MANAGER)) {
- 			if (user.getArea().equals("north")) {
+ 			if (user.getArea().equals("North")) {
  				areas = new String[1];
  				areas[0] = "North";
  			}
- 			else if (user.getArea().equals("south")) {
+ 			else if (user.getArea().equals("South")) {
  				areas = new String[1];
  				areas[0] = "South";
  			}
- 			else if (user.getArea().equals("uae")){
+ 			else if (user.getArea().equals("UAE")){
  				areas = new String[1];
  	 			areas[0] = "UAE";
  			}
