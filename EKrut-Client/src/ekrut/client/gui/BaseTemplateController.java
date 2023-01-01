@@ -48,6 +48,10 @@ public class BaseTemplateController {
     	return baseTemplateController;
     }
     
+    void showLogoutBtn() {
+    	logoutBtn.setVisible(true);
+    }
+    
     public void setRightWindow(Parent root) {
     	ObservableList<Node> childern = rightVbox.getChildren();
     	childern.setAll(root);
@@ -71,6 +75,7 @@ public class BaseTemplateController {
     	ObservableList<Node> vboxChildren = navigationVbox.getChildren();
     	vboxChildren.clear();
     	infoPane.setVisible(false);
+    	logoutBtn.setVisible(false);
     }
     
     public void loadHostSelection(){
