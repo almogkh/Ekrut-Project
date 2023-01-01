@@ -116,7 +116,7 @@ public class ClientInventoryManager {
 	
 	public ArrayList<String> fetchAllEkrutLocationsByArea(String ekrutLocation){
 		InventoryItemRequest inventoryFentchAllEkrutLocationByAreaRequest = 
-				new InventoryItemRequest(ekrutLocation, InventoryItemRequestType.FRTCH_LOCATION_IN_AREA);
+				new InventoryItemRequest(ekrutLocation, InventoryItemRequestType.FETCH_LOCATION_IN_AREA);
 		InventoryItemResponse response = sendRequest(inventoryFentchAllEkrutLocationByAreaRequest);
 		ResultType resultType = response.getResultType();
 		if (resultType != ResultType.OK)

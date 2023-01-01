@@ -132,7 +132,7 @@ public class EKrutServer extends AbstractServer {
 		case UPDATE_ITEM_THRESHOLD:
 			inventoryItemResponse = serverInventoryManager.updateItemThreshold(inventoryItemRequest);
 			break;
-		case FRTCH_LOCATION_IN_AREA:
+		case FETCH_LOCATION_IN_AREA:
 			inventoryItemResponse = serverInventoryManager.fetchAllEkrutLocationsByArea(inventoryItemRequest);
 			break;
 		default:
