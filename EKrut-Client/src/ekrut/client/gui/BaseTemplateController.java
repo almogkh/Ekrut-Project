@@ -94,6 +94,15 @@ public class BaseTemplateController {
     }
     
     public void loadCreateOrder(){
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ItemBrowser.fxml"));
+    	Parent root = null;
+		try {
+			root = loader.load();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.exit(-1);
+		}
+		setRightWindow(root);
     }
     
     public void loadPickupOrder(){
