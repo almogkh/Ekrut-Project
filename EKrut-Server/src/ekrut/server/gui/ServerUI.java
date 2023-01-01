@@ -40,8 +40,8 @@ public class ServerUI extends Application {
 			server.close();
 	}
 
-	public static boolean runServer(int port, String username, String password) {
-		server = new EKrutServer(port, username, password);
+	public static boolean runServer(int port,String DBuserName, String username, String password) {
+		server = new EKrutServer(port,DBuserName, username, password);
 		controller.setTable(server.getSession());
 		try {
 			if(!server.getDbCon().connect()) {
