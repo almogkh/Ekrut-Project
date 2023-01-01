@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import ekrut.client.EKrutClient;
+import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientReportManager;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
@@ -14,7 +15,6 @@ import ekrut.entity.User;
 import ekrut.entity.UserType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -48,14 +48,38 @@ public class ReportChooserController implements Initializable{
     
     // TBD check what is this doing
     private EKrutClient client;
-    
-    User user = new User(UserType.CEO, "talga", "tal123", "tal", "gaon", "31231",
-			"talgaon4@gmail.com", "0522613732", "north");
-    
-    ClientReportManager  clientReportManager = new ClientReportManager(client);
+    private User user;
+    private ClientReportManager  clientReportManager;
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		client = EKrutClientUI.getEkrutClient();
+		user = client.getClientSessionManager().getUser();
+		clientReportManager = client.getClientReportManager();
+		
+		// Set months, years, types combo boxes
+		// Can be changed later to English months
+ 		String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
+ 		monthComboBox.getItems().addAll(months);
+ 		
+ 		String[] years = {"2021", "2022", "2023"};
+ 		yearComboBox.getItems().addAll(years);
+ 		
+ 		String[] types = {"Orders Report", "Inventory Report", "Customer Activity Report"};
+ 		typeComboBox.getItems().addAll(types);		
+ 		
+ 		// i think it should be here
+ 		setAreaComboBox();
+ 		
+	}
 
+
+    
     @FXML
     void viewReport(ActionEvent event) throws Exception {
+    	System.out.println("TEMPORARLY NOT AVAILABLE");
+    	if (event!=null) /// remove later
+    		return;
+    	
     	// Handle empty combo box first
     	if (typeComboBox.getValue() == null || areaComboBox.getValue() == null || 
     			monthComboBox.getValue() == null || yearComboBox.getValue() == null) {
@@ -74,7 +98,7 @@ public class ReportChooserController implements Initializable{
     		ReportType type = ReportType.valueOf(typeComboBox.getValue().toUpperCase());
     		
     		Report report = clientReportManager.getReport(
-    				areaComboBox.getValue(), locationComboBox.getValue(), type, date);
+    				areaComboBox.getValue(), locationComboBox.getValue(), type, date); // TBD OFEK type -> type.toString()
     		
     		if (report == null) {
     			reportErrorLabel.setText("Error, there is not such report");
@@ -87,18 +111,6 @@ public class ReportChooserController implements Initializable{
     		}
     	}
     }
-    
-    
-    /*
-    public void displayUserDetails(User user) {
-    	nameInitialsLabel.setText(user.getFirstName().substring(0, 1).toUpperCase() +
-    							 user.getLastName().substring(0, 1).toUpperCase());}
-    							 
-	String[] north = {"Haifa", "Akko", "Karmiel"};
-	String[] south = {"Dimona", "Eilat", "Netivot"};
-	String[] UAE = {"Dubai", "Abu-Dabi", "Queit"}; 
-    */
-    
     
     private void setAreaComboBox() {
     	//TBD better way to create those areas list
@@ -131,9 +143,9 @@ public class ReportChooserController implements Initializable{
  		areaComboBox.getItems().addAll(areas);
     }
     
-    private void setLocationComboBox(String area) {
+    private void setLocationComboBox(String area) throws Exception {
     	
-    	 ArrayList<String> locations = clientReportManager.fetchFacilitiesByArea(area);
+    	 ArrayList<String> locations = clientReportManager.getFacilitiesByArea(area);
     	 // Convert array list into a array
     	 String[] locationsArr = locations.toArray(new String[locations.size()]);
     	 locationComboBox.getItems().addAll(locationsArr);
@@ -153,7 +165,7 @@ public class ReportChooserController implements Initializable{
     
     // Set the locations by the chosen area if the report type is not order
     @FXML
-    void setLocationsByArea(ActionEvent event) {
+    void setLocationsByArea(ActionEvent event) throws Exception {
     	String type = typeComboBox.getValue();
     	String area = areaComboBox.getValue();
     	if (!type.equals("Orders Report")) {
@@ -163,25 +175,4 @@ public class ReportChooserController implements Initializable{
  			setLocationComboBox(area);
     	}
     }
-    
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		
-		// Set months, years, types combo boxes
-		// Can be changed later to English months
- 		String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
- 		monthComboBox.getItems().addAll(months);
- 		
- 		String[] years = {"2021", "2022", "2023"};
- 		yearComboBox.getItems().addAll(years);
- 		
- 		String[] types = {"Orders Report", "Inventory Report", "Customer Activity Report"};
- 		typeComboBox.getItems().addAll(types);		
- 		
- 		// i think it should be here
- 		setAreaComboBox();
- 		
-	}
-	
 }

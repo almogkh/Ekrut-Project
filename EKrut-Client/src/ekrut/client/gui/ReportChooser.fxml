@@ -43,11 +43,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
   <children>
       <Pane prefHeight="120.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Text layoutX="127.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report ">
+            <Text layoutX="137.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report " wrappingWidth="495.1552734375">
                <font>
                   <Font name="Candara Bold" size="78.0" />
                </font>
@@ -60,7 +60,7 @@
                </effect>
             </Text>
             <Line endX="-6.0" layoutX="115.0" layoutY="59.0" startX="-100.0" stroke="WHITE" />
-            <Line endX="16.0" layoutX="723.0" layoutY="58.0" startX="-100.0" stroke="WHITE" />
+            <Line endX="-6.0" layoutX="761.0" layoutY="59.0" startX="-100.0" stroke="WHITE" />
          </children>
       </Pane>
       <Pane prefHeight="555.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
@@ -89,7 +89,7 @@
                   </DropShadow>
                </effect>
             </Label>
-            <ComboBox fx:id="areaComboBox" disable="true" layoutX="123.0" layoutY="147.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="areaComboBox" disable="true" layoutX="123.0" layoutY="147.0" onAction="#setLocationsByArea" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
             <Label alignment="CENTER" layoutX="124.0" layoutY="193.0" text="Location:" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font name="Candara Bold" size="18.0" />
@@ -102,7 +102,7 @@
                   </DropShadow>
                </effect>
             </Label>
-            <ComboBox fx:id="locationComboBox" disable="true" layoutX="123.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="locationComboBox" disable="true" layoutX="123.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
             <Label alignment="CENTER" layoutX="124.0" layoutY="262.0" text="Year:" textFill="WHITE">
                <font>
                   <Font name="Candara Bold" size="19.0" />
@@ -115,7 +115,7 @@
                   </DropShadow>
                </effect>
             </Label>
-            <ComboBox fx:id="yearComboBox" layoutX="123.0" layoutY="285.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Year" styleClass="combo-box" stylesheets="@gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="yearComboBox" layoutX="123.0" layoutY="285.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Year" styleClass="combo-box" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
             <Label alignment="CENTER" layoutX="124.0" layoutY="335.0" text="Month:" textFill="WHITE">
                <font>
                   <Font name="Candara Bold" size="19.0" />
@@ -128,8 +128,8 @@
                   </DropShadow>
                </effect>
             </Label>
-            <ComboBox fx:id="monthComboBox" layoutX="123.0" layoutY="358.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Month" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
-            <Button fx:id="viewReportButton" layoutX="295.0" layoutY="439.0" mnemonicParsing="false" onAction="#viewReport" prefHeight="48.0" prefWidth="153.0" text="View Report" textFill="WHITE">
+            <ComboBox fx:id="monthComboBox" layoutX="123.0" layoutY="358.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Month" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <Button fx:id="viewReportButton" layoutX="304.0" layoutY="440.0" mnemonicParsing="false" onAction="#viewReport" prefHeight="48.0" prefWidth="153.0" text="View Report" textFill="WHITE">
                <font>
                   <Font name="Candara Bold Italic" size="18.0" />
                </font>
@@ -146,7 +146,7 @@
                   <Font name="Candara Bold" size="47.0" />
                </font>
             </Label>
-            <ComboBox fx:id="typeComboBox" layoutX="123.0" layoutY="75.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="typeComboBox" layoutX="123.0" layoutY="75.0" onAction="#setLocationsByType" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
          </children>
       </Pane>
   </children>

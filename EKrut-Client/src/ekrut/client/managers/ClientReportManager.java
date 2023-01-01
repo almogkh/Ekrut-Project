@@ -24,42 +24,33 @@ public class ClientReportManager extends AbstractClientManager<ReportRequest, Re
 	}
 	
 	//redo document
-
+	/**
+	 * Returns the report according to the inputs if such a report exists. 
+	 * @param String area, String reportType, LocalDateTime date.
+	 * @throws Exception when the servers response is anything but "OK".
+	 * @return report.
+	 */
 	public Report getReport(String area, String location, ReportType reportType, LocalDateTime date) throws Exception { 
-	// Prepare a getReportRequest to send to server.
-	ReportRequest reportRequest = new ReportRequest(area, location, reportType, date);
-	// Sending getReportRequest and receiving getReportResponse.
-	ReportResponse reportResponse = sendRequest(reportRequest);
- 
-	ResultType resultType = reportResponse.getResultCode(); 
-	// ResultCode is not "OK" meaning we encountered an error.
-	if (!resultType.equals(ResultType.OK))
-		throw new Exception(resultType.toString()); // TBD CHANGE TO SPESIFIC EXCEPTION
-	// Return the report that attached to the response.
-	return reportResponse.getReport();  
-	}
-	
-	public ArrayList<String> getFacilitiesByArea(String area) throws Exception{
-		
-		ReportRequest reportRequest = new ReportRequest(area);
-		
+		// Prepare a getReportRequest to send to server.
+		ReportRequest reportRequest = new ReportRequest(area, location, reportType, date);
+		// Sending getReportRequest and receiving getReportResponse.
 		ReportResponse reportResponse = sendRequest(reportRequest);
-		
+	 
 		ResultType resultType = reportResponse.getResultCode(); 
 		// ResultCode is not "OK" meaning we encountered an error.
 		if (!resultType.equals(ResultType.OK))
 			throw new Exception(resultType.toString()); // TBD CHANGE TO SPESIFIC EXCEPTION
-		
+		// Return the report that attached to the response.
+		return reportResponse.getReport();  
+	}
+	
+	public ArrayList<String> getFacilitiesByArea(String area) throws Exception{
+		ReportRequest reportRequest = new ReportRequest(area);
+		ReportResponse reportResponse = sendRequest(reportRequest);
+		ResultType resultType = reportResponse.getResultCode(); 
+		// ResultCode is not "OK" meaning we encountered an error.
+		if (!resultType.equals(ResultType.OK))
+			throw new Exception(resultType.toString()); // TBD CHANGE TO SPESIFIC EXCEPTION
 		return reportResponse.getFacilities();  
 	}
-	
-	public ArrayList<String> fetchFacilitiesByArea(String area){
-		
-		
-		
-		return null;
-	}
-	
-	
 }
-	

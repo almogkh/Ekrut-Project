@@ -43,7 +43,7 @@ public class ClientLoginController {
 	private EKrutClient ekrutClient;
 	
 	@FXML
-	void attemptLogin(ActionEvent event) throws Exception {
+	void attemptLogin(ActionEvent event){
 		// reset red error labels
 		errorLbl.setVisible(false);
 		// gather info from the form
@@ -60,7 +60,13 @@ public class ClientLoginController {
 		if (ekrutClient == null)
 			ekrutClient = EKrutClientUI.getEkrutClient();
 		
-		me = ekrutClient.getClientSessionManager().loginUser(username, password);
+		try {
+			me = ekrutClient.getClientSessionManager().loginUser(username, password);
+		} catch (RuntimeException e1) {
+			errorLbl.setText(INCORRECT_USER_PASS_ERROR);
+			errorLbl.setVisible(true);
+			return;
+		}
 		if (me == null) {
 			errorLbl.setText(INCORRECT_USER_PASS_ERROR);
 			errorLbl.setVisible(true);

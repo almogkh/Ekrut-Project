@@ -26,7 +26,7 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 	 * @return The `User` object if the login was successful, or throws an exception if an error occurred.
 	 * @throws Exception if the user is already logged in, if the user has entered null items, or if the login failed.
 	 */
-	public User loginUser(String username, String password) throws Exception{
+	public User loginUser(String username, String password) {
 		if (user != null)
 			throw new RuntimeException("User is already loggedin");
 		

@@ -17,20 +17,24 @@ public class EKrutClient extends AbstractClient{
 	private ClientSessionManager clientSessionManager;
 	private ClientShipmentManager clientShipmentManager;
 	private ClientSalesManager clientSalesManager;
+	private ClientTicketManager clientTicketManager;
 	private Map<Class<?>, Consumer<Object>> handlers = new HashMap<>();
-	
-	
 	
 	public EKrutClient(String host, int port) {
 		super(host, port);
 		clientInventoryManager = new ClientInventoryManager(this);
 		clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
-		//clientReportManager = new ClientReportManager(this);
+		clientReportManager = new ClientReportManager(this);
 		clientSessionManager = new ClientSessionManager(this);
 		//clientShipmentManager = new ClientShipmentManager(this);
 		clientSalesManager = new ClientSalesManager(this);
+		clientTicketManager = new ClientTicketManager(this);
 	}
 	
+	
+	public ClientTicketManager getClientTicketManager() {
+		return clientTicketManager;
+	}
 	
 	public ClientInventoryManager getClientInventoryManager() {
 		return clientInventoryManager;

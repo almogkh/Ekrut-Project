@@ -38,7 +38,6 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
 		if (ticket==null) {
 			throw new IllegalArgumentException("provided null ticket");
 		}
-		
 		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.UPDATE_STATUS,ticket.getTicketId()); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
@@ -97,6 +96,5 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
 		return ticketResponse.getTicketsList();
-		
 	}
 }

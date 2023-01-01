@@ -12,7 +12,7 @@ public class ReportRequest implements Serializable{
 	private String location;
 	private ReportType reportType;
 	private LocalDateTime date;
-	
+
 	public ReportRequest(String area, String location, ReportType reportType, LocalDateTime date) {
 		this.reportRequestType = ReportRequestType.FETCH_REPORT; 
 		this.area = area;
@@ -20,10 +20,12 @@ public class ReportRequest implements Serializable{
 		this.reportType = reportType;
 		this.date = date;
 	}
+	
 	public ReportRequest(String area) {
 		this.area = area;
 		this.reportRequestType = ReportRequestType.FETCH_FACILITIES; 
 	}
+	
 	public String getArea() {
 		return area;
 	}

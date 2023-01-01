@@ -97,32 +97,32 @@
             </Label>
             <Pane prefHeight="241.0" prefWidth="745.0">
                <children>
-                  <TextField fx:id="usernameTxt" layoutX="269.0" layoutY="77.0" prefHeight="41.0" prefWidth="200.0" promptText="Username" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
+                  <TextField fx:id="usernameTxt" layoutX="276.0" layoutY="77.0" prefHeight="41.0" prefWidth="200.0" promptText="Username" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </TextField>
-                  <PasswordField fx:id="passwordTxt" layoutX="272.0" layoutY="151.0" prefHeight="41.0" prefWidth="200.0" promptText="Password" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
+                  <PasswordField fx:id="passwordTxt" layoutX="279.0" layoutY="151.0" prefHeight="41.0" prefWidth="200.0" promptText="Password" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </PasswordField>
-                  <Label layoutX="285.0" layoutY="56.0" text="Username">
+                  <Label layoutX="292.0" layoutY="56.0" text="Username">
                      <font>
                         <Font name="Candara" size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="284.0" layoutY="131.0" text="Password">
+                  <Label layoutX="291.0" layoutY="131.0" text="Password">
                      <font>
                         <Font name="Candara" size="18.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="207.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="214.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@gui-assets/user.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="60.0" fitWidth="55.0" layoutX="207.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="60.0" fitWidth="55.0" layoutX="214.0" layoutY="142.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@gui-assets/key.png" />
                      </image>
@@ -134,12 +134,12 @@
                   <Font name="Candara Bold" size="20.0" />
                </font>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets top="15.0" />
                </VBox.margin>
             </Button>
-            <Label fx:id="errorLbl" text="ERROR" textFill="RED" underline="true" visible="false">
+            <Label fx:id="errorLbl" text="ERROR" textFill="RED" underline="true">
                <VBox.margin>
-                  <Insets top="80.0" />
+                  <Insets top="50.0" />
                </VBox.margin>
                <font>
                   <Font name="Candara Bold" size="20.0" />
