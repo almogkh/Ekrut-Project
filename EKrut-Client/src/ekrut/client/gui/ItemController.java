@@ -1,8 +1,6 @@
 package ekrut.client.gui;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
 import ekrut.entity.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
