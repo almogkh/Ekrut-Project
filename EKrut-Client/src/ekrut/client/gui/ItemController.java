@@ -1,5 +1,6 @@
 package ekrut.client.gui;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import ekrut.entity.Item;
@@ -9,9 +10,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class ItemController extends HBox {
@@ -24,9 +25,6 @@ public class ItemController extends HBox {
 
 	@FXML
 	private Text itemDiscription;
-
-	@FXML
-	private HBox itemHBox;
 
 	@FXML
 	private ImageView itemImage;
@@ -49,9 +47,10 @@ public class ItemController extends HBox {
 	@FXML
 	private Label quantityInCart;
 
-	private Integer currentQuantity = 0;
-	private Integer quantityToAdd = 0;
+	private Integer cartQuantity = 0;
 
+	Image image;
+	
 	public ItemController() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
 		fxmlLoader.setRoot(this);
@@ -59,13 +58,14 @@ public class ItemController extends HBox {
 
 		try {
 			fxmlLoader.load();
-		} catch (IOException exception) {
-			throw new RuntimeException(exception);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
 	public ItemController(Item item) {
 		// Q.Nir - this.itemImage = item.getImg();
+		image = new Image(new ByteArrayInputStream(item.getImg()));
 		itemName.setText(item.getItemName());
 		itemDiscription.setText(item.getItemDescription());
 		itemPrice.setText(Float.toString(item.getItemPrice()));
@@ -73,19 +73,19 @@ public class ItemController extends HBox {
 
 	@FXML
 	void addToCart(ActionEvent event) {
-		int formQuantity = Integer.parseInt(quantityTxt.getText());
-		currentQuantity = formQuantity;
+		int textQuantity = Integer.parseInt(quantityTxt.getText());
+		cartQuantity = textQuantity;
 		setQuantityTxtStyle("#FFFFFF");
 
 	}
 
 	@FXML
 	void minusItem(ActionEvent event) {
-		int formQuantity = Integer.parseInt(quantityTxt.getText());
-		if (formQuantity > 0) {
-			quantityTxt.setText(Integer.toString(formQuantity - 1));
-			formQuantity--;
-			if (currentQuantity == formQuantity)
+		int textQuantity = Integer.parseInt(quantityTxt.getText());
+		if (textQuantity > 0) {
+			quantityTxt.setText(Integer.toString(textQuantity - 1));
+			textQuantity--;
+			if (cartQuantity == textQuantity)
 				setQuantityTxtStyle("#FFFFFF");
 			else
 				setQuantityTxtStyle("#FFB4AB");
@@ -94,18 +94,21 @@ public class ItemController extends HBox {
 
 	@FXML
 	void plusItem(ActionEvent event) {
-		int formQuantity = Integer.parseInt(quantityTxt.getText());
-		quantityTxt.setText(Integer.toString(formQuantity + 1));
-		formQuantity++;
-		if (currentQuantity == formQuantity)
+		int textQuantity = Integer.parseInt(quantityTxt.getText());
+		quantityTxt.setText(Integer.toString(textQuantity + 1));
+		textQuantity++;
+		if (cartQuantity == textQuantity)
 			setQuantityTxtStyle("#FFFFFF");
 		else
 			setQuantityTxtStyle("#FFB4AB");
 	}
 
 	private void setQuantityTxtStyle(String color) {
-		quantityTxt.setStyle("-fx-border-color: #000000; " + "-fx-background-radius: 20; " + "-fx-border-radius: 20; "
-				+ "-fx-background-color: " + color + ";");
-	};
+		quantityTxt.setStyle("-fx-border-color: #000000; -fx-background-radius: 20; -fx-border-radius: 20; -fx-background-color: " + color + ";");
+	}
+
+	public Integer getCartQuantity() {
+		return cartQuantity;
+	}
 
 }
