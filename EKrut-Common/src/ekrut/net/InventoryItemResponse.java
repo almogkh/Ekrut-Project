@@ -10,6 +10,7 @@ public class InventoryItemResponse implements Serializable{
 	private static final long serialVersionUID = -1415270822049012022L;
 	private ResultType resultType;
 	private ArrayList<InventoryItem> inventoryItems;
+	private ArrayList<String> ekrutLocations;
 	
 	// Constructor for String-only responses.
 	public InventoryItemResponse(ResultType resultType) {
@@ -21,10 +22,21 @@ public class InventoryItemResponse implements Serializable{
 		this.inventoryItems = inventoryItems;
 	}
 	
+	public InventoryItemResponse(ArrayList<String> ekrutLocations) {
+		this.resultType = ResultType.OK;
+		this.ekrutLocations = ekrutLocations;
+	}
+	
 	public ArrayList<InventoryItem> getInventoryItems() {
 		return inventoryItems;
 	}
 	
+	
+	
+	public ArrayList<String> getEkrutLocations() {
+		return ekrutLocations;
+	}
+
 	// TBD Anything BUT resultCode = "OK" means some sort of an error!
 	// THINKING ABOUT CHANGING IT TO INVENTORY_ITEM_TYPE
 	public ResultType getResultType() {

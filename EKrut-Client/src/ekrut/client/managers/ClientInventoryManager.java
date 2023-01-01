@@ -4,6 +4,7 @@ import ekrut.client.EKrutClient;
 import ekrut.entity.InventoryItem;
 import java.util.ArrayList;
 import ekrut.net.InventoryItemRequest;
+import ekrut.net.InventoryItemRequestType;
 import ekrut.net.InventoryItemResponse;
 import ekrut.net.ResultType;
 
@@ -62,6 +63,9 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 		
 		// ResultCode is not "OK" meaning we encountered an error.
 		ResultType resultType = inventoryGetItemsResponse.getResultType();
+		
+		if (resultType == ResultType.NOT_FOUND)
+			return null;
 		if (resultType != ResultType.OK)
 			throw new RuntimeException(resultType.toString());
 		
@@ -93,5 +97,15 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 		ResultType resultType = inventoryUpdateItemThresholdResponse.getResultType();
 		if (resultType != ResultType.OK)
 			throw new RuntimeException(resultType.toString());
+	}
+
+	public ArrayList<String> fetchAllEkrutLocationsByArea(String ekrutLocation){
+		InventoryItemRequest inventoryFentchAllEkrutLocationByAreaRequest = 
+				new InventoryItemRequest(ekrutLocation, InventoryItemRequestType.FETCH_LOCATION_IN_AREA);
+		InventoryItemResponse response = sendRequest(inventoryFentchAllEkrutLocationByAreaRequest);
+		ResultType resultType = response.getResultType();
+		if (resultType != ResultType.OK)
+			throw new RuntimeException(resultType.toString());
+		return response.getEkrutLocations();
 	}
 }

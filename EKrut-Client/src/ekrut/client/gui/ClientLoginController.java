@@ -83,6 +83,7 @@ public class ClientLoginController {
 			}
 		}
 		Parent root = loader.getRoot();
+		BaseTemplateController.getBaseTemplateController().showLogoutBtn();
 		BaseTemplateController.getBaseTemplateController().setUser(me);
 		BaseTemplateController.getBaseTemplateController().setRightWindow(root);
 	}
