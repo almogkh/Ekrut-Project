@@ -1,9 +1,12 @@
 package ekrut.entity;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
-public class SaleDiscount {
+public class SaleDiscount implements Serializable {
 
+	private static final long serialVersionUID = -8240267976906125824L;
+	
 	private int discountId;
 	private SaleDiscountType type;
 	private String area;
@@ -20,6 +23,8 @@ public class SaleDiscount {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.dayOfSale = dayOfSale;
+		this.area = area;
+		this.isActive = true;
 	}
 	// Template
 	public SaleDiscount(int discountId, LocalTime startTime, LocalTime endTime,

@@ -16,6 +16,7 @@ public class EKrutClient extends AbstractClient{
 	private ClientReportManager clientReportManager; 
 	private ClientSessionManager clientSessionManager;
 	private ClientShipmentManager clientShipmentManager;
+	private ClientSalesManager clientSalesManager;
 	private Map<Class<?>, Consumer<Object>> handlers = new HashMap<>();
 	
 	
@@ -27,6 +28,7 @@ public class EKrutClient extends AbstractClient{
 		//clientReportManager = new ClientReportManager(this);
 		clientSessionManager = new ClientSessionManager(this);
 		//clientShipmentManager = new ClientShipmentManager(this);
+		clientSalesManager = new ClientSalesManager(this);
 	}
 	
 	
@@ -48,6 +50,10 @@ public class EKrutClient extends AbstractClient{
 
 	public ClientShipmentManager getClientShipmentManager() {
 		return clientShipmentManager;
+	}
+	
+	public ClientSalesManager getClientSalesManager() {
+		return clientSalesManager;
 	}
 
 

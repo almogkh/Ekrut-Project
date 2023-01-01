@@ -1,0 +1,10 @@
+package ekrut.net;
+
+public enum SaleDiscountRequestType {
+
+	CREATE_SALE,
+	FETCH_SALE_TEMPLATES,
+	FETCH_SALES_BY_AREA,
+	ACTIVATE_SALE_FOR_AREA,
+	DEACTIVATE_SALE_FOR_AREA,
+}
