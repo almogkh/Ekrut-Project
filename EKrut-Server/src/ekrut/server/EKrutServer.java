@@ -38,11 +38,10 @@ public class EKrutServer extends AbstractServer {
 	private ServerReportManager serverReportManager;
 	private ServerShipmentManager serverShipmentManager;
 
-
 	public EKrutServer(int port, String dbUsername, String dbPassword) {
 		super(port);
 		dbCon = new DBController("jdbc:mysql://localhost/ekrut?serverTimezone=IST", dbUsername, dbPassword);
-		
+
 		serverSessionManager = new ServerSessionManager(dbCon);
 		IUserNotifier userNotifier = new PopupUserNotifier(dbCon, serverSessionManager);
 		serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
@@ -50,6 +49,7 @@ public class EKrutServer extends AbstractServer {
 		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager);
 		serverShipmentManager = new ServerShipmentManager(dbCon);
 		serverReportManager = new ServerReportManager(dbCon);
+		
 	}
 
 	@Override
@@ -64,25 +64,26 @@ public class EKrutServer extends AbstractServer {
 			handleMessageOrder((OrderRequest) msg, client);
 		} else if (msg instanceof ShipmentRequest) {
 			handleMessageShipment((ShipmentRequest) msg, client);
+		}else if (msg instanceof ReportRequest) {
+			handleMessageReport((ReportRequest) msg, client);
 		}
 	}
 
 	private void handleMessageUser(UserRequest userRequest, ConnectionToClient client) {
 		UserResponse userResponse = null;
-		switch(userRequest.getAction()) {
-			case LOGIN:	
-				userResponse = serverSessionManager.loginUser(
-						userRequest.getUsername(), userRequest.getPassword(), client);
-				break;
-			case LOGOUT:	
-				userResponse = serverSessionManager.logoutUser(client, null);
-				break;
-			case IS_LOGGEDIN:
-				userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
-				break;
-			default:
-				userResponse = new UserResponse(ResultType.UNKNOWN_ERROR);
-				break;
+		switch (userRequest.getAction()) {
+		case LOGIN:
+			userResponse = serverSessionManager.loginUser(userRequest.getUsername(), userRequest.getPassword(), client);
+			break;
+		case LOGOUT:
+			userResponse = serverSessionManager.logoutUser(client, null);
+			break;
+		case IS_LOGGEDIN:
+			userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
+			break;
+		default:
+			userResponse = new UserResponse(ResultType.UNKNOWN_ERROR);
+			break;
 		}
 		try {
 			client.sendToClient(userResponse);
@@ -202,9 +203,8 @@ public class EKrutServer extends AbstractServer {
 		}
 
 	}
-	
 
-	private void handleMessageRepor(ReportRequest reportRequest, ConnectionToClient client) {
+	private void handleMessageReport(ReportRequest reportRequest, ConnectionToClient client) {
 		ReportResponse reportResponse = null;
 		switch (reportRequest.getReportRequestType()) {
 		case FETCH_FACILITIES:
@@ -233,7 +233,7 @@ public class EKrutServer extends AbstractServer {
 			System.exit(-1);
 		}
 	}
-	
+
 	@Override
 	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
 		serverSessionManager.logoutUser(client, null);
@@ -243,25 +243,20 @@ public class EKrutServer extends AbstractServer {
 		return serverSessionManager;
 	}
 
-    @Override
-    protected void serverStarted() {
-        System.out.println("Server listening for connections on port " + this.getPort());
-        try {
-        	if (!dbCon.connect()) // need to check return value
-    			System.exit(1); // TBD OFEK: different behaviour might be more suited
-            
-        }
-        catch (Exception ex) {
-            System.out.println("Error! DataBase Connection Failed");
-        }
-    }
-    
-    @Override
-    protected void serverStopped() {
-        System.out.println("Server has stopped listening for connections.");
-    }
-    
-    @Override
-    protected void clientConnected(final ConnectionToClient client) {
-    }
+
+
+	public DBController getDbCon() {
+		return dbCon;
+	}
+
+
+	@Override
+	protected void serverStopped() {
+		System.out.println("Server has stopped listening for connections.");
+	}
+ 
+
+	@Override
+	protected void clientConnected(final ConnectionToClient client) {
+	}
 }
