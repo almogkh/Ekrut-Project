@@ -17,6 +17,7 @@ import ekrut.entity.Item;
 import ekrut.entity.User;
 import ekrut.entity.UserType;
 import ekrut.net.InventoryItemRequest;
+import ekrut.net.InventoryItemRequestType;
 import ekrut.net.InventoryItemResponse;
 import ekrut.net.ResultType;
 
@@ -50,32 +51,27 @@ public class ServerInventoryManager {
 	 * @return an InventoryItemResponse object indicating the result of the update operation
 	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	public InventoryItemResponse updateItemQuantity(InventoryItemRequest inventoryUpdateItemRequest) {
-		if (inventoryUpdateItemRequest == null)
-			throw new IllegalArgumentException("null InventoryItemRequest was provided.");
+	public InventoryItemResponse updateItemQuantity(InventoryItemRequest inventoryItemRequest) {
+		if (inventoryItemRequest == null || 
+			inventoryItemRequest.getAction() != InventoryItemRequestType.UPDATE_ITEM_QUANTITY)
+			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
-		// Unpack inventoryUpdateItemRequest into it's components.
-		int itemId = inventoryUpdateItemRequest.getItemId();
-		int quantity = inventoryUpdateItemRequest.getQuantity();
-		String ekrutLocation = inventoryUpdateItemRequest.getEkrutLocation();
+		// Unpack request components.
+		int itemId = inventoryItemRequest.getItemId();
+		int quantity = inventoryItemRequest.getQuantity();
+		String ekrutLocation = inventoryItemRequest.getEkrutLocation();
 		
-		// Check that updated quantity is a valid value.
-		if (quantity < 0)
+		// Check components values.
+		if (quantity < 0 || ekrutLocation == null)
 			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Fetch InventoryItem from DB.
 		InventoryItem inventoryItemInDB = null;
-		try {
-			inventoryItemInDB = inventoryItemDAO.fetchInventoryItem(itemId, ekrutLocation);
-		}catch(Exception e) {
-			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
-		}
-		
-		// Check that InventoryItem exist in DB.
+		inventoryItemInDB = inventoryItemDAO.fetchInventoryItem(itemId, ekrutLocation);
 		if (inventoryItemInDB == null)
 			return new InventoryItemResponse(ResultType.NOT_FOUND);
 		
-		//Check if new quantity is breaching the threshold of a machine.
+		// Check if new quantity is breaching the threshold of a machine.
 		if ((inventoryItemInDB.getItemQuantity() > inventoryItemInDB.getItemThreshold()) && 
 				(quantity < inventoryItemInDB.getItemThreshold())) {
 			String notificationMsg = "The quantity of: " + inventoryItemInDB.getItem().getItemName() 
@@ -106,17 +102,18 @@ public class ServerInventoryManager {
 	 * 			 a list of the retrieved InventoryItem objects
 	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	public InventoryItemResponse getItems(InventoryItemRequest inventoryGetItemsRequest) {
-		if (inventoryGetItemsRequest == null)
-				throw new IllegalArgumentException("null InventoryItemRequest was provided.");
+	public InventoryItemResponse getItems(InventoryItemRequest inventoryItemRequest) {
+		if (inventoryItemRequest == null ||
+			inventoryItemRequest.getAction() != InventoryItemRequestType.FETCH_ITEM)
+			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Unpack inventoryGetItemsRequest.
-		String ekrutLocation = inventoryGetItemsRequest.getEkrutLocation();
+		String ekrutLocation = inventoryItemRequest.getEkrutLocation();
+		if (ekrutLocation == null)
+			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Fetch InventoryItem(s) fromDB.
 		ArrayList<InventoryItem> inventoryItems = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
-
-		// Check if DB could not locate InventoryItem(s) for given ekrutLocation.
 		if (inventoryItems == null)
 			return new InventoryItemResponse(ResultType.NOT_FOUND);
 		
@@ -131,7 +128,7 @@ public class ServerInventoryManager {
 				item.setImg(imgByteArray);
 			} catch (IOException e) {
 				System.out.println("Cant attach image for itemId: " + item.getItemId() 
-				+ ". Error:" + e.getMessage());
+				+ ". Error: " + e.getMessage());
 			}
 		}
 		
@@ -147,17 +144,17 @@ public class ServerInventoryManager {
 	 * @return an InventoryItemResponse object indicating the result of the update operation
 	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryUpdateItemThresholdRequest) {
-		if (inventoryUpdateItemThresholdRequest == null)
-			throw new IllegalArgumentException("null InventoryItemRequest was provided.");
+	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryItemRequest) {
+		if (inventoryItemRequest == null ||
+			inventoryItemRequest.getAction() != InventoryItemRequestType.UPDATE_ITEM_THRESHOLD)
+			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Unpack inventoryUpdateItemThresholdRequest into it's components.
-		int itemId = inventoryUpdateItemThresholdRequest.getItemId();
-		String ekrutLocation = inventoryUpdateItemThresholdRequest.getEkrutLocation();
-		int threshold = inventoryUpdateItemThresholdRequest.getThreshold();
+		String ekrutLocation = inventoryItemRequest.getEkrutLocation();
+		int threshold = inventoryItemRequest.getThreshold();
 		
 		// Check if the new threshold value is valid.
-		if (threshold < 0)
+		if (threshold < 0 || ekrutLocation == null)
 			return new InventoryItemResponse(ResultType.INVALID_INPUT);
 		
 		// Try to update the InventoryItem's threshold.
