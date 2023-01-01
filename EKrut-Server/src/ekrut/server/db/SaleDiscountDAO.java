@@ -36,7 +36,7 @@ public class SaleDiscountDAO {
 			return false;
 
 		PreparedStatement ps = con.getPreparedStatement(
-				"INSERT INTO saleDiscount (startTime,endTime,dayOfSale,saleType) VALUES(?,?,?,?)");
+				"INSERT INTO sale_discount (startTime,endTime,dayOfSale,saleType) VALUES(?,?,?,?)");
 		try {
 			ps.setObject(1, saleDiscount.getStartTime(), MysqlType.TIME);
 			ps.setObject(2, saleDiscount.getEndTime(), MysqlType.TIME);
@@ -71,7 +71,7 @@ public class SaleDiscountDAO {
 	 */
 	public SaleDiscount fetchSaleDiscountById(int discountId) {
 
-		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM saleDiscount WHERE discountId = ?");
+		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM sale_discount WHERE discountId = ?");
 
 		try {
 			ps.setInt(1, discountId);
@@ -102,7 +102,7 @@ public class SaleDiscountDAO {
 	public ArrayList<SaleDiscount> fetchSaleDiscountTemplatList() {
 
 		ArrayList<SaleDiscount> saleDiscountTemplateList = new ArrayList<>();
-		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM saleDiscount");
+		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM sale_discount");
 
 		try {
 			ResultSet rs = con.executeQuery(ps);

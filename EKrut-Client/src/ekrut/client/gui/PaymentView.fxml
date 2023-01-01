@@ -47,66 +47,31 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox stylesheets="@gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.PaymentViewController">
+<HBox stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.PaymentViewController">
    <children>
       <Pane prefHeight="681.0" prefWidth="770.0" styleClass="container">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Button fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="27.0" prefWidth="112.0" text="Back">
+            <Button fx:id="backBtn" layoutX="12.0" layoutY="7.0" mnemonicParsing="false" onAction="#back" prefHeight="25.0" prefWidth="112.0" text="Back">
                <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="85.0" prefHeight="37.0" prefWidth="160.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="204.0" layoutY="85.0" prefHeight="37.0" prefWidth="160.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Review Cart">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="401.0" layoutY="85.0" prefHeight="37.0" prefWidth="160.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: black;" text="Payment">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="598.0" layoutY="85.0" prefHeight="37.0" prefWidth="160.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: black;" text="Recipt">
-               <font>
-                  <Font name="System Bold" size="24.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="167.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@gui-assets/right-arrow.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="364.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@gui-assets/right-arrow.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="561.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@gui-assets/right-arrow.png" />
-               </image>
-            </ImageView>
             <Button fx:id="payBtn" layoutX="281.0" layoutY="591.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="195.0" text="Press to pay">
                <font>
-                  <Font name="System Bold" size="20.0" />
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Button>
             <Text layoutX="22.0" layoutY="638.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Price: ">
                <font>
-                  <Font size="22.0" />
+                  <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
             </Text>
-            <Label fx:id="priceLbl" layoutX="134.0" layoutY="614.0" text="Price">
+            <Label fx:id="priceLbl" layoutX="161.0" layoutY="618.0" text="Price">
                <font>
-                  <Font size="22.0" />
+                  <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
             </Label>
             <RadioButton fx:id="currentCreditCardRadioBtn" layoutX="59.0" layoutY="242.0" mnemonicParsing="false" onAction="#useOldCard" selected="true" text="Use the credit card I signed up with">
@@ -136,25 +101,28 @@
             <TextField fx:id="newCvcTxt" disable="true" layoutX="231.0" layoutY="404.0" prefHeight="25.0" prefWidth="295.0" promptText="CVC" />
             <ComboBox fx:id="monthCBox" disable="true" editable="true" layoutX="232.0" layoutY="450.0" onAction="#months" prefHeight="25.0" prefWidth="133.0" promptText="Month" visibleRowCount="31" />
             <ComboBox fx:id="yearCBox" disable="true" editable="true" layoutX="393.0" layoutY="450.0" onAction="#years" prefHeight="25.0" prefWidth="133.0" promptText="Year" visibleRowCount="20" />
-            <Text layoutX="129.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card number: ">
+            <Text layoutX="125.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card number: ">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text layoutX="130.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CVC: ">
+            <Text layoutX="126.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CVC: ">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Button fx:id="cancelOrderBtn" layoutX="652.0" layoutY="630.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="27.0" prefWidth="93.0" text="Cancel order" />
-            <Text layoutX="309.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment">
+            <Button fx:id="cancelOrderBtn" layoutX="606.0" layoutY="603.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="28.0" prefWidth="149.0" text="Cancel order">
                <font>
-                  <Font name="Calibri Bold" size="36.0" />
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
+               </font></Button>
+            <Text layoutX="300.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="38.0" />
                </font>
             </Text>
-            <Line endX="179.5" layoutX="99.0" layoutY="53.0" startX="-100.0" />
-            <Line endX="179.5" layoutX="582.0" layoutY="52.0" startX="-100.0" />
-            <Text layoutX="130.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiration date:">
+            <Line endX="183.0" layoutX="99.0" layoutY="59.0" startX="-89.5" />
+            <Line endX="173.0" layoutX="582.0" layoutY="58.0" startX="-99.0" />
+            <Text layoutX="126.0" layoutY="468.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expiration date:">
                <font>
                   <Font size="14.0" />
                </font>
@@ -172,14 +140,14 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </RadioButton>
-            <Text layoutX="252.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Almost Done!">
+            <Text layoutX="240.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Almost Done!">
                <font>
-                  <Font name="Calibri Bold" size="36.0" />
+                  <Font name="Arial Rounded MT Bold" size="37.0" />
                </font>
             </Text>
-            <Text layoutX="59.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credit card details">
+            <Text layoutX="59.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credit card details:">
                <font>
-                  <Font name="Calibri Bold" size="28.0" />
+                  <Font name="Arial Rounded MT Bold" size="29.0" />
                </font>
             </Text>
             <ImageView fitHeight="28.0" fitWidth="33.0" layoutX="87.0" layoutY="361.0" pickOnBounds="true" preserveRatio="true">
@@ -197,6 +165,46 @@
                   <Image url="@gui-assets/calendar3.png" />
                </image>
             </ImageView>
+            <Label layoutX="11.0" layoutY="73.0" text="Order process">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="113.0" layoutY="104.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="21.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="225.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@gui-assets/right-arrow.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="262.0" layoutY="104.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="21.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="374.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@gui-assets/right-arrow.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="411.0" layoutY="104.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="21.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="523.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@gui-assets/right-arrow.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="560.0" layoutY="104.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Recipt">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="21.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

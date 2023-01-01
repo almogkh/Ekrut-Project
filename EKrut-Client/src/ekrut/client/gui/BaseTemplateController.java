@@ -43,7 +43,7 @@ public class BaseTemplateController {
 
     User me;
     static BaseTemplateController baseTemplateController;
-    
+
     static BaseTemplateController getBaseTemplateController() {
     	return baseTemplateController;
     }
@@ -56,7 +56,7 @@ public class BaseTemplateController {
     	ObservableList<Node> childern = rightVbox.getChildren();
     	childern.setAll(root);
     }
-    
+
     @FXML
     void logout(ActionEvent event) {
     	try {

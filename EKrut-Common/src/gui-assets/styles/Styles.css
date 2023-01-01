@@ -46,12 +46,13 @@
 	-fx-background-color: none;
 	-fx-border-color: none;
 }
+
 .image_button:hover {
 	-fx-background-color: none;
 	-fx-border-color: black;
 }
 .image_button:pressed {
-  -fx-background-color: #FAF7F0;
+  -fx-background-color: #60CCD5;
   -fx-text-fill: black;
 }
 
