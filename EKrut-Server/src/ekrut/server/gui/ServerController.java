@@ -75,8 +75,12 @@ public class ServerController {
 	@FXML
 	private Label connectionIP;
 
+	@FXML
+	private Label ErrorConnection;
+
 	private PrintStream replaceConsole;
 	private ServerSessionManager session;
+
 	public String getLocalIp() {
 		String ip = null;
 		try {
@@ -98,7 +102,9 @@ public class ServerController {
 		this.ConnectedGreenIMG.setVisible(false);
 		this.connectionStatus.setText("Not connected");
 		this.connectionIP.setVisible(false);
+		this.ErrorConnection.setVisible(false);
 	}
+
 	public void setTable(ServerSessionManager session) {
 		this.session = session;
 		this.ConnectedClients.setItems(session.getConnectedClientList());
@@ -106,37 +112,43 @@ public class ServerController {
 		this.RoleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
 		this.UsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 	}
-	
+
 	@FXML
 	void consoleStreamIntoGUI() {
 		System.setOut(this.replaceConsole = new PrintStream(new Console(this.Console)));
 		System.setErr(this.replaceConsole);
 	}
-	@FXML
-	void Connect(final ActionEvent event) throws InterruptedException {
-	        ServerUI.runServer(5555, this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText());
-	        this.ConnectToServerBTN.setVisible(false);
-	        this.DisconnectBTN.setVisible(true);
-	        this.disableDataInput(false);
-	        this.connectionStatus.setText("Connected");
-	        this.connectionIP.setVisible(true);
-	        this.connectionIP.setText(getLocalIp());
-	        this.ConnectedGreenIMG.setVisible(true);
-	        
-	        
-	    }
-	
-	 @FXML
-	    void Disconnect(final ActionEvent event) {
-	        ServerUI.disconnect();
-	        this.ConnectToServerBTN.setVisible(true);
-	        this.DisconnectBTN.setVisible(false);
-	        this.disableDataInput(true);
-	        this.connectionStatus.setText("Not connected");
-	        this.connectionIP.setVisible(false);
-			this.ConnectedGreenIMG.setVisible(false);
-	    }
 
+	@FXML
+	void Connect(final ActionEvent event) {
+		this.ErrorConnection.setVisible(false);
+		if (!ServerUI.runServer(5555, this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
+			this.ErrorConnection.setVisible(true);
+			this.ConnectToServerBTN.setVisible(true);
+			this.DisconnectBTN.setVisible(false);
+			return;
+		}
+		this.ConnectToServerBTN.setVisible(false);
+		this.DisconnectBTN.setVisible(true);
+		this.disableDataInput(false);
+		this.connectionStatus.setText("Connected");
+		this.connectionIP.setVisible(true);
+		this.connectionIP.setText(getLocalIp());
+		this.ConnectedGreenIMG.setVisible(true);
+		this.ErrorConnection.setVisible(false);
+	}
+
+	@FXML
+	void Disconnect(final ActionEvent event) {
+		ServerUI.disconnect();
+		this.ConnectToServerBTN.setVisible(true);
+		this.DisconnectBTN.setVisible(false);
+		this.disableDataInput(true);
+		this.connectionStatus.setText("Not connected");
+		this.connectionIP.setVisible(false);
+		this.ConnectedGreenIMG.setVisible(false);
+
+	}
 
 	void disableDataInput(final boolean Condition) {
 		IPTXTfield.setVisible(Condition);

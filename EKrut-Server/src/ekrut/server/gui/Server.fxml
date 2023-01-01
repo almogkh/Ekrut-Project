@@ -124,7 +124,7 @@
                   </Pane>
                   <Pane layoutX="3.0" layoutY="114.0" prefHeight="304.0" prefWidth="375.0" styleClass="container">
                      <children>
-                        <Button fx:id="ConnectToServerBTN" alignment="TOP_LEFT" layoutX="127.0" layoutY="246.0" mnemonicParsing="false" onAction="#Connect" style="-fx-background-radius: 20;" text="Connect to Server" textFill="WHITE">
+                        <Button fx:id="ConnectToServerBTN" alignment="TOP_LEFT" layoutX="127.0" layoutY="235.0" mnemonicParsing="false" onAction="#Connect" style="-fx-background-radius: 20;" text="Connect to Server" textFill="WHITE">
                            <font>
                               <Font name="Candara Bold Italic" size="18.0" />
                            </font>
@@ -204,7 +204,7 @@
                               </DropShadow>
                            </effect>
                         </Text>
-                        <Button fx:id="DisconnectBTN" alignment="TOP_LEFT" layoutX="134.0" layoutY="246.0" mnemonicParsing="false" onAction="#Disconnect" style="-fx-background-radius: 20;" text="Disconnect" textFill="WHITE">
+                        <Button fx:id="DisconnectBTN" alignment="TOP_LEFT" layoutX="134.0" layoutY="235.0" mnemonicParsing="false" onAction="#Disconnect" style="-fx-background-radius: 20;" text="Disconnect" textFill="WHITE">
                            <font>
                               <Font name="Candara Bold Italic" size="18.0" />
                            </font>
@@ -217,6 +217,11 @@
                            </effect>
                         </Button>
                         <Label fx:id="connectionIP" layoutX="203.0" layoutY="73.0" text="connectionIP" textAlignment="CENTER">
+                           <font>
+                              <Font name="Candara" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="ErrorConnection" alignment="CENTER" contentDisplay="CENTER" layoutX="88.0" layoutY="279.0" text="Can't connect to the DB" textAlignment="CENTER" textFill="RED">
                            <font>
                               <Font name="Candara" size="18.0" />
                            </font>
