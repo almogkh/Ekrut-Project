@@ -77,10 +77,10 @@ public class OrderReportViewController implements Initializable{
     	ordersPieChart.setData(PieChartData);
     }
     
-    private void setOrdersBarChart() {
+    private void setOrdersBarChart() throws Exception {
     	//Defining the x axis               
 		CategoryAxis xAxis = new CategoryAxis();   
-		ArrayList<String> locations = clientReportManager.fetchFacilitiesByArea(report.getArea());
+		ArrayList<String> locations = clientReportManager.getFacilitiesByArea(report.getArea());
    	 	// Convert array list into a array
    	 	String[] locationsArr = locations.toArray(new String[locations.size()]);
 		xAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(locationsArr))); 
@@ -144,7 +144,11 @@ public class OrderReportViewController implements Initializable{
 		// Set charts
 		setOrdersPieChat();
 		
-		setOrdersBarChart();
+		try {
+			setOrdersBarChart();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		
 		setTopSellersBarChart();
 	}
