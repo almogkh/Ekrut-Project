@@ -18,7 +18,7 @@
             </Button>
             <Label fx:id="itemNameLbl" layoutX="49.0" layoutY="18.0" prefHeight="28.0" prefWidth="337.0" text="pasta ..........................................................................................">
                <font>
-                  <Font name="Candara" size="19.0" />
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
             </Label>
             <Button fx:id="minusBtn" layoutX="460.0" layoutY="14.0" mnemonicParsing="false" onAction="#minusItem" prefHeight="23.0" prefWidth="27.0" text="–">
@@ -38,12 +38,12 @@
             </Button>
             <Button fx:id="updateBtn" defaultButton="true" layoutX="606.0" layoutY="17.0" mnemonicParsing="false" onAction="#updateItemQuantity" prefHeight="25.0" prefWidth="104.0" text="Update Item">
                <font>
-                  <Font name="Candara Bold" size="12.0" />
+                  <Font name="Arial Rounded MT Bold" size="13.0" />
                </font>
             </Button>
-            <Label fx:id="itemPriceLbl" layoutX="388.0" layoutY="18.0" text="19.99">
+            <Label fx:id="itemPriceLbl" layoutX="389.0" layoutY="21.0" text="19.99">
                <font>
-                  <Font size="19.0" />
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
             </Label>
             <Label fx:id="noDigitError" layoutX="445.0" layoutY="43.0" prefHeight="20.0" prefWidth="154.0" text="Please input only digits!" textFill="RED" visible="false">

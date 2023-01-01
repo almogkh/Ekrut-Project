@@ -12,6 +12,7 @@ public class TestOrder extends Application{
 		launch(args);
 	}
 
+	// C.Nir - Need to be deleted.
 	
 	// PaymentView
 //	@Override

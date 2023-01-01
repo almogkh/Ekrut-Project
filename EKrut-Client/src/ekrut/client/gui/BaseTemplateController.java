@@ -40,9 +40,6 @@ public class BaseTemplateController {
     User me;
     static BaseTemplateController baseTemplateController;
     
-    
-    
-    
     @FXML
     void logout(ActionEvent event) {
     	try {
