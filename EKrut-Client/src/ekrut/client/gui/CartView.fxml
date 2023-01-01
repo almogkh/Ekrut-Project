@@ -78,7 +78,7 @@
                </font></Button>
             <Button fx:id="backBtn" layoutX="11.0" layoutY="9.0" mnemonicParsing="false" onAction="#back" prefHeight="27.0" prefWidth="112.0" text="Back">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="16.0" />
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Button>
             <Label layoutX="12.0" layoutY="65.0" text="Order process">

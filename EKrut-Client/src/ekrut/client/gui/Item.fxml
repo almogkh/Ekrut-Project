@@ -59,9 +59,9 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </TextField>
-            <Button fx:id="AddBtn" defaultButton="true" layoutX="26.0" layoutY="95.0" mnemonicParsing="false" onAction="#addToCart" prefHeight="27.0" prefWidth="121.0" text="Update Quantity">
+            <Button fx:id="AddBtn" defaultButton="true" layoutX="21.0" layoutY="92.0" mnemonicParsing="false" onAction="#addToCart" prefHeight="27.0" prefWidth="131.0" text="Update Quantity">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="12.0" />
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
                </font></Button>
             <Label fx:id="quantityInCart" layoutX="13.0" layoutY="121.0" prefHeight="19.0" prefWidth="154.0">
                <font>
