@@ -106,6 +106,6 @@ public class ServerOrderManager {
 	}
 	
 	private User getAssociatedUser(ConnectionToClient con) {
-		return null;
+		return sessionManager.getUser(con);
 	}
 }

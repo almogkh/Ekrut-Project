@@ -86,6 +86,10 @@ public class ClientSessionManager {
 		return false;
 	}
 	
+	public User getUser() {
+		return user;
+	}
+	
 	/**
 	 * Sends a request to the server.
 	 *
