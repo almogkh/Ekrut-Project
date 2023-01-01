@@ -9,12 +9,18 @@ public class InventoryItemRequest implements Serializable{
 	private int itemId;
 	private int quantity;
 	private String ekrutLocation;
+	private String area;
 	private int threshold;
 	
 	// Get items request.
 	public InventoryItemRequest(String ekrutLocation) {
 		this.action = InventoryItemRequestType.FETCH_ITEM;
 		this.ekrutLocation = ekrutLocation;
+	}
+	
+	public InventoryItemRequest(String area, InventoryItemRequestType action) {
+		this.action = action;
+		this.area = area;
 	}
 	
 	// Update item quantity request.
@@ -49,7 +55,13 @@ public class InventoryItemRequest implements Serializable{
 		return ekrutLocation;
 	}
 	
+	public String getArea() {
+		return area;
+	}
+
 	public int getThreshold() {
 		return threshold;
 	}
+	
+	
 }

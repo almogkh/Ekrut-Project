@@ -166,4 +166,15 @@ public class ServerInventoryManager {
 		
 		return new InventoryItemResponse(ResultType.OK);
 	}
+
+
+	public InventoryItemResponse fetchAllEkrutLocationsByArea(InventoryItemRequest inventoryFetchLocationsRequest) {
+		if (inventoryFetchLocationsRequest == null)
+			throw new IllegalArgumentException("null InventoryItemRequest was provided.");
+		String area = inventoryFetchLocationsRequest.getArea();
+		ArrayList<String> ekrutLocations = inventoryItemDAO.fetchAllEkrutLocationsByArea(area);
+		if (ekrutLocations == null)
+			return new InventoryItemResponse(ResultType.NOT_FOUND);
+		return new InventoryItemResponse(ekrutLocations);		
+	}
 }

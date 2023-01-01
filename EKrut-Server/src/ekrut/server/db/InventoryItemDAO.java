@@ -203,6 +203,34 @@ public class InventoryItemDAO {
 	}
 	
 	/**
+	 * Fetches all locations of ekrut machines from the ekrut_machines table.
+	 *
+	 * @param ekrutLocation a location of an ekrut machine; this parameter is not used
+	 * @return a list of all ekrut locations, or null if an error occurs
+	 * @throws RuntimeException if an error occurs while closing the Prepared Statement
+	 */
+	public ArrayList<String> fetchAllEkrutLocationsByArea(String area){
+		PreparedStatement ps = con.getPreparedStatement("SELECT ekrutLocation FROM ekrut_machines WHERE area = ?");
+		try {
+			// ekrutLocation
+			ps.setString(1, area);
+			ResultSet rs = con.executeQuery(ps);
+			ArrayList<String> ekrutLocations = new ArrayList<>();
+			while (rs.next())
+				ekrutLocations.add(rs.getString("ekrutLocation"));
+			return ekrutLocations;
+		} catch (SQLException e1) {
+			return null;
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	/**
 	 * Fetches all items in the inventory system at a given ekrut location.
 	 *
 	 * @param ekrutLocation the ekrut location of the items to fetch
