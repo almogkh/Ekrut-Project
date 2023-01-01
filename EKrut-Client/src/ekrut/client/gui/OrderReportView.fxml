@@ -33,76 +33,190 @@
 -->
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="700.0" prefWidth="1000.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderReportViewController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderReportViewController">
   <children>
-      <HBox prefHeight="700.0" prefWidth="100.0">
+      <Pane prefHeight="130.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="442.0" prefWidth="200.0" style="-fx-background-radius: 10;" styleClass="container">
+            <Label alignment="CENTER" layoutX="270.0" layoutY="10.0" text="Order Report" textAlignment="RIGHT">
+               <font>
+                  <Font name="Candara Bold" size="38.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.3015266954898834" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Line endX="100.0" layoutX="148.0" layoutY="33.0" startX="-142.0" stroke="WHITE" />
+            <Label fx:id="areaLbl" layoutX="343.0" layoutY="57.0" text="North">
+               <font>
+                  <Font name="Candara Bold" size="28.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30305343866348267" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Label fx:id="dateLbl" layoutX="335.0" layoutY="91.0" text="01/2023">
+               <font>
+                  <Font name="Candara Bold" size="28.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.30305343866348267" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Line endX="107.0" layoutX="655.0" layoutY="32.0" startX="-142.0" stroke="WHITE" />
+         </children>
+      </Pane>
+      <HBox prefHeight="200.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <Pane prefHeight="194.0" prefWidth="243.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <children>
-                  <ImageView fitHeight="98.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@gui-assets/Group%2010.png" />
-                     </image>
-                  </ImageView>
-                  <Pane prefHeight="138.0" prefWidth="116.0">
+                  <VBox alignment="CENTER" layoutX="-8.0" layoutY="-6.0" prefHeight="200.0" prefWidth="252.0">
                      <children>
-                        <Circle fill="DODGERBLUE" layoutX="100.0" layoutY="69.0" radius="57.0" stroke="BLACK" strokeType="INSIDE">
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color red="0.013401559554040432" green="0.10006497800350189" blue="0.1315789520740509" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </Circle>
-                        <Label layoutX="57.0" layoutY="20.0" prefHeight="98.0" prefWidth="86.0" text="YG" textFill="#ffffffd3">
+                        <Label text="Total Orders">
                            <font>
-                              <Font name="Candara Bold" size="73.0" />
+                              <Font name="Candara Bold" size="26.0" />
                            </font>
                            <effect>
                               <DropShadow>
                                  <color>
-                                    <Color red="0.4788571298122406" green="0.47519999742507935" blue="0.47999998927116394" opacity="0.25" />
+                                    <Color opacity="0.3969465494155884" />
                                  </color>
                               </DropShadow>
                            </effect>
                         </Label>
+                        <Line endX="100.0" startX="-100.0" />
+                        <Label fx:id="totalOrdersLbl" text="5,738" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="34.0" />
+                           </font>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.4000000059604645" />
+                                 </color></DropShadow>
+                           </effect>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </Label>
+                        <Label text="Total Orders In ILS">
+                           <font>
+                              <Font name="Candara Bold" size="25.0" />
+                           </font>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.4007633626461029" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Label>
+                        <Line endX="100.0" startX="-100.0" startY="0.7928932309150696" />
+                        <Label fx:id="totalOrdersInILSLbl" text="42,356₪" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="34.0" />
+                           </font>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.40458014607429504" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </Label>
                      </children>
-                  </Pane>
-                  <Label alignment="CENTER" text="ID:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label alignment="CENTER" text="UserName:">
-                     <font>
-                        <Font name="Candara Bold" size="18.0" />
-                     </font>
-                  </Label>
+                  </VBox>
                </children>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </HBox.margin>
-            </VBox>
-          <AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@Styles.css">
+            </Pane>
+            <Pane prefHeight="200.0" prefWidth="518.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <children>
-                  <PieChart layoutX="6.0" layoutY="336.0" prefHeight="364.0" prefWidth="410.0" title="Orders Chart" />
+                  <BarChart fx:id="topSellersBarChart" layoutX="-1.0" layoutY="-5.0" prefHeight="206.0" prefWidth="497.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Top Sellers">
+                    <xAxis>
+                      <NumberAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <CategoryAxis side="LEFT" />
+                    </yAxis>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.5" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </BarChart>
                </children>
-          </AnchorPane>
+            </Pane>
          </children>
+      </HBox>
+      <HBox prefHeight="334.0" prefWidth="770.0" spacing="10.0">
+         <children>
+            <Pane prefHeight="333.0" prefWidth="313.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+               <children>
+                  <PieChart fx:id="ordersPieChart" layoutX="5.0" layoutY="6.0" prefHeight="322.0" prefWidth="306.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Orders Pie">
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.4007633626461029" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </PieChart>
+               </children>
+            </Pane>
+            <Pane prefHeight="333.0" prefWidth="449.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+               <children>
+                  <BarChart fx:id="ordersBarChart" prefHeight="322.0" prefWidth="448.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Orders">
+                    <xAxis>
+                      <CategoryAxis side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis side="LEFT" />
+                    </yAxis>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.5" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </BarChart>
+               </children>
+            </Pane>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </HBox>
   </children>
 </VBox>
