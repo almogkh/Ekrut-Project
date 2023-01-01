@@ -26,7 +26,7 @@ public class ItemBrowserController {
     private Button cancelOrderBtn;
     
     public void AddItemViewToOrderVBox(){
-    	ItemController item = new ItemController();
+    	ItemController item = new ItemController(null);
     	ObservableList<Node> children = orderVBox.getChildren();
         children.add(item);
     }

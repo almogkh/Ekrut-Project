@@ -51,7 +51,7 @@ public class ItemController extends HBox {
 
 	Image image;
 	
-	public ItemController() {
+	public ItemController(Item item) {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -61,14 +61,14 @@ public class ItemController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public ItemController(Item item) {
+		/*
 		// Q.Nir - this.itemImage = item.getImg();
+		// initialize ItemView
 		image = new Image(new ByteArrayInputStream(item.getImg()));
 		itemName.setText(item.getItemName());
 		itemDiscription.setText(item.getItemDescription());
 		itemPrice.setText(Float.toString(item.getItemPrice()));
+		*/
 	}
 
 	@FXML
