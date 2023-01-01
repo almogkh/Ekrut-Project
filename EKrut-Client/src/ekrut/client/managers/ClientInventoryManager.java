@@ -12,12 +12,7 @@ import ekrut.net.ResultType;
  * 
  * @author Ofek Malka
  */
-public class ClientInventoryManager {
-	
-	private EKrutClient client;
-	private Object lock = new Object();
-	private InventoryItemResponse response;
-	
+public class ClientInventoryManager extends AbstractClientManager<InventoryItemRequest, InventoryItemResponse> {
 	
 	/**
 	 * Constructs a new ClientInventoryManager instance and registers an InventoryItemResponse handler.
@@ -25,13 +20,7 @@ public class ClientInventoryManager {
 	 * @param client the EKrutClient for which to register the InventoryItemResponse handler
 	 */
 	public ClientInventoryManager(EKrutClient client) {
-		this.client = client;
-		client.registerHandler(InventoryItemResponse.class, (res) -> {
-			synchronized(lock) {
-				response = res;
-				lock.notify();
-			}
-		});
+		super(client, InventoryItemResponse.class);
 	}
 
 	/**
@@ -104,25 +93,5 @@ public class ClientInventoryManager {
 		ResultType resultType = inventoryUpdateItemThresholdResponse.getResultType();
 		if (resultType != ResultType.OK)
 			throw new RuntimeException(resultType.toString());
-	}
-	
-	
-	/**
-	 * Send Client's request to the server, returns the server's response.
-	 * 
-	 * @param request the InventoryItemRequest instance representing the request.
-	 * @return the server's response for the given request.
-	 */
-	private InventoryItemResponse sendRequest(InventoryItemRequest request) {
-		this.response = null;
-		client.sendRequestToServer(request);
-		synchronized(lock) {
-			while (response == null) {
-				try {
-					lock.wait();
-				} catch (InterruptedException e) {}
-			}
-		}
-		return response;
 	}
 }

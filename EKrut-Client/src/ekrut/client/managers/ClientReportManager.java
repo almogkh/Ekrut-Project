@@ -1,8 +1,5 @@
 package ekrut.client.managers;
-import ekrut.net.InventoryItemRequest;
-import ekrut.net.InventoryItemResponse;
 import ekrut.net.ReportRequest;
-import ekrut.net.ReportRequestType;
 import ekrut.net.ReportResponse;
 import ekrut.net.ResultType;
 
@@ -20,20 +17,10 @@ import ekrut.entity.ReportType;
  *
  */
 
-public class ClientReportManager { 
-	
-	private EKrutClient client;
-	private Object lock = new Object();
-	private ReportResponse response;
-	
+public class ClientReportManager extends AbstractClientManager<ReportRequest, ReportResponse> { 
+
 	public ClientReportManager(EKrutClient client) {
-		this.client = client;
-		client.registerHandler(ReportResponse.class, (res) -> {
-			synchronized(lock) {
-				response = res;
-				lock.notify();
-			}
-		});
+		super(client, ReportResponse.class);
 	}
 	
 	//redo document
@@ -64,19 +51,6 @@ public class ClientReportManager {
 			throw new Exception(resultType.toString()); // TBD CHANGE TO SPESIFIC EXCEPTION
 		
 		return reportResponse.getFacilities();  
-	}
-	
-	private ReportResponse sendRequest(ReportRequest request) {
-		this.response = null;
-		client.sendRequestToServer(request);
-		synchronized(lock) {
-			while (response == null) {
-				try {
-					lock.wait();
-				} catch (InterruptedException e) {}
-			}
-		}
-		return response;
 	}
 	
 	public ArrayList<String> fetchFacilitiesByArea(String area){

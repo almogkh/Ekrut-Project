@@ -18,14 +18,10 @@ import ekrut.net.ResultType;
  * @author Almog Khaikin
  *
  */
-public class ClientOrderManager {
+public class ClientOrderManager extends AbstractClientManager<OrderRequest, OrderResponse> {
 
 	private Order activeOrder;
 	private final String ekrutLocation;
-	
-	private EKrutClient client;
-	private Object lock = new Object();
-	private OrderResponse response;
 	
 	/**
 	 * Constructs a new client order manager.
@@ -34,15 +30,8 @@ public class ClientOrderManager {
 	 *                      means the client is running the administrative section.
 	 */
 	public ClientOrderManager(EKrutClient client, String ekrutLocation) {
-		this.client = client;
+		super(client, OrderResponse.class);
 		this.ekrutLocation = ekrutLocation;
-		
-		client.registerHandler(OrderResponse.class, (res) -> {
-			synchronized(lock) {
-				response = res;
-				lock.notify();
-			}
-		});
 	}
 	
 	/**
@@ -125,21 +114,6 @@ public class ClientOrderManager {
 	 */
 	public void cancelOrder() {
 		activeOrder = null;
-	}
-	
-	private OrderResponse sendRequest(OrderRequest request) {
-		response = null;
-		client.sendRequestToServer(request);
-		
-		synchronized(lock) {
-			while (response == null) {
-				try {
-					lock.wait();
-				} catch (InterruptedException e) {}
-			}
-		}
-		
-		return response;
 	}
 	
 	/**

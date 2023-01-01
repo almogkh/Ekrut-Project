@@ -1,6 +1,8 @@
 package ekrut.client.managers;
 
 import java.util.ArrayList;
+
+import ekrut.client.EKrutClient;
 import ekrut.entity.Order;
 import ekrut.entity.OrderStatus;
 import ekrut.net.ResultType;
@@ -13,7 +15,11 @@ import ekrut.net.ShipmentResponse;
  * 
  * @author Nir Betesh
  */
-public class ClientShipmentManager {
+public class ClientShipmentManager extends AbstractClientManager<ShipmentRequest, ShipmentResponse> {
+	
+	public ClientShipmentManager(EKrutClient client) {
+		super(client, ShipmentResponse.class);
+	}
 
 	/**
 	 * Fetches a list of orders that are ready for shipment in the specified area.
@@ -111,11 +117,5 @@ public class ClientShipmentManager {
 		ResultType resultType = shipmentResponse.getResultCode();
 		if (resultType != ResultType.OK)
 			throw new Exception(resultType.toString()); // Q.Nir exception??
-	}
-	
-	// Will completed later
-	private ShipmentResponse sendRequest(ShipmentRequest shipmentRequest) {
-		
-		return null;
 	}
 }

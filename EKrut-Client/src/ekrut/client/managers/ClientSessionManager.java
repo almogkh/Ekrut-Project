@@ -10,21 +10,12 @@ import ekrut.net.UserResponse;
 /**
  * The `ClientSessionManager` class provides methods for managing user sessions on the client side.
  */
-public class ClientSessionManager {
+public class ClientSessionManager extends AbstractClientManager<UserRequest, UserResponse> {
 	
 	private User user = null;
-	private EKrutClient client;
-	private Object lock = new Object();
-	private UserResponse response;
 	
 	public ClientSessionManager(EKrutClient client){
-		this.client = client;
-		client.registerHandler(UserResponse.class, (res) -> {
-			synchronized(lock) {
-				response = res;
-				lock.notify();
-			}
-		});
+		super(client, UserResponse.class);
 	}
 	
 	/**
@@ -88,25 +79,6 @@ public class ClientSessionManager {
 	
 	public User getUser() {
 		return user;
-	}
-	
-	/**
-	 * Sends a request to the server.
-	 *
-	 * @param userLoginRequest The request to send.
-	 * @return The response from the server.
-	 */
-	private UserResponse sendRequest(UserRequest request) {
-		this.response = null;
-		client.sendRequestToServer(request);
-		synchronized(lock) {
-			while (response == null) {
-				try {
-					lock.wait();
-				} catch (InterruptedException e) {}
-			}
-		}
-		return response;
 	}
 	
 	private void reciveMassageFromServer(UserRequest userRequest) {

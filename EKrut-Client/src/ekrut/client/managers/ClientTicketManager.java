@@ -2,13 +2,12 @@ package ekrut.client.managers;
 
 import java.util.ArrayList;
 
+import ekrut.client.EKrutClient;
 import ekrut.entity.Ticket;
 import ekrut.net.ResultType;
 import ekrut.net.TicketRequest;
 import ekrut.net.TicketRequestType;
 import ekrut.net.TicketResponse;
-import ekrut.net.UserRequest;
-import ekrut.net.UserResponse;
 
 //need to add- sendRequest
 
@@ -20,8 +19,11 @@ import ekrut.net.UserResponse;
  * @author Noy Malka
  */
 
-public class ClientTicketManager {
+public class ClientTicketManager extends AbstractClientManager<TicketRequest, TicketResponse> {
 
+	public ClientTicketManager(EKrutClient client) {
+		super(client, TicketResponse.class);
+	}
 	
 	/**
      * Updates the status of a given ticket.
@@ -96,19 +98,5 @@ public class ClientTicketManager {
 		
 		return ticketResponse.getTicketsList();
 		
-	}
-	
-	
-	
-	/**
-     * Sends a ticket request and returns the response.
-     * 
-     * @param ticketRequest the request to send
-     * @return the response to the request
-     */
-
-	private TicketResponse sendRequest(TicketRequest ticketRequest) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
