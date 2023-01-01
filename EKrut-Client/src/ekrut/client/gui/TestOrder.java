@@ -12,9 +12,6 @@ public class TestOrder extends Application{
 		launch(args);
 	}
 
-	
-	
-	
 //	@Override
 //	public void start(Stage primaryStage) throws Exception {
 //		FXMLLoader loader = new FXMLLoader(getClass().getResource("PaymentView.fxml"));
