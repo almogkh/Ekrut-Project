@@ -108,7 +108,7 @@ public class ServerReportManager {
 			// Calculate totalOrders and totalOrdersInILS for each order at the current location
 			for (Order order : entry.getValue()) {
 				totalOrders += 1;
-				totalOrdersInILS += order.getSumAmount();
+				totalOrdersInILS += Math.round(order.getSumAmount());
 			}
 			// After calculation for each location add to areaTotal..
 			areaTotalOrders += totalOrders;
@@ -361,19 +361,20 @@ public class ServerReportManager {
 			for (Order order : entry.getValue()) {
 				//locationOrdersData(0) and (4) saved for total
 				totalOrders += 1;
-				totalOrdersInILS += order.getSumAmount();
+				int sumAmount = Math.round(order.getSumAmount());
+				totalOrdersInILS += sumAmount;
 				switch (order.getType()) {
 					case SHIPMENT:
 						locationOrdersData.add(1, locationOrdersData.get(1) + 1);
-				    	locationOrdersData.add(5, locationOrdersData.get(5) + order.getSumAmount());
+				    	locationOrdersData.add(5, locationOrdersData.get(5) + sumAmount);
 				    	break;
 				    case PICKUP:
 				    	locationOrdersData.add(2, locationOrdersData.get(2) + 1);
-				    	locationOrdersData.add(6, locationOrdersData.get(6) + order.getSumAmount());
+				    	locationOrdersData.add(6, locationOrdersData.get(6) + sumAmount);
 				    	break;
 				    case REMOTE:
 				    	locationOrdersData.add(3, locationOrdersData.get(3) + 1);
-				    	locationOrdersData.add(7, locationOrdersData.get(7) + order.getSumAmount());
+				    	locationOrdersData.add(7, locationOrdersData.get(7) + sumAmount);
 				    	break;
 				    default:
 				    	break;
