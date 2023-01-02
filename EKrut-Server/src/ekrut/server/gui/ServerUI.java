@@ -1,6 +1,5 @@
 package ekrut.server.gui;
 
-import java.io.File;
 import java.io.IOException;
 
 import ekrut.server.EKrutServer;
@@ -20,8 +19,6 @@ public class ServerUI extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		//File file= new File("C:\\Users\\97250\\git\\Ekrut-Project\\EKrut-Server\\bin\\ekrut\\server\\gui\\Server.fxml");
-		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(("/ekrut/server/gui/Server.fxml")));
 
 		Parent root = loader.load();
