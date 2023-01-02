@@ -80,6 +80,9 @@ public class EKrutServer extends AbstractServer {
 		case IS_LOGGEDIN:
 			userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
 			break;
+		case FETCH_USER:
+			userResponse = serverSessionManager.fetchUser(userRequest.getFetchType(),userRequest.getArgument());
+			break;
 		default:
 			userResponse = new UserResponse(ResultType.UNKNOWN_ERROR);
 			break;
