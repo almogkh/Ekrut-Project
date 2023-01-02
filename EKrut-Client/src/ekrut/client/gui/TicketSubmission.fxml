@@ -52,9 +52,9 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Label contentDisplay="CENTER" text="Submit Tickets" textFill="WHITE">
+            <Label contentDisplay="CENTER" text="Create a New Ticket" textFill="WHITE">
                <font>
-                  <Font name="Candara Bold" size="50.0" />
+                  <Font name="Arial Rounded MT Bold" size="50.0" />
                </font>
                <effect>
                   <DropShadow>
@@ -66,38 +66,53 @@
             </Label>
          </children>
       </VBox>
-      <Pane prefHeight="520.0" prefWidth="770.0">
+      <Pane prefHeight="520.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <ComboBox fx:id="workerCombo" layoutX="554.0" layoutY="94.0" onAction="#workerComboSelected" prefWidth="150.0" promptText="Select worker" />
-            <ComboBox fx:id="facilityCombo" layoutX="77.0" layoutY="94.0" onAction="#facilityComboSelected" prefWidth="150.0" promptText="Select machine" />
-            <ComboBox fx:id="itemCombo" layoutX="310.0" layoutY="94.0" onAction="#itemComboSelected" prefWidth="150.0" promptText="Select item" />
-            <Label layoutX="365.0" layoutY="70.0" text="ITEM" />
-            <Label layoutX="129.0" layoutY="70.0" text="FACILITY" />
-            <Label layoutX="615.0" layoutY="70.0" text="WORKER" />
-            <ImageView fitHeight="44.0" fitWidth="46.0" layoutX="243.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
+            <Label layoutX="108.0" layoutY="107.0" text="Facility">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font></Label>
+            <Label layoutX="362.0" layoutY="107.0" text="Item">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="589.0" layoutY="107.0" text="Worker">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="facilityCombo" layoutX="68.0" layoutY="138.0" onAction="#facilityComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select facility" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="itemCombo" disable="true" layoutX="307.0" layoutY="138.0" onAction="#itemComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select item" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="workerCombo" disable="true" layoutX="550.0" layoutY="138.0" onAction="#workerComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select worker" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <ImageView fx:id="arrowToItem" fitHeight="44.0" fitWidth="46.0" layoutX="241.0" layoutY="136.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="44.0" fitWidth="46.0" layoutX="486.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="arrowToWorker" fitHeight="44.0" fitWidth="46.0" layoutX="484.0" layoutY="136.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label layoutX="32.0" layoutY="233.0" text="TICKET PREVIEW:" />
-            <HBox alignment="CENTER_LEFT" layoutX="15.0" layoutY="260.0" prefHeight="100.0" prefWidth="740.0" spacing="7.0" style="-fx-border-color: gray;" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <Label layoutX="34.0" layoutY="251.0" text="Ticket preview:">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="280.0" prefHeight="100.0" prefWidth="740.0" spacing="7.0" style="-fx-border-color: gray; -fx-border-radius: 20;" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <children>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="242.0" spacing="10.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="98.0" prefWidth="314.0" spacing="10.0">
                      <children>
-                        <Label fx:id="assignedForLbl" prefHeight="40.0" style="-fx-border-color: black; -fx-background-color: #2f88ff; -fx-border-radius: 20; -fx-background-radius: 20;" text="Assigned for:  Kruskal" textFill="WHITE">
+                        <Label fx:id="assignedForLbl" prefHeight="40.0" style="-fx-border-color: black; -fx-background-color: #2f88ff; -fx-border-radius: 20; -fx-background-radius: 20;" text="Assigned for:  &lt;Worker's Name&gt;" textFill="WHITE">
                            <font>
-                              <Font name="Candara Bold" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                            <padding>
                               <Insets left="10.0" right="10.0" />
                            </padding>
                         </Label>
-                        <Label fx:id="areaPlusLocationLbl" text="AREANAME, EKRUTLOCATION" textFill="WHITE">
+                        <Label fx:id="areaPlusLocationLbl" text="&lt;Area&gt;, &lt;Machine ID&gt;" textFill="WHITE">
                            <font>
                               <Font name="Candara Bold" size="16.0" />
                            </font>
@@ -113,11 +128,11 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="376.0" spacing="10.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="98.0" prefWidth="308.0" spacing="10.0">
                      <children>
-                        <Label fx:id="ticketMsgLbl" prefHeight="100.0" prefWidth="374.0" text="Add 16 units of Mana Hama" wrapText="true">
+                        <Label fx:id="ticketMsgLbl" prefHeight="98.0" prefWidth="335.0" text="Restock &lt;Item Name&gt;" wrapText="true">
                            <font>
-                              <Font name="Candara Bold" size="25.0" />
+                              <Font name="Arial Rounded MT Bold" size="25.0" />
                            </font>
                            <VBox.margin>
                               <Insets />
@@ -142,8 +157,30 @@
                   </Button>
                </children>
             </HBox>
-            <Button fx:id="submitBtn" layoutX="313.0" layoutY="439.0" mnemonicParsing="false" onAction="#submitBtnAction" text="SUBMIT REPORT" />
-            <Label layoutX="251.0" layoutY="174.0" text="After ticket approval, the ficket will be formed" />
+            <Button fx:id="submitBtn" layoutX="292.0" layoutY="436.0" mnemonicParsing="false" onAction="#submitBtnAction" prefHeight="44.0" prefWidth="185.0" text="Submit Ticket">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="22.0" />
+               </font></Button>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="21.0" layoutY="9.0" prefHeight="51.0" prefWidth="729.0" text="Please choose the facility and the item whose stock you would like to replenish. Then, choose which worker should be tasked to complete the replenishment." textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="97.0" layoutY="107.0" text="*" textFill="RED">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="351.0" layoutY="106.0" text="*" textFill="RED">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="577.0" layoutY="107.0" text="*" textFill="RED">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>
