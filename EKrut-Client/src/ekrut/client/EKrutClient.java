@@ -4,13 +4,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import ekrut.client.gui.BaseTemplateController;
 import ekrut.client.managers.*;
 import ekrut.net.UserNotification;
+import ekrut.net.UserRequest;
+import javafx.application.Platform;
 import ocsf.client.AbstractClient;
 
 public class EKrutClient extends AbstractClient{
 
-	private EKrutClientUI clientUI;
 	private ClientInventoryManager clientInventoryManager;
 	private ClientOrderManager clientOrderManager;
 	private ClientReportManager clientReportManager; 
@@ -80,7 +83,17 @@ public class EKrutClient extends AbstractClient{
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		if (msg instanceof UserNotification) {
-			clientUI.popupUserNotification(((UserNotification) msg).getNotificationMsg());
+			Platform.runLater(() -> EKrutClientUI.popupUserNotification(((UserNotification) msg).getNotificationMsg()));
+			return;
+		}
+		if(msg instanceof UserRequest) {
+			clientSessionManager.logoutUser(true);
+			Platform.runLater(() ->{
+				EKrutClientUI.popupUserNotification("Your session has expired. You have been logged out.");
+				BaseTemplateController.getBaseTemplateController().logout();
+				
+				} );
+			
 			return;
 		}
 		

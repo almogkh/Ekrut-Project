@@ -35,7 +35,7 @@ public class ServerSessionManager {
 	//A map of client connections and the users associated with them.
 	private HashMap<ConnectionToClient,User> clientUserMap;
 	//The time, in milliseconds, after which a user will be automatically logged out if they have not made any requests.
-	private static final long LOGOUT_TIME = 1800000; // 30 minutes
+	private static final long LOGOUT_TIME = 2000; // 30 minutes
 	private ObservableList<ConnectedClient> connectedClientList; 
 
 	
