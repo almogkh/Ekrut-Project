@@ -7,6 +7,7 @@
   -fx-border-color: black;
   -fx-border-radius: 20;
   -fx-background-radius: 20;
+  -fx-text-fill: white;
 }
 
 .button:pressed {
@@ -43,24 +44,24 @@
 }
 
 .image_button {
-	-fx-background-color: none;
-	-fx-border-color: none;
+  -fx-background-color: none;
+  -fx-border-color: none;
 }
 
 .image_button:hover {
-	-fx-background-color: none;
-	-fx-border-color: black;
+  -fx-background-color: none;
+  -fx-border-color: black;
 }
 .image_button:pressed {
-  -fx-background-color: #60CCD5;
+  -fx-background-color: #60ccd5;
   -fx-text-fill: black;
 }
 
 .scroll-pane > .viewport {
-   -fx-background-color: transparent;
+  -fx-background-color: transparent;
 }
 .scroll-pane {
-   -fx-background-color: transparent;
+  -fx-background-color: transparent;
 }
 
 .outlinedContainer {
@@ -72,11 +73,12 @@
 .table {
   -fx-border-color: black;
   -fx-background-color: rgba(255, 255, 255, 0.25);
+  -fx-font-family: "Arial Rounded MT Bold", sans-serif;
 }
 
 .item {
-	-fx-background-color: #D0EEFE;
-	-fx-border-color: black;
-	-fx-border-radius: 20;
-	-fx-background-radius: 20;
+  -fx-background-color: #d0eefe;
+  -fx-border-color: black;
+  -fx-border-radius: 20;
+  -fx-background-radius: 20;
 }

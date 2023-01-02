@@ -37,51 +37,67 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.MainMenuController">
   <children>
       <VBox alignment="CENTER" prefHeight="126.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Label text="Please choose your desired action" textFill="WHITE">
-               <font>
-                  <Font name="Candara Bold" size="30.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.699999988079071" />
-                     </color>
-                  </DropShadow>
-               </effect>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
-            <Label text="from the leftside menu." textFill="WHITE">
-               <font>
-                  <Font name="Candara Bold" size="30.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.699999988079071" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Label>
+            <Pane prefHeight="90.0" prefWidth="763.0">
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <children>
+                  <Text layoutX="295.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Menu">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="68.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.4198473393917084" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Text>
+                  <Line endX="113.0" layoutX="152.0" layoutY="45.0" startX="-118.0" stroke="WHITE" />
+                  <Line endX="113.0" layoutX="619.0" layoutY="45.0" startX="-118.0" stroke="WHITE" />
+               </children>
+            </Pane>
          </children>
       </VBox>
       <VBox alignment="TOP_CENTER" prefHeight="545.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <ImageView fitHeight="540.0" fitWidth="512.0" pickOnBounds="true" preserveRatio="true">
+            <Label text="Please choose your desired action">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="30.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+            </Label>
+            <Label text="from the leftside menu.">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="30.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <ImageView fitHeight="398.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@gui-assets/vendinf%20machine.gif" />
+                  <Image url="@gui-assets/gifMachine.gif" />
                </image>
                <VBox.margin>
-                  <Insets top="15.0" />
+                  <Insets top="60.0" />
                </VBox.margin>
             </ImageView>
          </children>
