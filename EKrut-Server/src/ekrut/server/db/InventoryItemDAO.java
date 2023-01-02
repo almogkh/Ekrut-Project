@@ -185,7 +185,7 @@ public class InventoryItemDAO {
 	*/
 	public boolean updateItemQuantity(String ekrutLocation, int itemId, int quantity) {
 		PreparedStatement ps = con.getPreparedStatement(
-				"UPDATE inventory_items SET quantity = ? ekrutLocation = ? AND itemId = ?;");
+				"UPDATE inventory_items SET quantity = ? WHERE ekrutLocation = ? AND itemId = ?;");
 		try {
 			ps.setInt(1, quantity);
 			ps.setString(2, ekrutLocation);
