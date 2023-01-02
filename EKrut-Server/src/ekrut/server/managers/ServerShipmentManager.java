@@ -55,7 +55,7 @@ public class ServerShipmentManager {
 	public ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest, String area) {
 		// Check if shipmentRequest is null.
 		if (shipmentRequest == null)
-			throw new IllegalArgumentException("null shipmentRequest was provided.");
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		ArrayList<Order> orderShipmentListForAppoval = orderDAO.fetchOrderShipmentListByArea(area);
 
@@ -77,7 +77,7 @@ public class ServerShipmentManager {
 	public ShipmentResponse confirmShipment(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
-			throw new IllegalArgumentException("Null order was provided.");
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		// Prepare fields in order to calculate due date.
 		int orderId = shipmentRequest.getOrderId();
@@ -120,6 +120,7 @@ public class ServerShipmentManager {
 		
 		// Q.Nir - Do i need to concider the fetcher in the future that says that we need to make compensation?
 		// Q.Nir - If message dont sent we need to let anyone know? why sendNotification is boolean?
+		// 					^^^^NOT NULL TO PHONE AND EMIL IN DB WILL PASS THE CHECKS?^^^^
 		
 		return new ShipmentResponse(ResultType.OK);
 	}
@@ -134,7 +135,7 @@ public class ServerShipmentManager {
 	public ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
-			throw new IllegalArgumentException("Null order was provided.");
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		// Get order by ID from DB.
 		int orderId = shipmentRequest.getOrderId();
@@ -169,7 +170,7 @@ public class ServerShipmentManager {
 	public ShipmentResponse setDone(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
-			throw new IllegalArgumentException("Null order was provided.");
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		// Get order by ID from DB.
 		int orderId = shipmentRequest.getOrderId();
