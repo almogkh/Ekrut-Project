@@ -3,7 +3,7 @@ package ekrut.server.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
 
 import ekrut.entity.User;
 import ekrut.entity.UserType;
@@ -143,6 +143,33 @@ public class UserDAO {
 		}
 	}
 	
+	public ArrayList<User> fetchAllUsersByRole(UserType userType){
+		ArrayList<User> usersList = new ArrayList<>();
+		User user = null;
+		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE userType = ?"); 
+		try {
+			ps.setString(1,userType.toString());
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
+				user = new User(userType, rs.getString(2),
+						rs.getString(3), rs.getString(4), rs.getString(5),
+						rs.getString(6),  rs.getString(7),  rs.getString(8),  rs.getString(9));
+				usersList.add(user);				
+			}
+			
+			return usersList.size() != 0 ? usersList : null;
+		} catch (SQLException e1) {
+			return null;
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+	}
 	/**
 	 * Creates a new user in the database.
 	 *
