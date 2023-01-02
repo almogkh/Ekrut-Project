@@ -12,7 +12,7 @@ public class ReportResponse implements Serializable{
 	private ArrayList<String> facilities;
 	
 	public ReportResponse(ResultType resultType, Report report) {
-		this.resultType = resultType;
+		this.resultType = resultType; 
 		this.report = report;
 	}
 	public ReportResponse(ResultType resultType, ArrayList<String> facilities) {

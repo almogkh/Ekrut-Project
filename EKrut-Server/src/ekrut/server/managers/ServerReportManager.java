@@ -46,6 +46,8 @@ public class ServerReportManager {
 	 * @throws SQLException if a database error occurs while executing the SQL query
 	 */
 	public ReportResponse fetchReport(ReportRequest reportRequest, ConnectionToClient client) {
+		System.out.println("checkcheck2");
+
 		Report report = reportDAO.fetchReport(reportRequest.getDate(), reportRequest.getLocation(), reportRequest.getArea(), reportRequest.getReportType());
 		
 		if (report == null) 

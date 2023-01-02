@@ -1,10 +1,13 @@
 package ekrut.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Report {
+public class Report implements Serializable{
+
+	private static final long serialVersionUID = -5874512121114020139L;
 	private Integer reportID;
 	private ReportType reportType;
 	private LocalDateTime date;
@@ -15,9 +18,10 @@ public class Report {
 	private Map<String, Integer> customerReportData;
 	private Map<String, ArrayList<Integer>> orderReportData;
 	private Map<String, Integer> topSellersData;
-	private int threshold;
-	private int totalOrders;
-	private int totalOrdersInILS;
+	
+	private Integer threshold;
+	private Integer totalOrders;
+	private Integer totalOrdersInILS;
 
 	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation, String area) {
 		this.reportID = reportID;
@@ -30,7 +34,7 @@ public class Report {
 	// Order report constructor
 	public Report(
 			Integer reportID, ReportType reportType, LocalDateTime date,
-			String ekrutLocation, String area, int totalOrders, int totalOrdersInILS,
+			String ekrutLocation, String area, Integer totalOrders, Integer totalOrdersInILS,
 			Map<String, ArrayList<Integer>> orderReportData, Map<String, Integer> topSellersData) {
 		this(reportID, reportType, date, ekrutLocation, area);
 		this.totalOrders = totalOrders; 
@@ -48,7 +52,7 @@ public class Report {
 
 	// Inventory report constructor 
 	 public Report(Integer reportID, ReportType reportType, LocalDateTime date,
-			 String ekrutLocation, String area, Map<String, ArrayList<Integer>> InventoryReportData, int threshold) {
+			 String ekrutLocation, String area, Map<String, ArrayList<Integer>> InventoryReportData, Integer threshold) {
 		 this(reportID, reportType, date, ekrutLocation, area);
 		 this.InventoryReportData = InventoryReportData;
 	 }
@@ -108,11 +112,11 @@ public class Report {
 		this.orderReportData = orderReportData;
 	}
 
-	public int getThreshold() {
+	public Integer getThreshold() {
 		return threshold;
 	}
 
-	public void setThreshold(int threshold) {
+	public void setThreshold(Integer threshold) {
 		this.threshold = threshold;
 	}
 
@@ -124,19 +128,19 @@ public class Report {
 		this.topSellersData = topSellersData;
 	}
 
-	public int getTotalOrders() {
+	public Integer getTotalOrders() {
 		return totalOrders;
 	}
 
-	public void setTotalOrders(int totalOrders) {
+	public void setTotalOrders(Integer totalOrders) {
 		this.totalOrders = totalOrders;
 	}
 
-	public int getTotalOrdersInILS() {
+	public Integer getTotalOrdersInILS() {
 		return totalOrdersInILS;
 	}
 
-	public void setTotalOrdersInILS(int totalOrdersInILS) {
+	public void setTotalOrdersInILS(Integer totalOrdersInILS) {
 		this.totalOrdersInILS = totalOrdersInILS;
 	}
 
