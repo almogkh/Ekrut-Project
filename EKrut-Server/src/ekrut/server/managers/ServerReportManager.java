@@ -46,7 +46,6 @@ public class ServerReportManager {
 	 * @throws SQLException if a database error occurs while executing the SQL query
 	 */
 	public ReportResponse fetchReport(ReportRequest reportRequest, ConnectionToClient client) {
-		System.out.println("checkcheck2");
 
 		Report report = reportDAO.fetchReport(reportRequest.getDate(), reportRequest.getLocation(), reportRequest.getArea(), reportRequest.getReportType());
 		
@@ -136,17 +135,23 @@ public class ServerReportManager {
 	 */
 	public Report generateCustomerReport(LocalDateTime date, String ekrutLocation, String area) {
 		// Get a list of all customer orders for the given date and location	
-		ArrayList<String> allCustomersOrders = reportDAO.getAllCustomersOrders(date, ekrutLocation);
+		ArrayList<String> allCustomersOrders = reportDAO.getAllCustomersOrdersByName(date, ekrutLocation);
 		// Process the customer orders to count the number of orders made by each customer
 		Map<String, Integer> customersOrders = ProcessCustomersOrders(allCustomersOrders);
 		// Create a histogram of customer orders by dividing customers into categories based on their order count
 		Map<String, Integer> customersHistogram = createCustomersHistogram(customersOrders);
 		// Create a new report object with the generated data
-		Report report = new Report(null, ReportType.CUSTOMER, date, ekrutLocation, area, customersHistogram);
+		
+		ArrayList<LocalDateTime> allCustomersOrdersByDate = reportDAO.getAllCustomersOrdersByDate(date, ekrutLocation);
+		
+		Map<Integer, Integer> customersOrdersByDate = ProcessCustomersOrdersByDate(allCustomersOrdersByDate);
+				
+		Report report = new Report(null, ReportType.CUSTOMER, date, ekrutLocation, area, customersHistogram, customersOrdersByDate);
 		// Return the report
 		return report;
 	}
 	
+
 	/**
 	 * Generates an inventory report for a given location and date.
 	 * 
@@ -289,6 +294,24 @@ public class ServerReportManager {
 		}
 		return customersOrders;
 	}
+	
+
+	private Map<Integer, Integer> ProcessCustomersOrdersByDate(ArrayList<LocalDateTime> allCustomersOrdersByDate) {
+		Map<Integer, Integer> customersOrdersByDate = new HashMap<>();
+		// Iterate through the list of customer orders
+		for (LocalDateTime date : allCustomersOrdersByDate) {
+			// Increment the count of orders for the corresponding customer in the map
+			customersOrdersByDate.merge(date.getDayOfMonth(), 1, Integer::sum);
+		}
+		//add: add to the map all the dates with zero orders
+		for (int i = 1; i <= 31; i++) {
+			if (!customersOrdersByDate.containsKey(i)) {
+				customersOrdersByDate.put(i, 0);
+			}
+		}
+		return customersOrdersByDate;
+	}
+
 
 	
 	/**

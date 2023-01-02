@@ -46,7 +46,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderReportViewController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderReportViewController">
   <children>
       <Pane prefHeight="130.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
@@ -162,10 +162,10 @@
                <children>
                   <BarChart fx:id="topSellersBarChart" layoutX="-1.0" layoutY="-5.0" prefHeight="206.0" prefWidth="497.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Top Sellers">
                     <xAxis>
-                      <CategoryAxis side="BOTTOM" />
+                      <CategoryAxis fx:id="ItemNameAxis" side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis side="LEFT" />
+                      <NumberAxis fx:id="NumberOfItemOrdersAxis" side="LEFT" />
                     </yAxis>
                      <effect>
                         <DropShadow>
@@ -198,10 +198,10 @@
                <children>
                   <BarChart fx:id="ordersBarChart" prefHeight="322.0" prefWidth="448.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Orders">
                     <xAxis>
-                      <CategoryAxis side="BOTTOM" />
+                      <CategoryAxis fx:id="locationsAxis" side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis side="LEFT" />
+                      <NumberAxis fx:id="numberOfOrderAxis" side="LEFT" />
                     </yAxis>
                      <effect>
                         <DropShadow>

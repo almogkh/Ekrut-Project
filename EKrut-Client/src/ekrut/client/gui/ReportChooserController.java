@@ -1,5 +1,6 @@
 package ekrut.client.gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -33,7 +34,7 @@ public class ReportChooserController implements Initializable{
     @FXML
     private ComboBox<String> monthComboBox;
 
-    @FXML
+    @FXML 
     private Label nameInitialsLabel;
 
     @FXML
@@ -77,7 +78,7 @@ public class ReportChooserController implements Initializable{
 
     
     @FXML
-    void viewReport(ActionEvent event) throws Exception {
+    void viewReport(ActionEvent event) throws Exception{
 
     	// Handle empty combo box first
     	if ((typeComboBox.getValue() == null || areaComboBox.getValue() == null || 
@@ -109,7 +110,6 @@ public class ReportChooserController implements Initializable{
     			type = ReportType.CUSTOMER;
     		}
     		
-    		System.out.println("check4234234");
     		Report report = clientReportManager.getReport(
     				areaComboBox.getValue(), location, type, date);
     		
@@ -121,24 +121,22 @@ public class ReportChooserController implements Initializable{
     			if (type.equals(ReportType.ORDER)) {
     				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/OrderReportView.fxml"));
         			loader.load();
+        			OrderReportViewController orderReportViewController = loader.getController();
+        			orderReportViewController.setOrderReport(report);
 
     			}
     			else if (type.equals(ReportType.INVENTORY)) {
     				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/InventoryReportView.fxml"));
-        			loader.load();
-
+        			loader.load(); 
+        			//InventoryReportViewController inventoryReportViewController = loader.getController();
+        			//inventoryReportViewController.setCustomerReport(report);
     			}
     			else {
     				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/CustomerReportView.fxml"));
         			loader.load();
-
-
+        			CustomerReportViewController customerReportViewController = loader.getController();
+        			customerReportViewController.setCustomerReport(report); 
     			}
-    			//this is temporary
-				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/OrderReportView.fxml"));
-    			loader.load();
-    			OrderReportViewController orderReportViewController = loader.getController();
-    			orderReportViewController.setOrderReport(report);
     			Parent root = loader.getRoot();
 				BaseTemplateController.getBaseTemplateController().setRightWindow(root);
     		}
@@ -177,9 +175,7 @@ public class ReportChooserController implements Initializable{
     }
     
     private void setLocationComboBox(String area) throws Exception {
-    	System.out.println("hey1");
     	ArrayList<String> locations = clientReportManager.getFacilitiesByArea(area);
-    	System.out.println("hey2");
 
     	// Convert array list into a array
     	String[] locationsArr = locations.toArray(new String[locations.size()]);

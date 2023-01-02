@@ -27,11 +27,23 @@ import javafx.scene.layout.Pane;
 
 public class OrderReportViewController{
 
+	@FXML
+    private CategoryAxis ItemNameAxis;
+
+    @FXML
+    private NumberAxis NumberOfItemOrdersAxis;
+
     @FXML
     private Label areaLbl;
 
     @FXML
     private Label dateLbl;
+
+    @FXML
+    private CategoryAxis locationsAxis;
+
+    @FXML
+    private NumberAxis numberOfOrderAxis;
 
     @FXML
     private BarChart<?, ?> ordersBarChart;
@@ -54,13 +66,13 @@ public class OrderReportViewController{
     
     public void setOrderReport(Report report) {
     	this.report = report;
+    	//Set head Labels
+    	setHeadLabels();
     	// Set orders labels
 		setTotalOrdersLbl();
 		setTotalOrdersLblInILS();
-		
 		// Set charts
 		setOrdersPieChat();
-
 		try {
 			setOrdersBarChart();
 		} catch (Exception e) {
@@ -84,6 +96,14 @@ public class OrderReportViewController{
     	totalOrdersLbl.setText(totalOrdersInILS);
     }
     
+    private void setHeadLabels() {
+    	// Set area and date labels
+    	areaLbl.setText(report.getArea());
+    	String date = (String.valueOf(report.getDate().getMonthValue()) + '/' + String.valueOf(report.getDate().getYear()));
+    	dateLbl.setText(date);
+    	
+    }
+    // Set Order Pie Chart
     private void setOrdersPieChat() {
     	ObservableList<PieChart.Data> PieChartData =
 				FXCollections.observableArrayList();
@@ -97,17 +117,16 @@ public class OrderReportViewController{
     }
     
     private void setOrdersBarChart() throws Exception {
+    	//TBD handle two or more words at location name
     	//Defining the x axis               
-		CategoryAxis xAxis = new CategoryAxis();   
 		ArrayList<String> locations = clientReportManager.getFacilitiesByArea(report.getArea());
    	 	// Convert array list into a array
    	 	String[] locationsArr = locations.toArray(new String[locations.size()]);
-		xAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(locationsArr))); 
-		xAxis.setLabel("Order Type");  
+   	 	locationsAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(locationsArr))); 
+   	 	locationsAxis.setLabel("Locations");  
 		
 		//Defining the y axis 
-		NumberAxis yAxis = new NumberAxis(); 
-		yAxis.setLabel("Total in ILS");
+   	 	numberOfOrderAxis.setLabel("Total in ILS");
 		
 		//OrdersHistogram = new BarChart<>(xAxis, yAxis);  
 		
@@ -142,28 +161,28 @@ public class OrderReportViewController{
     private void setTopSellersBarChart() {
     	
     	Map<String, Integer> topSellersData = report.getTopSellersData();
+    	
     	ArrayList<String> topSellersItems = new ArrayList<>();
     	for (Map.Entry<String, Integer> entry : topSellersData.entrySet()) {
     		topSellersItems.add(entry.getKey());
     	}
-		CategoryAxis xAxis = new CategoryAxis();   
+  
 		
    	 	// Convert array list into a array
    	 	String[] topSellersArr = topSellersItems.toArray(new String[topSellersItems.size()]);
-		xAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(topSellersArr))); 
-		xAxis.setLabel("Items");
+   	 	ItemNameAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(topSellersArr))); 
+   	 	ItemNameAxis.setLabel("Items");
 		
-		NumberAxis yAxis = new NumberAxis(); 
-		yAxis.setLabel("Total in ILS");
+		NumberOfItemOrdersAxis.setLabel("Total Orders");
 
-    	XYChart.Series series4 = new XYChart.Series<>(); 
-    	series4.setName("Item"); 
+    	XYChart.Series series = new XYChart.Series<>(); 
+    	series.setName("Item"); 
     	
     	for (Map.Entry<String, Integer> entry : topSellersData.entrySet()) {
 		//Prepare XYChart.Series objects by setting data       
-			series4.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue())); 
+			series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue())); 
     	}
-		topSellersBarChart.getData().addAll(series4);
+		topSellersBarChart.getData().addAll(series);
     }
     
 }

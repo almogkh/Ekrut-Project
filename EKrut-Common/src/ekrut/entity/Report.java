@@ -18,6 +18,7 @@ public class Report implements Serializable{
 	private Map<String, Integer> customerReportData;
 	private Map<String, ArrayList<Integer>> orderReportData;
 	private Map<String, Integer> topSellersData;
+	private Map<Integer, Integer> customersOrdersByDate;
 	
 	private Integer threshold;
 	private Integer totalOrders;
@@ -45,10 +46,11 @@ public class Report implements Serializable{
 
 	// Customer report report constructor
 	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation, String area,
-			Map<String, Integer> customerReportData) {
+			Map<String, Integer> customerReportData, Map<Integer, Integer> customersOrdersByDate) {
 		this(reportID, reportType, date, ekrutLocation, area);
 		this.customerReportData = customerReportData;
-	}
+		this.customersOrdersByDate = customersOrdersByDate;
+	} 
 
 	// Inventory report constructor 
 	 public Report(Integer reportID, ReportType reportType, LocalDateTime date,
@@ -142,6 +144,14 @@ public class Report implements Serializable{
 
 	public void setTotalOrdersInILS(Integer totalOrdersInILS) {
 		this.totalOrdersInILS = totalOrdersInILS;
+	}
+
+	public Map<Integer, Integer> getCustomersOrdersByDate() {
+		return customersOrdersByDate;
+	}
+
+	public void setCustomersOrdersByDate(Map<Integer, Integer> customersOrdersByDate) {
+		this.customersOrdersByDate = customersOrdersByDate;
 	}
 
 }

@@ -32,87 +32,68 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.CustomerReportViewController">
-  <children>
-      <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu mnemonicParsing="false" text="File">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="531.0" prefWidth="651.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
-      <children>
-            
-            <Pane prefHeight="100.0" prefWidth="651.0" style="-fx-background-color: #50BDF8;">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.CustomerReportViewController">
+   <children>
+      <Pane prefHeight="147.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <children>
+            <VBox alignment="CENTER" prefHeight="147.0" prefWidth="770.0">
                <children>
-                  <ImageView fitHeight="98.0" fitWidth="192.0" layoutX="237.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@gui-assets/logo.png" />
-                     </image>
-                  </ImageView>
-                  <Line endX="434.3333740234375" endY="-7.62939453125E-6" layoutX="217.0" layoutY="100.0" startX="-216.0" strokeWidth="2.0" />
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Pane>
-            <Line endX="327.0" layoutX="172.0" layoutY="770.0" startX="-172.0" strokeWidth="2.0" />
-            <Pane layoutY="771.0" prefHeight="54.0" prefWidth="500.0" style="-fx-background-color: #50BDF8;">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <children>
-                  <Label fx:id="serverIpPortLbl" layoutX="14.0" layoutY="19.0" text="Server(196.168.57.53:5555):">
+                  <Label alignment="CENTER" prefHeight="39.0" prefWidth="779.0" text="Customer Report">
                      <font>
-                        <Font size="15.0" />
+                        <Font size="27.0" />
                      </font>
                   </Label>
-                  <Label fx:id="serverConnectionStatusLbl" layoutX="203.0" layoutY="19.0" text="Connected" textFill="#23a423">
+                  <Label fx:id="areaLbl" alignment="CENTER" prefHeight="39.0" prefWidth="770.0" text="North">
                      <font>
-                        <Font name="System Bold" size="15.0" />
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="locationLbl" alignment="CENTER" prefHeight="35.0" prefWidth="768.0" text="Akko" textAlignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="dateLbl" alignment="CENTER" prefHeight="34.0" prefWidth="769.0" text="01/2023">
+                     <font>
+                        <Font size="23.0" />
                      </font>
                   </Label>
                </children>
-            </Pane>
-            <BarChart fx:id="CustomerChart" layoutY="198.0" prefHeight="325.0" prefWidth="642.0">
+            </VBox>
+         </children>
+      </Pane>
+      <Pane prefHeight="229.0" prefWidth="770.0" styleClass="container">
+         <children>
+            <LineChart fx:id="monthlyActivityLineChart" prefHeight="237.0" prefWidth="770.0" title="Customers Monthly Activity">
               <xAxis>
-                <CategoryAxis fx:id="OrdersCategories" label="Orders categories" side="BOTTOM" />
+                <CategoryAxis fx:id="lineChartCategoryAxis" label="Day Of Month" side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis fx:id="NumberOfCustomers" label="Customers" side="LEFT" />
+                <NumberAxis fx:id="lineChartNumberAxis" label="Number Of Orders" side="LEFT" />
+              </yAxis>
+            </LineChart>
+         </children>
+      </Pane>
+      <Pane prefHeight="289.0" prefWidth="770.0" styleClass="container">
+         <children>
+            <BarChart fx:id="CustomersActivityBarChart" prefHeight="294.0" prefWidth="770.0" title="Customers Activity By Categories">
+              <xAxis>
+                <CategoryAxis fx:id="barChartCategoryAxis" label="Category" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="barChartNumberAxis" label="Number Of Orders" side="LEFT" />
               </yAxis>
             </BarChart>
-      </children>
-    </AnchorPane>
-  </children>
+         </children>
+      </Pane>
+   </children>
 </VBox>
