@@ -162,10 +162,10 @@
                <children>
                   <BarChart fx:id="topSellersBarChart" layoutX="-1.0" layoutY="-5.0" prefHeight="206.0" prefWidth="497.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Top Sellers">
                     <xAxis>
-                      <NumberAxis side="BOTTOM" />
+                      <CategoryAxis side="BOTTOM" />
                     </xAxis>
                     <yAxis>
-                      <CategoryAxis side="LEFT" />
+                      <NumberAxis side="LEFT" />
                     </yAxis>
                      <effect>
                         <DropShadow>

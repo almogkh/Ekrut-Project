@@ -32,11 +32,14 @@ public class ClientReportManager extends AbstractClientManager<ReportRequest, Re
 	 */
 	public Report getReport(String area, String location, ReportType reportType, LocalDateTime date) throws Exception { 
 		// Prepare a getReportRequest to send to server.
+
 		ReportRequest reportRequest = new ReportRequest(area, location, reportType, date);
 		// Sending getReportRequest and receiving getReportResponse.
 		ReportResponse reportResponse = sendRequest(reportRequest);
-	 
-		ResultType resultType = reportResponse.getResultCode(); 
+		
+		System.out.println(reportResponse.getResultCode());
+		
+		ResultType resultType = reportResponse.getResultCode();  
 		// ResultCode is not "OK" meaning we encountered an error.
 		if (!resultType.equals(ResultType.OK))
 			throw new Exception(resultType.toString()); // TBD CHANGE TO SPESIFIC EXCEPTION
