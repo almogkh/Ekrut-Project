@@ -63,7 +63,7 @@ public class CustomerReportViewController {
     	
     	for (int i = 1; i <= 31; i++) {
     		days.add(String.valueOf(i));
-    	}
+    	} 
    	    
      	String[] daysArr = days.toArray(new String[days.size()]);
      	lineChartCategoryAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(daysArr))); 

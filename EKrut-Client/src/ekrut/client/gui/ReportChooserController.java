@@ -162,29 +162,30 @@ public class ReportChooserController implements Initializable{
  				areas = new String[1];
  				areas[0] = "South";
  			}
- 			else if (user.getArea().equals("uae")){
+ 			else {
  				areas = new String[1];
  	 			areas[0] = "UAE";
  			}
- 			//if the user is not have am area somehow, maybe this is not necessary
- 			else {
- 				//return to home page?
- 			}
+
  		}
  		areaComboBox.getItems().addAll(areas);
     }
     
     private void setLocationComboBox(String area) throws Exception {
     	ArrayList<String> locations = clientReportManager.getFacilitiesByArea(area);
+		ArrayList<String> fixLocations = new ArrayList<>();
 
+    	for (String location : locations) {
+			fixLocations.add(location.replace("_", " "));
+		}
     	// Convert array list into a array
-    	String[] locationsArr = locations.toArray(new String[locations.size()]);
+    	String[] locationsArr = fixLocations.toArray(new String[fixLocations.size()]);
     	locationComboBox.getItems().addAll(locationsArr);
     }
     
     // If the Report type is an order report than disable locations
     @FXML
-    void setLocationsByType(ActionEvent event) {
+    void setLocationsByType(ActionEvent event) throws Exception {
     	String type = typeComboBox.getValue();
     	areaComboBox.setDisable(false);
     	
@@ -192,6 +193,12 @@ public class ReportChooserController implements Initializable{
      			locationComboBox.setPromptText("Not Available");
      			locationComboBox.setDisable(true);
      			locationComboBox.getItems().clear();
+    	}
+    	else {
+    		locationComboBox.setDisable(false);
+    		if (areaComboBox.getValue() != null) {
+    			setLocationComboBox(areaComboBox.getValue());
+    		}
     	}
     }
     

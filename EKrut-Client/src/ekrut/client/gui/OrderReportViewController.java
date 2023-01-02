@@ -120,8 +120,12 @@ public class OrderReportViewController{
     	//TBD handle two or more words at location name
     	//Defining the x axis               
 		ArrayList<String> locations = clientReportManager.getFacilitiesByArea(report.getArea());
+		ArrayList<String> fixLocations = new ArrayList<>();
+		for (String location : locations) {
+			fixLocations.add(location.replace("_", " "));
+		}
    	 	// Convert array list into a array
-   	 	String[] locationsArr = locations.toArray(new String[locations.size()]);
+   	 	String[] locationsArr = fixLocations.toArray(new String[fixLocations.size()]);
    	 	locationsAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(locationsArr))); 
    	 	locationsAxis.setLabel("Locations");  
 		
