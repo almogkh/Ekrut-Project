@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import ekrut.entity.Customer;
 import ekrut.entity.User;
 import ekrut.entity.UserType;
 
@@ -105,6 +106,38 @@ public class UserDAO {
 		} catch (SQLException e1) {
 			return null;
 		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	/**
+	 * Retrieves customer specific info from the database.
+	 * 
+	 * @param user the user whose info should be retrieved
+	 * @return     the customer specific info of the user
+	 */
+	public Customer fetchCustomerInfo(User user) {
+		if (user.getUserType() != UserType.CUSTOMER && user.getUserType() != UserType.SUBSCRIBER)
+			return null;
+		
+		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM customers WHERE username = ?");
+		
+		try {
+			ps.setString(1, user.getUsername());
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next())
+				return new Customer(rs.getString("subscriberNumber"), rs.getString("username"),
+                                    rs.getBoolean("monthlyCharge"), rs.getString("creditCardNumber"));
+			return null;
+			
+		} catch (SQLException e) {
+			return null;
+		} finally {
 			try {
 				ps.close();
 			} catch (SQLException e) {

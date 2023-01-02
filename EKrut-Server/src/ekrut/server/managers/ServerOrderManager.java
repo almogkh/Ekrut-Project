@@ -3,16 +3,24 @@ package ekrut.server.managers;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import ekrut.entity.Customer;
 import ekrut.entity.Order;
+import ekrut.entity.OrderItem;
 import ekrut.entity.OrderStatus;
 import ekrut.entity.OrderType;
+import ekrut.entity.SaleDiscount;
+import ekrut.entity.SaleDiscountType;
 import ekrut.entity.User;
+import ekrut.entity.UserType;
 import ekrut.net.OrderRequest;
 import ekrut.net.OrderRequestType;
 import ekrut.net.OrderResponse;
 import ekrut.net.ResultType;
 import ekrut.server.db.DBController;
 import ekrut.server.db.OrderDAO;
+import ekrut.server.db.UserDAO;
+import ekrut.server.intefaces.IPaymentProcessor;
+import ekrut.server.intefaces.StubPaymentProcessor;
 import ocsf.server.ConnectionToClient;
 
 /**
@@ -23,15 +31,51 @@ import ocsf.server.ConnectionToClient;
 public class ServerOrderManager {
 
 	private OrderDAO orderDAO;
+	private UserDAO userDAO;
 	private ServerSessionManager sessionManager;
+	private ServerSalesManager salesManager;
+	private IPaymentProcessor paymentProcessor;
 	
-	public ServerOrderManager(DBController dbCon, ServerSessionManager sessionManager) {
+	public ServerOrderManager(DBController dbCon, ServerSessionManager sessionManager, ServerSalesManager salesManager) {
 		this.orderDAO = new OrderDAO(dbCon);
+		this.userDAO = new UserDAO(dbCon);
 		this.sessionManager = sessionManager;
+		this.salesManager = salesManager;
+		this.paymentProcessor = new StubPaymentProcessor();
+	}
+	
+	private float computeDiscount(Order order, User user) {
+		float discount = 0;
+		LocalDateTime now = LocalDateTime.now();
+		String area = order.getType() == OrderType.PICKUP ? order.getEkrutLocation() : user.getArea();
+		ArrayList<SaleDiscount> sales = salesManager.fetchSalesByArea(area).getSales();
+		
+		if (sales == null || sales.size() == 0)
+			return discount;
+		
+		for (SaleDiscount sale : sales) {
+			// Verify the active sale applies to right now
+			if (sale.getDayOfSale().charAt(now.getDayOfWeek().getValue() % 7) != 'T')
+				continue;
+			if (sale.getStartTime().isAfter(now.toLocalTime()) || sale.getEndTime().isBefore(now.toLocalTime()))
+				continue;
+			
+			if (sale.getType() == SaleDiscountType.THIRTY_PERCENT_OFF) {
+				for (OrderItem item : order.getItems())
+					discount += item.getItemQuantity() * item.getItem().getItemPrice() * 0.3;
+			} else { // one plus one free
+				for (OrderItem item : order.getItems())
+					discount += (item.getItemQuantity() / 2) * item.getItem().getItemPrice();
+			}
+		}
+		
+		return discount;
 	}
 	
 	/**
-	 * Creates a new order in the database.
+	 * Creates a new order.
+	 * This method computes the amount that needs to be paid given any active sales, attempts to charge
+	 * the user's credit card and inserts the order into the database.
 	 * 
 	 * @param request the order creation request
 	 * @param con     the connection through which the request was received
@@ -49,6 +93,32 @@ public class ServerOrderManager {
 		order.setDate(LocalDateTime.now());
 		order.setStatus(OrderStatus.SUBMITTED);
 		order.setUsername(user.getUsername());
+		
+		// Compute the total amount the user has to pay
+		float debitAmount = order.getSumAmount();
+		debitAmount -= computeDiscount(order, user);
+		
+		if (user.getUserType() == UserType.SUBSCRIBER) {
+			ArrayList<Order> orders = orderDAO.fetchOrdersByUsername(user.getUsername());
+			if (orders == null)
+				return new OrderResponse(ResultType.UNKNOWN_ERROR);
+			// First order from subscriber gets a 20% discount
+			if (orders.size() == 0)
+				debitAmount *= 0.8f;
+		}
+		
+		Customer info = userDAO.fetchCustomerInfo(user);
+		if (info == null)
+			return new OrderResponse(ResultType.UNKNOWN_ERROR);
+		
+		// Subscribers can choose to pay once a month for all of their orders
+		if (user.getUserType() == UserType.SUBSCRIBER && info.isMonthlyCharge()) {
+			if (!paymentProcessor.addToCharges(info.getCreditCard(), debitAmount))
+				return new OrderResponse(ResultType.INVALID_INPUT);
+		} else {
+			if (!paymentProcessor.submitPayment(info.getCreditCard(), debitAmount))
+				return new OrderResponse(ResultType.INVALID_INPUT);
+		}
 		
 		if (!orderDAO.createOrder(order))
 			return new OrderResponse(ResultType.UNKNOWN_ERROR);
