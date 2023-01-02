@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import ekrut.entity.Order;
 import ekrut.entity.OrderStatus;
 import ekrut.entity.OrderType;
+import ekrut.entity.User;
 import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentResponse;
 import ekrut.server.db.DBController;
 import ekrut.server.db.OrderDAO;
+import ekrut.server.db.UserDAO;
+import ekrut.server.intefaces.IUserNotifier;
 import ekrut.server.intefaces.ShipmentManagerUtils;
 
 /**
@@ -23,6 +26,8 @@ import ekrut.server.intefaces.ShipmentManagerUtils;
 public class ServerShipmentManager {
 
 	OrderDAO orderDAO;
+	UserDAO userDAO;
+	IUserNotifier userNotifier;
 
 	/**
 	 * 
@@ -34,14 +39,16 @@ public class ServerShipmentManager {
 		orderDAO = new OrderDAO(con);
 	}
 
-	// Q.Nir , TBD - Need to change after Yovel implementation area at fetch... method?
+	// Q.Nir , TBD - Need to change after Yovel implementation area at fetch...
+	// method?
 	// PLEASE, HOW CAN I DO IT?
 	// C.Nir - Message need to be sent after confirmation.
 
 	/**
 	 * Fetches a list of shipment requests for approval.
 	 * 
-	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
+	 *                        request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
 	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
@@ -51,16 +58,17 @@ public class ServerShipmentManager {
 			throw new IllegalArgumentException("null shipmentRequest was provided.");
 
 		ArrayList<Order> orderShipmentListForAppoval = orderDAO.fetchOrderShipmentListByArea(area);
-		
+
 		// Check if there any shipments on DB.
 		if (orderShipmentListForAppoval == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
-		
+
 		return new ShipmentResponse(ResultType.OK, orderShipmentListForAppoval);
 	}
 
 	/**
 	 * Confirms the shipment of an order by EKurt worker.
+	 * Sends (Currently a simulation) estimated arrival time for user on email and SMS.
 	 * 
 	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
@@ -70,13 +78,13 @@ public class ServerShipmentManager {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			throw new IllegalArgumentException("Null order was provided.");
-		
+
 		// Prepare fields in order to calculate due date.
 		int orderId = shipmentRequest.getOrderId();
 		LocalDateTime date = shipmentRequest.getDate();
 		String clientAddress = shipmentRequest.getClientAddress();
 		Order order = orderDAO.fetchOrderById(orderId);
-		
+
 		// In case order is null return not found result.
 		if (order == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
@@ -88,15 +96,30 @@ public class ServerShipmentManager {
 		// In case order status not submitted return invalid input result.
 		if (order.getStatus() != OrderStatus.SUBMITTED)
 			return new ShipmentResponse(ResultType.INVALID_INPUT);
+		
+		// Try to confirm shipment and update order status to awaiting for delivery.
+		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.AWAITING_DELIVERY))
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
 
 		// Estimate delivery time.
 		LocalDateTime estimateDeliveryTime = ShipmentManagerUtils.estimatedArrivalTime(date, clientAddress);
 		// Set due date in order.
 		order.setDueDate(estimateDeliveryTime);
 
-		// Try to confirm shipment and update order status to awaiting for delivery.
-		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.AWAITING_DELIVERY))
-			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+		// Send message to customer when his shippment was approved.
+		String username = order.getUsername();
+		User user = userDAO.fetchUserByUsername(username);
+		String notificationMsg = "Hi " + user.getFirstName() + ",/n/n"
+							   + "We wanted to let you know that your delivery is approved by our shipment department,/n"
+							   + "and your shipment is currently in the checkout process!./n"
+							   + "your shipment expected to arrive by " + estimateDeliveryTime.toString() + " o'clock./n"
+							   + "When your shipment has arrived, please confirm that you have received the shipment in the application."
+							   + "Keep an eye out for it and let us know if you have any questions or concerns./n/n"
+							   + "Best regards,/nEKrut";
+		userNotifier.sendNotification(notificationMsg, user.getEmail(), user.getPhoneNumber());
+		
+		// Q.Nir - Do i need to concider the fetcher in the future that says that we need to make compensation?
+		// Q.Nir - If message dont sent we need to let anyone know? why sendNotification is boolean?
 		
 		return new ShipmentResponse(ResultType.OK);
 	}
@@ -104,18 +127,19 @@ public class ServerShipmentManager {
 	/**
 	 * Customer confirmation of shipment arrival.
 	 * 
-	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details.
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
+	 *                        request details.
 	 * @return a {@code ShipmentResponse} object with the result of the operation.
 	 */
 	public ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			throw new IllegalArgumentException("Null order was provided.");
-		
+
 		// Get order by ID from DB.
 		int orderId = shipmentRequest.getOrderId();
 		Order order = orderDAO.fetchOrderById(orderId);
-		
+
 		// In case order is null return not found result.
 		if (order == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
@@ -138,18 +162,19 @@ public class ServerShipmentManager {
 	/**
 	 * Worker marks an order as done.
 	 * 
-	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details.
+	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
+	 *                        request details.
 	 * @return a {@code ShipmentResponse} object with the result of the operation.
 	 */
 	public ShipmentResponse setDone(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			throw new IllegalArgumentException("Null order was provided.");
-		
+
 		// Get order by ID from DB.
 		int orderId = shipmentRequest.getOrderId();
 		Order order = orderDAO.fetchOrderById(orderId);
-		
+
 		// In case order is null return not found result.
 		if (order == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
