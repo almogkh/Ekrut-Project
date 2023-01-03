@@ -497,7 +497,8 @@ public class ReportDAO {
 				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
-			ps1.setString(2, ekrutLocation);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, ekrutLocation);
 			
 			ResultSet rs1 = con.executeQuery(ps1);
 			
