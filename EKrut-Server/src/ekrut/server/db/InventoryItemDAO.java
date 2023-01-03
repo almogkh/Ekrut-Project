@@ -302,4 +302,30 @@ public class InventoryItemDAO {
 			}
 		}
 	}
+	
+	// Added by nir, in order to get all inventory items from DB for shipent use.
+	// C.Nir - this comment need to be deleted and add javaDoc
+	public ArrayList<InventoryItem> fetchAllInventoryItems() {
+		PreparedStatement ps = con.getPreparedStatement("SELECT * From inventory_items");
+		ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
+		try {
+			ResultSet rs = con.executeQuery(ps);
+			while(rs.next()) {
+				InventoryItem inventoryItem = new InventoryItem(
+						itemDAO.fetchItem(rs.getInt("itemId")), rs.getInt("quantity"),
+						rs.getString("ekrutLocation"), rs.getString("area"), rs.getInt("itemId"));
+				
+				inventoryItems.add(inventoryItem);
+			}
+			return inventoryItems;
+		} catch (SQLException e1) {
+			return null;
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 }

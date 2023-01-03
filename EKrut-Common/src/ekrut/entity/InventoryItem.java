@@ -18,6 +18,15 @@ public class InventoryItem implements Serializable{
 		this.itemThreshold = itemThreshold;
 		this.area = area;
 	}
+	
+	// Added by nir, in order to get all inventory items from DB for shipent use.
+	// there is no need in thresholt in order.
+	public InventoryItem(Item item, int itemQuantity, String ekrutLocation, String area) {
+		this.item = item;
+		this.itemQuantity = itemQuantity;
+		this.ekrutLocation = ekrutLocation;
+		this.area = area;
+	}
 
 	public Item getItem() {
 		return item;
