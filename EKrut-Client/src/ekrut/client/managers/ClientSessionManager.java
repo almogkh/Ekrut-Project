@@ -17,7 +17,7 @@ import ekrut.net.UserResponse;
 public class ClientSessionManager extends AbstractClientManager<UserRequest, UserResponse> {
 
 	private User user = null;
-	private ArrayList<User> usersList = null;
+
 	public ClientSessionManager(EKrutClient client) {
 		super(client, UserResponse.class);
 	}
@@ -94,22 +94,21 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 			return true;
 		return false;
 	}
+	/*
+	 * if someone need to fetchUser by somthing, he need to call to fetchUser()
+	 * function that return ArrayList<User>. if he expecting for result with one user
+	 * he need to: user = userResponse.getUsersList().get(0);
+	 */
 
-	//if someone need to fetchUser by somthing, he need to call to fetchUser() function 
-	//and then call to getUserList() or getUser()
-	public void fetchUser(FetchUserType fetchType, String argument) {
-		UserRequest userRequest = new UserRequest(fetchType,argument);
+	public ArrayList<User> fetchUser(FetchUserType fetchType, String argument) {
+		UserRequest userRequest = new UserRequest(fetchType, argument);
 		UserResponse userResponse = sendRequest(userRequest);
-		if(fetchType == FetchUserType.ROLE) 
-			usersList =  userResponse.getUsersList();
-		user = userResponse.getUser();
-		
+		user = userResponse.getUsersList().get(0);
+		return userResponse.getUsersList();
 	}
+
 	public User getUser() {
 		return user;
 	}
-	
-	public ArrayList<User> getUserList() {
-		return usersList;
-	}
+
 }

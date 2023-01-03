@@ -227,20 +227,18 @@ public class ServerSessionManager {
 			return new UserResponse(ResultType.INVALID_INPUT);
 		switch (fetchType) {
 		case USER_NAME:
-			user = userDAO.fetchUserByUsername(argument);
+			usersList.add(userDAO.fetchUserByUsername(argument));
 		case PHONE_NUMBER:
-			user = userDAO.fetchUserByPhoneNumber(argument);
+			usersList.add(userDAO.fetchUserByPhoneNumber(argument));
 		case EMAIL:
-			user = userDAO.fetchUserByEmail(argument);
+			usersList.add(userDAO.fetchUserByEmail(argument));
 		case AREA:
-			user = userDAO.fetchManagerByArea(argument);
+			usersList.add(userDAO.fetchManagerByArea(argument));
 		case ROLE:
 			usersList = userDAO.fetchAllUsersByRole(UserType.valueOf(argument));
 		}
 		if (usersList.size() != 0)
 			return new UserResponse(ResultType.valueOf("OK"), usersList);
-		else if (user != null)
-			return new UserResponse(ResultType.valueOf("OK"), user);
 		return new UserResponse(ResultType.NOT_FOUND);
 	}
 }

@@ -12,7 +12,7 @@ public class UserResponse implements Serializable{
 	private User user;
 	private ArrayList<User> usersList;
 
-	//Constructor for loginUser & fetchUser
+	//Constructor for loginUser
 	public UserResponse(ResultType resultCode, User user) {
 		this.resultCode = resultCode;
 		this.user = user;
