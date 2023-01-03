@@ -12,17 +12,13 @@ public class CartViewController {
 
     @FXML
     private Button agreeAndPayBtn;
-
+ 
     @FXML
     private Button backBtn;
 
     @FXML
     private Button cancelOrderBtn;
 
-    public VBox getItemCartVBox() {
-    	return itemCartVBox;
-    }
-    
     @FXML
     public VBox itemCartVBox;
 
@@ -32,6 +28,7 @@ public class CartViewController {
     @FXML
     private Label priceBeforeDiscountLbl;
 
+    private BaseTemplateController BTC = BaseTemplateController.getBaseTemplateController();
     
     public void AddItemViewToCartVBox(){
     	ItemInCartController item = new ItemInCartController(null, null);
@@ -39,14 +36,19 @@ public class CartViewController {
         children.add(item);
     }
     
+//    public VBox getItemCartVBox() {
+//    	return itemCartVBox;
+//    }
+//    
+    
     @FXML
     void agreeAndPay(ActionEvent event) {
-
+    	BTC.switchStages("PaymentView");
     }
 
     @FXML
     void back(ActionEvent event) {
-
+    	BTC.switchStages("ItemBrowser");
     }
 
     @FXML
