@@ -1,8 +1,12 @@
 package ekrut.server.gui;
 
 import java.io.PrintStream;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import ekrut.entity.ConnectedClient;
 import ekrut.entity.User;
@@ -81,12 +85,22 @@ public class ServerController {
 	private PrintStream replaceConsole;
 	private ServerSessionManager session;
 
-	public String getLocalIp() {
+	public String getLocalIp(){
 		String ip = null;
-		try {
-			ip = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+		
+		// Attempt to determine the 'real' IP address.
+		try(final DatagramSocket socket = new DatagramSocket()){
+			  try {
+				socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+				ip = socket.getLocalAddress().getHostAddress();
+			} catch (UnknownHostException e) {}
+			} catch (SocketException e1) {}
+		if (ip == null) {
+			try {
+				ip = InetAddress.getLocalHost().getHostAddress();
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 		}
 		return ip;
 	}
@@ -97,7 +111,7 @@ public class ServerController {
 		this.consoleStreamIntoGUI();
 		this.DBNameTXTfield.setText("jdbc:mysql://localhost/ekrut?serverTimezone=IST");
 		this.DBUserNameTXTfield.setText("root");
-		this.DBPasswordTXTfield.setText("1qazZ2wsxX!@");
+		this.DBPasswordTXTfield.setText("UntilWhenNov12");
 		this.DisconnectBTN.setVisible(false);
 		this.ConnectedGreenIMG.setVisible(false);
 		this.connectionStatus.setText("Not connected");
@@ -122,7 +136,11 @@ public class ServerController {
 	@FXML
 	void Connect(final ActionEvent event) {
 		this.ErrorConnection.setVisible(false);
-		if (!ServerUI.runServer(5555,this.DBNameTXTfield.getText(), this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
+		if (!ServerUI.runServer(
+				5555, 
+				this.DBNameTXTfield.getText(), 
+				this.DBUserNameTXTfield.getText(), 
+				this.DBPasswordTXTfield.getText())) {
 			this.ErrorConnection.setVisible(true);
 			this.ConnectToServerBTN.setVisible(true);
 			this.DisconnectBTN.setVisible(false);
