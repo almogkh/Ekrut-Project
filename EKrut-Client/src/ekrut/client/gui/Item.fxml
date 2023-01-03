@@ -10,32 +10,32 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="729.0" style="-fx-background-radius: 20;" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="753.0" style="-fx-background-radius: 20;" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="itemImage" fitHeight="157.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true" />
       <Pane prefHeight="156.0" prefWidth="390.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Text fx:id="saleType" fill="RED" layoutX="5.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SaleType" wrappingWidth="111.47006225585938">
+            <Text fx:id="saleType" fill="RED" layoutX="1.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SaleType" wrappingWidth="111.47006225585938">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Text>
-            <Text fx:id="itemName" layoutX="7.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ItemName" wrappingWidth="111.47006225585938">
+            <Text fx:id="itemName" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ItemName" wrappingWidth="111.47006225585938">
                <font>
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Text>
-            <Text fx:id="itemDiscription" layoutX="7.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ItemDiscription " wrappingWidth="131.47006225585938">
+            <Text fx:id="itemDiscription" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ItemDiscription " wrappingWidth="386.0">
                <font>
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Text>
-            <Text layoutX="7.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price: " wrappingWidth="57.0">
+            <Text layoutX="1.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price: " wrappingWidth="57.0">
                <font>
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Text>
-            <Text fx:id="itemPrice" layoutX="63.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ItemPrice" wrappingWidth="80.80342102050781">
+            <Text fx:id="itemPrice" layoutX="57.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ItemPrice" wrappingWidth="80.80342102050781">
                <font>
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
