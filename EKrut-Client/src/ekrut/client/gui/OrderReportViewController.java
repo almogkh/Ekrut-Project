@@ -61,7 +61,7 @@ public class OrderReportViewController{
     private Label totalOrdersLbl;
 
     private EKrutClient client = EKrutClientUI.getEkrutClient();
-    ClientReportManager  clientReportManager = new ClientReportManager(client);
+    ClientReportManager  clientReportManager = client.getClientReportManager();
     Report report;
     
     public void setOrderReport(Report report) {

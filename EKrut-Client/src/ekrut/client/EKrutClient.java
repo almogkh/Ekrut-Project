@@ -20,7 +20,7 @@ public class EKrutClient extends AbstractClient{
 	private ClientTicketManager clientTicketManager;
 	private Map<Class<?>, Consumer<Object>> handlers = new HashMap<>();
 	
-	public EKrutClient(String host, int port) {
+	public EKrutClient(String host, int port) { 
 		super(host, port);
 		clientInventoryManager = new ClientInventoryManager(this);
 		clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
