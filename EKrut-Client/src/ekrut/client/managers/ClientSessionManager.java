@@ -91,6 +91,16 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 			return true;
 		return false;
 	}
+	
+	/**
+	 * Imports users into the system from the external user management system.
+	 * 
+	 * @return true if the operation was successful, false otherwise
+	 */
+	public boolean importUsers() {
+		UserResponse response = sendRequest(new UserRequest());
+		return response.getResultCode() == ResultType.OK;
+	}
 
 	public User getUser() {
 		return user;

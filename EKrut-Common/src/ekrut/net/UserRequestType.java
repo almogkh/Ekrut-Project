@@ -3,5 +3,6 @@ package ekrut.net;
 public enum UserRequestType {
 	LOGIN,
 	LOGOUT,
-	IS_LOGGEDIN
+	IS_LOGGEDIN,
+	IMPORT_USERS,
 }

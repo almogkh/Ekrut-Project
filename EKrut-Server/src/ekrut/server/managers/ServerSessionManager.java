@@ -12,9 +12,9 @@ import ekrut.net.UserRequest;
 import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
 import ekrut.server.EKrutServer;
+import ekrut.server.UsersImporter;
 import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ocsf.server.ConnectionToClient;
@@ -143,6 +143,18 @@ public class ServerSessionManager {
 			if (connectedUser.getUsername().equals(username))
 				return new UserResponse(ResultType.OK);
 		return new UserResponse(ResultType.NOT_FOUND);
+	}
+	
+	/**
+	 * Imports users into the system from the external user management system.
+	 * 
+	 * @param dbCon the database connection to use for the operation
+	 * @return      response indicating if the operation was successful or not
+	 */
+	public UserResponse importUsers(DBController dbCon) {
+		if (!UsersImporter.importUsers(dbCon))
+			return new UserResponse(ResultType.UNKNOWN_ERROR);
+		return new UserResponse(ResultType.OK);
 	}
 	
 	/**

@@ -87,6 +87,9 @@ public class EKrutServer extends AbstractServer {
 		case IS_LOGGEDIN:
 			userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
 			break;
+		case IMPORT_USERS:
+			userResponse = serverSessionManager.importUsers(dbCon);
+			break;
 		default:
 			userResponse = new UserResponse(ResultType.UNKNOWN_ERROR);
 			break;

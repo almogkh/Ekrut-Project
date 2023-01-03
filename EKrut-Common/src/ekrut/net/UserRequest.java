@@ -9,6 +9,10 @@ public class UserRequest implements Serializable{
 	private String username;
 	private String password;
 	
+	public UserRequest() {
+		this.action = UserRequestType.IMPORT_USERS;
+	}
+	
 	//Constructor for connect action
 	public UserRequest(String username, String password) { 
 		this.action = UserRequestType.LOGIN;
