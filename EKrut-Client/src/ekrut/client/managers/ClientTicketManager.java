@@ -10,9 +10,6 @@ import ekrut.net.TicketRequest;
 import ekrut.net.TicketRequestType;
 import ekrut.net.TicketResponse;
 
-//need to add- sendRequest
-
-
 /**
  * The ClientTicketManager class is responsible for managing tickets for a client.
  * This includes updating the status of a ticket and fetching tickets.
