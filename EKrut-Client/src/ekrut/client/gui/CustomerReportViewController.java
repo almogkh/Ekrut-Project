@@ -47,7 +47,7 @@ public class CustomerReportViewController {
 	    private LineChart<?, ?> monthlyActivityLineChart;
 
     private EKrutClient client = EKrutClientUI.getEkrutClient();
-    ClientReportManager  clientReportManager = new ClientReportManager(client);
+    ClientReportManager  clientReportManager = client.getClientReportManager();
     Report report;
     
     public void setCustomerReport(Report report) {
