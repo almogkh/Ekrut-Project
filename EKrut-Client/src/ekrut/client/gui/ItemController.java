@@ -1,6 +1,7 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
+import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,9 +51,14 @@ public class ItemController extends HBox {
 
 	private Integer cartQuantity = 0;
 
-	Image image;
+	private Item item;
+	private Image image;
+	private int itemId;
+	private InventoryItem inventoryItem;
 
-	public ItemController(Item item) {
+	
+	public ItemController(InventoryItem inventoryItem) {
+
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -62,18 +68,21 @@ public class ItemController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
-		/*
-		  // Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
-		  Image(new ByteArrayInputStream(item.getImg()));
-		  itemName.setText(item.getItemName());
-		  itemDiscription.setText(item.getItemDescription());
-		  itemPrice.setText(Float.toString(item.getItemPrice()));
-		 */
+		
+		this.inventoryItem = inventoryItem;
+		this.item =  inventoryItem.getItem();
+		this.itemId = item.getItemId();	// Q.Nir - is nedded?
+		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
+		// Image(new ByteArrayInputStream(item.getImg()));
+		itemName.setText(item.getItemName());
+		itemDiscription.setText(item.getItemDescription());
+		itemPrice.setText(Float.toString(item.getItemPrice()));
+		  
 	}
 
 	@FXML
 	void addToCart(ActionEvent event) {
+		
 		noDigitError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
