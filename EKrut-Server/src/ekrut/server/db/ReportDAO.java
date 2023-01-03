@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap; 
 import java.util.Map;
+import java.util.Map.Entry;
+
 import com.mysql.cj.MysqlType;
 import ekrut.entity.Order;
 import ekrut.entity.Report;
@@ -110,12 +112,13 @@ public class ReportDAO {
 			ps.setString(4, type.toString()); 
 			ps.setString(5, area);
 			ResultSet rs = con.executeQuery(ps);
-			
+
 			if (rs.first()) {
 			  reportid = rs.getInt("reportID");
 			}
+			
 			if (reportid == -1)
-				throw new Exception("There is no such report.");
+				return null;
 
 			return reportid; 
 			
@@ -140,7 +143,12 @@ public class ReportDAO {
 	 * */
 	public Report fetchReport(LocalDateTime date, String ekrutLocation, String area, ReportType type) {
 		try {
-			int reportID = getReportID(date, ekrutLocation, area, type);
+			Integer reportID = getReportID(date, ekrutLocation, area, type);
+			
+			// If there is not such report
+			if (reportID == null)
+				return null;
+				
 			Report report = null;
 			// We will use the corresponding function according to the report type
 			switch(type){
@@ -175,38 +183,52 @@ public class ReportDAO {
 	 * @throws Exception if there is an error executing the SQL query
 
 	 */
-	public Report fetchCustomerReportByID(int reportID) {
+	public Report fetchCustomerReportByID(Integer reportID) {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
-		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM customer_reports WHERE reportID = ?");
+		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM customers_report_data WHERE reportID = ?");
+		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM monthly_orders_by_day WHERE reportID = ?");
 
 		try {
 			ps1.setInt(1, reportID);
 			ResultSet rs1 = con.executeQuery(ps1);
-			
+
 			if (!rs1.next()) 
 				return null;
 						
 			ps2.setInt(1, reportID);
 			ResultSet rs2 = con.executeQuery(ps2);
-			
+
 			Map<String, Integer> customersHistogram = new HashMap<>();
 
 			// Add each row to customerReportData
 			if (rs2.first()) {
-				customersHistogram.put("1", rs1.getInt("1"));
-				customersHistogram.put("2", rs1.getInt("2"));
-				customersHistogram.put("3", rs1.getInt("3"));
-				customersHistogram.put("4", rs1.getInt("4"));
-				customersHistogram.put("5", rs1.getInt("5"));
-				customersHistogram.put("6+", rs1.getInt("6+"));
+				customersHistogram.put("1", rs2.getInt("1"));
+				customersHistogram.put("2", rs2.getInt("2"));
+				customersHistogram.put("3", rs2.getInt("3"));
+				customersHistogram.put("4", rs2.getInt("4"));
+				customersHistogram.put("5", rs2.getInt("5"));
+				customersHistogram.put("6+", rs2.getInt("6+"));
 			}
+
+			ps3.setInt(1, reportID);
+			ResultSet rs3 = con.executeQuery(ps3);
+			
+			Map<Integer, Integer> customersOrdersByDate = new HashMap<>();
+			
+			if(rs3.first()) {
+				for(int i = 1; i <= 31 ; i++) {
+					customersOrdersByDate.put(i, rs3.getInt(String.valueOf(i)));
+				}
+			}
+
 			// Create a report instance
 			Report report = new Report(rs1.getInt("reportID"),
 					ReportType.valueOf(rs1.getString("type")), 
 					rs1.getObject(("date"), LocalDateTime.class),
 					rs1.getString("ekrutLocation"),
 					rs1.getString("area"),
-					customersHistogram); 	
+					customersHistogram,
+					customersOrdersByDate); 	
 			
 			return report;
 			 
@@ -216,6 +238,7 @@ public class ReportDAO {
 				try {
 					ps1.close();
 					ps2.close();
+					ps3.close();
 				} catch (SQLException e) {
 					throw new RuntimeException(e);
 				}
@@ -229,12 +252,11 @@ public class ReportDAO {
 	 * @return a Report object representing the report with the specified ID, or null if no such report exists in the database
 	 * @throws SQLException if a database error occurs while executing the SQL queries
 	 */
-	public Report fetchOrderReportByID(int reportID) {
-		
+	public Report fetchOrderReportByID(Integer reportID) {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
-		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM orderReports WHERE reportID = ?");
-		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM orderTopSellers WHERE reportID = ?");
-		PreparedStatement ps4 = con.getPreparedStatement("SELECT * FROM ordersMonthlyData WHERE reportID = ?");
+		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM orders_report_data WHERE reportID = ?");
+		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM top_sellers WHERE reportID = ?");
+		PreparedStatement ps4 = con.getPreparedStatement("SELECT * FROM monthly_orders WHERE reportID = ?");
 		
 		try {
 			
@@ -244,10 +266,9 @@ public class ReportDAO {
 			if (!rs1.next()) 
 				return null;
 			
-			
 			ps2.setInt(1, reportID);
 			ResultSet rs2 = con.executeQuery(ps2);
-			
+
 			Map<String, ArrayList<Integer>> orderReportData = new HashMap<>();
 			
 			while (rs2.next()) {
@@ -256,30 +277,30 @@ public class ReportDAO {
 				temp.add(rs2.getInt("shipment"));
 				temp.add(rs2.getInt("pickup"));
 				temp.add(rs2.getInt("remote"));
-				temp.add(rs2.getInt("toalOrdersInILS"));
+				temp.add(rs2.getInt("totalOrdersInILS"));
 				temp.add(rs2.getInt("shipmentInILS"));
 				temp.add(rs2.getInt("pickupInILS"));
 				temp.add(rs2.getInt("remoteInILS"));
 				orderReportData.put(rs2.getString("ekrutLocation"), temp);
 			}
-			
-			ps3.setInt(1,  reportID);
+
+			ps3.setInt(1, reportID);
 			ResultSet rs3 = con.executeQuery(ps3);
-			
+
 			//fetch top sellers
 			Map<String, Integer> topSellersData = new HashMap<>();
 			
 			while(rs3.next()) {
 				topSellersData.put(rs3.getString("itemName"),
-						rs3.getInt("totalOrders")); 
+						rs3.getInt("totalSales")); 
 			}
-			
+
 			ps4.setInt(1, reportID);
 			ResultSet rs4 = con.executeQuery(ps4);
 			
 			if (!rs4.next()) 
 				return null;
-			
+
 			Report report = new Report(rs1.getInt("reportID"),
 					ReportType.valueOf(rs1.getString("type")), 
 					rs1.getObject(("date"), LocalDateTime.class),
@@ -289,7 +310,7 @@ public class ReportDAO {
 					rs4.getInt("totalOrdersInILS"),
 					orderReportData, 
 					topSellersData);
-			
+
 			return report;
 			 
 			}catch (SQLException e) {
@@ -405,7 +426,7 @@ public class ReportDAO {
 	 * @param location the location to filter the orders by
 	 * @return a list of all usernames of orders that meet the criteria, or null if an exception is thrown
 	 */
-	public ArrayList<String> getAllCustomersOrders(LocalDateTime date, String location) {
+	public ArrayList<String> getAllCustomersOrdersByName(LocalDateTime date, String location) {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
@@ -434,6 +455,38 @@ public class ReportDAO {
 				}
 			}
 	}
+	// Add document
+	public ArrayList<LocalDateTime> getAllCustomersOrdersByDate(LocalDateTime date, String location) {
+		
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
+				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
+		try {
+			ps1.setObject(1, date, MysqlType.DATETIME);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, location);
+			
+			ResultSet rs1 = con.executeQuery(ps1);
+			
+			ArrayList<LocalDateTime> customersOrdersByDate = new ArrayList<>();
+			
+			while (rs1.next()) {
+				customersOrdersByDate.add(rs1.getObject(("date"), LocalDateTime.class));
+			}
+			
+			return customersOrdersByDate;
+			
+			}catch (SQLException e) {
+				return null;
+			} finally {
+				try {
+					ps1.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+	}
+	
 	
 	/**
 	 * Fetches the item names of all threshold breaches from the database that have the same month and year as the given date,
@@ -450,7 +503,8 @@ public class ReportDAO {
 				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
-			ps1.setString(2, ekrutLocation);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, ekrutLocation);
 			
 			ResultSet rs1 = con.executeQuery(ps1);
 			
@@ -614,7 +668,11 @@ public class ReportDAO {
 		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO customerReports"
 													+ " (reportID,1,2,3,4,5,6+)"
 													+ " VALUES(?,?,?,?,?,?,?)");
-
+		
+		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO customerReports"
+								+ " (reportID,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31)"
+								+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		
 		Integer reportID = report.getReportID();
 		
 		try {
@@ -627,12 +685,23 @@ public class ReportDAO {
 			ps1.setInt(6, report.getCustomerReportData().get("5"));
 			ps1.setInt(7, report.getCustomerReportData().get("6+"));
 
-			int res = ps1.executeUpdate();
-			if(res != 1) {
+			int res1 = ps1.executeUpdate();
+			if(res1 != 1) {
 				con.abortTransaction();
 				return false; 
 			}
-				
+			//fix
+			ps2.setInt(1,  reportID);
+			for (int i = 1; i <= 31; i++) {
+				ps2.setInt(i + 1, report.getCustomersOrdersByDate().get(i));
+			}
+			
+			int res2 = ps2.executeUpdate();
+			if(res2 != 1) {
+				con.abortTransaction();
+				return false; 
+			}	
+			
 			con.commitTransaction();
 			return true;
 			
@@ -642,6 +711,7 @@ public class ReportDAO {
 		} finally {
 			try {
 				ps1.close();
+				ps2.close();
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}

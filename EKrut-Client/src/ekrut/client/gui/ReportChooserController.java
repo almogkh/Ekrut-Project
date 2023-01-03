@@ -2,7 +2,6 @@ package ekrut.client.gui;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -15,7 +14,9 @@ import ekrut.entity.User;
 import ekrut.entity.UserType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -31,7 +32,7 @@ public class ReportChooserController implements Initializable{
     @FXML
     private ComboBox<String> monthComboBox;
 
-    @FXML
+    @FXML 
     private Label nameInitialsLabel;
 
     @FXML
@@ -75,39 +76,67 @@ public class ReportChooserController implements Initializable{
 
     
     @FXML
-    void viewReport(ActionEvent event) throws Exception {
-    	System.out.println("TEMPORARLY NOT AVAILABLE");
-    	if (event!=null) /// remove later
-    		return;
-    	
+    void viewReport(ActionEvent event) throws Exception{
+
     	// Handle empty combo box first
-    	if (typeComboBox.getValue() == null || areaComboBox.getValue() == null || 
-    			monthComboBox.getValue() == null || yearComboBox.getValue() == null) {
-        	// location can be null if the report is an order report
-    		if(!typeComboBox.getValue().equals("Orders Report") && locationComboBox.getValue() == null) {
-    			reportErrorLabel.setText("Error, you have to choose all the parameters");
-    		}
+    	if ((typeComboBox.getValue() == null || areaComboBox.getValue() == null || 
+    			monthComboBox.getValue() == null || yearComboBox.getValue() == null) ||
+    			!typeComboBox.getValue().equals("Orders Report") && locationComboBox.getValue() == null) {
+			reportErrorLabel.setText("Error, you have to choose all the parameters");
     	}
     	// Try to fetch report
     	else {
     		// Create a lcoalDateTime instance
-    		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM yyyy");
-    		String dateString = monthComboBox.getValue() + " " + yearComboBox.getValue();
-    		LocalDateTime date = LocalDateTime.parse(dateString, formatter);
+    		LocalDateTime date = LocalDateTime.now();  
+    		System.out.println(Integer.parseInt(monthComboBox.getValue()));
+    		System.out.println(Integer.parseInt(yearComboBox.getValue()));
+
+    		date = date.withYear(Integer.parseInt(yearComboBox.getValue()));
+    		date = date.withMonth(Integer.parseInt(monthComboBox.getValue()));
     		
-    		ReportType type = ReportType.valueOf(typeComboBox.getValue().toUpperCase());
+    		String location = locationComboBox.getValue();
+    		ReportType type;
+    		
+    		if (typeComboBox.getValue().equals("Orders Report")) {
+    			location = areaComboBox.getValue();
+    			type = ReportType.ORDER; 
+    		}
+    		else if (typeComboBox.getValue().equals("Inventory Report")) {
+    			type = ReportType.INVENTORY;
+    		}
+    		else {
+    			type = ReportType.CUSTOMER;
+    		}
     		
     		Report report = clientReportManager.getReport(
-    				areaComboBox.getValue(), locationComboBox.getValue(), type, date); // TBD OFEK type -> type.toString()
+    				areaComboBox.getValue(), location, type, date);
     		
     		if (report == null) {
     			reportErrorLabel.setText("Error, there is not such report");
     		}
     		else {
-    			/* go to report view screen
-    			FXMLLoader loader = new FXMLLoader(getClass().getResource("ReportChooser.fxml"));
-    			baseTemplateController.getBaseTempalteController().setRightWIndow(root);
-    			*/
+    			FXMLLoader loader;
+    			if (type.equals(ReportType.ORDER)) {
+    				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/OrderReportView.fxml"));
+        			loader.load();
+        			OrderReportViewController orderReportViewController = loader.getController();
+        			orderReportViewController.setOrderReport(report);
+
+    			}
+    			else if (type.equals(ReportType.INVENTORY)) {
+    				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/InventoryReportView.fxml"));
+        			loader.load(); 
+        			//InventoryReportViewController inventoryReportViewController = loader.getController();
+        			//inventoryReportViewController.setCustomerReport(report);
+    			}
+    			else {
+    				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/CustomerReportView.fxml"));
+        			loader.load();
+        			CustomerReportViewController customerReportViewController = loader.getController();
+        			customerReportViewController.setCustomerReport(report); 
+    			}
+    			Parent root = loader.getRoot();
+				BaseTemplateController.getBaseTemplateController().setRightWindow(root);
     		}
     	}
     }
@@ -131,35 +160,43 @@ public class ReportChooserController implements Initializable{
  				areas = new String[1];
  				areas[0] = "South";
  			}
- 			else if (user.getArea().equals("UAE")){
+ 			else {
  				areas = new String[1];
  	 			areas[0] = "UAE";
  			}
- 			//if the user is not have am area somehow, maybe this is not necessary
- 			else {
- 				//return to home page?
- 			}
+
  		}
  		areaComboBox.getItems().addAll(areas);
     }
     
     private void setLocationComboBox(String area) throws Exception {
-    	
-    	 ArrayList<String> locations = clientReportManager.getFacilitiesByArea(area);
-    	 // Convert array list into a array
-    	 String[] locationsArr = locations.toArray(new String[locations.size()]);
-    	 locationComboBox.getItems().addAll(locationsArr);
+    	ArrayList<String> locations = clientReportManager.getFacilitiesByArea(area);
+		ArrayList<String> fixLocations = new ArrayList<>();
+
+    	for (String location : locations) {
+			fixLocations.add(location.replace("_", " "));
+		}
+    	// Convert array list into a array
+    	String[] locationsArr = fixLocations.toArray(new String[fixLocations.size()]);
+    	locationComboBox.getItems().addAll(locationsArr);
     }
     
     // If the Report type is an order report than disable locations
     @FXML
-    void setLocationsByType(ActionEvent event) {
+    void setLocationsByType(ActionEvent event) throws Exception {
     	String type = typeComboBox.getValue();
     	areaComboBox.setDisable(false);
     	
     	if (type.equals("Orders Report")) {
      			locationComboBox.setPromptText("Not Available");
      			locationComboBox.setDisable(true);
+     			locationComboBox.getItems().clear();
+    	}
+    	else {
+    		locationComboBox.setDisable(false);
+    		if (areaComboBox.getValue() != null) {
+    			setLocationComboBox(areaComboBox.getValue());
+    		}
     	}
     }
     
@@ -169,8 +206,8 @@ public class ReportChooserController implements Initializable{
     	String type = typeComboBox.getValue();
     	String area = areaComboBox.getValue();
     	if (!type.equals("Orders Report")) {
- 			locationComboBox.setPromptText("Choose Location");
  			locationComboBox.getItems().clear();
+ 			locationComboBox.setPromptText("Choose Location");
  			locationComboBox.setDisable(false);
  			setLocationComboBox(area);
     	}
