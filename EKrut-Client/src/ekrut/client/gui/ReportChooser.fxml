@@ -141,7 +141,7 @@
                   </DropShadow>
                </effect>
             </Button>
-            <Label fx:id="reportErrorLabel" layoutX="70.0" layoutY="483.0" prefHeight="56.0" prefWidth="679.0" textAlignment="JUSTIFY" textFill="#ff0101" underline="true">
+            <Label fx:id="reportErrorLabel" alignment="CENTER" layoutX="-2.0" layoutY="483.0" prefHeight="56.0" prefWidth="770.0" textAlignment="CENTER" textFill="#ff0101" underline="true">
                <font>
                   <Font name="Candara Bold" size="34.0" />
                </font>

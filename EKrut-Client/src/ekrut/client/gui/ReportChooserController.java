@@ -57,7 +57,7 @@ public class ReportChooserController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		client = EKrutClientUI.getEkrutClient();
 		user = client.getClientSessionManager().getUser();
-		clientReportManager = client.getClientReportManager();
+		clientReportManager = client.getClientReportManager(); 
 		
 		// Set months, years, types combo boxes
 		// Can be changed later to English months
@@ -90,8 +90,6 @@ public class ReportChooserController implements Initializable{
     	else {
     		// Create a lcoalDateTime instance
     		LocalDateTime date = LocalDateTime.now();  
-    		System.out.println(Integer.parseInt(monthComboBox.getValue()));
-    		System.out.println(Integer.parseInt(yearComboBox.getValue()));
 
     		date = date.withYear(Integer.parseInt(yearComboBox.getValue()));
     		date = date.withMonth(Integer.parseInt(monthComboBox.getValue()));
@@ -105,6 +103,7 @@ public class ReportChooserController implements Initializable{
     		}
     		else if (typeComboBox.getValue().equals("Inventory Report")) {
     			type = ReportType.INVENTORY;
+    			System.out.println("106");
     		}
     		else {
     			type = ReportType.CUSTOMER;
@@ -112,6 +111,8 @@ public class ReportChooserController implements Initializable{
     		
     		Report report = clientReportManager.getReport(
     				areaComboBox.getValue(), location, type, date);
+    		System.out.println(report == null);
+    		
     		
     		if (report == null) {
     			reportErrorLabel.setText("Error, there is not such report");
@@ -128,15 +129,15 @@ public class ReportChooserController implements Initializable{
     			else if (type.equals(ReportType.INVENTORY)) {
     				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/InventoryReportView.fxml"));
         			loader.load(); 
-        			//InventoryReportViewController inventoryReportViewController = loader.getController();
-        			//inventoryReportViewController.setCustomerReport(report);
+        			InventoryReportViewController inventoryReportViewController = loader.getController();
+        			inventoryReportViewController.setInventoryReport(report);
     			}
     			else {
     				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/CustomerReportView.fxml"));
         			loader.load();
         			CustomerReportViewController customerReportViewController = loader.getController();
         			customerReportViewController.setCustomerReport(report); 
-    			}
+    			} 
     			Parent root = loader.getRoot();
 				BaseTemplateController.getBaseTemplateController().setRightWindow(root);
     		}

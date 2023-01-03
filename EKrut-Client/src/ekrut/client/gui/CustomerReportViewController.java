@@ -61,7 +61,7 @@ public class CustomerReportViewController {
     private void setMonthlyActivityLineChart() {
     	ArrayList<String> days = new ArrayList<>();
     	
-    	for (int i = 1; i <= 31; i++) {
+    	for (int i = 1; i <= 31; i++) { 
     		days.add(String.valueOf(i));
     	} 
    	    
