@@ -116,9 +116,9 @@ public class ReportDAO {
 			if (rs.first()) {
 			  reportid = rs.getInt("reportID");
 			}
-			//Maybe change this to return null
+			
 			if (reportid == -1)
-				throw new Exception("There is no such report.");
+				return null;
 
 			return reportid; 
 			
@@ -143,7 +143,12 @@ public class ReportDAO {
 	 * */
 	public Report fetchReport(LocalDateTime date, String ekrutLocation, String area, ReportType type) {
 		try {
-			int reportID = getReportID(date, ekrutLocation, area, type);
+			Integer reportID = getReportID(date, ekrutLocation, area, type);
+			
+			// If there is not such report
+			if (reportID == null)
+				return null;
+				
 			Report report = null;
 			// We will use the corresponding function according to the report type
 			switch(type){
@@ -178,7 +183,7 @@ public class ReportDAO {
 	 * @throws Exception if there is an error executing the SQL query
 
 	 */
-	public Report fetchCustomerReportByID(int reportID) {
+	public Report fetchCustomerReportByID(Integer reportID) {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
 		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM customers_report_data WHERE reportID = ?");
 		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM monthly_orders_by_day WHERE reportID = ?");
@@ -247,7 +252,7 @@ public class ReportDAO {
 	 * @return a Report object representing the report with the specified ID, or null if no such report exists in the database
 	 * @throws SQLException if a database error occurs while executing the SQL queries
 	 */
-	public Report fetchOrderReportByID(int reportID) {
+	public Report fetchOrderReportByID(Integer reportID) {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
 		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM orders_report_data WHERE reportID = ?");
 		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM top_sellers WHERE reportID = ?");
