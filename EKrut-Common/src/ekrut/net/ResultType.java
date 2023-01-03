@@ -6,5 +6,5 @@ public enum ResultType {
 	NOT_FOUND,
 	LOGIN_REQUIRED,
 	UNKNOWN_ERROR,
-	
+	PERMISSION_DENIED,
 }

@@ -56,8 +56,8 @@ public class Order implements Serializable {
 		this.date = date;
 	}
 	
-	public int getSumAmount() {
-		int sum = 0;
+	public float getSumAmount() {
+		float sum = 0;
 		
 		for (OrderItem item : items) {
 			sum += item.getItemQuantity() * item.getItem().getItemPrice();

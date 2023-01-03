@@ -9,6 +9,8 @@ import ekrut.net.OrderResponse;
 import ekrut.net.ReportRequest;
 import ekrut.net.ReportResponse;
 import ekrut.net.ResultType;
+import ekrut.net.SaleDiscountRequest;
+import ekrut.net.SaleDiscountResponse;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentResponse;
 import ekrut.net.TicketRequest;
@@ -20,6 +22,7 @@ import ekrut.server.intefaces.IUserNotifier;
 import ekrut.server.managers.ServerInventoryManager;
 import ekrut.server.managers.ServerOrderManager;
 import ekrut.server.managers.ServerReportManager;
+import ekrut.server.managers.ServerSalesManager;
 import ekrut.server.managers.ServerSessionManager;
 import ekrut.server.managers.ServerShipmentManager;
 import ekrut.server.managers.ServerTicketManager;
@@ -37,6 +40,7 @@ public class EKrutServer extends AbstractServer {
 	private ServerInventoryManager serverInventoryManager;
 	private ServerReportManager serverReportManager;
 	private ServerShipmentManager serverShipmentManager;
+	private ServerSalesManager serverSalesManager;
 
 	public EKrutServer(int port,String DBuserName, String dbUsername, String dbPassword) {
 		super(port);
@@ -45,7 +49,8 @@ public class EKrutServer extends AbstractServer {
 		IUserNotifier userNotifier = new PopupUserNotifier(dbCon, serverSessionManager);
 		serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
 		serverTicketManager = new ServerTicketManager(dbCon);
-		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager);
+		serverSalesManager = new ServerSalesManager(dbCon, serverSessionManager);
+		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager, serverSalesManager);
 		serverShipmentManager = new ServerShipmentManager(dbCon);
 		serverReportManager = new ServerReportManager(dbCon);
 		
@@ -63,8 +68,10 @@ public class EKrutServer extends AbstractServer {
 			handleMessageOrder((OrderRequest) msg, client);
 		} else if (msg instanceof ShipmentRequest) {
 			handleMessageShipment((ShipmentRequest) msg, client);
-		}else if (msg instanceof ReportRequest) {
+		} else if (msg instanceof ReportRequest) {
 			handleMessageReport((ReportRequest) msg, client);
+		} else if (msg instanceof SaleDiscountRequest) {
+			handleMessageSales((SaleDiscountRequest) msg, client);
 		}
 	}
 
@@ -225,6 +232,11 @@ public class EKrutServer extends AbstractServer {
 			e.printStackTrace();
 			System.exit(-1);
 		}
+	}
+	
+	private void handleMessageSales(SaleDiscountRequest request, ConnectionToClient client) {
+		SaleDiscountResponse response = serverSalesManager.handleRequest(request, client);
+		sendRequestToClient(response, client);
 	}
 
 	public static void sendRequestToClient(Object msg, ConnectionToClient client) {

@@ -158,4 +158,64 @@ public class SaleDiscountDAO {
 			}
 		}
 	}
+	
+	/**
+	 * Activates a sale for an area.
+	 * 
+	 * @param discountId the ID of the sale that should be activated
+	 * @param area       the area in which to activate the sale
+	 * @return           true if the operation succeeded, false otherwise
+	 */
+	public boolean activateSaleForArea(int discountId, String area) {
+		PreparedStatement ps = con.getPreparedStatement("INSERT INTO active_sales (discountId,area) " +
+                                                        "VALUES(?,?)");
+		
+		try {
+			ps.setInt(1, discountId);
+			ps.setString(2, area);
+			
+			if (ps.executeUpdate() != 1)
+				return false;
+			return true;
+			
+		} catch (SQLException e) {
+			return false;
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
+	/**
+	 * Deactivates a sale for an area.
+	 * 
+	 * @param discountId the ID of the sale that should be deactivated
+	 * @param area       the area in which to deactivate the sale
+	 * @return           true if the operation succeeded, false otherwise
+	 */
+	public boolean deactivateSaleForArea(int discountId, String area) {
+		PreparedStatement ps = con.getPreparedStatement("DELETE FROM active_sales " +
+                                                        "WHERE discountId = ? AND area = ?");
+		
+		try {
+			ps.setInt(1, discountId);
+			ps.setString(2, area);
+			
+			if (ps.executeUpdate() != 1)
+				return false;
+			return true;
+			
+		} catch (SQLException e) {
+			return false;
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 }

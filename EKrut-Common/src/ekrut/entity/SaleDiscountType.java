@@ -1,7 +1,6 @@
 package ekrut.entity;
 
 public enum SaleDiscountType {
-	SECOND_IN_HALF,
+	THIRTY_PERCENT_OFF,
 	ONE_PLUS_ONE,
-	TWO_PLUS_ONE
 }
