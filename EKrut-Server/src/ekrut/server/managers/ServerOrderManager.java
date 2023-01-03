@@ -18,6 +18,7 @@ import ekrut.net.OrderResponse;
 import ekrut.net.ResultType;
 import ekrut.server.db.DBController;
 import ekrut.server.db.OrderDAO;
+import ekrut.server.db.TicketDAO;
 import ekrut.server.db.UserDAO;
 import ekrut.server.intefaces.IPaymentProcessor;
 import ekrut.server.intefaces.StubPaymentProcessor;
@@ -32,6 +33,7 @@ public class ServerOrderManager {
 
 	private OrderDAO orderDAO;
 	private UserDAO userDAO;
+	private TicketDAO ticketDAO;
 	private ServerSessionManager sessionManager;
 	private ServerSalesManager salesManager;
 	private IPaymentProcessor paymentProcessor;
@@ -39,6 +41,7 @@ public class ServerOrderManager {
 	public ServerOrderManager(DBController dbCon, ServerSessionManager sessionManager, ServerSalesManager salesManager) {
 		this.orderDAO = new OrderDAO(dbCon);
 		this.userDAO = new UserDAO(dbCon);
+		this.ticketDAO = new TicketDAO(dbCon);
 		this.sessionManager = sessionManager;
 		this.salesManager = salesManager;
 		this.paymentProcessor = new StubPaymentProcessor();
@@ -47,7 +50,12 @@ public class ServerOrderManager {
 	private float computeDiscount(Order order, User user) {
 		float discount = 0;
 		LocalDateTime now = LocalDateTime.now();
-		String area = order.getType() == OrderType.PICKUP ? order.getEkrutLocation() : user.getArea();
+		String area;
+		if (order.getType() != OrderType.PICKUP) {
+			area = user.getArea();
+		} else {
+			area = ticketDAO.fetchAreaByEkrutLocation(order.getEkrutLocation());
+		}
 		ArrayList<SaleDiscount> sales = salesManager.fetchSalesByArea(area).getSales();
 		
 		if (sales == null || sales.size() == 0)
