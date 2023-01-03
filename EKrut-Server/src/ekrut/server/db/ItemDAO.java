@@ -2,6 +2,8 @@ package ekrut.server.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import ekrut.entity.Item;
 
 /**
@@ -31,8 +33,10 @@ public class ItemDAO {
 			ps.setInt(1, itemId);
 			ResultSet rs = con.executeQuery(ps);
 			if(rs.next())
-				return new Item(rs.getInt("itemId"), rs.getString("itemName"), 
-						rs.getString("itemDescription"), rs.getFloat("itemPrice"));
+				return new Item(rs.getInt("itemId"),
+						rs.getString("itemName"), 
+						rs.getString("itemDescription"),
+						rs.getFloat("itemPrice"));
 			return null;
 		} catch (SQLException e1) {
 			return null;
@@ -44,4 +48,29 @@ public class ItemDAO {
 			}
 		}
 	}
+	
+	public ArrayList<Item> fetchAllItems() {
+		ArrayList<Item> allItems = new ArrayList<>();
+		PreparedStatement ps = con.getPreparedStatement(
+				"SELECT itemId, itemName, itemDescription, itemPrice FROM items;");
+		try {
+			ResultSet rs = con.executeQuery(ps);
+			if(rs.next())
+				allItems.add(new Item(
+						rs.getInt("itemId"),
+						rs.getString("itemName"), 
+						rs.getString("itemDescription"),
+						rs.getFloat("itemPrice")));
+			return null;
+		} catch (SQLException e1) {
+			return null;
+		}finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+	
 }
