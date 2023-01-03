@@ -23,7 +23,9 @@ public class Report implements Serializable{
 	private Integer threshold;
 	private Integer totalOrders;
 	private Integer totalOrdersInILS;
-
+	private Integer totalShipmentOrders;
+	private Integer totalShipmentOrdersInILS;
+	
 	public Report(Integer reportID, ReportType reportType, LocalDateTime date, String ekrutLocation, String area) {
 		this.reportID = reportID;
 		this.reportType = reportType;
@@ -35,11 +37,13 @@ public class Report implements Serializable{
 	// Order report constructor
 	public Report(
 			Integer reportID, ReportType reportType, LocalDateTime date,
-			String ekrutLocation, String area, Integer totalOrders, Integer totalOrdersInILS,
-			Map<String, ArrayList<Integer>> orderReportData, Map<String, Integer> topSellersData) {
+			String ekrutLocation, String area, Integer totalOrders, Integer totalOrdersInILS, Integer totalShipmentOrders, 
+			Integer totalShipmentOrdersInILS, Map<String, ArrayList<Integer>> orderReportData, Map<String, Integer> topSellersData) {
 		this(reportID, reportType, date, ekrutLocation, area);
 		this.totalOrders = totalOrders; 
 		this.totalOrdersInILS = totalOrdersInILS;
+		this.totalShipmentOrders = totalShipmentOrders;
+		this.totalShipmentOrdersInILS = totalShipmentOrdersInILS;
 		this.orderReportData = orderReportData;
 		this.topSellersData = topSellersData;
 	}
@@ -57,6 +61,7 @@ public class Report implements Serializable{
 			 String ekrutLocation, String area, Map<String, ArrayList<Integer>> InventoryReportData, Integer threshold) {
 		 this(reportID, reportType, date, ekrutLocation, area);
 		 this.InventoryReportData = InventoryReportData;
+		 this.threshold = threshold;
 	 }
 
 	public Integer getReportID() {
@@ -152,6 +157,22 @@ public class Report implements Serializable{
 
 	public void setCustomersOrdersByDate(Map<Integer, Integer> customersOrdersByDate) {
 		this.customersOrdersByDate = customersOrdersByDate;
+	}
+
+	public Integer getTotalShipmentOrders() {
+		return totalShipmentOrders;
+	}
+
+	public void setTotalShipmentOrders(Integer totalShipmentOrders) {
+		this.totalShipmentOrders = totalShipmentOrders;
+	}
+
+	public Integer getTotalShipmentOrdersInILS() {
+		return totalShipmentOrdersInILS;
+	}
+
+	public void setTotalShipmentOrdersInILS(Integer totalShipmentOrdersInILS) {
+		this.totalShipmentOrdersInILS = totalShipmentOrdersInILS;
 	}
 
 }
