@@ -48,7 +48,7 @@ public class ServerTicketManager {
 	 * @return a TicketResponse indicating the result of the operation
 	 * @throws NullPointerException if the ticketRequest is null
 	 */
-	public TicketResponse CreateTicket(TicketRequest ticketRequest) throws NullPointerException {
+	public TicketResponse CreateTicket(TicketRequest ticketRequest) {
 		if (ticketRequest == null) {
 			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
@@ -88,7 +88,7 @@ public class ServerTicketManager {
 	 * @return the response to the request, indicating the result of the update operation
 	 * @throws NullPointerException if ticketRequest is null
 	 */
-	public TicketResponse updateTicketStatus(TicketRequest ticketRequest) throws NullPointerException {
+	public TicketResponse updateTicketStatus(TicketRequest ticketRequest) {
 		if (ticketRequest == null) {
 			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
@@ -113,7 +113,7 @@ public class ServerTicketManager {
 	 * @throws NullPointerException if the ticketRequest parameter is null
 	 */
 	
-	public TicketResponse fetchTicketsByArea(TicketRequest ticketRequest) throws NullPointerException {
+	public TicketResponse fetchTicketsByArea(TicketRequest ticketRequest) {
 		//if ticketRequest is null throw NullPointerException
 		if (ticketRequest == null) {
 			return new TicketResponse(ResultType.INVALID_INPUT);
@@ -141,7 +141,7 @@ public class ServerTicketManager {
 	 * @return A response with a list of tickets that are associated with the specified username, if found
 	 * @throws NullPointerException if the ticketRequest is null.
 	 */
-	public TicketResponse fetchTicketsByUsername(TicketRequest ticketRequest) throws NullPointerException {
+	public TicketResponse fetchTicketsByUsername(TicketRequest ticketRequest) {
 		//if ticketRequest is null throw NullPointerException
 		if (ticketRequest == null) {
 			return new TicketResponse(ResultType.INVALID_INPUT);
