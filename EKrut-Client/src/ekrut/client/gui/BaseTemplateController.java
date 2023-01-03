@@ -82,7 +82,7 @@ public class BaseTemplateController {
 	}
 
 	public void loadHostSelection() {
-		baseTemplateController = this; // ????????
+		baseTemplateController = this; // TBD OFEK ????????
 		infoPane.setVisible(false);
 		logoutBtn.setVisible(false);
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/HostSelection.fxml"));
@@ -147,39 +147,47 @@ public class BaseTemplateController {
 
 	private ArrayList<Hyperlink> getHyperlinks(UserType userType) {
 		ArrayList<Hyperlink> allHyperlinks = new ArrayList<>();
+		
+		Hyperlink approveShipmentHyp = new Hyperlink("Approve shipment arrival");
+		approveShipmentHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
+		
+		Hyperlink remoteOrderHyp = new Hyperlink("Create order");
+		remoteOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
+		
+		Hyperlink viewShipRequestsHyp = new Hyperlink("Shipment requests");
+		viewShipRequestsHyp.setOnAction((ActionEvent event) -> loadViewShipment());
+		
+		Hyperlink viewTicketsHyp = new Hyperlink("Tickets");
+		viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());
+		
+		Hyperlink registrationRequestsHyp = new Hyperlink("Registration requests");
+		registrationRequestsHyp.setOnAction((ActionEvent event) -> loadregistrationRequests());
+		
+		Hyperlink viewReportsHyp = new Hyperlink("Monthely reports");
+		viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
+		
+		
 		switch (userType) {
 		case CUSTOMER:
 		case SUBSCRIBER:
-			Hyperlink approveShipmentHyp = new Hyperlink("Approve shipment arrival");
-			approveShipmentHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
 			allHyperlinks.add(approveShipmentHyp);
-
-			Hyperlink remoteOrderHyp = new Hyperlink("Create order");
-			remoteOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
 			allHyperlinks.add(remoteOrderHyp);
 			break;
 		case SHIPMENT_OPERATOR:
 		case SHIPMENT_WORKER:
-			Hyperlink viewShipRequestsHyp = new Hyperlink("Shipment requests");
-			viewShipRequestsHyp.setOnAction((ActionEvent event) -> loadViewShipment());
 			allHyperlinks.add(viewShipRequestsHyp);
 			break;
 		case MARKETING_MANAGER:
 			break;
 		case MARKETING_WORKER:
 			break;
+		case OPERATIONS_WORKER:
+			allHyperlinks.add(viewTicketsHyp);
+			break;
 		case CEO:
 		case AREA_MANAGER:
-			Hyperlink viewTicketsHyp = new Hyperlink("Tickets");
-			viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());
 			allHyperlinks.add(viewTicketsHyp);
-
-			Hyperlink registrationRequestsHyp = new Hyperlink("Registration requests");
-			registrationRequestsHyp.setOnAction((ActionEvent event) -> loadregistrationRequests());
 			allHyperlinks.add(registrationRequestsHyp);
-
-			Hyperlink viewReportsHyp = new Hyperlink("Monthely reports");
-			viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
 			allHyperlinks.add(viewReportsHyp);
 			//
 			// add order btn
