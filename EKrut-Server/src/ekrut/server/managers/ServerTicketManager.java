@@ -37,7 +37,7 @@ public class ServerTicketManager {
 	public ServerTicketManager(DBController con) {
 		ticketDAO = new TicketDAO(con);
 		itemDAO = new ItemDAO(con);
-		inventoryItemDAO =new InventoryItemDAO(con);
+		inventoryItemDAO = new InventoryItemDAO(con);
 	}
 	
 	
@@ -48,9 +48,9 @@ public class ServerTicketManager {
 	 * @return a TicketResponse indicating the result of the operation
 	 * @throws NullPointerException if the ticketRequest is null
 	 */
-	public TicketResponse CreateTicket(TicketRequest ticketRequest) throws NullPointerException {
-		if (ticketRequest==null) {
-			throw new NullPointerException("null ticketRequest");
+	public TicketResponse CreateTicket(TicketRequest ticketRequest) {
+		if (ticketRequest == null) {
+			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
 		//get ticket information from ticket request
 		String ekrutLocation =ticketRequest.getEkrutLocation();
@@ -88,15 +88,16 @@ public class ServerTicketManager {
 	 * @return the response to the request, indicating the result of the update operation
 	 * @throws NullPointerException if ticketRequest is null
 	 */
-	public TicketResponse updateTicketStatus(TicketRequest ticketRequest) throws NullPointerException {
-		if (ticketRequest==null) {
-			throw new NullPointerException("null ticketRequest");
+	public TicketResponse updateTicketStatus(TicketRequest ticketRequest) {
+		if (ticketRequest == null) {
+			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
 		//unpack ticketID that the client requests to update
-		int ticketID =ticketRequest.getTicketId();
+		int ticketID = ticketRequest.getTicketId();
+		TicketStatus status = ticketRequest.getStatus();
 		
 		//ticket's status update can only turn from IN_PROGRESS to DONE
-		if(!ticketDAO.updateTicketStatus(ticketID, TicketStatus.DONE)) {
+		if(!ticketDAO.updateTicketStatus(ticketID, status)) {
 			return new TicketResponse(ResultType.UNKNOWN_ERROR);
 		}
 		
@@ -112,10 +113,10 @@ public class ServerTicketManager {
 	 * @throws NullPointerException if the ticketRequest parameter is null
 	 */
 	
-	public TicketResponse fetchTicketsByArea(TicketRequest ticketRequest) throws NullPointerException {
+	public TicketResponse fetchTicketsByArea(TicketRequest ticketRequest) {
 		//if ticketRequest is null throw NullPointerException
-		if (ticketRequest==null) {
-			throw new NullPointerException("null ticketRequest");
+		if (ticketRequest == null) {
+			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
 		//get ticket Ekrut location from ticket request
 		String ticketArea = ticketRequest.getArea();
@@ -140,10 +141,10 @@ public class ServerTicketManager {
 	 * @return A response with a list of tickets that are associated with the specified username, if found
 	 * @throws NullPointerException if the ticketRequest is null.
 	 */
-	public TicketResponse fetchTicketsByUsername(TicketRequest ticketRequest) throws NullPointerException {
+	public TicketResponse fetchTicketsByUsername(TicketRequest ticketRequest) {
 		//if ticketRequest is null throw NullPointerException
-		if (ticketRequest==null) {
-			throw new NullPointerException("null ticketRequest");
+		if (ticketRequest == null) {
+			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
 		//get username of the operation worker from ticket request
 		String username=ticketRequest.getUsername();

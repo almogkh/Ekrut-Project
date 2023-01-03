@@ -12,16 +12,18 @@ public class InventoryItemResponse implements Serializable{
 	private ArrayList<InventoryItem> inventoryItems;
 	private ArrayList<String> ekrutLocations;
 	
-	// Constructor for String-only responses.
+	// Constructor for ResultType-only responses.
 	public InventoryItemResponse(ResultType resultType) {
 		this.resultType = resultType;
 	}
 	
+	// Constructor for (ResultType & ArrayList<InventoryItem>) responses.
 	public InventoryItemResponse(ResultType resultType, ArrayList<InventoryItem> inventoryItems) {
 		this.resultType = resultType;
 		this.inventoryItems = inventoryItems;
 	}
 	
+	// Constructor for (ResultType & ArrayList<String>) responses.
 	public InventoryItemResponse(ArrayList<String> ekrutLocations) {
 		this.resultType = ResultType.OK;
 		this.ekrutLocations = ekrutLocations;
@@ -31,14 +33,10 @@ public class InventoryItemResponse implements Serializable{
 		return inventoryItems;
 	}
 	
-	
-	
 	public ArrayList<String> getEkrutLocations() {
 		return ekrutLocations;
 	}
 
-	// TBD Anything BUT resultCode = "OK" means some sort of an error!
-	// THINKING ABOUT CHANGING IT TO INVENTORY_ITEM_TYPE
 	public ResultType getResultType() {
 		return resultType;
 	}

@@ -8,13 +8,13 @@ import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.User;
-import ekrut.net.InventoryItemRequestType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 
 public class TicketSubmissionController implements Initializable {
     @FXML
@@ -23,6 +23,13 @@ public class TicketSubmissionController implements Initializable {
     private ComboBox<String> itemCombo;
     @FXML
     private ComboBox<String> workerCombo;
+    
+    
+
+    @FXML
+    private ImageView arrowToItem;
+    @FXML
+    private ImageView arrowToWorker;
     
     @FXML
     private Label areaPlusLocationLbl;
@@ -36,26 +43,40 @@ public class TicketSubmissionController implements Initializable {
     @FXML
     private Button submitBtn;
 	private EKrutClient client;
-	private String ekrutLocation = null;
-	private String itemName = null;
-	private String workerUserName = null;
 	private String[] items;
-	
+	private String area;
+	private String ekrutLocation;
+	private String itemName;
+	private String workerUserName;
+	private static final String WORKER_PLACEHOLDER = "<Worker's Name>";
+	private static final String ITEM_PLACEHOLDER = "<Item Name>";
+	private static final String FACILITY_PLACEHOLDER = "<Machine ID>";
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		itemCombo.setDisable(true);
-		workerCombo.setDisable(true);
+		// Getting the connected area manager's ekrutLocations. 
 		client = EKrutClientUI.getEkrutClient();
 		User user = client.getClientSessionManager().getUser();
-		String area = user.getArea();
+		area = user.getArea();
+		
+		// Setting facility combo box with all ekrutLocations (this combo box won't change)
 		ArrayList<String> ekrutLocationsArrayList = client.getClientInventoryManager().fetchAllEkrutLocationsByArea(area);
 		String[] ekrutLocations = ekrutLocationsArrayList.toArray(new String[0]);
 		facilityCombo.getItems().addAll(ekrutLocations);
 		
-		// TBD OFEK: NEED YOVEL TO MAKE "FETCH ALL USERS BY ROLE" METHOD. please.
+		// Setting all available marketing workers.
+		//ArrayList<User> workersArrayList = client.getClientSessionManager().fetchAllUsersByRole(UserType.MARKETING_WORKER); 
+		//workers = new String[workersArrayList.lengh];
+		//for (int i=0; i<workersArrayList.lengh; i++)
+		//	workers[i] = workersArrayList.toArray(new String[0]);
 		
-		
+		// Gray out item & worker combo boxes.
+		itemCombo.setDisable(true);
+		workerCombo.setDisable(true);
+		arrowToItem.setOpacity(0.4);
+		arrowToWorker.setOpacity(0.4);
+		// Set Area name in gui preview
+		areaPlusLocationLbl.setText(area + ", " + FACILITY_PLACEHOLDER);
 	}
     
     
@@ -65,22 +86,32 @@ public class TicketSubmissionController implements Initializable {
     	itemCombo.setValue(null);
     	workerCombo.setDisable(true);
     	itemCombo.setDisable(false);
+    	arrowToItem.setOpacity(1);
+    	arrowToWorker.setOpacity(0.4);
+    	assignedForLbl.setText("Assigned for:  " + WORKER_PLACEHOLDER);
+    	ticketMsgLbl.setText("Restock " + ITEM_PLACEHOLDER);
     	ekrutLocation = facilityCombo.getValue();
-    	updateItemChoice();	
+    	areaPlusLocationLbl.setText(area + ", " + ekrutLocation);
+    	updateItemChoice();
     }
 
     @FXML
     void itemComboSelected(ActionEvent event) {
-    	itemName = itemCombo.getValue();
-    	workerCombo.setValue("Select Worker");
+    	workerCombo.setValue(null);
     	workerCombo.setDisable(false);
+    	arrowToWorker.setOpacity(1);
+    	assignedForLbl.setText("Assigned for:  " + WORKER_PLACEHOLDER);
+    	itemName = itemCombo.getValue();
+    	ticketMsgLbl.setText("Restock " + itemName);
     }
     
     @FXML
     void workerComboSelected(ActionEvent event) {
     	workerUserName = workerCombo.getValue();
-    	
+    	assignedForLbl.setText("Assigned for:  " + workerUserName);
     }
+    
+    
     
     
     
@@ -97,14 +128,11 @@ public class TicketSubmissionController implements Initializable {
 	        	itemCombo.getItems().add(item.getItem().getItemName());
     }
     
-    
-    
-    
-    
-    
     @FXML
     void submitBtnAction(ActionEvent event) {
+    	System.out.println(ekrutLocation);
+    	System.out.println(itemName);
+    	System.out.println(workerUserName);
+    	System.out.println(items);
     }
-
-
 }

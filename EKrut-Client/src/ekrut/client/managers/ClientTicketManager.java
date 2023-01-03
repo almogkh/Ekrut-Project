@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ekrut.client.EKrutClient;
 import ekrut.entity.Ticket;
+import ekrut.entity.TicketStatus;
 import ekrut.net.ResultType;
 import ekrut.net.TicketRequest;
 import ekrut.net.TicketRequestType;
@@ -34,11 +35,12 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
      * @throws RuntimeException if there is an error updating the ticket's status
      */
 	
-	public ResultType updateTicketStatus(Ticket ticket) throws Exception{
-		if (ticket==null) {
-			throw new IllegalArgumentException("provided null ticket");
+	public ResultType updateTicketStatus(Ticket ticket, TicketStatus status) {
+		if (ticket == null) {
+			return ResultType.INVALID_INPUT;
 		}
-		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.UPDATE_STATUS,ticket.getTicketId()); 
+		TicketRequest ticketRequest = new TicketRequest(
+				TicketRequestType.UPDATE_STATUS, ticket.getTicketId(), status); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
 		return ticketResponse.getResultType();
