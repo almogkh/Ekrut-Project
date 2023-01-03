@@ -3,34 +3,21 @@ package ekrut.server.gui;
 import java.io.PrintStream;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Enumeration;
-
 import ekrut.entity.ConnectedClient;
-import ekrut.entity.User;
-import ekrut.entity.UserType;
-import ekrut.server.EKrutServer;
 import ekrut.server.managers.ServerSessionManager;
-import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
-import ocsf.server.ConnectionToClient;
 
 public class ServerController {
 
