@@ -67,12 +67,14 @@ public class ClientLoginController {
 			errorLbl.setVisible(true);
 			return;
 		}
+		
 		if (me == null) {
 			errorLbl.setText(INCORRECT_USER_PASS_ERROR);
 			errorLbl.setVisible(true);
 			return;
 		}
 		
+		//C.Nir - can use method login() in BaseTemplateController
 		// LOGIN SUCCESS!
 		if (loader == null) {
 			loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/MainMenu.fxml"));
