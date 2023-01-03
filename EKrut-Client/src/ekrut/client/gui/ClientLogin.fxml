@@ -43,6 +43,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <VBox spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ClientLoginController">
@@ -52,18 +53,24 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Label contentDisplay="CENTER" text="Login" textFill="WHITE">
-               <font>
-                  <Font name="Candara Bold" size="50.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.699999988079071" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Label>
+            <Pane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Line endX="113.0" layoutX="147.0" layoutY="62.0" startX="-118.0" stroke="WHITE" />
+                  <Line endX="119.0" layoutX="598.0" layoutY="61.0" startX="-115.0" stroke="WHITE" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutY="13.0" prefHeight="81.0" prefWidth="750.0" text="Login">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="68.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.30000001192092896" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+               </children>
+            </Pane>
          </children>
       </VBox>
       <VBox alignment="TOP_CENTER" prefHeight="549.0" prefWidth="765.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
@@ -71,50 +78,62 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Label text="Welcome!" textFill="WHITE">
+            <Label text="Welcome!">
                <font>
-                  <Font name="Candara Bold" size="30.0" />
+                  <Font name="Arial Rounded MT Bold" size="30.0" />
                </font>
                <effect>
                   <DropShadow>
                      <color>
-                        <Color opacity="0.699999988079071" />
+                        <Color opacity="0.30000001192092896" />
                      </color>
                   </DropShadow>
                </effect>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets top="15.0" />
+               </padding>
             </Label>
-            <Label text="in order to use the EKrut system, please login" textFill="WHITE">
+            <Label text="In order to use the EKrut system, please login">
                <font>
-                  <Font name="Candara Bold" size="30.0" />
+                  <Font name="Arial Rounded MT Bold" size="30.0" />
                </font>
                <effect>
                   <DropShadow>
                      <color>
-                        <Color opacity="0.699999988079071" />
+                        <Color opacity="0.30000001192092896" />
                      </color>
                   </DropShadow>
                </effect>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
             </Label>
             <Pane prefHeight="241.0" prefWidth="745.0">
                <children>
                   <TextField fx:id="usernameTxt" layoutX="276.0" layoutY="77.0" prefHeight="41.0" prefWidth="200.0" promptText="Username" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </TextField>
                   <PasswordField fx:id="passwordTxt" layoutX="279.0" layoutY="151.0" prefHeight="41.0" prefWidth="200.0" promptText="Password" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
                      <font>
-                        <Font size="18.0" />
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </PasswordField>
-                  <Label layoutX="292.0" layoutY="56.0" text="Username">
+                  <Label layoutX="280.0" layoutY="57.0" text="Username">
                      <font>
-                        <Font name="Candara" size="18.0" />
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="291.0" layoutY="131.0" text="Password">
+                  <Label layoutX="282.0" layoutY="131.0" text="Password">
                      <font>
-                        <Font name="Candara" size="18.0" />
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </Label>
                   <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="214.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
@@ -129,9 +148,9 @@
                   </ImageView>
                </children>
             </Pane>
-            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#attemptLogin" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Login">
+            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#attemptLogin" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Login" textFill="WHITE">
                <font>
-                  <Font name="Candara Bold" size="20.0" />
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
                <VBox.margin>
                   <Insets top="15.0" />

@@ -75,9 +75,9 @@
                               <Image url="@gui-assets/server%20login%20background.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="connectionStatus" layoutX="33.0" layoutY="17.0" text="connectionStatus" textAlignment="CENTER">
+                        <Label fx:id="connectionStatus" alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="17.0" prefHeight="22.0" prefWidth="200.0" text="connectionStatus" textAlignment="CENTER">
                            <font>
-                              <Font name="Candara Bold" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Label>
                      </children>
@@ -91,9 +91,9 @@
             <children>
                   <Pane layoutX="391.0" layoutY="114.0" prefHeight="304.0" prefWidth="375.0" styleClass="container">
                      <children>
-                        <Text layoutX="70.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connected Clients">
+                        <Text layoutX="53.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connected Clients">
                            <font>
-                              <Font name="Candara Bold" size="30.0" />
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
                            </font>
                            <effect>
                               <DropShadow>
@@ -124,9 +124,9 @@
                   </Pane>
                   <Pane layoutX="3.0" layoutY="114.0" prefHeight="304.0" prefWidth="375.0" styleClass="container">
                      <children>
-                        <Button fx:id="ConnectToServerBTN" alignment="TOP_LEFT" layoutX="127.0" layoutY="235.0" mnemonicParsing="false" onAction="#Connect" style="-fx-background-radius: 20;" text="Connect to Server" textFill="WHITE">
+                        <Button fx:id="ConnectToServerBTN" alignment="TOP_LEFT" layoutX="86.0" layoutY="235.0" mnemonicParsing="false" onAction="#Connect" style="-fx-background-radius: 20;" text="Connect to Server" textFill="WHITE">
                            <font>
-                              <Font name="Candara Bold Italic" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                            <effect>
                               <DropShadow>
@@ -138,10 +138,10 @@
                         </Button>
                         <Text layoutX="48.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP:">
                            <font>
-                              <Font name="Candara Bold" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="DBUserNameTXTfield" layoutX="178.0" layoutY="158.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+                        <TextField fx:id="DBUserNameTXTfield" layoutX="183.0" layoutY="158.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -149,13 +149,16 @@
                                  </color>
                               </DropShadow>
                            </effect>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
                         </TextField>
                         <Text layoutX="47.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DB Name:">
                            <font>
-                              <Font name="Candara Bold" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="DBNameTXTfield" layoutX="178.0" layoutY="115.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+                        <TextField fx:id="DBNameTXTfield" layoutX="183.0" layoutY="115.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -163,18 +166,21 @@
                                  </color>
                               </DropShadow>
                            </effect>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
                         </TextField>
                         <Text layoutX="47.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DB User Name:">
                            <font>
-                              <Font name="Candara Bold" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Text>
                         <Text layoutX="47.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DB Password:">
                            <font>
-                              <Font name="Candara Bold" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="IPTXTfield" layoutX="178.0" layoutY="71.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;">
+                        <TextField fx:id="IPTXTfield" layoutX="183.0" layoutY="71.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -182,19 +188,25 @@
                                  </color>
                               </DropShadow>
                            </effect>
-                        </TextField>
-                        <PasswordField fx:id="DBPasswordTXTfield" layoutX="178.0" layoutY="196.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color opacity="0.30000001192092896" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                        </PasswordField>
-                        <Text layoutX="49.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connect to the server">
                            <font>
-                              <Font name="Candara Bold" size="30.0" />
+                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
+                        </TextField>
+                        <PasswordField fx:id="DBPasswordTXTfield" layoutX="183.0" layoutY="196.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.30000001192092896" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
+                        </PasswordField>
+                        <Text layoutX="30.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connect to the server">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
                            </font>
                            <effect>
                               <DropShadow>
@@ -204,9 +216,9 @@
                               </DropShadow>
                            </effect>
                         </Text>
-                        <Button fx:id="DisconnectBTN" alignment="TOP_LEFT" layoutX="134.0" layoutY="235.0" mnemonicParsing="false" onAction="#Disconnect" style="-fx-background-radius: 20;" text="Disconnect" textFill="WHITE">
+                        <Button fx:id="DisconnectBTN" alignment="TOP_LEFT" layoutX="115.0" layoutY="235.0" mnemonicParsing="false" onAction="#Disconnect" style="-fx-background-radius: 20;" text="Disconnect" textFill="WHITE">
                            <font>
-                              <Font name="Candara Bold Italic" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                            <effect>
                               <DropShadow>
@@ -216,14 +228,14 @@
                               </DropShadow>
                            </effect>
                         </Button>
-                        <Label fx:id="connectionIP" layoutX="203.0" layoutY="73.0" text="connectionIP" textAlignment="CENTER">
+                        <Label fx:id="connectionIP" alignment="CENTER" layoutX="183.0" layoutY="71.0" prefHeight="22.0" prefWidth="151.0" text="connectionIP" textAlignment="CENTER">
                            <font>
-                              <Font name="Candara" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="ErrorConnection" alignment="CENTER" contentDisplay="CENTER" layoutX="88.0" layoutY="279.0" text="Can't connect to the DB" textAlignment="CENTER" textFill="RED">
+                        <Label fx:id="ErrorConnection" alignment="CENTER" contentDisplay="CENTER" layoutX="84.0" layoutY="277.0" text="Can't connect to the DB" textAlignment="CENTER" textFill="RED">
                            <font>
-                              <Font name="Candara" size="18.0" />
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Label>
                      </children>
@@ -231,23 +243,11 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </Pane>
-                  <Text layoutX="283.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server">
-                     <font>
-                        <Font name="Candara Bold" size="68.0" />
-                     </font>
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color opacity="0.4198473393917084" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </Text>
-                  <Pane layoutX="3.0" layoutY="432.0" prefHeight="254.0" prefWidth="763.0" styleClass="container">
+                  <Pane layoutX="3.0" layoutY="432.0" prefHeight="254.0" prefWidth="763.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                      <children>
-                        <Text layoutX="319.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console">
+                        <Text layoutX="319.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console">
                            <font>
-                              <Font name="Candara Bold" size="30.0" />
+                              <Font name="Arial Rounded MT Bold" size="30.0" />
                            </font>
                            <effect>
                               <DropShadow>
@@ -271,8 +271,27 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>
                   </Pane>
-                  <Line endX="120.0" layoutX="140.0" layoutY="48.0" startX="-130.0" stroke="WHITE" />
-                  <Line endX="120.0" layoutX="645.0" layoutY="48.0" startX="-161.0" stroke="WHITE" />
+                  <Pane layoutX="1.0" layoutY="12.0" prefHeight="90.0" prefWidth="763.0" styleClass="container">
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Text layoutX="270.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="68.0" />
+                           </font>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.4198473393917084" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Text>
+                        <Line endX="113.0" layoutX="137.0" layoutY="53.0" startX="-118.0" stroke="WHITE" />
+                        <Line endX="119.0" layoutX="618.0" layoutY="53.0" startX="-115.0" stroke="WHITE" />
+                     </children>
+                  </Pane>
             </children>
           </AnchorPane>
          </children>

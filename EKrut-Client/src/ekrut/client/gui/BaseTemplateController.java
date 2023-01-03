@@ -138,11 +138,14 @@ public class BaseTemplateController {
 	}
 
 	private static void setHyperlinkStyle(Hyperlink hyperLink) {
-		Font font = Font.font("Candera", FontWeight.BOLD, 18);
+		Font font = Font.font("Arial Rounded MT Bold", 18);
 		// hyperLink.getFont().getName()
 		hyperLink.setFont(font);
 		hyperLink.setWrapText(true);
 		hyperLink.setTextAlignment(TextAlignment.CENTER);
+
+		hyperLink.setStyle("-fx-text-fill: black; -fx-underline: false;-fx-border-color: black;-fx-border-radius: 20; -fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 20;-fx-pref-width: 190; -fx-alignment: center ; ");
+		  
 	}
 
 	private ArrayList<Hyperlink> getHyperlinks(UserType userType) {
