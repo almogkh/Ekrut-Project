@@ -105,23 +105,21 @@ public class ServerShipmentManager {
 		LocalDateTime estimateDeliveryTime = ShipmentManagerUtils.estimatedArrivalTime(date, clientAddress);
 		// Set due date in order.
 		order.setDueDate(estimateDeliveryTime);
-
+		orderDAO.updateOrderDueDate(order.getOrderId(), estimateDeliveryTime);
+		
 		// Send message to customer when his shippment was approved.
 		String username = order.getUsername();
-		User user = userDAO.fetchUserByUsername(username);
-		String notificationMsg = "Hi " + user.getFirstName() + ",/n/n"
-							   + "We wanted to let you know that your delivery is approved by our shipment department,/n"
-							   + "and your shipment is currently in the checkout process!./n"
-							   + "your shipment expected to arrive by " + estimateDeliveryTime.toString() + " o'clock./n"
-							   + "When your shipment has arrived, please confirm that you have received the shipment in the application."
-							   + "Keep an eye out for it and let us know if you have any questions or concerns./n/n"
+		
+		// Q.Nir - Need to check if success??
+		User user = userDAO.fetchUserByUsername(username);	
+		String notificationMsg = "Hi " + user.getFirstName() + ",\n\n"
+							   + "We wanted to let you know that your delivery is approved by our shipment department,\n"
+							   + "and your shipment is currently in the checkout process!.\n"
+							   + "your shipment expected to arrive by " + estimateDeliveryTime.toString() + " o'clock.\n"
+							   + "When your shipment has arrived, please confirm that you have received the shipment in the application.\n"
+							   + "Keep an eye out for it and let us know if you have any questions or concerns.\n\n"
 							   + "Best regards,/nEKrut";
-		userNotifier.sendNotification(notificationMsg, user.getEmail(), user.getPhoneNumber());
-		
-		// Q.Nir - Do i need to concider the fetcher in the future that says that we need to make compensation?
-		// Q.Nir - If message dont sent we need to let anyone know? why sendNotification is boolean?
-		// 					^^^^NOT NULL TO PHONE AND EMIL IN DB WILL PASS THE CHECKS?^^^^
-		
+		userNotifier.sendNotification(notificationMsg, user.getEmail(), user.getPhoneNumber());		
 		return new ShipmentResponse(ResultType.OK);
 	}
 

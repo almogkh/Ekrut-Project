@@ -292,4 +292,32 @@ public class OrderDAO {
 			}
 		}
 	}
+	
+	
+	public boolean updateOrderDueDate(int orderId, LocalDateTime dueDate) {
+		PreparedStatement ps = con.getPreparedStatement("UPDATE orders SET dueDate = ? WHERE orderId = ?");
+		
+		try {
+			ps.setObject(1, dueDate, MysqlType.DATETIME);
+			ps.setInt(2, orderId);
+			if (ps.executeUpdate() != 1)
+				return false;
+			
+			return true;
+			
+		} catch (SQLException e) {
+			return false;
+			
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+	}
+
+	
+	
 }
