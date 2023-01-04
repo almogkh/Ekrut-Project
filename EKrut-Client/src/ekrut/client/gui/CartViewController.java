@@ -1,13 +1,10 @@
 package ekrut.client.gui;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
-import ekrut.entity.InventoryItem;
-import ekrut.entity.OrderItem;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
