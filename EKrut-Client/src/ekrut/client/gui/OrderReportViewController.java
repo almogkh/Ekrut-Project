@@ -1,29 +1,22 @@
 package ekrut.client.gui;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientReportManager;
-import ekrut.entity.Order;
 import ekrut.entity.Report;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 
 public class OrderReportViewController{
 
@@ -60,6 +53,12 @@ public class OrderReportViewController{
     @FXML
     private Label totalOrdersLbl;
 
+    @FXML
+    private Label totalShipmentOrdersInILSLbl;
+
+    @FXML
+    private Label totalShipmentOrdersLbl;
+    
     private EKrutClient client = EKrutClientUI.getEkrutClient();
     ClientReportManager  clientReportManager = client.getClientReportManager();
     Report report;
@@ -69,8 +68,11 @@ public class OrderReportViewController{
     	//Set head Labels
     	setHeadLabels();
     	// Set orders labels
-		setTotalOrdersLbl();
-		setTotalOrdersLblInILS();
+    	setOrdersLabels(totalOrdersLbl, report.getTotalOrders());
+    	setOrdersLabels(totalOrdersInILSLbl, report.getTotalOrdersInILS());
+    	setOrdersLabels(totalShipmentOrdersLbl, report.getTotalShipmentOrders());
+    	setOrdersLabels(totalShipmentOrdersInILSLbl, report.getTotalShipmentOrdersInILS());
+    	
 		// Set charts
 		setOrdersPieChat();
 		try {
@@ -83,26 +85,20 @@ public class OrderReportViewController{
 		setTopSellersBarChart();
 		
     }
-    
-    private void setTotalOrdersLbl() {
+    // Get label and Integer and set the Integer after adding commas into the label
+    private void setOrdersLabels(Label label, Integer total) {
     	// Convert 1859 to "1,859"
-    	String totalOrders = String.format("%,d", report.getTotalOrders());
-    	totalOrdersLbl.setText(totalOrders);
-    }
-     
-    private void setTotalOrdersLblInILS() {
-    	// Convert 1859 to "1,859"
-    	String totalOrdersInILS = String.format("%,d", report.getTotalOrdersInILS());
-    	totalOrdersLbl.setText(totalOrdersInILS);
-    }
+    	String stringToSet = String.format("%,d", total);
+    	label.setText(stringToSet);
+    }  
     
     private void setHeadLabels() {
     	// Set area and date labels
     	areaLbl.setText(report.getArea());
     	String date = (String.valueOf(report.getDate().getMonthValue()) + '/' + String.valueOf(report.getDate().getYear()));
     	dateLbl.setText(date);
-    	
     }
+    
     // Set Order Pie Chart
     private void setOrdersPieChat() {
     	ObservableList<PieChart.Data> PieChartData =
@@ -138,27 +134,23 @@ public class OrderReportViewController{
 		Map<String, ArrayList<Integer>> orderData = report.getOrderReportData();
 		
 		XYChart.Series series1 = new XYChart.Series<>(); 
-		series1.setName("shipment"); 
+		series1.setName("remote"); 
 
 		XYChart.Series series2 = new XYChart.Series<>(); 
-		series2.setName("remote"); 
-
-		XYChart.Series series3 = new XYChart.Series<>(); 
-		series3.setName("pickup"); 
+		series2.setName("pickup"); 
 
     	// We save order number data at index 0
     	for (Map.Entry<String, ArrayList<Integer>> entry : orderData.entrySet()) {
     		String location = entry.getKey();
-    		Integer shipmentNum = entry.getValue().get(5);
-    		Integer pickUpNum = entry.getValue().get(6);
-    		Integer remoteNum = entry.getValue().get(7);
+    		Integer pickUpNum = entry.getValue().get(4);
+    		Integer remoteNum = entry.getValue().get(5);
 
-    		series1.getData().add(new XYChart.Data<>(location, shipmentNum));
-    		series2.getData().add(new XYChart.Data<>(location, pickUpNum)); 
-    		series3.getData().add(new XYChart.Data<>(location, remoteNum)); 
+    		series1.getData().add(new XYChart.Data<>(location, pickUpNum)); 
+    		series2.getData().add(new XYChart.Data<>(location, remoteNum)); 
 
     	}
-		ordersBarChart.getData().addAll(series1, series2, series3);
+		ordersBarChart.getData().addAll(series1, series2);
+		ordersBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
 		
     }
     
@@ -187,6 +179,8 @@ public class OrderReportViewController{
 			series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue())); 
     	}
 		topSellersBarChart.getData().addAll(series);
+		
+		topSellersBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
     }
 }
 

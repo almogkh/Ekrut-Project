@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap; 
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.mysql.cj.MysqlType;
 import ekrut.entity.Order;
+import ekrut.entity.OrderType;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
 
@@ -144,7 +144,7 @@ public class ReportDAO {
 	public Report fetchReport(LocalDateTime date, String ekrutLocation, String area, ReportType type) {
 		try {
 			Integer reportID = getReportID(date, ekrutLocation, area, type);
-			
+
 			// If there is not such report
 			if (reportID == null)
 				return null;
@@ -274,11 +274,9 @@ public class ReportDAO {
 			while (rs2.next()) {
 				ArrayList<Integer> temp = new ArrayList<>();
 				temp.add(rs2.getInt("totalOrders"));
-				temp.add(rs2.getInt("shipment"));
 				temp.add(rs2.getInt("pickup"));
 				temp.add(rs2.getInt("remote"));
 				temp.add(rs2.getInt("totalOrdersInILS"));
-				temp.add(rs2.getInt("shipmentInILS"));
 				temp.add(rs2.getInt("pickupInILS"));
 				temp.add(rs2.getInt("remoteInILS"));
 				orderReportData.put(rs2.getString("ekrutLocation"), temp);
@@ -308,6 +306,8 @@ public class ReportDAO {
 					rs1.getString("area"),
 					rs4.getInt("totalOrders"),
 					rs4.getInt("totalOrdersInILS"),
+					rs4.getInt("totalShipmentOrders"),
+					rs4.getInt("totalShipmentOrdersInILS"),
 					orderReportData, 
 					topSellersData);
 
@@ -338,7 +338,7 @@ public class ReportDAO {
 	 */
 	public Report fetchInventoryReportByID(Integer reportID) throws Exception {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
-		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM inventory_reports WHERE reportID = ?");
+		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM inventory_report_data WHERE reportID = ?");
 		try {
 			ps1.setInt(1, reportID);
 			ResultSet rs1 = con.executeQuery(ps1);
@@ -349,13 +349,15 @@ public class ReportDAO {
 			ps2.setInt(1, reportID);
 			ResultSet rs2 = con.executeQuery(ps2);
 			
+			Integer threshold = null;
+					
 			Map<String, ArrayList<Integer>> inventoryReportData = new HashMap<>();	
-			// Put items into the map: for each itemName -> quantity, threshold, thresholdAlert
+			// Put items into the map: for each itemName -> thresholdBreaches
 			while (rs2.next()) {
 				ArrayList<Integer> temp = new ArrayList<>();
-				temp.add(rs2.getInt("quantity"));
-				temp.add(rs2.getInt("thresholdAlert"));
+				temp.add(rs2.getInt("thresholdBreaches"));
 				inventoryReportData.put(rs2.getString("itemName"), temp);
+				threshold = rs2.getInt("threshold");
 			} 
 			// Create a report instance
 			Report report = new Report(rs1.getInt("reportID"),
@@ -364,7 +366,7 @@ public class ReportDAO {
 					rs1.getString("ekrutLocation"),
 					rs1.getString("area"),
 					inventoryReportData,
-					rs2.getInt("threshold")); 
+					threshold); 
 			
 			return report;
 			 
@@ -380,7 +382,7 @@ public class ReportDAO {
 			}
 	}
 	
-	/**
+	/** TODO redo
 	 * Fetches all orders from the database that have the same month and year as the given date,
 	 * and the same location as the given location.
 	 * 
@@ -388,11 +390,11 @@ public class ReportDAO {
 	 * @param location the location to filter the orders by
 	 * @return a list of all orders that meet the criteria, or null if an exception is thrown
 	 */
-	public ArrayList<Order> fetchAllMonthlyOrders(LocalDateTime date, String location) {
+	public ArrayList<Order> fetchAllMonthlyOrdersByLocation(LocalDateTime date, String location) {
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT orderId FROM orders WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
-				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND area = ?");
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setObject(2, date, MysqlType.DATETIME);
@@ -400,7 +402,37 @@ public class ReportDAO {
 			ResultSet rs1 = con.executeQuery(ps1);
 			
 			ArrayList<Order> orders = new ArrayList<>();
-			// Fetch all the reports by ID and add them to orders ArrayList
+			// Fetch all the orders by ID and add them to orders ArrayList
+			while (rs1.next()) {
+				orders.add(orderDAO.fetchOrderById(rs1.getInt("reportId")));
+			} 
+			return orders;
+			 
+			}catch (SQLException e) {
+				return null;
+			} finally {
+				try {
+					ps1.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			
+			}
+	}
+	//TODO document
+	public ArrayList<Order> fetchAllMonthlyShipmentOrders(LocalDateTime date) {
+
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT orderId FROM orders WHERE"
+				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND type = ?");
+		try {
+			ps1.setObject(1, date, MysqlType.DATETIME);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, OrderType.SHIPMENT.toString());
+			ResultSet rs1 = con.executeQuery(ps1);
+			
+			ArrayList<Order> orders = new ArrayList<>();
+			// Fetch all the orders by ID and add them to orders ArrayList
 			while (rs1.next()) {
 				orders.add(orderDAO.fetchOrderById(rs1.getInt("reportId")));
 			} 
@@ -426,6 +458,7 @@ public class ReportDAO {
 	 * @param location the location to filter the orders by
 	 * @return a list of all usernames of orders that meet the criteria, or null if an exception is thrown
 	 */
+	//TODO make 2 new methods. the first one filter out all the orders that is shipment and the second is get all the shipment orders at given area
 	public ArrayList<String> getAllCustomersOrdersByName(LocalDateTime date, String location) {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
@@ -433,7 +466,8 @@ public class ReportDAO {
 				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
-			ps1.setString(2, location);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, location);
 			
 			ResultSet rs1 = con.executeQuery(ps1);
 			
@@ -455,12 +489,44 @@ public class ReportDAO {
 				}
 			}
 	}
-	// Add document
-	public ArrayList<LocalDateTime> getAllCustomersOrdersByDate(LocalDateTime date, String location) {
+	//get all orders without shipment orders
+	public ArrayList<String> getAllCustomersOrdersByNameWithOutShipment(LocalDateTime date, String location) {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
-				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ? AND type != 'SHIPMENT'");
+		try {
+			ps1.setObject(1, date, MysqlType.DATETIME);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, location);
+			
+			ResultSet rs1 = con.executeQuery(ps1);
+			
+			ArrayList<String> customersOrders = new ArrayList<>();
+			
+			while (rs1.next()) {
+				customersOrders.add(rs1.getString("username"));
+			}
+			
+			return customersOrders;
+			
+			}catch (SQLException e) {
+				return null;
+			} finally {
+				try {
+					ps1.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+	}
+
+	// Add document
+	public ArrayList<LocalDateTime> getAllCustomersOrdersByDateWithOutShipment(LocalDateTime date, String location) {
+		
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
+				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ? AND type != 'SHIPMENT'");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setObject(2, date, MysqlType.DATETIME);
@@ -580,7 +646,7 @@ public class ReportDAO {
 			}
 		}
 	} 
-	
+	//TODO redoing document
 	/**
 	 * This method creates a new order report in the database based on the provided report object.
 	 * 
@@ -592,13 +658,19 @@ public class ReportDAO {
 		
 		con.beginTransaction();
 		
-		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO orderMonthlySales"
-														+ "(reportID,itemName,totalOrders) " +
-                    									"VALUES(?,?,?)");
+		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO topSellers"
+								+ " (reportID,itemName,totalSales) " +
+									"VALUES(?,?,?)");
 		
-		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO orderReports"
-														+ "(reportID,itemName,quantity) " +
-                                                        "VALUES(?,?,?)");
+		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO orders_report_data"
+								+ " (reportID,ekrutLocation,totalOrders,pickup,remote,totalOrdersInILS,pickupInILS,remoteInILS) " +
+                                  "VALUES(?,?,?,?,?,?,?,?)");
+		
+		PreparedStatement ps3 = con.getPreparedStatement("INSERT INTO monthly_orders"
+								+ " (reportID,totalOrders,totalOrdersInILS,totalShipmentOrders,totalShipmentOrdersInILS) " +
+								"VALUES(?,?,?,?,?)");
+		
+		
 		Integer reportID = report.getReportID();
 		
 		try {
@@ -627,8 +699,6 @@ public class ReportDAO {
 				ps2.setInt(6, entry.getValue().get(3));
 				ps2.setInt(7, entry.getValue().get(4));
 				ps2.setInt(8, entry.getValue().get(5));
-				ps2.setInt(9, entry.getValue().get(6));
-				ps2.setInt(10, entry.getValue().get(7));
 				ps2.addBatch(); 
 			}
 			
@@ -640,6 +710,18 @@ public class ReportDAO {
 					return false;
 				}
 			}
+			
+			ps3.setInt(1,  reportID);
+			ps3.setInt(2, report.getTotalOrders());
+			ps3.setInt(3, report.getTotalOrdersInILS());
+			ps3.setInt(4, report.getTotalShipmentOrders());
+			ps3.setInt(5, report.getTotalShipmentOrdersInILS());
+
+			int res = ps3.executeUpdate();
+			if(res != 1) {
+				con.abortTransaction();
+				return false; 
+			}
 			con.commitTransaction();
 			return true;
 			
@@ -650,6 +732,7 @@ public class ReportDAO {
 			try {
 				ps1.close();
 				ps2.close();
+				ps3.close();
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
@@ -729,8 +812,8 @@ public class ReportDAO {
 	con.beginTransaction();
 		
 	PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventoryReports"
-													+ "(reportID,itemName,quantity,threshold,thresholdBreaches) " +
-                                                    "VALUES(?,?,?,?,?)");
+													+ " (reportID,itemName,threshold,thresholdBreaches) " +
+                                                    "VALUES(?,?,?,?)");
 	Integer reportID = report.getReportID();
 	
 	try {
@@ -740,9 +823,6 @@ public class ReportDAO {
 			String itemName = entry.getKey();
 			ArrayList<Integer> thresholdData = entry.getValue();
 			
-			if (thresholdData.size() != 2) {
-				return false;
-			}
 			//TresholdData(0) is threshold of the item's facility, tresholdData(1) is how many breaches that item "cause"
 			int threshold = thresholdData.get(0);
 			int thresholdBreaches = thresholdData.get(1);

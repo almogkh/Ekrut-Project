@@ -61,7 +61,7 @@ public class CustomerReportViewController {
     private void setMonthlyActivityLineChart() {
     	ArrayList<String> days = new ArrayList<>();
     	
-    	for (int i = 1; i <= 31; i++) {
+    	for (int i = 1; i <= 31; i++) { 
     		days.add(String.valueOf(i));
     	} 
    	    
@@ -77,7 +77,11 @@ public class CustomerReportViewController {
      	for(Map.Entry<Integer, Integer> entry : customersOrdersByDate.entrySet()) {
      		series.getData().add(new XYChart.Data(String.valueOf(entry.getKey()), entry.getValue()));
      	}     		
+     	
      	monthlyActivityLineChart.getData().add(series);
+     	
+     	monthlyActivityLineChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
+     	series.getNode().setStyle("-fx-stroke: #FFD6DC");
     }
     
     
@@ -97,7 +101,10 @@ public class CustomerReportViewController {
 		//Prepare XYChart.Series objects by setting data       
 			series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue())); 
     	}
+    	
     	CustomersActivityBarChart.getData().addAll(series);
+    	CustomersActivityBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
+
     }
     
     
