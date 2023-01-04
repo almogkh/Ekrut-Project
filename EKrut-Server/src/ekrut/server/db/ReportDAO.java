@@ -495,10 +495,11 @@ public class ReportDAO {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
-				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ? AND type != shipment");
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ? AND type != 'SHIPMENT'");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
-			ps1.setString(2, location);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, location);
 			
 			ResultSet rs1 = con.executeQuery(ps1);
 			
@@ -526,7 +527,7 @@ public class ReportDAO {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
-				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ? AND type != shipment");
+				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ? AND type != 'SHIPMENT'");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setString(2, location);
@@ -658,7 +659,7 @@ public class ReportDAO {
 		con.beginTransaction();
 		
 		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO topSellers"
-								+ "(reportID,itemName,totalSales) " +
+								+ " (reportID,itemName,totalSales) " +
 									"VALUES(?,?,?)");
 		
 		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO orders_report_data"
@@ -666,8 +667,8 @@ public class ReportDAO {
                                   "VALUES(?,?,?,?,?,?,?,?)");
 		
 		PreparedStatement ps3 = con.getPreparedStatement("INSERT INTO monthly_orders"
-								+ "(reportID,totalOrders,totalOrdersInILS,totalShipmentOrders,totalShipmentOrdersInILS) " +
-								"VALUES(?,?,?)");
+								+ " (reportID,totalOrders,totalOrdersInILS,totalShipmentOrders,totalShipmentOrdersInILS) " +
+								"VALUES(?,?,?,?,?)");
 		
 		
 		Integer reportID = report.getReportID();
