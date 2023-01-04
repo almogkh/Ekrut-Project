@@ -9,6 +9,7 @@ import ekrut.entity.User;
 import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentResponse;
+import ekrut.server.PopupUserNotifier;
 import ekrut.server.db.DBController;
 import ekrut.server.db.OrderDAO;
 import ekrut.server.db.UserDAO;
@@ -25,18 +26,19 @@ import ekrut.server.intefaces.ShipmentManagerUtils;
  */
 public class ServerShipmentManager {
 
-	OrderDAO orderDAO;
-	UserDAO userDAO;
-	IUserNotifier userNotifier;
-
+	private OrderDAO orderDAO;
+	private UserDAO userDAO;
+	private IUserNotifier userNotifier;
 	/**
 	 * 
 	 * Constructs a new {@code ServerShipmentManager} object.
 	 * 
 	 * @param con the database controller to use for accessing the database
 	 */
-	public ServerShipmentManager(DBController con) {
+	public ServerShipmentManager(DBController con, ServerSessionManager serverSessionManager) {
 		orderDAO = new OrderDAO(con);
+		userDAO = new UserDAO(con);
+		userNotifier = new PopupUserNotifier(con, serverSessionManager);
 	}
 
 	// Q.Nir , TBD - Need to change after Yovel implementation area at fetch...
