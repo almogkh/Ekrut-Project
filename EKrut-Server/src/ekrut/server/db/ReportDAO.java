@@ -892,6 +892,42 @@ public class ReportDAO {
 				}
 			}
 	}
+
+	/**
+	 * Check if the latest report is updated.
+	 * 
+	 * @param date the date to check
+	 * @return true if the latest report is updated, false otherwise
+	 */
+	public boolean isLatestReportUpdated(LocalDateTime date) {
+		boolean exists = true;
+		
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT EXISTS"
+				+ " (SELECT 1 FROM reports WHERE EXTRACT(MONTH FROM date) = EXTRACT (MONTH FROM ?)"
+				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?))");
+
+		try {
+			ps1.setObject(1, date, MysqlType.DATETIME);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ResultSet rs1 = con.executeQuery(ps1);
+
+			if (rs1.next()) {
+			    exists = rs1.getBoolean(1);
+			}
+						
+			return exists;
+			 
+			}catch (SQLException e) {
+				return true;
+			} finally {
+				try {
+					ps1.close();
+
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
+			}
+	}
 	
 }
 	
