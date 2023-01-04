@@ -121,7 +121,7 @@ public class UserDAO {
 	 * @return     the customer specific info of the user
 	 */
 	public Customer fetchCustomerInfo(User user) {
-		if (user.getUserType() != UserType.CUSTOMER && user.getUserType() != UserType.SUBSCRIBER)
+		if (user.getUserType() == UserType.REGISTERED)
 			return null;
 		
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM customers WHERE username = ?");
@@ -132,7 +132,8 @@ public class UserDAO {
 			
 			if (rs.next())
 				return new Customer(rs.getString("subscriberNumber"), rs.getString("username"),
-                                    rs.getBoolean("monthlyCharge"), rs.getString("creditCardNumber"));
+                                    rs.getBoolean("monthlyCharge"), rs.getString("creditCardNumber"),
+                                    rs.getBoolean("orderedAsSub"));
 			return null;
 			
 		} catch (SQLException e) {

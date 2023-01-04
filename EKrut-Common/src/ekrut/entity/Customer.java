@@ -10,19 +10,21 @@ public class Customer implements Serializable {
 	private String username;
 	private String creditCardNumber;
 	private boolean monthlyCharge;
+	private boolean orderedAsSub;
 
-	public Customer(String subscriberNumber, String username, boolean monthlyCharge, String creditCardNumber) {
+	public Customer(String subscriberNumber, String username, boolean monthlyCharge, String creditCardNumber, boolean orderedAsSub) {
 		this.subscriberNumber = subscriberNumber;
 		this.username = username;
 		this.creditCardNumber = creditCardNumber;
 		this.monthlyCharge = monthlyCharge;
+		this.orderedAsSub = orderedAsSub;
 	}
 
-	public String getsubscriberNumber() {
+	public String getSubscriberNumber() {
 		return subscriberNumber;
 	}
 
-	public void setsubscriberNumber(String subscriberNumber) {
+	public void setSubscriberNumber(String subscriberNumber) {
 		this.subscriberNumber = subscriberNumber;
 	}
 
@@ -48,5 +50,13 @@ public class Customer implements Serializable {
 
 	public void setMonthlyCharge(boolean monthlyCharge) {
 		this.monthlyCharge = monthlyCharge;
+	}
+
+	public boolean hasOrderedAsSub() {
+		return orderedAsSub;
+	}
+
+	public void setOrderedAsSub(boolean orderedAsSub) {
+		this.orderedAsSub = orderedAsSub;
 	}
 }

@@ -52,7 +52,7 @@ public class OrderDAO {
 	 * @param order   the order that should be added to the database
 	 * @return        true if the operation succeeded, false otherwise
 	 */
-	public boolean createOrder(Order order) {
+	public boolean createOrder(Order order, String username) {
 		con.beginTransaction();
 		
 		// Pass true so that we can get the new order ID
@@ -62,6 +62,8 @@ public class OrderDAO {
 		
 		PreparedStatement p2 = con.getPreparedStatement("INSERT INTO orderitems (orderId,itemId,itemQuantity) " +
                                                         "VALUES(?,?,?)");
+		
+		PreparedStatement p3 = con.getPreparedStatement("UPDATE customers SET orderedAsSub = 1 WHERE username = ?");
 		try {
 			p1.setObject(1, order.getDate(), MysqlType.DATETIME);
 			p1.setString(2, order.getStatus().toString());
@@ -113,6 +115,14 @@ public class OrderDAO {
 				}
 			}
 			
+			if (username != null) {
+				p3.setString(1, username);
+				if (p3.executeUpdate() != 1) {
+					con.abortTransaction();
+					return false;
+				}
+			}
+			
 			con.commitTransaction();
 			return true;
 			
@@ -123,6 +133,7 @@ public class OrderDAO {
 			try {
 				p1.close();
 				p2.close();
+				p3.close();
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}

@@ -59,11 +59,12 @@ public final class UsersImporter {
 				ps3.addBatch();
 				
 				// Customers have additional information
-				if (user.getUserType() == UserType.CUSTOMER || user.getUserType() == UserType.SUBSCRIBER) {
+				if (rs2.getString(12) != null) {
 					ps4.setString(1, user.getUsername());
 					ps4.setString(2, rs2.getString(10));
 					ps4.setBoolean(3, rs2.getBoolean(11));
 					ps4.setString(4, rs2.getString(12));
+					ps4.setBoolean(5, rs2.getBoolean(13));
 					ps4.addBatch();
 				}
 			}

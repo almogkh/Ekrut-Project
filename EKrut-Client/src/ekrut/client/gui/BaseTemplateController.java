@@ -171,8 +171,9 @@ public class BaseTemplateController {
 		
 		
 		switch (userType) {
+		case REGISTERED:
+			break;
 		case CUSTOMER:
-		case SUBSCRIBER:
 			allHyperlinks.add(approveShipmentHyp);
 			allHyperlinks.add(remoteOrderHyp);
 			break;
@@ -208,7 +209,7 @@ public class BaseTemplateController {
 		roleLbl.setText(me.getUserType().toString().replace("_", " "));
 		navigationVbox.setVisible(true);
 		ObservableList<Node> vboxChildren = navigationVbox.getChildren();
-		if (EKrutClientUI.ekrutLocation != null) {
+		if (EKrutClientUI.ekrutLocation != null && me.getUserType() != UserType.REGISTERED) {
 			Hyperlink createOrderHyp = new Hyperlink("Create new order");
 			createOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
 			Hyperlink pickupOrderHyp = new Hyperlink("Pickup existing order");

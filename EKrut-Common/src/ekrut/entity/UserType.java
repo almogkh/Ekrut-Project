@@ -1,8 +1,8 @@
 package ekrut.entity;
 
 public enum UserType {
+	REGISTERED,
 	CUSTOMER,
-	SUBSCRIBER,
 	AREA_MANAGER,
 	MARKETING_MANAGER,
 	MARKETING_WORKER,

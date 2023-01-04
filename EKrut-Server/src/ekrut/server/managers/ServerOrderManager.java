@@ -11,7 +11,6 @@ import ekrut.entity.OrderType;
 import ekrut.entity.SaleDiscount;
 import ekrut.entity.SaleDiscountType;
 import ekrut.entity.User;
-import ekrut.entity.UserType;
 import ekrut.net.OrderRequest;
 import ekrut.net.OrderRequestType;
 import ekrut.net.OrderResponse;
@@ -106,21 +105,18 @@ public class ServerOrderManager {
 		float debitAmount = order.getSumAmount();
 		debitAmount -= computeDiscount(order, user);
 		
-		if (user.getUserType() == UserType.SUBSCRIBER) {
-			ArrayList<Order> orders = orderDAO.fetchOrdersByUsername(user.getUsername());
-			if (orders == null)
-				return new OrderResponse(ResultType.UNKNOWN_ERROR);
-			// First order from subscriber gets a 20% discount
-			if (orders.size() == 0)
-				debitAmount *= 0.8f;
-		}
-		
 		Customer info = userDAO.fetchCustomerInfo(user);
 		if (info == null)
 			return new OrderResponse(ResultType.UNKNOWN_ERROR);
 		
+		boolean subscriber = info.getSubscriberNumber() != null;
+		
+		// First order from subscriber gets a 20% discount
+		if (subscriber && !info.hasOrderedAsSub())
+			debitAmount *= 0.8f;
+		
 		// Subscribers can choose to pay once a month for all of their orders
-		if (user.getUserType() == UserType.SUBSCRIBER && info.isMonthlyCharge()) {
+		if (subscriber && info.isMonthlyCharge()) {
 			if (!paymentProcessor.addToCharges(info.getCreditCard(), debitAmount))
 				return new OrderResponse(ResultType.INVALID_INPUT);
 		} else {
@@ -128,7 +124,7 @@ public class ServerOrderManager {
 				return new OrderResponse(ResultType.INVALID_INPUT);
 		}
 		
-		if (!orderDAO.createOrder(order))
+		if (!orderDAO.createOrder(order, subscriber ? user.getUsername() : null))
 			return new OrderResponse(ResultType.UNKNOWN_ERROR);
 		
 		// We need to return the order ID for remote orders.
