@@ -67,7 +67,7 @@
                         </ImageView>
                         <Pane fx:id="infoPane" prefHeight="190.0" prefWidth="200.0">
                            <children>
-                              <Circle fill="DODGERBLUE" layoutX="100.0" layoutY="49.0" radius="55.0" stroke="WHITE" strokeType="INSIDE">
+                              <Circle fill="#1f93ff" layoutX="100.0" layoutY="49.0" radius="55.0" stroke="WHITE" strokeType="INSIDE">
                                  <effect>
                                     <DropShadow>
                                        <color>
@@ -107,9 +107,9 @@
                         </Pane>
                      </children>
                   </VBox>
-                  <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="RIGHT" layoutX="34.0" layoutY="626.0" mnemonicParsing="false" onAction="#logout" style="-fx-text-fill: BLACK;" styleClass="image_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Logout">
+                  <Button fx:id="logoutBtn" alignment="CENTER" contentDisplay="RIGHT" layoutY="621.0" mnemonicParsing="false" onAction="#logout" prefHeight="45.0" prefWidth="200.0" style="-fx-text-fill: BLACK;" styleClass="image_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Logout">
                      <graphic>
-                        <ImageView fitHeight="50.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="50.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@gui-assets/logout.png" />
                            </image>

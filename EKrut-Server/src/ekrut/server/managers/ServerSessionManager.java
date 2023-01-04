@@ -89,11 +89,10 @@ public class ServerSessionManager {
 			result = ResultType.INVALID_INPUT;
 		} else {
 			userResponse.setUser(user);
-			connectedUsers.put(user, startTimer(username, client));
-			clientUserMap.put(client, user);
-			connectedClientList
-					.add(new ConnectedClient(client.getInetAddress().toString(), username, user.getUserType()));
-			result = ResultType.OK;
+			connectedUsers.put(user,startTimer(username,client));
+			clientUserMap.put(client,user);
+			connectedClientList.add(new ConnectedClient(client.getInetAddress().toString().replace("/", ""), username, user.getUserType()));
+			result= ResultType.OK;
 		}
 		userResponse.setResultCode(result);
 		return userResponse;
