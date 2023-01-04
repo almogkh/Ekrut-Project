@@ -16,7 +16,7 @@ import ekrut.net.UserResponse;
  */
 public class ClientSessionManager extends AbstractClientManager<UserRequest, UserResponse> {
 
-	private User user = null;
+	private User user;
 
 	public ClientSessionManager(EKrutClient client) {
 		super(client, UserResponse.class);
@@ -103,7 +103,6 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 	public ArrayList<User> fetchUser(FetchUserType fetchType, String argument) {
 		UserRequest userRequest = new UserRequest(fetchType, argument);
 		UserResponse userResponse = sendRequest(userRequest);
-		user = userResponse.getUsersList().get(0);
 		return userResponse.getUsersList();
 	}
 

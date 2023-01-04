@@ -43,7 +43,6 @@ public class ServerSessionManager {
 	// out if they have not made any requests.
 	private static final long LOGOUT_TIME = 2000; // 30 minutes
 	private ObservableList<ConnectedClient> connectedClientList;
-	private ArrayList<User> usersList;
 
 	public HashMap<ConnectionToClient, User> getClientUserMap() {
 		return clientUserMap;
@@ -225,20 +224,26 @@ public class ServerSessionManager {
 	public UserResponse fetchUser(FetchUserType fetchType, String argument) {
 		if (argument == null)
 			return new UserResponse(ResultType.INVALID_INPUT);
+		ArrayList<User> usersList = new ArrayList<>();
 		switch (fetchType) {
 		case USER_NAME:
 			usersList.add(userDAO.fetchUserByUsername(argument));
+			break;
 		case PHONE_NUMBER:
 			usersList.add(userDAO.fetchUserByPhoneNumber(argument));
+			break;
 		case EMAIL:
 			usersList.add(userDAO.fetchUserByEmail(argument));
+			break;
 		case AREA:
 			usersList.add(userDAO.fetchManagerByArea(argument));
+			break;
 		case ROLE:
 			usersList = userDAO.fetchAllUsersByRole(UserType.valueOf(argument));
+			break;
 		}
 		if (usersList.size() != 0)
-			return new UserResponse(ResultType.valueOf("OK"), usersList);
+			return new UserResponse(ResultType.OK, usersList);
 		return new UserResponse(ResultType.NOT_FOUND);
 	}
 }
