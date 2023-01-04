@@ -81,7 +81,7 @@ public class ServerReportManager {
 	 * @return a Report object containing the generated data for the Order report
 	 * @throws SQLException if a database error occurs while executing the SQL query
 	 */
-	public Report generateOrderReport(LocalDateTime date, String ekrutLocation, String area) {
+	public Report generateOrderReport(LocalDateTime date,String area) {
 		// Get all the locations of the given area
 		ArrayList<String> areaLocations = reportDAO.fetchFacilitiesByArea(area);
 		// Create a new Map to hold all the orders at the given area by locations without shipment orders
@@ -136,7 +136,7 @@ public class ServerReportManager {
 		topSellers = processItemOrders(topSellers);
 		
 		// Create a new report object with the generated data
-		Report report = new Report(null, ReportType.ORDER, date, ekrutLocation, area,
+		Report report = new Report(null, ReportType.ORDER, date, null, area,
 				areaTotalOrders, areaTotalOrdersInILS, shipmentTotalOrders, shipmentTotalOrderInILS, orderReportData, topSellers);
 		// Return the report
 		return report;
@@ -436,4 +436,18 @@ public class ServerReportManager {
 		return orderReportData;
 	}
 	
+	// Generate all the monthly report
+	public void generateMonthlyReports(LocalDateTime date) {
+
+		String areas[] = {"UAE", "North", "South"};
+		ArrayList<String> locationsList;
+		for (String area : areas) {
+			locationsList = reportDAO.fetchFacilitiesByArea(area);
+			reportDAO.createOrderReport(generateOrderReport(date, area));
+			for (String location : locationsList) {
+				reportDAO.createCustomerReport(generateCustomerReport(date, location, area));
+				reportDAO.createInventoryReport(generateInventoryReport(date, location, area));
+			}
+		}
+	}
 }
