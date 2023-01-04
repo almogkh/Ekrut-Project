@@ -59,9 +59,9 @@ public class ServerController {
 
 	@FXML
 	private TableColumn<ConnectedClient, String> IPColumn;
-
+	
 	@FXML
-	private TextField IPTXTfield;
+	private TextField PortTXTfield;
 
 	@FXML
 	private TableColumn<ConnectedClient, String> RoleColumn;
@@ -93,15 +93,15 @@ public class ServerController {
 
 	@FXML
 	public void initialize() {
-		this.IPTXTfield.setText(this.getLocalIp());
+		this.connectionIP.setText(getLocalIp());
 		this.consoleStreamIntoGUI();
+		this.PortTXTfield.setText("5555");
 		this.DBNameTXTfield.setText("jdbc:mysql://localhost/ekrut?serverTimezone=IST");
 		this.DBUserNameTXTfield.setText("root");
 		this.DBPasswordTXTfield.setText("1qazZ2wsxX!@");
 		this.DisconnectBTN.setVisible(false);
 		this.ConnectedGreenIMG.setVisible(false);
 		this.connectionStatus.setText("Not connected");
-		this.connectionIP.setVisible(false);
 		this.ErrorConnection.setVisible(false);
 	}
 
@@ -122,7 +122,7 @@ public class ServerController {
 	@FXML
 	void Connect(final ActionEvent event) {
 		this.ErrorConnection.setVisible(false);
-		if (!ServerUI.runServer(5555,this.DBNameTXTfield.getText(), this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
+		if (!ServerUI.runServer(Integer.parseInt(this.PortTXTfield.getText()),this.DBNameTXTfield.getText(), this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
 			this.ErrorConnection.setVisible(true);
 			this.ConnectToServerBTN.setVisible(true);
 			this.DisconnectBTN.setVisible(false);
@@ -130,10 +130,8 @@ public class ServerController {
 		}
 		this.ConnectToServerBTN.setVisible(false);
 		this.DisconnectBTN.setVisible(true);
-		this.disableDataInput(false);
+		this.disableDataInput(true);
 		this.connectionStatus.setText("Connected");
-		this.connectionIP.setVisible(true);
-		this.connectionIP.setText(getLocalIp());
 		this.ConnectedGreenIMG.setVisible(true);
 		this.ErrorConnection.setVisible(false);
 	}
@@ -143,18 +141,17 @@ public class ServerController {
 		ServerUI.disconnect();
 		this.ConnectToServerBTN.setVisible(true);
 		this.DisconnectBTN.setVisible(false);
-		this.disableDataInput(true);
+		this.disableDataInput(false);
 		this.connectionStatus.setText("Not connected");
-		this.connectionIP.setVisible(false);
 		this.ConnectedGreenIMG.setVisible(false);
 
 	}
 
 	void disableDataInput(final boolean Condition) {
-		IPTXTfield.setVisible(Condition);
-		DBNameTXTfield.setVisible(Condition);
-		DBUserNameTXTfield.setVisible(Condition);
-		DBPasswordTXTfield.setVisible(Condition);
-		ConnectedGreenIMG.setVisible(Condition);
+		PortTXTfield.setDisable(Condition);
+		DBNameTXTfield.setDisable(Condition);
+		DBUserNameTXTfield.setDisable(Condition);
+		DBPasswordTXTfield.setDisable(Condition);
+		ConnectedGreenIMG.setDisable(Condition);
 	}
 }
