@@ -8,6 +8,8 @@ public class UserRequest implements Serializable{
 	private UserRequestType action;
 	private String username;
 	private String password;
+	private String argument;
+	private FetchUserType fetchType;
 	
 	public UserRequest() {
 		this.action = UserRequestType.IMPORT_USERS;
@@ -25,6 +27,13 @@ public class UserRequest implements Serializable{
 		this.action = action;
 		this.username = username;
 	}
+	
+	//Constructor for fetchUser
+	public UserRequest(FetchUserType fetchType, String argument) { 
+		this.action = UserRequestType.FETCH_USER;
+		this.argument = argument;
+		this.fetchType = fetchType;
+	}
 
 	public UserRequestType getAction() {
 		return action;
@@ -36,5 +45,13 @@ public class UserRequest implements Serializable{
 
 	public String getPassword() {
 		return password;
+	}
+	
+	public String getArgument() {
+		return argument;
+	}
+	
+	public FetchUserType getFetchType() {
+		return fetchType;
 	}
 }

@@ -1,7 +1,10 @@
 package ekrut.client.managers;
 
+import java.util.ArrayList;
+
 import ekrut.client.EKrutClient;
 import ekrut.entity.User;
+import ekrut.net.FetchUserType;
 import ekrut.net.ResultType;
 import ekrut.net.UserRequest;
 import ekrut.net.UserRequestType;
@@ -13,7 +16,7 @@ import ekrut.net.UserResponse;
  */
 public class ClientSessionManager extends AbstractClientManager<UserRequest, UserResponse> {
 
-	private User user = null;
+	private User user;
 
 	public ClientSessionManager(EKrutClient client) {
 		super(client, UserResponse.class);
@@ -102,14 +105,20 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 		return response.getResultCode() == ResultType.OK;
 	}
 
+	/*
+	 * if someone need to fetchUser by somthing, he need to call to fetchUser()
+	 * function that return ArrayList<User>. if he expecting for result with one user
+	 * he need to: user = userResponse.getUsersList().get(0);
+	 */
+
+	public ArrayList<User> fetchUser(FetchUserType fetchType, String argument) {
+		UserRequest userRequest = new UserRequest(fetchType, argument);
+		UserResponse userResponse = sendRequest(userRequest);
+		return userResponse.getUsersList();
+	}
+
 	public User getUser() {
 		return user;
 	}
 
-	private void reciveMassageFromServer(UserRequest userRequest) {
-
-		// display to user "Your session has expired. You have been logged out."
-		// TBD OFEK: this method won't be needed here, the session-timer-logout
-		// is not initiated by this class and won't be handled by it(?)
-	}
 }

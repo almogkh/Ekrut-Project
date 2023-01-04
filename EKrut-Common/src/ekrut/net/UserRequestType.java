@@ -5,4 +5,5 @@ public enum UserRequestType {
 	LOGOUT,
 	IS_LOGGEDIN,
 	IMPORT_USERS,
+	FETCH_USER,
 }
