@@ -50,11 +50,13 @@
 
 .image_button:hover {
   -fx-background-color: none;
-  -fx-border-color: black;
+  -fx-text-fill: black;
+  -fx-font-size: 22;
+  -fx-font-family: "Arial Rounded MT Bold", sans-serif;
 }
 .image_button:pressed {
-  -fx-background-color: #60ccd5;
-  -fx-text-fill: black;
+  -fx-text-fill: #2f88ff;
+  -fx-background-color: none;
 }
 
 .scroll-pane > .viewport {

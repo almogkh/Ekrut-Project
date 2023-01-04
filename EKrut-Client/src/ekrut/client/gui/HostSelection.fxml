@@ -62,8 +62,8 @@
                         </DropShadow>
                      </effect>
                   </Label>
-                  <Line endX="-28.0" layoutX="139.0" layoutY="68.0" startX="-118.0" />
-                  <Line endX="-28.0" layoutX="775.0" layoutY="68.0" startX="-118.0" />
+                  <Line endX="-28.0" layoutX="139.0" layoutY="68.0" startX="-118.0" stroke="WHITE" />
+                  <Line endX="-28.0" layoutX="775.0" layoutY="68.0" startX="-118.0" stroke="WHITE" />
                </children>
             </Pane>
          </children>

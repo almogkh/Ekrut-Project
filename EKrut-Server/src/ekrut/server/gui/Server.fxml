@@ -136,12 +136,12 @@
                               </DropShadow>
                            </effect>
                         </Button>
-                        <Text layoutX="48.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP:">
+                        <Text layoutX="48.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP:">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="DBUserNameTXTfield" layoutX="183.0" layoutY="158.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+                        <TextField fx:id="DBUserNameTXTfield" layoutX="186.0" layoutY="158.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -153,12 +153,12 @@
                               <Font name="Arial Rounded MT Bold" size="12.0" />
                            </font>
                         </TextField>
-                        <Text layoutX="47.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DB Name:">
+                        <Text layoutX="47.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DB Name:">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="DBNameTXTfield" layoutX="183.0" layoutY="115.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+                        <TextField fx:id="DBNameTXTfield" layoutX="186.0" layoutY="121.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -180,19 +180,7 @@
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="IPTXTfield" layoutX="183.0" layoutY="71.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-border-color: black;">
-                           <effect>
-                              <DropShadow>
-                                 <color>
-                                    <Color opacity="0.30000001192092896" />
-                                 </color>
-                              </DropShadow>
-                           </effect>
-                           <font>
-                              <Font name="Arial Rounded MT Bold" size="12.0" />
-                           </font>
-                        </TextField>
-                        <PasswordField fx:id="DBPasswordTXTfield" layoutX="183.0" layoutY="196.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+                        <PasswordField fx:id="DBPasswordTXTfield" layoutX="186.0" layoutY="196.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
                            <effect>
                               <DropShadow>
                                  <color>
@@ -228,7 +216,7 @@
                               </DropShadow>
                            </effect>
                         </Button>
-                        <Label fx:id="connectionIP" alignment="CENTER" layoutX="183.0" layoutY="71.0" prefHeight="22.0" prefWidth="151.0" text="connectionIP" textAlignment="CENTER">
+                        <Label fx:id="connectionIP" alignment="CENTER" layoutX="186.0" layoutY="53.0" prefHeight="22.0" prefWidth="151.0" text="connectionIP" textAlignment="CENTER">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
@@ -238,6 +226,23 @@
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
                         </Label>
+                        <Text layoutX="48.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Port:">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="PortTXTfield" layoutX="186.0" layoutY="84.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-border-color: black; -fx-border-radius: 20;">
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.30000001192092896" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="12.0" />
+                           </font>
+                        </TextField>
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
