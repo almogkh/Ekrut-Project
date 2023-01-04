@@ -467,7 +467,8 @@ public class ReportDAO {
 				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
-			ps1.setString(2, location);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, location);
 			
 			ResultSet rs1 = con.executeQuery(ps1);
 			
@@ -529,7 +530,8 @@ public class ReportDAO {
 				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ? AND type != 'SHIPMENT'");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
-			ps1.setString(2, location);
+			ps1.setObject(2, date, MysqlType.DATETIME);
+			ps1.setString(3, location);
 			
 			ResultSet rs1 = con.executeQuery(ps1);
 			
@@ -662,7 +664,7 @@ public class ReportDAO {
 									"VALUES(?,?,?)");
 		
 		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO orders_report_data"
-								+ "(reportID,ekrutLocation,totalOrders,pickup,remote,totalOrdersInILS,pickupInILS,remoteInILS) " +
+								+ " (reportID,ekrutLocation,totalOrders,pickup,remote,totalOrdersInILS,pickupInILS,remoteInILS) " +
                                   "VALUES(?,?,?,?,?,?,?,?)");
 		
 		PreparedStatement ps3 = con.getPreparedStatement("INSERT INTO monthly_orders"
@@ -811,7 +813,7 @@ public class ReportDAO {
 	con.beginTransaction();
 		
 	PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventoryReports"
-													+ "(reportID,itemName,threshold,thresholdBreaches) " +
+													+ " (reportID,itemName,threshold,thresholdBreaches) " +
                                                     "VALUES(?,?,?,?)");
 	Integer reportID = report.getReportID();
 	
