@@ -20,24 +20,6 @@ public class InventoryItemResponse implements Serializable{
 		this.resultType = resultType;
 	}
 	
-	// Constructor for (ArrayList<InventoryItem>) responses.
-	public InventoryItemResponse(ArrayList<InventoryItem> inventoryItems, InventoryItem ignoreMe) {
-		this.resultType = ResultType.OK;
-		this.inventoryItems = inventoryItems;
-	}
-	
-	// Constructor for (ArrayList<String>) responses.
-	public InventoryItemResponse(ArrayList<String> ekrutLocations,  String ignoreMe) {
-		this.resultType = ResultType.OK;
-		this.ekrutLocations = ekrutLocations;
-	}
-	
-	// Constructor for (ArrayList<Item>) responses.
-	public InventoryItemResponse(ArrayList<Item> items, Item ignoreMe) {
-		this.resultType = ResultType.OK;
-		this.items = items;
-	}
-	
 	public ArrayList<InventoryItem> getInventoryItems() {
 		return inventoryItems;
 	}
@@ -53,6 +35,16 @@ public class InventoryItemResponse implements Serializable{
 	public ArrayList<Item> getItems() {
 		return items;
 	}
-	
-	
+
+	public void setInventoryItems(ArrayList<InventoryItem> inventoryItems) {
+		this.inventoryItems = inventoryItems;
+	}
+
+	public void setEkrutLocations(ArrayList<String> ekrutLocations) {
+		this.ekrutLocations = ekrutLocations;
+	}
+
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
+	}
 }

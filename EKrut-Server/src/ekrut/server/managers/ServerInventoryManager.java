@@ -162,7 +162,9 @@ public class ServerInventoryManager {
 		}
 		
 		// Return the InventoryItems(s) fetched from DB.
-		return new InventoryItemResponse(inventoryItems, null);
+		InventoryItemResponse response = new InventoryItemResponse(ResultType.OK);
+		response.setInventoryItems(inventoryItems);
+		return response;
 	}
 	
 	
@@ -207,7 +209,9 @@ public class ServerInventoryManager {
 		ArrayList<String> ekrutLocations = inventoryItemDAO.fetchAllEkrutLocationsByArea(area);
 		if (ekrutLocations == null)
 			return new InventoryItemResponse(ResultType.NOT_FOUND);
-		return new InventoryItemResponse(ekrutLocations, null);		
+		InventoryItemResponse response = new InventoryItemResponse(ResultType.OK);
+		response.setEkrutLocations(ekrutLocations);
+		return response;
 	}
 	
 
@@ -223,7 +227,9 @@ public class ServerInventoryManager {
 		ArrayList<Item> allItems = itemDAO.fetchAllItems();
 		if (allItems == null)
 			return new InventoryItemResponse(ResultType.NOT_FOUND);
-		return new InventoryItemResponse(allItems, null);
+		InventoryItemResponse response = new InventoryItemResponse(ResultType.OK);
+		response.setItems(allItems);
+		return response;
 	}
 	
 }
