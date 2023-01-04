@@ -1,29 +1,22 @@
 package ekrut.client.gui;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientReportManager;
-import ekrut.entity.Order;
 import ekrut.entity.Report;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.chart.XYChart.Data;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
 
 public class OrderReportViewController{
 
@@ -157,6 +150,7 @@ public class OrderReportViewController{
 
     	}
 		ordersBarChart.getData().addAll(series1, series2);
+		ordersBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
 		
     }
     
@@ -185,6 +179,8 @@ public class OrderReportViewController{
 			series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue())); 
     	}
 		topSellersBarChart.getData().addAll(series);
+		
+		topSellersBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
     }
     
 }

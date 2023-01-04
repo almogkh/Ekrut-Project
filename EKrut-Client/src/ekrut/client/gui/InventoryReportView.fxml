@@ -32,9 +32,10 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -89,14 +90,14 @@
       </Pane>
       <Pane prefHeight="399.0" prefWidth="770.0" styleClass="container">
          <children>
-            <TableView fx:id="TableInventory" layoutX="69.0" layoutY="10.0" prefHeight="376.0" prefWidth="641.0">
-              <columns>
-                <TableColumn fx:id="itemIDCol" prefWidth="75.0" text="ItemID" />
-                <TableColumn fx:id="itemNameCol" prefWidth="75.0" text="ItemName" />
-                  <TableColumn fx:id="quantityCol" prefWidth="75.0" text="Quantity" />
-                  <TableColumn fx:id="thresholdBreachesCol" prefWidth="127.0" text="Threshold Breaches" />
-              </columns>
-            </TableView>
+            <BarChart fx:id="itemThresholdBreachesBarChart" layoutX="6.0" legendVisible="false" prefHeight="408.0" prefWidth="768.0" style="-fx-background-color: transparent;">
+              <xAxis>
+                <CategoryAxis fx:id="ItemNameCategoryAxis" label="Item Name" side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis fx:id="ThersholdbreachesAxis" label="Threshold Breaches" side="LEFT" />
+              </yAxis>
+            </BarChart>
          </children>
       </Pane>
    </children>

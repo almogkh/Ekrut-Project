@@ -353,7 +353,7 @@ public class ReportDAO {
 			Integer threshold = null;
 					
 			Map<String, ArrayList<Integer>> inventoryReportData = new HashMap<>();	
-			// Put items into the map: for each itemName -> quantity, thresholdBreaches
+			// Put items into the map: for each itemName -> thresholdBreaches
 			while (rs2.next()) {
 				ArrayList<Integer> temp = new ArrayList<>();
 				temp.add(rs2.getInt("thresholdBreaches"));
