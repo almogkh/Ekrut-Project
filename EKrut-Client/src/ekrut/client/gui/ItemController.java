@@ -1,8 +1,11 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
+import ekrut.client.EKrutClientUI;
+import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
+import ekrut.entity.OrderItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,11 +57,14 @@ public class ItemController extends HBox {
 	private Item item;
 	private Image image;
 	private int itemId;
-	private InventoryItem inventoryItem;
+	private InventoryItem inventoryItem;	
+	private ClientOrderManager clientOrderManager;
+
+
 
 	
 	public ItemController(InventoryItem inventoryItem) {
-
+		clientOrderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -82,7 +88,6 @@ public class ItemController extends HBox {
 
 	@FXML
 	void addToCart(ActionEvent event) {
-		
 		noDigitError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
@@ -91,6 +96,8 @@ public class ItemController extends HBox {
 		} catch (NumberFormatException e) { 
 			noDigitError.setVisible(true);
 		}
+		OrderItem OrderItem = new OrderItem(item, cartQuantity);
+		clientOrderManager.addItemToOrder(OrderItem);
 	}
 
 	@FXML
