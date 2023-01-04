@@ -74,7 +74,7 @@
          <children>
             <VBox alignment="CENTER" layoutX="1.0" layoutY="-3.0" prefHeight="113.0" prefWidth="770.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="34.0" prefWidth="774.0" text="Facility Thershold">
+                  <Label alignment="CENTER" prefHeight="34.0" prefWidth="774.0" text="Facility Threshold">
                      <font>
                         <Font size="23.0" />
                      </font>
@@ -90,7 +90,7 @@
       </Pane>
       <Pane prefHeight="399.0" prefWidth="770.0" styleClass="container">
          <children>
-            <BarChart fx:id="itemThresholdBreachesBarChart" layoutX="6.0" legendVisible="false" prefHeight="408.0" prefWidth="768.0" style="-fx-background-color: transparent;">
+            <BarChart fx:id="itemThresholdBreachesBarChart" layoutX="6.0" legendVisible="false" prefHeight="408.0" prefWidth="768.0" style="-fx-background-color: transparent;" title="Items Threshold Breaches">
               <xAxis>
                 <CategoryAxis fx:id="ItemNameCategoryAxis" label="Item Name" side="BOTTOM" />
               </xAxis>
