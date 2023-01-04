@@ -3,8 +3,11 @@ package ekrut.server.gui;
 import java.io.PrintStream;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
+
 import ekrut.entity.ConnectedClient;
 import ekrut.server.managers.ServerSessionManager;
 import javafx.event.ActionEvent;
@@ -74,19 +77,41 @@ public class ServerController {
 
 	public String getLocalIp(){
 		String ip = null;
-		
-		// Attempt to determine the 'real' IP address.
-		try(final DatagramSocket socket = new DatagramSocket()){
-			  try {
-				socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
-				ip = socket.getLocalAddress().getHostAddress();
-			} catch (UnknownHostException e) {}
-			} catch (SocketException e1) {}
+		boolean virtual = false;
+		try {
+			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			outer: while (interfaces.hasMoreElements()) {
+				NetworkInterface ni = interfaces.nextElement();
+				// Not interested in interfaces that are down
+				if (!ni.isUp())
+					continue;
+				
+				Enumeration<InetAddress> addresses = ni.getInetAddresses();
+				while (addresses.hasMoreElements()) {
+					InetAddress ia = addresses.nextElement();
+					// We don't want a loopback address
+					if (ia.isLoopbackAddress())
+						continue;
+					// Prefer non-virtual interfaces over virtual ones
+					if (virtual && !ni.isVirtual()) {
+						virtual = false;
+						ip = ia.getHostAddress();
+						break outer;
+					} else if (ip == null) { // Prefer an address over nothing
+						ip = ia.getHostAddress();
+						virtual = ni.isVirtual();
+					}
+				}
+			}
+		} catch (SocketException e) {
+		}
 		if (ip == null) {
 			try {
+				// Fall back on an alternate method
 				ip = InetAddress.getLocalHost().getHostAddress();
 			} catch (UnknownHostException e) {
-				e.printStackTrace();
+				// Better than nothing
+				ip = "127.0.0.1";
 			}
 		}
 		return ip;
@@ -98,7 +123,7 @@ public class ServerController {
 		this.consoleStreamIntoGUI();
 		this.DBNameTXTfield.setText("jdbc:mysql://localhost/ekrut?serverTimezone=IST");
 		this.DBUserNameTXTfield.setText("root");
-		this.DBPasswordTXTfield.setText("UntilWhenNov12");
+		this.DBPasswordTXTfield.setText("1qazZ2wsxX!@");
 		this.DisconnectBTN.setVisible(false);
 		this.ConnectedGreenIMG.setVisible(false);
 		this.connectionStatus.setText("Not connected");
