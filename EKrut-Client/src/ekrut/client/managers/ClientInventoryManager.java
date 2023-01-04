@@ -2,6 +2,7 @@ package ekrut.client.managers;
 
 import ekrut.client.EKrutClient;
 import ekrut.entity.InventoryItem;
+import ekrut.entity.Item;
 import java.util.ArrayList;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemRequestType;
@@ -23,7 +24,7 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	public ClientInventoryManager(EKrutClient client) {
 		super(client, InventoryItemResponse.class);
 	}
-
+	
 	/**
 	 * Handles Client's request to <b>update</b> InventoryItem's <b>quantity</b>.
 	 * 
@@ -34,17 +35,11 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
 	public ResultType updateInventoryQuantity(int itemId, String ekrutLocation, int quantity) {
-		if (quantity < 0)
-			throw new IllegalArgumentException("Quantity must be a non-negative integer.");
-			// TBD OFEK or rather should i :return ResultType.INVALID_INPUT;
-		
-		// Prepare a InventoryItemRequest to send to server.
-		InventoryItemRequest inventoryUpdateItemRequest = 
-				new InventoryItemRequest(itemId, quantity, ekrutLocation);
-		
-		// Sending InventoryItemRequest and receiving InventoryItemResponse.
-		InventoryItemResponse inventoryItemUpdateResponse = sendRequest(inventoryUpdateItemRequest);
-		return inventoryItemUpdateResponse.getResultType();
+		if (quantity < 0) return ResultType.INVALID_INPUT;
+		InventoryItemRequest inventoryItemRequest = new InventoryItemRequest(
+				InventoryItemRequestType.UPDATE_ITEM_QUANTITY, itemId, quantity, ekrutLocation);
+		InventoryItemResponse inventoryItemResponse = sendRequest(inventoryItemRequest);
+		return inventoryItemResponse.getResultType();
 	}
 	
 	/**
@@ -54,23 +49,14 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	 * @throws IllegalArgumentException when a null item is provided.
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public ArrayList<InventoryItem> getItems(String ekrutLocation) {
-		// Prepare a InventoryItemRequest to send to server.
-		InventoryItemRequest inventoryGetItemsRequest = new InventoryItemRequest(ekrutLocation);
-		
-		// Sending InventoryItemRequest and receiving InventoryItemResponse.
-		InventoryItemResponse inventoryGetItemsResponse = sendRequest(inventoryGetItemsRequest);
-		
-		// ResultCode is not "OK" meaning we encountered an error.
-		ResultType resultType = inventoryGetItemsResponse.getResultType();
-		
-		if (resultType == ResultType.NOT_FOUND)
-			return null;
-		if (resultType != ResultType.OK)
-			throw new RuntimeException(resultType.toString());
-		
-		// return the InventoryItem(s) attached to the response.
-		return inventoryGetItemsResponse.getInventoryItems();
+	public ArrayList<InventoryItem> fetchInventoryItemsByEkrutLocation(String ekrutLocation) throws RuntimeException {
+		InventoryItemRequest inventoryItemRequest = new InventoryItemRequest(
+				InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE, ekrutLocation);
+		InventoryItemResponse inventoryItemResponse = sendRequest(inventoryItemRequest);
+		ResultType resultType = inventoryItemResponse.getResultType();
+		if (resultType == ResultType.NOT_FOUND) return null;
+		if (resultType != ResultType.OK) throw new RuntimeException(resultType.toString());
+		return inventoryItemResponse.getInventoryItems();
 	}
 	
 	/**
@@ -82,30 +68,31 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	 * @throws IllegalArgumentException when a null item is provided.
 	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public void updateItemThreshold(int itemId, String ekrutLocation, int threshold) {
-		if (threshold < 0)
-			throw new IllegalArgumentException("Threshold must be a non-negative integer.");
-		
-		// Prepare a InventoryItemRequest to send to server.
-		InventoryItemRequest inventoryUpdateItemThresholdRequest = 
-				new InventoryItemRequest(itemId, ekrutLocation, threshold);
-		
-		// Sending InventoryItemRequest and receiving InventoryItemResponse.
-		InventoryItemResponse inventoryUpdateItemThresholdResponse = sendRequest(inventoryUpdateItemThresholdRequest);
-		
-		// ResultCode is not "OK" meaning we encountered an error.
-		ResultType resultType = inventoryUpdateItemThresholdResponse.getResultType();
-		if (resultType != ResultType.OK)
-			throw new RuntimeException(resultType.toString());
+	public void updateItemThreshold(int itemId, String ekrutLocation, int threshold) throws IllegalArgumentException, RuntimeException {
+		if (threshold < 0) throw new IllegalArgumentException("Threshold must be a non-negative integer.");
+		InventoryItemRequest inventoryItemRequest = new InventoryItemRequest(
+				InventoryItemRequestType.UPDATE_ITEM_THRESHOLD, itemId, threshold, ekrutLocation);
+		InventoryItemResponse inventoryItemResponse = sendRequest(inventoryItemRequest);
+		ResultType resultType = inventoryItemResponse.getResultType();
+		if (resultType != ResultType.OK) throw new RuntimeException(resultType.toString());
 	}
 
-	public ArrayList<String> fetchAllEkrutLocationsByArea(String ekrutLocation){
-		InventoryItemRequest inventoryFentchAllEkrutLocationByAreaRequest = 
-				new InventoryItemRequest(ekrutLocation, InventoryItemRequestType.FETCH_LOCATION_IN_AREA);
-		InventoryItemResponse response = sendRequest(inventoryFentchAllEkrutLocationByAreaRequest);
-		ResultType resultType = response.getResultType();
-		if (resultType != ResultType.OK)
-			throw new RuntimeException(resultType.toString());
-		return response.getEkrutLocations();
+	public ArrayList<String> fetchAllEkrutLocationsByArea(String area) throws RuntimeException {
+		InventoryItemRequest inventoryItemRequest = new InventoryItemRequest(
+				InventoryItemRequestType.FETCH_ALL_LOCATIONS_IN_AREA, area);
+		InventoryItemResponse inventoryItemResponse = sendRequest(inventoryItemRequest);
+		ResultType resultType = inventoryItemResponse.getResultType();
+		if (resultType != ResultType.OK) throw new RuntimeException(resultType.toString());
+		return inventoryItemResponse.getEkrutLocations();
 	}
+	
+	public ArrayList<Item> fetchAllItems()throws RuntimeException {
+		InventoryItemRequest inventoryItemRequest = new InventoryItemRequest(
+				InventoryItemRequestType.FETCH_ALL_ITEMS);
+		InventoryItemResponse inventoryItemResponse = sendRequest(inventoryItemRequest);
+		ResultType resultType = inventoryItemResponse.getResultType();
+		if (resultType != ResultType.OK) throw new RuntimeException(resultType.toString());
+		return inventoryItemResponse.getItems();
+	}
+	
 }

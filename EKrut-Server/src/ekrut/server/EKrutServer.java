@@ -2,6 +2,7 @@ package ekrut.server;
 
 import java.io.IOException;
 
+import ekrut.entity.User;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
 import ekrut.net.OrderRequest;
@@ -131,24 +132,8 @@ public class EKrutServer extends AbstractServer {
 	}
 
 	private void handleMessageInventory(InventoryItemRequest inventoryItemRequest, ConnectionToClient client) {
-		InventoryItemResponse inventoryItemResponse = null;
-		switch (inventoryItemRequest.getAction()) {
-		case UPDATE_ITEM_QUANTITY:
-			inventoryItemResponse = serverInventoryManager.updateItemQuantity(inventoryItemRequest);
-			break;
-		case FETCH_ITEM:
-			inventoryItemResponse = serverInventoryManager.getItems(inventoryItemRequest);
-			break;
-		case UPDATE_ITEM_THRESHOLD:
-			inventoryItemResponse = serverInventoryManager.updateItemThreshold(inventoryItemRequest);
-			break;
-		case FETCH_LOCATION_IN_AREA:
-			inventoryItemResponse = serverInventoryManager.fetchAllEkrutLocationsByArea(inventoryItemRequest);
-			break;
-		default:
-			inventoryItemResponse = new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
-			break;
-		}
+		User currUser = serverSessionManager.getUser(client);
+		InventoryItemResponse inventoryItemResponse = serverInventoryManager.handleRequest(inventoryItemRequest, currUser);
 		try {
 			client.sendToClient(inventoryItemResponse);
 		} catch (IOException e) {

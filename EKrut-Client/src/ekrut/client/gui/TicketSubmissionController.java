@@ -122,7 +122,7 @@ public class TicketSubmissionController implements Initializable {
     
     private void updateItemChoice() {
     	itemCombo.getItems().clear(); 
-    	ArrayList<InventoryItem> items = client.getClientInventoryManager().getItems(ekrutLocation);
+    	ArrayList<InventoryItem> items = client.getClientInventoryManager().fetchInventoryItemsByEkrutLocation(ekrutLocation);
     	if (items != null)
 	    	for (InventoryItem item : items)
 	        	itemCombo.getItems().add(item.getItem().getItemName());
