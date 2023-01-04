@@ -177,6 +177,7 @@ public class BaseTemplateController {
     	switch (userType) {
 	    	case CUSTOMER:
 	    	case SUBSCRIBER:
+	    		
 	    		allHyperlinks.add(remoteOrderHyp);    		
 	    		allHyperlinks.add(pickupOrder);	    		
 	    		allHyperlinks.add(approveShipmentHyp);			    		
@@ -212,13 +213,16 @@ public class BaseTemplateController {
     	roleLbl.setText(me.getUserType().toString().replace("_", " "));
     	navigationVbox.setVisible(true);
     	ObservableList<Node> vboxChildren = navigationVbox.getChildren();
+    	
     	if (EKrutClientUI.ekrutLocation != null) {
+    		/// From mechine
     		Hyperlink createOrderHyp = new Hyperlink("Create new order");
     		createOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
     		Hyperlink pickupOrderHyp = new Hyperlink("Pickup existing order");
     		pickupOrderHyp.setOnAction((ActionEvent event) -> loadPickupOrder());
     		vboxChildren.addAll(createOrderHyp, pickupOrderHyp);
     	}else{
+    		// From OL
     		vboxChildren.addAll(getHyperlinks(me.getUserType()));
     	}
     	for (Node node : vboxChildren) {
@@ -240,7 +244,7 @@ public class BaseTemplateController {
 		Parent root = loader.getRoot();
 		BaseTemplateController.getBaseTemplateController().setRightWindow(root);
     }
-    
+   
     // load fxml and return parent
     public Parent load(FXMLLoader loader) {
     	try {
@@ -250,10 +254,4 @@ public class BaseTemplateController {
 		}
 		return loader.getRoot();
     }
-
-
-
-
 }
-
-
