@@ -1,32 +1,26 @@
 package ekrut.server.gui;
 
 import java.io.PrintStream;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import ekrut.entity.ConnectedClient;
-import ekrut.entity.User;
-import ekrut.entity.UserType;
-import ekrut.server.EKrutServer;
 import ekrut.server.managers.ServerSessionManager;
-import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
-import ocsf.server.ConnectionToClient;
 
 public class ServerController {
 
@@ -81,12 +75,44 @@ public class ServerController {
 	private PrintStream replaceConsole;
 	private ServerSessionManager session;
 
-	public String getLocalIp() {
+	public String getLocalIp(){
 		String ip = null;
+		boolean virtual = false;
 		try {
-			ip = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
+			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+			outer: while (interfaces.hasMoreElements()) {
+				NetworkInterface ni = interfaces.nextElement();
+				// Not interested in interfaces that are down
+				if (!ni.isUp())
+					continue;
+				
+				Enumeration<InetAddress> addresses = ni.getInetAddresses();
+				while (addresses.hasMoreElements()) {
+					InetAddress ia = addresses.nextElement();
+					// We don't want a loopback address
+					if (ia.isLoopbackAddress())
+						continue;
+					// Prefer non-virtual interfaces over virtual ones
+					if (virtual && !ni.isVirtual()) {
+						virtual = false;
+						ip = ia.getHostAddress();
+						break outer;
+					} else if (ip == null) { // Prefer an address over nothing
+						ip = ia.getHostAddress();
+						virtual = ni.isVirtual();
+					}
+				}
+			}
+		} catch (SocketException e) {
+		}
+		if (ip == null) {
+			try {
+				// Fall back on an alternate method
+				ip = InetAddress.getLocalHost().getHostAddress();
+			} catch (UnknownHostException e) {
+				// Better than nothing
+				ip = "127.0.0.1";
+			}
 		}
 		return ip;
 	}
@@ -122,7 +148,11 @@ public class ServerController {
 	@FXML
 	void Connect(final ActionEvent event) {
 		this.ErrorConnection.setVisible(false);
-		if (!ServerUI.runServer(5555,this.DBNameTXTfield.getText(), this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
+		if (!ServerUI.runServer(
+				5555, 
+				this.DBNameTXTfield.getText(), 
+				this.DBUserNameTXTfield.getText(), 
+				this.DBPasswordTXTfield.getText())) {
 			this.ErrorConnection.setVisible(true);
 			this.ConnectToServerBTN.setVisible(true);
 			this.DisconnectBTN.setVisible(false);

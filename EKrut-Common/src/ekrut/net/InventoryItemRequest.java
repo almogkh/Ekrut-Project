@@ -8,37 +8,27 @@ public class InventoryItemRequest implements Serializable{
 	private InventoryItemRequestType action;
 	private int itemId;
 	private int quantity;
+	private int threshold;
 	private String ekrutLocation;
 	private String area;
-	private int threshold;
+
 	
-	// Get items request.
-	public InventoryItemRequest(String ekrutLocation) {
-		this.action = InventoryItemRequestType.FETCH_ITEM;
-		this.ekrutLocation = ekrutLocation;
+	public InventoryItemRequest(InventoryItemRequestType action){
+		this.action = action;
 	}
 	
-	public InventoryItemRequest(String area, InventoryItemRequestType action) {
+	public InventoryItemRequest(InventoryItemRequestType action, String area){
 		this.action = action;
 		this.area = area;
 	}
 	
-	// Update item quantity request.
-	public InventoryItemRequest(int itemId, int quantity, String ekrutLocation) {
-		this.action = InventoryItemRequestType.UPDATE_ITEM_QUANTITY;
+	public InventoryItemRequest(InventoryItemRequestType action, int itemId, int threshold, String ekrutLocation){
+		this.action = action;
 		this.itemId = itemId;
-		this.quantity = quantity;
-		this.ekrutLocation = ekrutLocation;
-	}
-
-	// Update item threshold request.
-	public InventoryItemRequest(int itemId, String ekrutLocation, int threshold) {
-		this.action = InventoryItemRequestType.UPDATE_ITEM_THRESHOLD;
-		this.itemId = itemId;
-		this.ekrutLocation = ekrutLocation;
 		this.threshold = threshold;
+		this.ekrutLocation = ekrutLocation;
 	}
-
+	
 	public InventoryItemRequestType getAction() {
 		return action;
 	}

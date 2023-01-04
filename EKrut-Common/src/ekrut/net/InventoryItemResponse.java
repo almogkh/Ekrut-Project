@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import ekrut.entity.InventoryItem;
+import ekrut.entity.Item;
 
 public class InventoryItemResponse implements Serializable{
 	
@@ -11,22 +12,12 @@ public class InventoryItemResponse implements Serializable{
 	private ResultType resultType;
 	private ArrayList<InventoryItem> inventoryItems;
 	private ArrayList<String> ekrutLocations;
+	private ArrayList<Item> items;
+	
 	
 	// Constructor for ResultType-only responses.
 	public InventoryItemResponse(ResultType resultType) {
 		this.resultType = resultType;
-	}
-	
-	// Constructor for (ResultType & ArrayList<InventoryItem>) responses.
-	public InventoryItemResponse(ResultType resultType, ArrayList<InventoryItem> inventoryItems) {
-		this.resultType = resultType;
-		this.inventoryItems = inventoryItems;
-	}
-	
-	// Constructor for (ResultType & ArrayList<String>) responses.
-	public InventoryItemResponse(ArrayList<String> ekrutLocations) {
-		this.resultType = ResultType.OK;
-		this.ekrutLocations = ekrutLocations;
 	}
 	
 	public ArrayList<InventoryItem> getInventoryItems() {
@@ -39,5 +30,21 @@ public class InventoryItemResponse implements Serializable{
 
 	public ResultType getResultType() {
 		return resultType;
+	}
+
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+
+	public void setInventoryItems(ArrayList<InventoryItem> inventoryItems) {
+		this.inventoryItems = inventoryItems;
+	}
+
+	public void setEkrutLocations(ArrayList<String> ekrutLocations) {
+		this.ekrutLocations = ekrutLocations;
+	}
+
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
 	}
 }
