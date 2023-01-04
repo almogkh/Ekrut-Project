@@ -171,7 +171,7 @@ public class BaseTemplateController {
     	Hyperlink registrationRequestsHyp = new Hyperlink("Registration requests");
     	registrationRequestsHyp.setOnAction((ActionEvent event) -> loadregistrationRequests());
     	
-    	Hyperlink viewReportsHyp = new Hyperlink("Monthely reports");
+    	Hyperlink viewReportsHyp = new Hyperlink("Monthly reports");
     	viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
     	
     	switch (userType) {
