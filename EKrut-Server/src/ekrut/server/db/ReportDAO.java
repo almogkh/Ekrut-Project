@@ -356,7 +356,6 @@ public class ReportDAO {
 			// Put items into the map: for each itemName -> quantity, thresholdBreaches
 			while (rs2.next()) {
 				ArrayList<Integer> temp = new ArrayList<>();
-				temp.add(rs2.getInt("quantity"));
 				temp.add(rs2.getInt("thresholdBreaches"));
 				inventoryReportData.put(rs2.getString("itemName"), temp);
 				threshold = rs2.getInt("threshold");
@@ -812,8 +811,8 @@ public class ReportDAO {
 	con.beginTransaction();
 		
 	PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventoryReports"
-													+ "(reportID,itemName,quantity,threshold,thresholdBreaches) " +
-                                                    "VALUES(?,?,?,?,?)");
+													+ "(reportID,itemName,threshold,thresholdBreaches) " +
+                                                    "VALUES(?,?,?,?)");
 	Integer reportID = report.getReportID();
 	
 	try {
@@ -823,9 +822,6 @@ public class ReportDAO {
 			String itemName = entry.getKey();
 			ArrayList<Integer> thresholdData = entry.getValue();
 			
-			if (thresholdData.size() != 2) {
-				return false;
-			}
 			//TresholdData(0) is threshold of the item's facility, tresholdData(1) is how many breaches that item "cause"
 			int threshold = thresholdData.get(0);
 			int thresholdBreaches = thresholdData.get(1);

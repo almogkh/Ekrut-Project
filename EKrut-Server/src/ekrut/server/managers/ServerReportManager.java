@@ -248,9 +248,8 @@ public class ServerReportManager {
 			if (tresholdAlertCounted.containsKey(itemName)) {
 				thresholdAlerts = tresholdAlertCounted.get(itemName);
 			}
-			// Create a list containing the item quantity and threshold alert count
+			// Create a list containing the item threshold alert count
 			ArrayList<Integer> temp = new ArrayList<>();
-			temp.add(inventoryItem.getItemQuantity());
 			temp.add(thresholdAlerts);
 			
 			// Store the list in the inventory report data map using the item name as the key
