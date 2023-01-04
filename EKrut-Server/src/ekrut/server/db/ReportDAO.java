@@ -902,17 +902,17 @@ public class ReportDAO {
 	public boolean isLatestReportUpdated(LocalDateTime date) {
 		boolean exists = true;
 		
-		PreparedStatement ps1 = con.getPreparedStatement("SELECT EXISTS"
-				+ " (SELECT 1 FROM reports WHERE EXTRACT(MONTH FROM date) = EXTRACT (MONTH FROM ?)"
-				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?))");
+		PreparedStatement ps1 = con.getPreparedStatement(
+				  "SELECT 1 FROM reports WHERE EXTRACT(MONTH FROM date) = EXTRACT (MONTH FROM ?)"
+				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?)");
 
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setObject(2, date, MysqlType.DATETIME);
 			ResultSet rs1 = con.executeQuery(ps1);
 
-			if (rs1.next()) {
-			    exists = rs1.getBoolean(1);
+			if (!rs1.next()) {
+			    exists = false;
 			}
 						
 			return exists;
