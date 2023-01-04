@@ -1,7 +1,11 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
+import ekrut.client.EKrutClientUI;
+import ekrut.client.managers.ClientOrderManager;
+import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
+import ekrut.entity.OrderItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,9 +54,17 @@ public class ItemController extends HBox {
 
 	private Integer cartQuantity = 0;
 
-	Image image;
+	private Item item;
+	private Image image;
+	private int itemId;
+	private InventoryItem inventoryItem;	
+	private ClientOrderManager clientOrderManager;
 
-	public ItemController(Item item) {
+
+
+	
+	public ItemController(InventoryItem inventoryItem) {
+		clientOrderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -62,14 +74,16 @@ public class ItemController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
-		/*
-		  // Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
-		  Image(new ByteArrayInputStream(item.getImg()));
-		  itemName.setText(item.getItemName());
-		  itemDiscription.setText(item.getItemDescription());
-		  itemPrice.setText(Float.toString(item.getItemPrice()));
-		 */
+		
+		this.inventoryItem = inventoryItem;
+		this.item =  inventoryItem.getItem();
+		this.itemId = item.getItemId();	// Q.Nir - is nedded?
+		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
+		// Image(new ByteArrayInputStream(item.getImg()));
+		itemName.setText(item.getItemName());
+		itemDiscription.setText(item.getItemDescription());
+		itemPrice.setText(Float.toString(item.getItemPrice()));
+		  
 	}
 
 	@FXML
@@ -82,6 +96,8 @@ public class ItemController extends HBox {
 		} catch (NumberFormatException e) { 
 			noDigitError.setVisible(true);
 		}
+		OrderItem OrderItem = new OrderItem(item, cartQuantity);
+		clientOrderManager.addItemToOrder(OrderItem);
 	}
 
 	@FXML

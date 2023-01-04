@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 public class BaseTemplateController {
@@ -70,10 +69,11 @@ public class BaseTemplateController {
 		infoPane.setVisible(false);
 		logoutBtn.setVisible(false);
 	}
-
-	@FXML
-	void logout(ActionEvent event) {
-		try {
+	
+    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
+    @FXML
+    void logout(ActionEvent event) {
+    	try {
 			EKrutClientUI.getEkrutClient().getClientSessionManager().logoutUser();
 			logout();
 		} catch (Exception e) {
@@ -85,6 +85,7 @@ public class BaseTemplateController {
 		baseTemplateController = this; // TBD OFEK ????????
 		infoPane.setVisible(false);
 		logoutBtn.setVisible(false);
+        // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/HostSelection.fxml"));
 		Parent root = null;
 		try {
@@ -107,7 +108,8 @@ public class BaseTemplateController {
 
 	public void loadViewShipment() {
 	}
-
+	
+    // C.Nir - can use in *local* method load();
 	public void loadViewTickets() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/TicketBrowser.fxml"));
 		try {
@@ -118,12 +120,12 @@ public class BaseTemplateController {
 		Parent root = loader.getRoot();
 		TicketBrowserController ticketBrowserController = loader.getController();
 		setRightWindow(root);
-
 	}
 
 	public void loadregistrationRequests() {
 	}
-
+	
+    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadViewReports() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ReportChooser.fxml"));
 		try {
@@ -134,7 +136,6 @@ public class BaseTemplateController {
 		Parent root = loader.getRoot();
 		// ReportChooserController reportChooserController = loader.getController();
 		setRightWindow(root);
-
 	}
 
 	private static void setHyperlinkStyle(Hyperlink hyperLink) {
@@ -151,31 +152,39 @@ public class BaseTemplateController {
 	private ArrayList<Hyperlink> getHyperlinks(UserType userType) {
 		ArrayList<Hyperlink> allHyperlinks = new ArrayList<>();
 		
-		Hyperlink approveShipmentHyp = new Hyperlink("Approve shipment arrival");
-		approveShipmentHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
-		
-		Hyperlink remoteOrderHyp = new Hyperlink("Create order");
-		remoteOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
-		
-		Hyperlink viewShipRequestsHyp = new Hyperlink("Shipment requests");
-		viewShipRequestsHyp.setOnAction((ActionEvent event) -> loadViewShipment());
-		
-		Hyperlink viewTicketsHyp = new Hyperlink("Tickets");
-		viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());
-		
-		Hyperlink registrationRequestsHyp = new Hyperlink("Registration requests");
-		registrationRequestsHyp.setOnAction((ActionEvent event) -> loadregistrationRequests());
-		
-		Hyperlink viewReportsHyp = new Hyperlink("Monthely reports");
-		viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
+		Hyperlink remoteOrderHyp = new Hyperlink("Remote order");
+    	remoteOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
+    	
+    	Hyperlink pickupOrder = new Hyperlink("Pickup Order");
+    	pickupOrder.setOnAction((ActionEvent event) -> loadCreateOrder());
+    	
+    	Hyperlink approveShipmentHyp = new Hyperlink("Approve shipment");
+    	approveShipmentHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
+    	
+    	Hyperlink getExistingOrder = new Hyperlink("Get Order by ID");
+    	getExistingOrder.setOnAction((ActionEvent event) -> loadCreateOrder());
+    	
+    	Hyperlink viewShipRequestsHyp = new Hyperlink("Shipment requests");
+    	viewShipRequestsHyp.setOnAction((ActionEvent event) -> loadViewShipment());
+
+    	Hyperlink viewTicketsHyp = new Hyperlink("Tickets");
+    	viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());
+
+    	Hyperlink registrationRequestsHyp = new Hyperlink("Registration requests");
+    	registrationRequestsHyp.setOnAction((ActionEvent event) -> loadregistrationRequests());
+    	
+    	Hyperlink viewReportsHyp = new Hyperlink("Monthly reports");
+    	viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
 		
 		
 		switch (userType) {
 		case REGISTERED:
 			break;
 		case CUSTOMER:
-			allHyperlinks.add(approveShipmentHyp);
-			allHyperlinks.add(remoteOrderHyp);
+    		allHyperlinks.add(remoteOrderHyp);    		
+    		allHyperlinks.add(pickupOrder);	    		
+    		allHyperlinks.add(approveShipmentHyp);			    		
+    		allHyperlinks.add(getExistingOrder);
 			break;
 		case SHIPMENT_OPERATOR:
 		case SHIPMENT_WORKER:
@@ -223,4 +232,30 @@ public class BaseTemplateController {
 		}
 	}
 
+
+
+    // Q.Nir - is needed?
+    // switch stages if any info dose not needed.
+    public void switchStages(String fxmlName) {
+    	String path = "/ekrut/client/gui/";
+    	String fileExtention = ".fxml";
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource(path + fxmlName + fileExtention));
+    	try {
+			loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Parent root = loader.getRoot();
+		BaseTemplateController.getBaseTemplateController().setRightWindow(root);
+    }
+   
+    // load fxml and return parent
+    public Parent load(FXMLLoader loader) {
+    	try {
+			loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		return loader.getRoot();
+    }
 }

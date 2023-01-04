@@ -54,7 +54,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Button fx:id="backBtn" layoutX="12.0" layoutY="7.0" mnemonicParsing="false" onAction="#back" prefHeight="25.0" prefWidth="112.0" text="Back">
+            <Button fx:id="backBtn" layoutX="12.0" layoutY="9.0" mnemonicParsing="false" onAction="#back" prefHeight="25.0" prefWidth="112.0" text="Back">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>

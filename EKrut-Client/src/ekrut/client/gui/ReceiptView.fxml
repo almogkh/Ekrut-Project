@@ -52,22 +52,12 @@
          <children>
             <Button fx:id="checkOutBtn" layoutX="606.0" layoutY="613.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="144.0" text="Check Out">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Button>
-            <Text layoutX="22.0" layoutY="638.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Price: ">
+            <Button fx:id="backBtn" layoutX="11.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="27.0" prefWidth="112.0" text="Back">
                <font>
-                  <Font size="22.0" />
-               </font>
-            </Text>
-            <Label fx:id="priceLbl" layoutX="134.0" layoutY="614.0" text="Price">
-               <font>
-                  <Font size="22.0" />
-               </font>
-            </Label>
-            <Button fx:id="backBtn" layoutX="11.0" layoutY="16.0" mnemonicParsing="false" onAction="#back" prefHeight="27.0" prefWidth="112.0" text="Back">
-               <font>
-                  <Font name="System Bold" size="12.0" />
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Button>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="97.0" layoutY="105.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
@@ -89,12 +79,12 @@
             <Line endX="171.0" layoutX="587.0" layoutY="58.0" startX="-140.0" />
             <Label layoutX="11.0" layoutY="75.0" text="Order process">
                <font>
-                  <Font name="System Bold" size="18.0" />
+                  <Font name="Arial Rounded MT Bold" size="22.0" />
                </font>
             </Label>
             <Button fx:id="viewCartBtn" layoutX="436.0" layoutY="613.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="144.0" text="View Crat">
                <font>
-                  <Font name="System Bold" size="16.0" />
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Button>
             <Label layoutX="111.0" layoutY="157.0" text="Thank you for choosing EKrut!,">
