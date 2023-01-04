@@ -118,7 +118,7 @@ public class ServerShipmentManager {
 							   + "your shipment expected to arrive by " + estimateDeliveryTime.toString() + " o'clock.\n"
 							   + "When your shipment has arrived, please confirm that you have received the shipment in the application.\n"
 							   + "Keep an eye out for it and let us know if you have any questions or concerns.\n\n"
-							   + "Best regards,/nEKrut";
+							   + "Best regards,\nEKrut";
 		userNotifier.sendNotification(notificationMsg, user.getEmail(), user.getPhoneNumber());		
 		return new ShipmentResponse(ResultType.OK);
 	}
