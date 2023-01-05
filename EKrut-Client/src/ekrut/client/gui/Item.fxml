@@ -44,31 +44,31 @@
       </Pane>
       <AnchorPane prefHeight="154.0" prefWidth="198.0">
          <children>
-            <Button fx:id="plusBtn" layoutX="119.0" layoutY="42.0" mnemonicParsing="false" onAction="#plusItem" prefHeight="23.0" prefWidth="27.0" text="+">
+            <Button fx:id="plusBtn" layoutX="119.0" layoutY="34.0" mnemonicParsing="false" onAction="#plusItem" prefHeight="23.0" prefWidth="27.0" text="+">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="minusBtn" layoutX="25.0" layoutY="42.0" mnemonicParsing="false" onAction="#minusItem" prefHeight="23.0" prefWidth="27.0" text="–">
+            <Button fx:id="minusBtn" layoutX="25.0" layoutY="34.0" mnemonicParsing="false" onAction="#minusItem" prefHeight="23.0" prefWidth="27.0" text="–">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <TextField fx:id="quantityTxt" alignment="CENTER" layoutX="57.0" layoutY="36.0" prefHeight="39.0" prefWidth="57.0" style="-fx-border-color: black; -fx-background-radius: 20; -fx-border-radius: 20;" text="0">
+            <TextField fx:id="quantityTxt" alignment="CENTER" layoutX="57.0" layoutY="28.0" prefHeight="39.0" prefWidth="57.0" style="-fx-border-color: black; -fx-background-radius: 20; -fx-border-radius: 20;" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </TextField>
-            <Button fx:id="AddBtn" defaultButton="true" layoutX="21.0" layoutY="92.0" mnemonicParsing="false" onAction="#addToCart" prefHeight="27.0" prefWidth="131.0" text="Update Quantity">
+            <Button fx:id="AddBtn" defaultButton="true" layoutX="21.0" layoutY="84.0" mnemonicParsing="false" onAction="#addToCart" prefHeight="27.0" prefWidth="131.0" text="Update Quantity">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font></Button>
-            <Label fx:id="quantityInCart" layoutX="13.0" layoutY="121.0" prefHeight="19.0" prefWidth="154.0">
+            <Label fx:id="quantityInCart" contentDisplay="CENTER" layoutX="13.0" layoutY="121.0" prefHeight="19.0" prefWidth="154.0">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
-            <Label fx:id="noDigitError" layoutX="14.0" layoutY="130.0" prefHeight="20.0" prefWidth="154.0" text="Please input only digits!" textFill="RED" visible="false">
+            <Label fx:id="noDigitOrQuantityError" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="130.0" prefHeight="20.0" prefWidth="183.0" text="Please input only digits!" textAlignment="CENTER" textFill="RED" visible="false">
                <font>
                   <Font size="14.0" />
                </font>
