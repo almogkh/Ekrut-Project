@@ -263,6 +263,7 @@ public class ServerReportManager {
 			}
 			// Create a list containing the item threshold alert count
 			ArrayList<Integer> temp = new ArrayList<>();
+			temp.add(inventoryItem.getItemThreshold());
 			temp.add(thresholdAlerts);
 			
 			// Store the list in the inventory report data map using the item name as the key
@@ -380,11 +381,10 @@ public class ServerReportManager {
 
 		Map<String, Integer> bestSellers = new HashMap<>();
 		
-		for (int i = 0; i < 5; i++) {
-		    Map.Entry<String, Integer> entry = sortedItemsInOrders.get(i);
-		    if (i < 5) {
-		    	bestSellers.put(entry.getKey(), entry.getValue());
-		    }
+		for (Map.Entry<String, Integer> entry : sortedItemsInOrders) {
+			if (bestSellers.size() == 5)
+				break;
+		    bestSellers.put(entry.getKey(), entry.getValue());
 		}
 		
 	    // Return the map of best-selling items

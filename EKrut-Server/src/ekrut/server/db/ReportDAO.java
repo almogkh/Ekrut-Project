@@ -566,7 +566,7 @@ public class ReportDAO {
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT itemName FROM threshold_breaches WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?)"
-				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ?");
+				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND ekrutLocation = ?");
 		try {
 			ps1.setObject(1, date, MysqlType.DATETIME);
 			ps1.setObject(2, date, MysqlType.DATETIME);
@@ -601,27 +601,25 @@ public class ReportDAO {
 	 * @return true if the report is successfully created, false otherwise
 	 */
 	public boolean createReport(Report report) {
-		con.beginTransaction();
 		
 		// Pass true so that we can get the new report ID
 		PreparedStatement p1 = con.getPreparedStatement("INSERT INTO reports " +
-                                                        "(type,date,location) " +
-                                                        "VALUES(?,?,?)", true);
+                                                        "(type,date,ekrutLocation,area) " +
+                                                        "VALUES(?,?,?,?)", true);
 		
 		try {
 			p1.setString(1, report.getReportType().toString());
 			p1.setObject(2, report.getDate(), MysqlType.DATETIME);
-			p1.setString(3, report.getEkrutLocation().toString());
+			p1.setString(3, report.getEkrutLocation());
+			p1.setString(4, report.getArea());
 	
 			int res = p1.executeUpdate();
 			if(res != 1) {
-				con.abortTransaction();
 				return false; 
 			}
 			// Get the new report ID
 			ResultSet rs = p1.getGeneratedKeys();
 			if (!rs.next()) {
-				con.abortTransaction();
 				return false;
 			} 
 			// TBD check, probably this is'nt required
@@ -631,12 +629,9 @@ public class ReportDAO {
 			// Save the ID in the report object for later use
 			report.setReportID(reportID);
 			
-			con.commitTransaction();
-			
 			return true;
 			
 		} catch (SQLException e) {
-			con.abortTransaction();
 			return false;
 		} finally {
 			try {
@@ -658,7 +653,7 @@ public class ReportDAO {
 		
 		con.beginTransaction();
 		
-		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO topSellers"
+		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO top_sellers"
 								+ " (reportID,itemName,totalSales) " +
 									"VALUES(?,?,?)");
 		
@@ -670,7 +665,10 @@ public class ReportDAO {
 								+ " (reportID,totalOrders,totalOrdersInILS,totalShipmentOrders,totalShipmentOrdersInILS) " +
 								"VALUES(?,?,?,?,?)");
 		
-		
+		if (!createReport(report)) {
+			con.abortTransaction();
+			return false;
+		}
 		Integer reportID = report.getReportID();
 		
 		try {
@@ -748,7 +746,7 @@ public class ReportDAO {
 		
 		con.beginTransaction();
 		
-		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO customerReports"
+		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO customers_report_data"
 													+ " (reportID,1,2,3,4,5,6+)"
 													+ " VALUES(?,?,?,?,?,?,?)");
 		
@@ -756,6 +754,10 @@ public class ReportDAO {
 								+ " (reportID,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31)"
 								+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		
+		if (!createReport(report)) {
+			con.abortTransaction();
+			return false;
+		}
 		Integer reportID = report.getReportID();
 		
 		try {
@@ -811,9 +813,13 @@ public class ReportDAO {
 	
 	con.beginTransaction();
 		
-	PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventoryReports"
+	PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventory_report_data"
 													+ " (reportID,itemName,threshold,thresholdBreaches) " +
                                                     "VALUES(?,?,?,?)");
+	if (!createReport(report)) {
+		con.abortTransaction();
+		return false;
+	}
 	Integer reportID = report.getReportID();
 	
 	try {

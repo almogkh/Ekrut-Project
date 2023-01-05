@@ -34,9 +34,7 @@ public class ServerUI extends Application {
 
 	@Override
 	public void stop() throws IOException {
-		TimeScheduler.stopTimer();
-		if (server != null)
-			server.close();
+		disconnect();
 	}
 
 	public static boolean runServer(int port,String DBuserName, String username, String password) {
@@ -60,15 +58,18 @@ public class ServerUI extends Application {
 	}
 
 	public static void disconnect() {
-		if (server == null) {
+		TimeScheduler.stopTimer();
+		if (server == null)
+			return;
+		if (server.isListening()) {
 			server.stopListening();
-		} else {
-			try {
-				server.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
+		try {
+			server.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		server = null;
 		System.out.println("Server Disconnected");
 	}
 }

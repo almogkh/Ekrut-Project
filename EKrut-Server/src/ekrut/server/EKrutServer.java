@@ -253,7 +253,7 @@ public class EKrutServer extends AbstractServer {
 	public boolean connect() {
 		if (!dbCon.connect())
 			return false;
-		// serverReportManager.startReportGeneration();
+		serverReportManager.startReportGeneration();
 		return true;
 	}
 

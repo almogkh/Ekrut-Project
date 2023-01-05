@@ -254,7 +254,7 @@ public class InventoryItemDAO {
 				if (item != null && itemActualQuantity != -1)
 					inventoryItems.add(new InventoryItem(item, itemActualQuantity, ekrutLocation, rs.getString("area"), rs.getInt("threshold")));
 			}
-			return inventoryItems.size() != 0 ? inventoryItems : null;
+			return inventoryItems;
 		} catch (SQLException e1) {
 			return null;
 		} finally {
