@@ -2,6 +2,7 @@ package ekrut.client.gui;
 
 import java.io.IOException;
 import ekrut.client.EKrutClientUI;
+import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
@@ -50,20 +51,19 @@ public class ItemController extends HBox {
 	private Label quantityInCart;
 
 	@FXML
-	private Label noDigitError;
+	private Label noDigitOrQuantityError;
 
-	private Integer cartQuantity = 0;
-
+	private int itemId;
 	private Item item;
 	private Image image;
-	private int itemId;
-	private InventoryItem inventoryItem;	
+	private Integer cartQuantity = 0;
+	private Integer itemQuantity;
+	private String ekrutLocation;
+	private InventoryItem inventoryItem;
 	private ClientOrderManager clientOrderManager;
 
-
-
-	
-	public ItemController(InventoryItem inventoryItem) {
+	public ItemController(Item item) {
+		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		clientOrderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
 		fxmlLoader.setRoot(this);
@@ -74,27 +74,64 @@ public class ItemController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
-		this.inventoryItem = inventoryItem;
-		this.item =  inventoryItem.getItem();
-		this.itemId = item.getItemId();	// Q.Nir - is nedded?
+
+		this.item = item;
+		this.itemId = item.getItemId(); // Q.Nir - is nedded?
 		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
 		// Image(new ByteArrayInputStream(item.getImg()));
 		itemName.setText(item.getItemName());
 		itemDiscription.setText(item.getItemDescription());
 		itemPrice.setText(Float.toString(item.getItemPrice()));
-		  
 	}
 
+	public ItemController(InventoryItem inventoryItem) {
+		this.ekrutLocation = EKrutClientUI.ekrutLocation;
+
+		clientOrderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+
+		try {
+			fxmlLoader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		this.inventoryItem = inventoryItem;
+		this.item = inventoryItem.getItem();
+		this.itemId = item.getItemId(); // Q.Nir - is nedded?
+		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
+		// Image(new ByteArrayInputStream(item.getImg()));
+		itemName.setText(item.getItemName());
+		itemDiscription.setText(item.getItemDescription());
+		itemPrice.setText(Float.toString(item.getItemPrice()));
+	}
+
+	// C.Nir - Check if quntity is available for *MACHINE*
 	@FXML
 	void addToCart(ActionEvent event) {
-		noDigitError.setVisible(false);
+		noDigitOrQuantityError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
+			if (ekrutLocation != null) {
+				if (textQuantity > inventoryItem.getItemQuantity()) {
+					setQuantityTxtStyle("#FFB4AB");
+					noDigitOrQuantityError.setText("Not Enough Items!");
+					noDigitOrQuantityError.setVisible(true);					
+				}
+				else {
+					cartQuantity = textQuantity;
+					setQuantityTxtStyle("#FFFFFF");
+				}
+			}else {
+				
 			cartQuantity = textQuantity;
 			setQuantityTxtStyle("#FFFFFF");
-		} catch (NumberFormatException e) { 
-			noDigitError.setVisible(true);
+		}
+		} catch (NumberFormatException e) {
+			setQuantityTxtStyle("#FFB4AB");
+			noDigitOrQuantityError.setVisible(true);
 		}
 		OrderItem OrderItem = new OrderItem(item, cartQuantity);
 		clientOrderManager.addItemToOrder(OrderItem);
@@ -102,7 +139,7 @@ public class ItemController extends HBox {
 
 	@FXML
 	void minusItem(ActionEvent event) {
-		noDigitError.setVisible(false);
+		noDigitOrQuantityError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
 			if (textQuantity > 0) {
@@ -113,24 +150,35 @@ public class ItemController extends HBox {
 				else
 					setQuantityTxtStyle("#FFB4AB");
 			}
-		} catch (NumberFormatException e) { 
-			noDigitError.setVisible(true);
+		} catch (NumberFormatException e) {
+			noDigitOrQuantityError.setVisible(true);
 		}
 	}
 
 	@FXML
 	void plusItem(ActionEvent event) {
-		noDigitError.setVisible(false);
+		noDigitOrQuantityError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
-			quantityTxt.setText(Integer.toString(textQuantity + 1));
-			textQuantity++;
+			if (ekrutLocation != null) {
+				if (textQuantity + 1 < inventoryItem.getItemQuantity()) {
+					quantityTxt.setText(Integer.toString(textQuantity + 1));
+					textQuantity++;
+				} else {
+					noDigitOrQuantityError.setText("Not Enough Items!");
+					noDigitOrQuantityError.setVisible(true);
+				}
+			} else {
+				quantityTxt.setText(Integer.toString(textQuantity + 1));
+				textQuantity++;
+			}
 			if (cartQuantity == textQuantity)
 				setQuantityTxtStyle("#FFFFFF");
 			else
 				setQuantityTxtStyle("#FFB4AB");
-		} catch (NumberFormatException e) { 
-			noDigitError.setVisible(true);
+		} catch (NumberFormatException e) {
+			noDigitOrQuantityError.setText("Invalid Input!!!");
+			noDigitOrQuantityError.setVisible(true);
 		}
 
 	}

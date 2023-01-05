@@ -8,6 +8,7 @@ import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.InventoryItem;
+import ekrut.entity.Item;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -54,16 +55,23 @@ public class ItemBrowserController implements Initializable {
 	public void AddItemViewToOrderVBox() {
 		if (ekrutLocation != null) {
 			ArrayList<InventoryItem> itemsForSale = clientInventoryManager.fetchInventoryItemsByEkrutLocation(ekrutLocation);
-			ArrayList<ItemController> itemsToAdd = new ArrayList<>();
+			ArrayList<ItemController> inventoryItemsToAdd = new ArrayList<>();
 			
 			for (InventoryItem inventoryItem : itemsForSale)
-				itemsToAdd.add(new ItemController(inventoryItem));
+				inventoryItemsToAdd.add(new ItemController(inventoryItem));
+			
+			ObservableList<Node> children = orderVBox.getChildren();
+			children.addAll(inventoryItemsToAdd);
+		}
+		else {
+			ArrayList<Item> itemsForSale = clientInventoryManager.fetchAllItems();
+			ArrayList<ItemController> itemsToAdd = new ArrayList<>();
+			
+			for (Item item : itemsForSale)
+				itemsToAdd.add(new ItemController(item));
 			
 			ObservableList<Node> children = orderVBox.getChildren();
 			children.addAll(itemsToAdd);
-		}
-		else {
-			// Shipmet - get all items - wait for Ofek method
 		}
 		
 	}
