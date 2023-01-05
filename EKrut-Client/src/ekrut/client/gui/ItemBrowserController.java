@@ -53,7 +53,7 @@ public class ItemBrowserController implements Initializable {
 
 	public void AddItemViewToOrderVBox() {
 		if (ekrutLocation != null) {
-			ArrayList<InventoryItem> itemsForSale = clientInventoryManager.getItems(ekrutLocation);
+			ArrayList<InventoryItem> itemsForSale = clientInventoryManager.fetchInventoryItemsByEkrutLocation(ekrutLocation);
 			ArrayList<ItemController> itemsToAdd = new ArrayList<>();
 			
 			for (InventoryItem inventoryItem : itemsForSale)
