@@ -250,8 +250,11 @@ public class EKrutServer extends AbstractServer {
 
 
 
-	public DBController getDbCon() {
-		return dbCon;
+	public boolean connect() {
+		if (!dbCon.connect())
+			return false;
+		// serverReportManager.startReportGeneration();
+		return true;
 	}
 
 

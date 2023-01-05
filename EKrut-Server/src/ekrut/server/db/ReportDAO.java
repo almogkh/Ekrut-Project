@@ -903,7 +903,7 @@ public class ReportDAO {
 		boolean exists = true;
 		
 		PreparedStatement ps1 = con.getPreparedStatement(
-				  "SELECT 1 FROM reports WHERE EXTRACT(MONTH FROM date) = EXTRACT (MONTH FROM ?)"
+				  "SELECT 1 FROM reports WHERE EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?)"
 				+ " AND EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?)");
 
 		try {

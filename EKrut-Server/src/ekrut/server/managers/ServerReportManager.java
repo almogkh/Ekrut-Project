@@ -42,7 +42,6 @@ public class ServerReportManager {
 		reportDAO = new ReportDAO(con);
 		inventoryItemDAO = new InventoryItemDAO(con);
 		userDAO = new UserDAO(con);
-		startTimer();
 	}
 	
 	/**
@@ -521,7 +520,7 @@ public class ServerReportManager {
 	 *
 	 * @return the timer object
 	 */
-	public void startTimer() {
+	public void startReportGeneration() {
 		LocalDateTime now = LocalDateTime.now();
 		generateReportsIfNotUpToDate(now);
 		LocalDateTime expiry = getEndOfMonth(now);

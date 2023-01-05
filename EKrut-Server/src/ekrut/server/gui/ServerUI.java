@@ -41,10 +41,11 @@ public class ServerUI extends Application {
 		server = new EKrutServer(port,DBuserName, username, password);
 		controller.setTable(server.getSession());
 		try {
-			if(!server.getDbCon().connect()) {
+			if(!server.connect()) {
 				System.out.println("Can't connect to DB");
 				return false;
 			}
+			
 			server.listen();
 			System.out.println("Server listening for connections on port " + server.getPort());
 			
