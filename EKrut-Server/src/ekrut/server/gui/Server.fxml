@@ -87,7 +87,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </HBox.margin>
             </VBox>
-          <AnchorPane id="table" maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0" stylesheets="@Styles.css">
+          <AnchorPane id="table" maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="780.0">
             <children>
                   <Pane layoutX="391.0" layoutY="114.0" prefHeight="304.0" prefWidth="375.0" styleClass="container">
                      <children>
