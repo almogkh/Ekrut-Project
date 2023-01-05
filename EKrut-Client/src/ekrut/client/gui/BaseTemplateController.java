@@ -98,6 +98,7 @@ public class BaseTemplateController {
 	}
 
 	public void loadCreateOrder() {
+		switchStages("ItemBrowser");
 	}
 
 	public void loadPickupOrder() {
@@ -152,28 +153,25 @@ public class BaseTemplateController {
 	private ArrayList<Hyperlink> getHyperlinks(UserType userType, boolean customer) {
 		ArrayList<Hyperlink> allHyperlinks = new ArrayList<>();
 		
-		Hyperlink remoteOrderHyp = new Hyperlink("Remote order");
+		Hyperlink remoteOrderHyp = new Hyperlink("Remote Order");
     	remoteOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
     	
-    	Hyperlink pickupOrder = new Hyperlink("Pickup Order");
-    	pickupOrder.setOnAction((ActionEvent event) -> loadCreateOrder());
+    	Hyperlink CreateOrder = new Hyperlink("New Order");
+    	CreateOrder.setOnAction((ActionEvent event) -> loadCreateOrder());
     	
-    	Hyperlink approveShipmentHyp = new Hyperlink("Approve shipment");
+    	Hyperlink approveShipmentHyp = new Hyperlink("Approve Shipment");
     	approveShipmentHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
     	
-    	Hyperlink getExistingOrder = new Hyperlink("Get Order by ID");
-    	getExistingOrder.setOnAction((ActionEvent event) -> loadCreateOrder());
-    	
-    	Hyperlink viewShipRequestsHyp = new Hyperlink("Shipment requests");
+    	Hyperlink viewShipRequestsHyp = new Hyperlink("Shipment Requests");
     	viewShipRequestsHyp.setOnAction((ActionEvent event) -> loadViewShipment());
 
     	Hyperlink viewTicketsHyp = new Hyperlink("Tickets");
     	viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());
 
-    	Hyperlink registrationRequestsHyp = new Hyperlink("Registration requests");
+    	Hyperlink registrationRequestsHyp = new Hyperlink("Registration Requests");
     	registrationRequestsHyp.setOnAction((ActionEvent event) -> loadregistrationRequests());
     	
-    	Hyperlink viewReportsHyp = new Hyperlink("Monthly reports");
+    	Hyperlink viewReportsHyp = new Hyperlink("Monthly Reports");
     	viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
 		
 		
@@ -206,9 +204,7 @@ public class BaseTemplateController {
 		}
 		if (customer) {
 			allHyperlinks.add(remoteOrderHyp);    		
-			allHyperlinks.add(pickupOrder);	    		
-			allHyperlinks.add(approveShipmentHyp);			    		
-			allHyperlinks.add(getExistingOrder);
+			allHyperlinks.add(approveShipmentHyp);
 		}
 		return allHyperlinks;
 	}
@@ -223,9 +219,9 @@ public class BaseTemplateController {
 		ObservableList<Node> vboxChildren = navigationVbox.getChildren();
 		if (EKrutClientUI.ekrutLocation != null) {
 			if (me.isCustomer()) {
-				Hyperlink createOrderHyp = new Hyperlink("Create new order");
+				Hyperlink createOrderHyp = new Hyperlink("Create New Order");
 				createOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
-				Hyperlink pickupOrderHyp = new Hyperlink("Pickup existing order");
+				Hyperlink pickupOrderHyp = new Hyperlink("Pickup Order");
 				pickupOrderHyp.setOnAction((ActionEvent event) -> loadPickupOrder());
 				vboxChildren.addAll(createOrderHyp, pickupOrderHyp);
 			}
