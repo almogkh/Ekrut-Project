@@ -54,8 +54,10 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 				InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE, ekrutLocation);
 		InventoryItemResponse inventoryItemResponse = sendRequest(inventoryItemRequest);
 		ResultType resultType = inventoryItemResponse.getResultType();
-		if (resultType == ResultType.NOT_FOUND) return null;
-		if (resultType != ResultType.OK) throw new RuntimeException(resultType.toString());
+		if (resultType == ResultType.NOT_FOUND) 
+			return null;
+		if (resultType != ResultType.OK) 
+			throw new RuntimeException(resultType.toString());
 		return inventoryItemResponse.getInventoryItems();
 	}
 	
@@ -91,7 +93,8 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 				InventoryItemRequestType.FETCH_ALL_ITEMS);
 		InventoryItemResponse inventoryItemResponse = sendRequest(inventoryItemRequest);
 		ResultType resultType = inventoryItemResponse.getResultType();
-		if (resultType != ResultType.OK) throw new RuntimeException(resultType.toString());
+		if (resultType != ResultType.OK)
+			throw new RuntimeException(resultType.toString());
 		return inventoryItemResponse.getItems();
 	}
 	
