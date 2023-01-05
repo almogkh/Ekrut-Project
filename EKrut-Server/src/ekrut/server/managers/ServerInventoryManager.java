@@ -64,7 +64,7 @@ public class ServerInventoryManager {
 		case FETCH_ALL_ITEMS:
 			return fetchAllItems(inventoryItemRequest);
 		case FETCH_ALL_INVENTORYITEMS_IN_MACHINE:
-			return null;
+			return fetchInventoryItemsByEkrutLocation(inventoryItemRequest);
 		default:
 			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		}

@@ -35,20 +35,21 @@ public class TicketBrowserController implements Initializable {
     	client = EKrutClientUI.getEkrutClient();
     	clientTicketManager = client.getClientTicketManager();
     	UserType usertype = client.getClientSessionManager().getUser().getUserType();
+    	if (usertype != UserType.AREA_MANAGER)
+    		createTicketBtn.setVisible(false);
+    	String userArea = client.getClientSessionManager().getUser().getArea();
+    	
     	try {
-    		String userArea = client.getClientSessionManager().getUser().getArea();
 			ArrayList<Ticket> ticketsToShow = clientTicketManager.fetchTicketsByArea(userArea); // TBD OFEK: BUG WHEN WRONG AREA
+			if (ticketsToShow == null)
+				return;
 			ObservableList<Node> ticketsContainerVboxChildren = ticketsContainerVbox.getChildren();
 			for (Ticket ticket : ticketsToShow) {
 				ticketsContainerVboxChildren.add(new TicketViewController(ticket, usertype != UserType.OPERATIONS_WORKER));
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	if (usertype != UserType.AREA_MANAGER)
-    		createTicketBtn.setVisible(false);
 	}
     
     

@@ -52,16 +52,16 @@ public class ItemDAO {
 	public ArrayList<Item> fetchAllItems() {
 		ArrayList<Item> allItems = new ArrayList<>();
 		PreparedStatement ps = con.getPreparedStatement(
-				"SELECT itemId, itemName, itemDescription, itemPrice FROM items;");
+				"SELECT * FROM items;");
 		try {
 			ResultSet rs = con.executeQuery(ps);
-			if(rs.next())
+			while(rs.next())
 				allItems.add(new Item(
 						rs.getInt("itemId"),
 						rs.getString("itemName"), 
 						rs.getString("itemDescription"),
 						rs.getFloat("itemPrice")));
-			return null;
+			return allItems;
 		} catch (SQLException e1) {
 			return null;
 		}finally {
