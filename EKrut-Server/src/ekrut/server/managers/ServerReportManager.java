@@ -1,12 +1,18 @@
 package ekrut.server.managers;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
@@ -36,6 +42,7 @@ public class ServerReportManager {
 		reportDAO = new ReportDAO(con);
 		inventoryItemDAO = new InventoryItemDAO(con);
 		userDAO = new UserDAO(con);
+		startTimer();
 	}
 	
 	/**
@@ -142,9 +149,16 @@ public class ServerReportManager {
 		return report;
 	}
 	
-	//TODO document
+	/**
+	 * Filters a list of orders by the area of the user associated with each order.
+	 *
+	 * @param orders the list of orders to filter
+	 * @param area the area to filter by
+	 * @return the filtered list of orders
+	 */
 	private ArrayList<Order> filterShipmentOrdersByUserArea(ArrayList<Order> orders, String area) {
 		ArrayList<Order> filterdList = new ArrayList<>();
+	    // Iterate over the list of orders
 		for (Order order : orders) {
 			// Check if the user at the order is from the given area
 			if (userDAO.fetchUserByUsername(order.getUsername()).getArea().equals(area)) {
@@ -322,7 +336,12 @@ public class ServerReportManager {
 		return customersOrders;
 	}
 	
-
+	/**
+	 * Processes a list of customer order dates and returns a map of order counts by date.
+	 *
+	 * @param allCustomersOrdersByDate a list of customer order dates
+	 * @return a map of order counts by date
+	 */
 	private Map<Integer, Integer> ProcessCustomersOrdersByDate(ArrayList<LocalDateTime> allCustomersOrdersByDate) {
 		Map<Integer, Integer> customersOrdersByDate = new HashMap<>();
 		// Iterate through the list of customer orders
@@ -395,6 +414,12 @@ public class ServerReportManager {
 		return itemsQuantityInOrders;
 	}
 	
+	/**
+	 * Processes a map of orders by location and returns a map of order data for each location.
+	 *
+	 * @param areaOrders a map of orders by location
+	 * @return a map of order data for each location
+	 */
 	private Map<String, ArrayList<Integer>> processOrdersArea(Map<String, ArrayList<Order>> areaOrders){
 
 		Map<String, ArrayList<Integer>> orderReportData = new HashMap<>();
@@ -410,8 +435,9 @@ public class ServerReportManager {
 			int totalOrders = 0;
 			int totalOrdersInILS = 0;
 			
+	        // Iterate through orders of given location
 			for (Order order : entry.getValue()) {
-				//locationOrdersData(0) and (4) saved for total
+				
 				totalOrders += 1;
 				int sumAmount = Math.round(order.getSumAmount());
 				totalOrdersInILS += sumAmount;
@@ -428,16 +454,21 @@ public class ServerReportManager {
 				    	break;
 				  }
 			}
+	        // Update locationOrdersData with total values
 			locationOrdersData.add(0, locationOrdersData.get(0) + totalOrders);
 			locationOrdersData.add(4, locationOrdersData.get(3) + totalOrdersInILS);
-			
+	        // Put locationOrdersData in output map
 			orderReportData.put(entry.getKey(), locationOrdersData);
 		}
-		
 		return orderReportData;
 	}
 	
-	// Generate all the monthly report
+	
+	/**
+	 * Generates monthly reports for the given date.
+	 *
+	 * @param date the date for which to generate the reports
+	 */
 	public void generateMonthlyReports(LocalDateTime date) {
 
 		String areas[] = {"UAE", "North", "South"};
@@ -448,6 +479,70 @@ public class ServerReportManager {
 			for (String location : locationsList) {
 				reportDAO.createCustomerReport(generateCustomerReport(date, location, area));
 				reportDAO.createInventoryReport(generateInventoryReport(date, location, area));
+			}
+		}
+	}
+	
+	private LocalDateTime getEndOfMonth(LocalDateTime now) {
+		// Set the date to the last day of the month
+		LocalDate nowDate = now.toLocalDate();
+		LocalDate endOfMonth = nowDate.with(TemporalAdjusters.lastDayOfMonth());
+		// Set the time to 23:59:59
+		LocalDateTime expiry = LocalDateTime.of(endOfMonth, LocalTime.of(23, 59, 59));
+		return expiry;
+	}
+	
+	private class ReportTask extends TimerTask {
+
+		private Timer timer;
+		private LocalDateTime expiry;
+		
+		public ReportTask(Timer timer, LocalDateTime expiry) {
+			this.timer = timer;
+			this.expiry = expiry;
+		}
+		
+		@Override
+		public void run() {
+			generateMonthlyReports(expiry);
+			
+			// Should be midnight of the first day of the next month
+			LocalDateTime now = expiry.plusSeconds(1);
+			LocalDateTime nextExpiry = getEndOfMonth(now);
+			ReportTask task = new ReportTask(timer, nextExpiry);
+			timer.schedule(task, now.until(nextExpiry, ChronoUnit.MILLIS));
+		}
+		
+	}
+	
+	/**
+	 * Starts a timer that expires at the end of the current month and runs the
+	 * generateMonthlyReports method when it expires.
+	 *
+	 * @return the timer object
+	 */
+	public void startTimer() {
+		LocalDateTime now = LocalDateTime.now();
+		generateReportsIfNotUpToDate(now);
+		LocalDateTime expiry = getEndOfMonth(now);
+
+		// Start the timer
+		Timer timer = new Timer();
+		ReportTask task = new ReportTask(timer, expiry);
+		timer.schedule(task, now.until(expiry, ChronoUnit.MILLIS));
+	}
+	
+	/**
+	 * Generates reports for the previous month if they are not up to date.
+	 */
+	private void generateReportsIfNotUpToDate(LocalDateTime now) {
+		LocalDate nowDate = now.toLocalDate();
+
+		// Check if now is not the last day of the month
+		if (nowDate.getDayOfMonth() < nowDate.lengthOfMonth()) {
+			// generate reports for the last month if the latest report is not updated
+			if (!reportDAO.isLatestReportUpdated(now.minusMonths(1))) {
+				generateMonthlyReports(now.minusMonths(1));
 			}
 		}
 	}
