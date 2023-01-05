@@ -3,7 +3,7 @@ package ekrut.server.managers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -483,43 +483,64 @@ public class ServerReportManager {
 		}
 	}
 	
+	private LocalDateTime getEndOfMonth(LocalDateTime now) {
+		// Set the date to the last day of the month
+		LocalDate nowDate = now.toLocalDate();
+		LocalDate endOfMonth = nowDate.with(TemporalAdjusters.lastDayOfMonth());
+		// Set the time to 23:59:59
+		LocalDateTime expiry = LocalDateTime.of(endOfMonth, LocalTime.of(23, 59, 59));
+		return expiry;
+	}
+	
+	private class ReportTask extends TimerTask {
+
+		private Timer timer;
+		private LocalDateTime expiry;
+		
+		public ReportTask(Timer timer, LocalDateTime expiry) {
+			this.timer = timer;
+			this.expiry = expiry;
+		}
+		
+		@Override
+		public void run() {
+			generateMonthlyReports(expiry);
+			
+			// Should be midnight of the first day of the next month
+			LocalDateTime now = expiry.plusSeconds(1);
+			LocalDateTime nextExpiry = getEndOfMonth(now);
+			ReportTask task = new ReportTask(timer, nextExpiry);
+			timer.schedule(task, now.until(nextExpiry, ChronoUnit.MILLIS));
+		}
+		
+	}
+	
 	/**
 	 * Starts a timer that expires at the end of the current month and runs the
 	 * generateMonthlyReports method when it expires.
 	 *
 	 * @return the timer object
 	 */
-	public Timer startTimer() {
-		generateReportsIfNotUpToDate();
-	    // Get the current date and time
-	    LocalDateTime now = LocalDateTime.now();
-	    // Set the date to the last day of the month
-	    LocalDate nowDate = now.toLocalDate();
-	    LocalDate endOfMonth = nowDate.with(TemporalAdjusters.lastDayOfMonth());
-	    // Set the time to 23:59:59
-	    LocalDateTime expiry = LocalDateTime.of(endOfMonth, LocalTime.of(23, 59, 59));
+	public void startTimer() {
+		LocalDateTime now = LocalDateTime.now();
+		generateReportsIfNotUpToDate(now);
+		LocalDateTime expiry = getEndOfMonth(now);
 
-	    // Start the timer
-	    Timer timer = new Timer();
-	    timer.schedule(new TimerTask() {
-	        @Override
-	        public void run() {
-	        	generateMonthlyReports(expiry);
-	        }
-	    }, expiry.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() - now.toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli());
-	    return timer;
+		// Start the timer
+		Timer timer = new Timer();
+		ReportTask task = new ReportTask(timer, expiry);
+		timer.schedule(task, now.until(expiry, ChronoUnit.MILLIS));
 	}
 	
 	/**
 	 * Generates reports for the previous month if they are not up to date.
 	 */
-	public void generateReportsIfNotUpToDate() {
-		LocalDateTime now = LocalDateTime.now();
+	private void generateReportsIfNotUpToDate(LocalDateTime now) {
 		LocalDate nowDate = now.toLocalDate();
 
 		// Check if now is not the last day of the month
 		if (nowDate.getDayOfMonth() < nowDate.lengthOfMonth()) {
-		    // generate reports for the last month if the latest report is not updated
+			// generate reports for the last month if the latest report is not updated
 			if (!reportDAO.isLatestReportUpdated(now.minusMonths(1))) {
 				generateMonthlyReports(now.minusMonths(1));
 			}
