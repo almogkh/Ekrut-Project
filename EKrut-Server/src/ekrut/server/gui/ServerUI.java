@@ -3,6 +3,7 @@ package ekrut.server.gui;
 import java.io.IOException;
 
 import ekrut.server.EKrutServer;
+import ekrut.server.TimeScheduler;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,6 +34,7 @@ public class ServerUI extends Application {
 
 	@Override
 	public void stop() throws IOException {
+		TimeScheduler.stopTimer();
 		if (server != null)
 			server.close();
 	}
@@ -41,6 +43,7 @@ public class ServerUI extends Application {
 		server = new EKrutServer(port,DBuserName, username, password);
 		controller.setTable(server.getSession());
 		try {
+			TimeScheduler.startTimer();
 			if(!server.connect()) {
 				System.out.println("Can't connect to DB");
 				return false;

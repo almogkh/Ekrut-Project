@@ -3,7 +3,6 @@ package ekrut.server.managers;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import ekrut.entity.ConnectedClient;
@@ -15,6 +14,7 @@ import ekrut.net.UserRequest;
 import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
 import ekrut.server.EKrutServer;
+import ekrut.server.TimeScheduler;
 import ekrut.server.UsersImporter;
 import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
@@ -34,7 +34,7 @@ public class ServerSessionManager {
 	private User user = null;
 	// A map of logged-in users and their corresponding timer tasks, which will log
 	// them out after a certain time period.
-	private HashMap<User, Timer> connectedUsers;
+	private HashMap<User, TimerTask> connectedUsers;
 	// The data access object for interacting with the database.
 	private UserDAO userDAO;
 	// A map of client connections and the users associated with them.
@@ -221,16 +221,16 @@ public class ServerSessionManager {
 	 * @param client   the client associated with the given user
 	 * @return the timer that was started
 	 */
-	public Timer startTimer(String username, ConnectionToClient client) {
+	public TimerTask startTimer(String username, ConnectionToClient client) {
 		// Start the timer
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
+		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
 				logoutUser(client, "Session expired");
 			}
-		}, LOGOUT_TIME);
-		return timer;
+		};
+		TimeScheduler.getTimer().schedule(task, LOGOUT_TIME);
+		return task;
 	}
 
 	public UserResponse fetchUser(FetchUserType fetchType, String argument) {

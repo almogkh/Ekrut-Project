@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import ekrut.entity.InventoryItem;
@@ -23,6 +22,7 @@ import ekrut.entity.ReportType;
 import ekrut.net.ReportRequest;
 import ekrut.net.ReportResponse;
 import ekrut.net.ResultType;
+import ekrut.server.TimeScheduler;
 import ekrut.server.db.DBController;
 import ekrut.server.db.InventoryItemDAO;
 import ekrut.server.db.ReportDAO;
@@ -493,11 +493,9 @@ public class ServerReportManager {
 	
 	private class ReportTask extends TimerTask {
 
-		private Timer timer;
 		private LocalDateTime expiry;
 		
-		public ReportTask(Timer timer, LocalDateTime expiry) {
-			this.timer = timer;
+		public ReportTask(LocalDateTime expiry) {
 			this.expiry = expiry;
 		}
 		
@@ -505,11 +503,10 @@ public class ServerReportManager {
 		public void run() {
 			generateMonthlyReports(expiry);
 			
-			// Should be midnight of the first day of the next month
-			LocalDateTime now = expiry.plusSeconds(1);
-			LocalDateTime nextExpiry = getEndOfMonth(now);
-			ReportTask task = new ReportTask(timer, nextExpiry);
-			timer.schedule(task, now.until(nextExpiry, ChronoUnit.MILLIS));
+			LocalDateTime now = LocalDateTime.now();
+			LocalDateTime nextExpiry = getEndOfMonth(expiry.plusSeconds(1));
+			ReportTask task = new ReportTask(nextExpiry);
+			TimeScheduler.getTimer().schedule(task, now.until(nextExpiry, ChronoUnit.MILLIS));
 		}
 		
 	}
@@ -526,9 +523,8 @@ public class ServerReportManager {
 		LocalDateTime expiry = getEndOfMonth(now);
 
 		// Start the timer
-		Timer timer = new Timer();
-		ReportTask task = new ReportTask(timer, expiry);
-		timer.schedule(task, now.until(expiry, ChronoUnit.MILLIS));
+		ReportTask task = new ReportTask(expiry);
+		TimeScheduler.getTimer().schedule(task, now.until(expiry, ChronoUnit.MILLIS));
 	}
 	
 	/**
