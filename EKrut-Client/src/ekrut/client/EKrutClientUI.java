@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class EKrutClientUI extends Application {
@@ -45,6 +46,7 @@ public class EKrutClientUI extends Application {
 		BaseTemplateController baseTemplateController = loader.getController();
 		baseTemplateController.loadHostSelection();
 		Scene scene = new Scene(root);
+		primaryStage.getIcons().add(new Image(EKrutClientUI.class.getResourceAsStream("/ekrut/client/gui/gui-assets/icon.png")));
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
