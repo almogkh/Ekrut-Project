@@ -524,7 +524,7 @@ public class ReportDAO {
 	// Add document
 	public ArrayList<LocalDateTime> getAllCustomersOrdersByDateWithOutShipment(LocalDateTime date, String location) {
 		
-		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
+		PreparedStatement ps1 = con.getPreparedStatement("SELECT date FROM orders WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?) AND"
 				+ " EXTRACT(YEAR FROM date) = EXTRACT(YEAR FROM ?) AND location = ? AND type != 'SHIPMENT'");
 		try {
@@ -747,11 +747,11 @@ public class ReportDAO {
 		con.beginTransaction();
 		
 		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO customers_report_data"
-													+ " (reportID,1,2,3,4,5,6+)"
+													+ " (reportID,`1`,`2`,`3`,`4`,`5`,`6+`)"
 													+ " VALUES(?,?,?,?,?,?,?)");
 		
-		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO customerReports"
-								+ " (reportID,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31)"
+		PreparedStatement ps2 = con.getPreparedStatement("INSERT INTO customer_reports"
+								+ " (reportID,`1`,`2`,`3`,`4`,`5`,`6`,`7`,`8`,`9`,`10`,`11`,`12`,`13`,`14`,`15`,`16`,`17`,`18`,`19`,`20`,`21`,`22`,`23`,`24`,`25`,`26`,`27`,`28`,`29`,`30`,`31`)"
 								+ " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 		
 		if (!createReport(report)) {

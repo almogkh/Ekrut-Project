@@ -374,7 +374,7 @@ public class ServerReportManager {
 			
 		    @Override
 		    public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
-		        return entry2.getValue().compareTo(entry1.getValue());
+		        return -entry2.getValue().compareTo(entry1.getValue());
 		    }
 		    
 		});
@@ -428,7 +428,7 @@ public class ServerReportManager {
 			ArrayList<Integer> locationOrdersData = new ArrayList<>();
 			
 			// Initialize locationOrdersData
-			for (int i = 0; i < 8; i++) 
+			for (int i = 0; i < 6; i++) 
 				locationOrdersData.add(0);
 			
 			int totalOrders = 0;
@@ -442,20 +442,20 @@ public class ServerReportManager {
 				totalOrdersInILS += sumAmount;
 				switch (order.getType()) {
 				    case PICKUP:
-				    	locationOrdersData.add(2, locationOrdersData.get(1) + 1);
-				    	locationOrdersData.add(6, locationOrdersData.get(4) + sumAmount);
+				    	locationOrdersData.set(1, locationOrdersData.get(1) + 1);
+				    	locationOrdersData.set(4, locationOrdersData.get(4) + sumAmount);
 				    	break;
 				    case REMOTE:
-				    	locationOrdersData.add(3, locationOrdersData.get(2) + 1);
-				    	locationOrdersData.add(7, locationOrdersData.get(5) + sumAmount);
+				    	locationOrdersData.set(2, locationOrdersData.get(2) + 1);
+				    	locationOrdersData.set(5, locationOrdersData.get(5) + sumAmount);
 				    	break;
 				    default:
 				    	break;
 				  }
 			}
 	        // Update locationOrdersData with total values
-			locationOrdersData.add(0, locationOrdersData.get(0) + totalOrders);
-			locationOrdersData.add(4, locationOrdersData.get(3) + totalOrdersInILS);
+			locationOrdersData.set(0, locationOrdersData.get(0) + totalOrders);
+			locationOrdersData.set(3, locationOrdersData.get(3) + totalOrdersInILS);
 	        // Put locationOrdersData in output map
 			orderReportData.put(entry.getKey(), locationOrdersData);
 		}
