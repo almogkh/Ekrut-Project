@@ -53,7 +53,7 @@ public class ServerTicketManager {
 			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
 		//get ticket information from ticket request
-		String ekrutLocation =ticketRequest.getEkrutLocation();
+		String ekrutLocation = ticketRequest.getEkrutLocation();
 		int itemID= ticketRequest.getItemID();
 		
 		//get area by ekrutLocation
@@ -71,7 +71,7 @@ public class ServerTicketManager {
 		String username =ticketRequest.getUsername();
 			
 		//build new ticket to create 
-		Ticket newTicket = new Ticket(null,TicketStatus.IN_PROGRESS,area,ekrutLocation,threshold,itemID,itemName,username);
+		Ticket newTicket = new Ticket(null,TicketStatus.IN_PROGRESS,ekrutLocation,area,threshold,itemID,itemName,username);
 		
 		if(!ticketDAO.createTicket(newTicket)) {
 			return new TicketResponse(ResultType.UNKNOWN_ERROR);
