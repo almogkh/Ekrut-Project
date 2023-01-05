@@ -3,17 +3,22 @@ package ekrut.client.gui;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
-import ekrut.entity.InventoryItem;
+import ekrut.entity.Item;
 import ekrut.entity.User;
+import ekrut.entity.UserType;
+import ekrut.net.FetchUserType;
+import ekrut.net.ResultType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 
 public class TicketSubmissionController implements Initializable {
@@ -39,15 +44,15 @@ public class TicketSubmissionController implements Initializable {
     private Label ticketMsgLbl;
     @FXML
     private Button markCompletedBtn;
-
     @FXML
     private Button submitBtn;
+    
 	private EKrutClient client;
-	private String[] items;
 	private String area;
 	private String ekrutLocation;
 	private String itemName;
 	private String workerUserName;
+	ArrayList<Item> itemsArrayList;
 	private static final String WORKER_PLACEHOLDER = "<Worker's Name>";
 	private static final String ITEM_PLACEHOLDER = "<Item Name>";
 	private static final String FACILITY_PLACEHOLDER = "<Machine ID>";
@@ -65,10 +70,11 @@ public class TicketSubmissionController implements Initializable {
 		facilityCombo.getItems().addAll(ekrutLocations);
 		
 		// Setting all available marketing workers.
-		//ArrayList<User> workersArrayList = client.getClientSessionManager().fetchAllUsersByRole(UserType.MARKETING_WORKER); 
-		//workers = new String[workersArrayList.lengh];
-		//for (int i=0; i<workersArrayList.lengh; i++)
-		//	workers[i] = workersArrayList.toArray(new String[0]);
+		ArrayList<User> workersArrayList = client.getClientSessionManager().fetchUser(FetchUserType.ROLE, UserType.OPERATIONS_WORKER.toString()); 
+		String[] workers = new String[workersArrayList.size()];
+		for (int i=0; i<workersArrayList.size(); i++)
+			workers[i] = workersArrayList.get(i).getUsername();
+		workerCombo.getItems().addAll(workers);
 		
 		// Gray out item & worker combo boxes.
 		itemCombo.setDisable(true);
@@ -77,11 +83,13 @@ public class TicketSubmissionController implements Initializable {
 		arrowToWorker.setOpacity(0.4);
 		// Set Area name in gui preview
 		areaPlusLocationLbl.setText(area + ", " + FACILITY_PLACEHOLDER);
+		submitBtn.setDisable(true);
 	}
     
     
     @FXML
     void facilityComboSelected(ActionEvent event) {
+    	submitBtn.setDisable(true);
     	workerCombo.setValue(null);
     	itemCombo.setValue(null);
     	workerCombo.setDisable(true);
@@ -97,6 +105,7 @@ public class TicketSubmissionController implements Initializable {
 
     @FXML
     void itemComboSelected(ActionEvent event) {
+    	submitBtn.setDisable(true);
     	workerCombo.setValue(null);
     	workerCombo.setDisable(false);
     	arrowToWorker.setOpacity(1);
@@ -109,30 +118,40 @@ public class TicketSubmissionController implements Initializable {
     void workerComboSelected(ActionEvent event) {
     	workerUserName = workerCombo.getValue();
     	assignedForLbl.setText("Assigned for:  " + workerUserName);
+    	submitBtn.setDisable(false);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     private void updateItemChoice() {
     	itemCombo.getItems().clear(); 
-    	ArrayList<InventoryItem> items = client.getClientInventoryManager().fetchInventoryItemsByEkrutLocation(ekrutLocation);
-    	if (items != null)
-	    	for (InventoryItem item : items)
-	        	itemCombo.getItems().add(item.getItem().getItemName());
+    	itemsArrayList = client.getClientInventoryManager().fetchAllItems();
+    	if (itemsArrayList != null)
+	    	for (Item item : itemsArrayList)
+	        	itemCombo.getItems().add(item.getItemName());
+    	else
+    		System.out.println("BAD!");
     }
     
     @FXML
     void submitBtnAction(ActionEvent event) {
-    	System.out.println(ekrutLocation);
-    	System.out.println(itemName);
-    	System.out.println(workerUserName);
-    	System.out.println(items);
+    	if (facilityCombo.getValue() == null || 
+    		itemCombo.getValue() == null || 
+    		workerCombo.getValue() == null)
+    		return;
+    	int itemId = -1;
+    	for (Item inventoryItem : itemsArrayList)
+    		if (inventoryItem.getItemName().toString() == itemCombo.getValue()) {
+    			itemId = inventoryItem.getItemId();
+    			break;
+    		}
+    	if (itemId != -1) {
+    		if (ResultType.OK == client.getClientTicketManager().CreateTicket(
+    				facilityCombo.getValue(), itemId, workerCombo.getValue())) {
+    			Alert alert = new Alert(AlertType.INFORMATION, "Ticket created", ButtonType.CLOSE);
+    			alert.showAndWait();
+    		} else {
+    			Alert alert = new Alert(AlertType.ERROR, "Couldn't create ticket :(", ButtonType.CLOSE);
+    			alert.showAndWait();
+    		}
+    	}
     }
 }
