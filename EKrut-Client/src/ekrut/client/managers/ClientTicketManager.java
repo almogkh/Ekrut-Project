@@ -53,12 +53,12 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
 	 * @return the result of the ticket creation request
 	 * @throws Exception if an error occurs while sending the ticket creation request
 	 */
-	public ResultType CreateTicket(String ekrutLocation , int itemID, String username) throws Exception{
-		if (itemID==0) {
-			throw new IllegalArgumentException("provided null itemID");
+	public ResultType CreateTicket(String ekrutLocation, int itemID, String username) {
+		if (itemID == 0) {
+			return ResultType.INVALID_INPUT;
 		}
 		
-		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.CREATE,ekrutLocation,itemID,username); 
+		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.CREATE, ekrutLocation, itemID, username); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
 		return ticketResponse.getResultType();
