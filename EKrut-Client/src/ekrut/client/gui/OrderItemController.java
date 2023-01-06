@@ -1,6 +1,8 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.InventoryItem;
@@ -17,7 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
-public class ItemController extends HBox {
+public class OrderItemController extends HBox {
 
 	@FXML
 	private Button AddBtn;
@@ -59,20 +61,20 @@ public class ItemController extends HBox {
 	private InventoryItem inventoryItem;
 	private ClientOrderManager clientOrderManager;
 
-	public ItemController(Item item) {
+	public OrderItemController(Item item) {
+		this.item = item;
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		clientOrderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderItem.fxml"));
+
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
-
 		try {
 			fxmlLoader.load();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 
-		this.item = item;
 		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
 		// Image(new ByteArrayInputStream(item.getImg()));
 		itemName.setText(item.getItemName());
@@ -80,11 +82,12 @@ public class ItemController extends HBox {
 		itemPrice.setText(Float.toString(item.getItemPrice()));
 	}
 
-	public ItemController(InventoryItem inventoryItem) {
+	public OrderItemController(InventoryItem inventoryItem) {
+		this.inventoryItem = inventoryItem;
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
-
 		clientOrderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Item.fxml"));
+
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderItem.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 
@@ -94,7 +97,6 @@ public class ItemController extends HBox {
 			throw new RuntimeException(e);
 		}
 
-		this.inventoryItem = inventoryItem;
 		this.item = inventoryItem.getItem();
 		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
 		// Image(new ByteArrayInputStream(item.getImg()));
@@ -108,28 +110,28 @@ public class ItemController extends HBox {
 		noDigitOrQuantityError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
+			// If its from machine
 			if (ekrutLocation != null) {
 				if (textQuantity > inventoryItem.getItemQuantity()) {
 					setQuantityTxtStyle("#FFB4AB");
 					noDigitOrQuantityError.setText("Not Enough Items!");
-					noDigitOrQuantityError.setVisible(true);					
-				}
-				else {
+					noDigitOrQuantityError.setVisible(true);
+				} else {
 					cartQuantity = textQuantity;
 					setQuantityTxtStyle("#FFFFFF");
 				}
-			}else {
-				
-			cartQuantity = textQuantity;
-			setQuantityTxtStyle("#FFFFFF");
-		}
+			} else {
+
+				cartQuantity = textQuantity;
+				setQuantityTxtStyle("#FFFFFF");
+			}
 		} catch (NumberFormatException e) {
 			setQuantityTxtStyle("#FFB4AB");
 			noDigitOrQuantityError.setVisible(true);
 		}
 		OrderItem orderItem = new OrderItem(item, cartQuantity);
 		clientOrderManager.addItemToOrder(orderItem);
-		
+
 	}
 
 	@FXML
@@ -155,15 +157,9 @@ public class ItemController extends HBox {
 		noDigitOrQuantityError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
-			if (ekrutLocation != null) {
-				if (textQuantity + 1 <= inventoryItem.getItemQuantity()) {
-					quantityTxt.setText(Integer.toString(textQuantity + 1));
-					textQuantity++;
-				} else {
-					noDigitOrQuantityError.setText("Not Enough Items!");
-					noDigitOrQuantityError.setVisible(true);
-				}
-			} else {
+			if (ekrutLocation != null) 
+				CheckQuantityAvilability(textQuantity);
+				else {
 				quantityTxt.setText(Integer.toString(textQuantity + 1));
 				textQuantity++;
 			}
@@ -186,6 +182,18 @@ public class ItemController extends HBox {
 
 	public Integer getCartQuantity() {
 		return cartQuantity;
+	}
+
+	private void CheckQuantityAvilability(int textQuantity) {
+		if (ekrutLocation != null) {
+			if (textQuantity + 1 > inventoryItem.getItemQuantity()) {
+				noDigitOrQuantityError.setText("Not Enough Items!");
+				noDigitOrQuantityError.setVisible(true);
+			} else {
+				quantityTxt.setText(Integer.toString(textQuantity + 1));
+				textQuantity++;
+			}
+		}
 	}
 
 }

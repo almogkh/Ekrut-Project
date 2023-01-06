@@ -8,9 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import com.mysql.cj.MysqlType;
-
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.server.intefaces.IItemQuantityFetcher;

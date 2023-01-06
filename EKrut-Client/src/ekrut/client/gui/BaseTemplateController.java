@@ -3,6 +3,7 @@ package ekrut.client.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 import ekrut.client.EKrutClientUI;
+import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.User;
 import ekrut.entity.UserType;
 import javafx.collections.ObservableList;
@@ -41,6 +42,7 @@ public class BaseTemplateController {
 
 	// private User me;
 	private static BaseTemplateController baseTemplateController;
+	private ClientOrderManager clientOrderManager;
 
 	public static BaseTemplateController getBaseTemplateController() {
 		return baseTemplateController;
@@ -98,7 +100,9 @@ public class BaseTemplateController {
 	}
 
 	public void loadCreateOrder() {
-		switchStages("ItemBrowser");
+		clientOrderManager =  EKrutClientUI.getEkrutClient().getClientOrderManager();
+		clientOrderManager.createOrder();
+		switchStages("OrderItemBrowser");
 	}
 
 	public void loadPickupOrder() {

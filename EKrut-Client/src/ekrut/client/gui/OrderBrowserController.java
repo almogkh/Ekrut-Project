@@ -18,7 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-public class ItemBrowserController implements Initializable {
+public class OrderBrowserController implements Initializable {
 
 	@FXML
 	private VBox orderVBox;
@@ -32,18 +32,16 @@ public class ItemBrowserController implements Initializable {
 	@FXML
 	private Button cancelOrderBtn;
 
-	private BaseTemplateController BTC = BaseTemplateController.getBaseTemplateController();
 
+	private BaseTemplateController BTC;
 	private String ekrutLocation;
 	private ClientInventoryManager clientInventoryManager;
-	private ClientOrderManager clientOrderManager;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		BTC = BaseTemplateController.getBaseTemplateController();
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		clientInventoryManager = EKrutClientUI.getEkrutClient().getClientInventoryManager();
-		clientOrderManager =  EKrutClientUI.getEkrutClient().getClientOrderManager();
-		clientOrderManager.createOrder();
 		AddItemViewToOrderVBox();
 	}
 
@@ -55,30 +53,30 @@ public class ItemBrowserController implements Initializable {
 	public void AddItemViewToOrderVBox() {
 		if (ekrutLocation != null) {
 			ArrayList<InventoryItem> itemsForSale = clientInventoryManager.fetchInventoryItemsByEkrutLocation(ekrutLocation);
-			ArrayList<ItemController> inventoryItemsToAdd = new ArrayList<>();
+			ArrayList<OrderItemController> inventoryItemsToAdd = new ArrayList<>();
 			
 			for (InventoryItem inventoryItem : itemsForSale)
-				inventoryItemsToAdd.add(new ItemController(inventoryItem));
+				inventoryItemsToAdd.add(new OrderItemController(inventoryItem));
 			
 			ObservableList<Node> children = orderVBox.getChildren();
 			children.addAll(inventoryItemsToAdd);
 		}
 		else {
 			ArrayList<Item> itemsForSale = clientInventoryManager.fetchAllItems();
-			ArrayList<ItemController> itemsToAdd = new ArrayList<>();
+			ArrayList<OrderItemController> itemsToAdd = new ArrayList<>();
 			
 			for (Item item : itemsForSale)
-				itemsToAdd.add(new ItemController(item));
+				itemsToAdd.add(new OrderItemController(item));
 			
 			ObservableList<Node> children = orderVBox.getChildren();
 			children.addAll(itemsToAdd);
 		}
-		
 	}
 
 	@FXML
 	void ViewCart(ActionEvent event) {
-		BTC.switchStages("CartView");
+		BTC.switchStages("OrderCartView");
+		
 	}
 
 	@FXML

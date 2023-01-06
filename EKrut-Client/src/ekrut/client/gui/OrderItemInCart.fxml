@@ -46,7 +46,7 @@
                   <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="noDigitError" layoutX="445.0" layoutY="43.0" prefHeight="20.0" prefWidth="154.0" text="Please input only digits!" textFill="RED" visible="false">
+            <Label fx:id="noDigitOrQuantityError" layoutX="445.0" layoutY="43.0" prefHeight="20.0" prefWidth="154.0" text="Please input only digits!" textFill="RED" visible="false">
                <font>
                   <Font size="14.0" />
                </font>
