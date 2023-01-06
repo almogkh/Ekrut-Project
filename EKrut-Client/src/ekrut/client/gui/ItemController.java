@@ -2,7 +2,6 @@ package ekrut.client.gui;
 
 import java.io.IOException;
 import ekrut.client.EKrutClientUI;
-import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
@@ -53,11 +52,9 @@ public class ItemController extends HBox {
 	@FXML
 	private Label noDigitOrQuantityError;
 
-	private int itemId;
 	private Item item;
 	private Image image;
 	private Integer cartQuantity = 0;
-	private Integer itemQuantity;
 	private String ekrutLocation;
 	private InventoryItem inventoryItem;
 	private ClientOrderManager clientOrderManager;
@@ -76,7 +73,6 @@ public class ItemController extends HBox {
 		}
 
 		this.item = item;
-		this.itemId = item.getItemId(); // Q.Nir - is nedded?
 		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
 		// Image(new ByteArrayInputStream(item.getImg()));
 		itemName.setText(item.getItemName());
@@ -100,7 +96,6 @@ public class ItemController extends HBox {
 
 		this.inventoryItem = inventoryItem;
 		this.item = inventoryItem.getItem();
-		this.itemId = item.getItemId(); // Q.Nir - is nedded?
 		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
 		// Image(new ByteArrayInputStream(item.getImg()));
 		itemName.setText(item.getItemName());
@@ -108,7 +103,6 @@ public class ItemController extends HBox {
 		itemPrice.setText(Float.toString(item.getItemPrice()));
 	}
 
-	// C.Nir - Check if quntity is available for *MACHINE*
 	@FXML
 	void addToCart(ActionEvent event) {
 		noDigitOrQuantityError.setVisible(false);
@@ -133,8 +127,9 @@ public class ItemController extends HBox {
 			setQuantityTxtStyle("#FFB4AB");
 			noDigitOrQuantityError.setVisible(true);
 		}
-		OrderItem OrderItem = new OrderItem(item, cartQuantity);
-		clientOrderManager.addItemToOrder(OrderItem);
+		OrderItem orderItem = new OrderItem(item, cartQuantity);
+		clientOrderManager.addItemToOrder(orderItem);
+		
 	}
 
 	@FXML
@@ -161,7 +156,7 @@ public class ItemController extends HBox {
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
 			if (ekrutLocation != null) {
-				if (textQuantity + 1 < inventoryItem.getItemQuantity()) {
+				if (textQuantity + 1 <= inventoryItem.getItemQuantity()) {
 					quantityTxt.setText(Integer.toString(textQuantity + 1));
 					textQuantity++;
 				} else {
