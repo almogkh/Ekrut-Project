@@ -184,20 +184,28 @@ public class InventoryItemDAO {
 	* @return true if the update was successful, false otherwise
 	*/
 	public boolean updateItemQuantity(String ekrutLocation, int itemId, int quantity) {
-		PreparedStatement ps = con.getPreparedStatement(
-				"UPDATE inventory_items SET quantity = ? WHERE ekrutLocation = ? AND itemId = ?;");
-		try {
-			ps.setInt(1, quantity);
-			ps.setString(2, ekrutLocation);
-			ps.setInt(3, itemId);
-			return 1 == con.executeUpdate(ps);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} finally {
+		// Check such item exists in ekrutLocation
+		if (fetchInventoryItem(itemId, ekrutLocation).getItemQuantity() == -1) {
+			String area = fetchAreaByEkrutLocation(ekrutLocation);
+			if (area == null) 
+				return false;
+			return addItemToEkrutLocation(area, ekrutLocation, itemId, quantity);
+		} else {
+			PreparedStatement ps = con.getPreparedStatement(
+					"UPDATE inventory_items SET quantity = ? WHERE ekrutLocation = ? AND itemId = ?;");
 			try {
-				ps.close();
+				ps.setInt(1, quantity);
+				ps.setString(2, ekrutLocation);
+				ps.setInt(3, itemId);
+				return 1 == con.executeUpdate(ps);
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
+			} finally {
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 	}
@@ -302,4 +310,30 @@ public class InventoryItemDAO {
 			}
 		}
 	}
+	
+	
+	
+	private String fetchAreaByEkrutLocation(String ekrutLocation) {
+		PreparedStatement ps = con.getPreparedStatement("SELECT area FROM ekrut_machines WHERE ekrutLocation = ?;");
+		try {
+			ps.setString(1, ekrutLocation);
+			ResultSet rs = con.executeQuery(ps);
+			if (rs.next())
+				return rs.getString("area");
+			return null;
+		} catch (SQLException e1) {
+			return null;
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}	
+	}
+	
+	
+	
+	
+	
 }
