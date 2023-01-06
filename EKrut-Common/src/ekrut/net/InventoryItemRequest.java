@@ -23,10 +23,11 @@ public class InventoryItemRequest implements Serializable{
 		this.ekrutLocation = areaOrLocation;
 	}
 	
-	public InventoryItemRequest(InventoryItemRequestType action, int itemId, int threshold, String ekrutLocation){
+	public InventoryItemRequest(InventoryItemRequestType action, int itemId, int thresholdOrQuantity, String ekrutLocation){
 		this.action = action;
 		this.itemId = itemId;
-		this.threshold = threshold;
+		this.threshold = thresholdOrQuantity;
+		this.quantity = thresholdOrQuantity;
 		this.ekrutLocation = ekrutLocation;
 	}
 	
