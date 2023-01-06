@@ -76,6 +76,7 @@ public class TicketViewController extends HBox{
     			Platform.runLater(() ->{
     				EKrutClientUI.popupUserNotification("Couldn't update item quantity - reach IT department for assistance.");
     				} );
+    			return;
     		}
     	}
     	Parent parent = getParent();
