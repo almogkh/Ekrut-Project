@@ -18,7 +18,6 @@ import ekrut.net.ResultType;
 import ekrut.server.db.DBController;
 import ekrut.server.db.OrderDAO;
 import ekrut.server.db.TicketDAO;
-import ekrut.server.db.UserDAO;
 import ekrut.server.intefaces.IPaymentProcessor;
 import ekrut.server.intefaces.StubPaymentProcessor;
 import ocsf.server.ConnectionToClient;
@@ -31,7 +30,6 @@ import ocsf.server.ConnectionToClient;
 public class ServerOrderManager {
 
 	private OrderDAO orderDAO;
-	private UserDAO userDAO;
 	private TicketDAO ticketDAO;
 	private ServerSessionManager sessionManager;
 	private ServerSalesManager salesManager;
@@ -39,7 +37,6 @@ public class ServerOrderManager {
 	
 	public ServerOrderManager(DBController dbCon, ServerSessionManager sessionManager, ServerSalesManager salesManager) {
 		this.orderDAO = new OrderDAO(dbCon);
-		this.userDAO = new UserDAO(dbCon);
 		this.ticketDAO = new TicketDAO(dbCon);
 		this.sessionManager = sessionManager;
 		this.salesManager = salesManager;
@@ -105,7 +102,7 @@ public class ServerOrderManager {
 		float debitAmount = order.getSumAmount();
 		debitAmount -= computeDiscount(order, user);
 		
-		Customer info = userDAO.fetchCustomerInfo(user);
+		Customer info = user.getCustomerInfo();
 		if (info == null)
 			return new OrderResponse(ResultType.UNKNOWN_ERROR);
 		

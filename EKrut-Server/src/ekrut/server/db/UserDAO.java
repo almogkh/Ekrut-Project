@@ -33,12 +33,15 @@ public class UserDAO {
 		try {
 			ps.setString(1,username);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) 
+			if(rs.next()) {
 				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
 				user = new User(UserType.valueOf(rs.getString(1)),username,
 						rs.getString(3), rs.getString(4),rs.getString(5),
 						rs.getString(6),  rs.getString(7),
 						rs.getString(8), rs.getString(9));
+				Customer customerInfo = fetchCustomerInfo(user);
+				user.setCustomerInfo(customerInfo);
+			}
 			
 			return user;
 		} catch (SQLException e1) {
@@ -64,12 +67,15 @@ public class UserDAO {
 		try {
 			ps.setString(1, phoneNumber);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) 
+			if(rs.next()) {
 				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
 				user = new User(UserType.valueOf(rs.getString(1)),rs.getString(2),
 						rs.getString(3), rs.getString(4),rs.getString(5),
 						rs.getString(6),  rs.getString(7),
 						phoneNumber, rs.getString(9));
+				Customer customerInfo = fetchCustomerInfo(user);
+				user.setCustomerInfo(customerInfo);
+			}
 				
 			return user;
 		} catch (SQLException e1) {
@@ -95,12 +101,15 @@ public class UserDAO {
 		try {
 			ps.setString(1, email);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) 
+			if(rs.next()) {
 				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
 				user = new User(UserType.valueOf(rs.getString(1)),rs.getString(2),
 						rs.getString(3), rs.getString(4),rs.getString(5),
 						rs.getString(6),  email,
 						rs.getString(8), rs.getString(9));
+				Customer customerInfo = fetchCustomerInfo(user);
+				user.setCustomerInfo(customerInfo);
+			}
 				
 			return user;
 		} catch (SQLException e1) {
@@ -160,11 +169,14 @@ public class UserDAO {
 		try {
 			ps.setString(1,area);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) 
+			if(rs.next()) {
 				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
 				user = new User(UserType.AREA_MANAGER, rs.getString(2),
 						rs.getString(3), rs.getString(4), rs.getString(5),
 						rs.getString(6),  rs.getString(7),  rs.getString(8), area);
+				Customer customerInfo = fetchCustomerInfo(user);
+				user.setCustomerInfo(customerInfo);
+			}
 			return user;
 		} catch (SQLException e1) {
 			return null;
@@ -189,6 +201,8 @@ public class UserDAO {
 				user = new User(userType, rs.getString(2),
 						rs.getString(3), rs.getString(4), rs.getString(5),
 						rs.getString(6),  rs.getString(7),  rs.getString(8),  rs.getString(9));
+				Customer customerInfo = fetchCustomerInfo(user);
+				user.setCustomerInfo(customerInfo);
 				usersList.add(user);				
 			}
 			

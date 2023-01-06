@@ -118,7 +118,7 @@ public class BaseTemplateController {
 			throw new RuntimeException(e);
 		}
 		Parent root = loader.getRoot();
-		TicketBrowserController ticketBrowserController = loader.getController();
+		// TicketBrowserController ticketBrowserController = loader.getController();
 		setRightWindow(root);
 	}
 
@@ -149,7 +149,7 @@ public class BaseTemplateController {
 		  
 	}
 
-	private ArrayList<Hyperlink> getHyperlinks(UserType userType) {
+	private ArrayList<Hyperlink> getHyperlinks(UserType userType, boolean customer) {
 		ArrayList<Hyperlink> allHyperlinks = new ArrayList<>();
 		
 		Hyperlink remoteOrderHyp = new Hyperlink("Remote order");
@@ -179,12 +179,7 @@ public class BaseTemplateController {
 		
 		switch (userType) {
 		case REGISTERED:
-			break;
 		case CUSTOMER:
-    		allHyperlinks.add(remoteOrderHyp);    		
-    		allHyperlinks.add(pickupOrder);	    		
-    		allHyperlinks.add(approveShipmentHyp);			    		
-    		allHyperlinks.add(getExistingOrder);
 			break;
 		case SHIPMENT_OPERATOR:
 		case SHIPMENT_WORKER:
@@ -198,6 +193,8 @@ public class BaseTemplateController {
 			allHyperlinks.add(viewTicketsHyp);
 			break;
 		case CEO:
+			allHyperlinks.add(viewReportsHyp);
+			break;
 		case AREA_MANAGER:
 			allHyperlinks.add(viewTicketsHyp);
 			allHyperlinks.add(registrationRequestsHyp);
@@ -206,6 +203,12 @@ public class BaseTemplateController {
 			// add order btn
 			//
 			break;
+		}
+		if (customer) {
+			allHyperlinks.add(remoteOrderHyp);    		
+			allHyperlinks.add(pickupOrder);	    		
+			allHyperlinks.add(approveShipmentHyp);			    		
+			allHyperlinks.add(getExistingOrder);
 		}
 		return allHyperlinks;
 	}
@@ -218,14 +221,16 @@ public class BaseTemplateController {
 		roleLbl.setText(me.getUserType().toString().replace("_", " "));
 		navigationVbox.setVisible(true);
 		ObservableList<Node> vboxChildren = navigationVbox.getChildren();
-		if (EKrutClientUI.ekrutLocation != null && me.getUserType() != UserType.REGISTERED) {
-			Hyperlink createOrderHyp = new Hyperlink("Create new order");
-			createOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
-			Hyperlink pickupOrderHyp = new Hyperlink("Pickup existing order");
-			pickupOrderHyp.setOnAction((ActionEvent event) -> loadPickupOrder());
-			vboxChildren.addAll(createOrderHyp, pickupOrderHyp);
+		if (EKrutClientUI.ekrutLocation != null) {
+			if (me.isCustomer()) {
+				Hyperlink createOrderHyp = new Hyperlink("Create new order");
+				createOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
+				Hyperlink pickupOrderHyp = new Hyperlink("Pickup existing order");
+				pickupOrderHyp.setOnAction((ActionEvent event) -> loadPickupOrder());
+				vboxChildren.addAll(createOrderHyp, pickupOrderHyp);
+			}
 		} else {
-			vboxChildren.addAll(getHyperlinks(me.getUserType()));
+			vboxChildren.addAll(getHyperlinks(me.getUserType(), me.isCustomer()));
 		}
 		for (Node node : vboxChildren) {
 			setHyperlinkStyle((Hyperlink) node);

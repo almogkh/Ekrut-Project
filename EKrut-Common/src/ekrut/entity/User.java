@@ -14,6 +14,7 @@ public class User implements Serializable{
 	private String email;
 	private String phoneNumber;
 	private String area;
+	private Customer customerInfo;
 	// this entity on DB: (userType, username, password, firstName, lastName, 
 	//						id, email, phoneNumber, area)
 	
@@ -100,6 +101,18 @@ public class User implements Serializable{
 
 	public void setArea(String area) {
 		this.area = area;
+	}
+
+	public Customer getCustomerInfo() {
+		return customerInfo;
+	}
+
+	public void setCustomerInfo(Customer customerInfo) {
+		this.customerInfo = customerInfo;
+	}
+	
+	public boolean isCustomer() {
+		return customerInfo != null;
 	}
 
 }
