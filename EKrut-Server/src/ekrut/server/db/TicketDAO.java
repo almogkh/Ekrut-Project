@@ -4,9 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import com.mysql.cj.MysqlType;
-
 import ekrut.entity.Ticket;
 import ekrut.entity.TicketStatus;
 
@@ -85,7 +82,7 @@ public class TicketDAO {
 	 */
 	public ArrayList<Ticket> fetchTicketsByArea(String area) {
 		ArrayList<Ticket> ticketsByArea = new ArrayList<>();
-		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM tickets WHERE area = ?;");
+		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM tickets WHERE status = 'IN_PROGRESS' AND area = ?;");
 		try {
 			ps.setString(1, area);
 			ResultSet rs = con.executeQuery(ps);
