@@ -39,8 +39,8 @@ public class BaseTemplateController {
 	@FXML
 	private Pane infoPane;
 
-	User me;
-	static BaseTemplateController baseTemplateController;
+	// private User me;
+	private static BaseTemplateController baseTemplateController;
 
 	public static BaseTemplateController getBaseTemplateController() {
 		return baseTemplateController;
@@ -214,7 +214,7 @@ public class BaseTemplateController {
 	}
 
 	public void setUser(User me) {
-		this.me = me;
+		// this.me = me;
 		infoPane.setVisible(true);
 		logoutBtn.setVisible(true);
 		nameInitialsLbl.setText((me.getFirstName().substring(0, 1) + me.getLastName().substring(0, 1)).toUpperCase());
