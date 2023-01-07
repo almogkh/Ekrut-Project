@@ -1,20 +1,22 @@
 package ekrut.client.gui;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.Optional;
+
+import ekrut.client.EKrutClientUI;
+import ekrut.client.managers.ClientOrderManager;
+import ekrut.net.ResultType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
-public class OrderPaymentViewController implements Initializable {
-
-	// private final
+public class OrderPaymentViewController {
 
 	@FXML
 	private Button backBtn;
@@ -35,79 +37,67 @@ public class OrderPaymentViewController implements Initializable {
 	private RadioButton newCreditCardRadioBtn;
 
 	@FXML
-	private Label hidenCardNumbersLbl;
-
-	@FXML
-	private Label lastFourDigitLbl;
-
-	@FXML
 	private Label priceLbl;
 
 	@FXML
-	private ComboBox<String> monthCBox;
-
-	@FXML
-	private ComboBox<String> yearCBox;
-
-	@FXML
 	private TextField newCardNumberTxt;
+	
+	private ClientOrderManager orderManager;
 
 	@FXML
-	private TextField newCvcTxt;
-
-	// Q.Nir - there is another way to do this with out using initialize?
-	public void initialize(URL location, ResourceBundle resources) {
-		// initialize experation card years
-		for (Integer i = 2040; i > 2021; i--)
-			yearCBox.getItems().add(i.toString());
-
-		// initialize experation card months
-		for (Integer i = 1; i < 13; i++) {
-			if (i < 10)
-				monthCBox.getItems().add("0" + i.toString());
-			else
-				monthCBox.getItems().add(i.toString());
-		}
+	private void initialize() {
+		this.orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
+		priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice() - orderManager.getDiscount()));
 	}
 
 	@FXML
 	void back(ActionEvent event) {
-
+		BaseTemplateController.getBaseTemplateController().switchStages("OrderCartView");
 	}
 
 	@FXML
 	void cancelOrder(ActionEvent event) {
-
-	}
-
-	@FXML
-	void months(ActionEvent event) {
-
+		Optional<ButtonType> res = new Alert(AlertType.CONFIRMATION,
+				"Are you sure you want to cancel the order?",
+				ButtonType.YES, ButtonType.NO).showAndWait();
+		res.ifPresent((btn) -> {
+			if (btn == ButtonType.YES) {
+				orderManager.cancelOrder();
+				BaseTemplateController.getBaseTemplateController().switchStages("OrderCreation");
+			}
+		});
 	}
 
 	@FXML
 	void useOldCard(ActionEvent event) {
-		setEditableCard(0.3, true);
-
+		newCardNumberTxt.setText(null);
+		newCardNumberTxt.setDisable(true);
 	}
 
 	@FXML
 	void useNewCard(ActionEvent event) {
-		setEditableCard(1, false);
+		newCardNumberTxt.setDisable(false);
 	}
-
-	private void setEditableCard(double opacity, boolean state) {
-		newCardNumberTxt.setDisable(state);
-		newCvcTxt.setDisable(state);
-		monthCBox.setDisable(state);
-		yearCBox.setDisable(state);
-		hidenCardNumbersLbl.setOpacity(1.3 - opacity);
-		lastFourDigitLbl.setOpacity(1.3 - opacity);
+	
+	private void orderSuccess() {
+		new Alert(AlertType.INFORMATION, "The order was successfully placed!", ButtonType.OK).showAndWait();
+		BaseTemplateController.getBaseTemplateController().switchStages("MainMenu");
 	}
-
+	
 	@FXML
-	void years(ActionEvent event) {
-
+	void confirmOrder(ActionEvent event) {
+		if (currentCreditCardRadioBtn.isSelected()) {
+			if (orderManager.confirmOrder(null) == ResultType.OK) {
+				orderSuccess();
+				return;
+			}
+		} else {
+			if (orderManager.confirmOrder(newCardNumberTxt.getText()) == ResultType.OK) {
+				orderSuccess();
+				return;
+			}
+		}
+		new Alert(AlertType.ERROR, "The order could not be placed.", ButtonType.OK).showAndWait();
 	}
 
 }
