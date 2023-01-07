@@ -9,12 +9,14 @@ public class Customer implements Serializable {
 	private String subscriberNumber;
 	private String username;
 	private String creditCardNumber;
+	private String clientAddress;
 	private boolean monthlyCharge;
 	private boolean orderedAsSub;
 
-	public Customer(String subscriberNumber, String username, boolean monthlyCharge, String creditCardNumber, boolean orderedAsSub) {
+	public Customer(String subscriberNumber, String username, String clientAddress, boolean monthlyCharge, String creditCardNumber, boolean orderedAsSub) {
 		this.subscriberNumber = subscriberNumber;
 		this.username = username;
+		this.clientAddress = clientAddress;
 		this.creditCardNumber = creditCardNumber;
 		this.monthlyCharge = monthlyCharge;
 		this.orderedAsSub = orderedAsSub;
@@ -58,5 +60,13 @@ public class Customer implements Serializable {
 
 	public void setOrderedAsSub(boolean orderedAsSub) {
 		this.orderedAsSub = orderedAsSub;
+	}
+
+	public String getClientAddress() {
+		return clientAddress;
+	}
+
+	public void setClientAddress(String clientAddress) {
+		this.clientAddress = clientAddress;
 	}
 }

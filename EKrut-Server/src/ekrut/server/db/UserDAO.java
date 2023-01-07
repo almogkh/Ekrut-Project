@@ -141,8 +141,8 @@ public class UserDAO {
 			
 			if (rs.next())
 				return new Customer(rs.getString("subscriberNumber"), rs.getString("username"),
-                                    rs.getBoolean("monthlyCharge"), rs.getString("creditCardNumber"),
-                                    rs.getBoolean("orderedAsSub"));
+									rs.getString("address"), rs.getBoolean("monthlyCharge"),
+									rs.getString("creditCardNumber"), rs.getBoolean("orderedAsSub"));
 			return null;
 			
 		} catch (SQLException e) {
