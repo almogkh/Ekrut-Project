@@ -77,7 +77,7 @@ public class OrderBrowserController {
 	}
 	
 	void updateTotalPrice() {
-		priceLbl.setText(Float.toString(orderManager.getTotalPrice()));
+		priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice()));
 	}
 
 	@FXML

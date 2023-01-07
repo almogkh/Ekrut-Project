@@ -58,8 +58,8 @@ public class OrderCartViewController {
     
     void updatePrice() {
     	float price = orderManager.getTotalPrice();
-    	priceBeforeDiscountLbl.setText(Float.toString(price));
-    	priceAfterDiscountLbl.setText(Float.toString(price - orderManager.getDiscount()));
+    	priceBeforeDiscountLbl.setText(String.format("%.2f", price));
+    	priceAfterDiscountLbl.setText(String.format("%.2f", price - orderManager.getDiscount()));
     }
     
     @FXML
