@@ -44,6 +44,7 @@ public class OrderCartViewController {
 	private void initialize() {
 		orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
 		AddItemViewToCartVBox();
+		updatePrice();
 	}
     
     private void AddItemViewToCartVBox(){

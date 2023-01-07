@@ -61,12 +61,13 @@ public class OrderCreationController {
     @FXML
     void updateLocations(ActionEvent event) {
     	String choice = pickupArea.getValue();
-    	if (choice.equals(cachedAreaChoice))
+    	if (choice == null || choice.equals(cachedAreaChoice))
     		return;
     	cachedAreaChoice = choice;
     	ArrayList<String> locations = EKrutClientUI.getEkrutClient().getClientReportManager()
     								.getFacilitiesByArea(choice);
     	pickupLocation.getItems().setAll(locations);
+    	pickupLocation.setDisable(false);
     }
 
     @FXML
