@@ -3,7 +3,6 @@ package ekrut.client.gui;
 import java.io.IOException;
 import java.util.ArrayList;
 import ekrut.client.EKrutClientUI;
-import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.User;
 import ekrut.entity.UserType;
 import javafx.collections.ObservableList;
@@ -42,7 +41,6 @@ public class BaseTemplateController {
 
 	// private User me;
 	private static BaseTemplateController baseTemplateController;
-	private ClientOrderManager clientOrderManager;
 
 	public static BaseTemplateController getBaseTemplateController() {
 		return baseTemplateController;
@@ -100,9 +98,7 @@ public class BaseTemplateController {
 	}
 
 	public void loadCreateOrder() {
-		clientOrderManager =  EKrutClientUI.getEkrutClient().getClientOrderManager();
-		clientOrderManager.createOrder();
-		switchStages("OrderItemBrowser");
+		switchStages("OrderCreation");
 	}
 
 	public void loadPickupOrder() {
@@ -160,9 +156,6 @@ public class BaseTemplateController {
 		Hyperlink remoteOrderHyp = new Hyperlink("Remote Order");
     	remoteOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
     	
-    	Hyperlink CreateOrder = new Hyperlink("New Order");
-    	CreateOrder.setOnAction((ActionEvent event) -> loadCreateOrder());
-    	
     	Hyperlink approveShipmentHyp = new Hyperlink("Approve Shipment");
     	approveShipmentHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
     	
@@ -201,9 +194,6 @@ public class BaseTemplateController {
 			allHyperlinks.add(viewTicketsHyp);
 			allHyperlinks.add(registrationRequestsHyp);
 			allHyperlinks.add(viewReportsHyp);
-			//
-			// add order btn
-			//
 			break;
 		}
 		if (customer) {

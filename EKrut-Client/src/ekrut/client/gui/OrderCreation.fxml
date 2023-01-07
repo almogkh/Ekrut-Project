@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="ekrut.client.gui.OrderCreationController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <children>
+            <HBox alignment="CENTER" prefHeight="120.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+               <children>
+                  <Line endX="160.0" startX="-88.0" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Create order">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="35.0" />
+                     </font>
+                  </Text>
+                  <Line endX="160.0" startX="-88.0" />
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <VBox alignment="CENTER" prefHeight="530.0" prefWidth="770.0" styleClass="container">
+               <children>
+                  <GridPane alignment="CENTER" hgap="40.0" prefHeight="550.0" prefWidth="770.0">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER" text="Order type:">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="pickupLocationLbl" alignment="CENTER" text="Pickup location:" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="pickupLocation" disable="true" onAction="#enableButton" prefHeight="26.0" prefWidth="190.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="pickupAreaLbl" alignment="CENTER" layoutX="180.0" layoutY="453.0" text="Pickup area:" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="pickupArea" disable="true" onAction="#updateLocations" prefHeight="26.0" prefWidth="190.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="orderTypeBox" onAction="#updateUI" prefHeight="26.0" prefWidth="190.0" GridPane.columnIndex="1" />
+                     </children>
+                  </GridPane>
+                  <Button fx:id="createOrderBtn" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#createOrder" text="Create order">
+                     <VBox.margin>
+                        <Insets bottom="70.0" top="60.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>
