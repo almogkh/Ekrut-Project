@@ -151,7 +151,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 			activeOrder.setCreditCard(creditCardNumber);
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.CREATE, activeOrder));
 		if (response.getResult() == ResultType.OK) {
-			activeOrder = null;
+			cancelOrder();
 			return response.getOrderId();
 		}
 		return -1;
