@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import ekrut.client.EKrutClient;
-import ekrut.client.EKrutClientUI;
 import ekrut.entity.Item;
 import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
@@ -28,6 +27,10 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	private final String ekrutLocation;
 	private ClientSalesManager salesManager;
 	private ClientInventoryManager inventoryManager;
+	private float cachedPrice;
+	private float cachedDiscount;
+	private boolean dirtyPrice;
+	private boolean dirtyDiscount;
 	
 	/**
 	 * Constructs a new client order manager.
@@ -83,6 +86,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 			return;
 		}
 		
+		dirtyPrice = dirtyDiscount = true;
 		// Check if this item is already in the order and if so, just update the quantity
 		for (OrderItem i : activeOrder.getItems()) {
 			if (i.getItem().equals(item.getItem())) {
@@ -103,6 +107,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 		if (activeOrder == null)
 			return;
 		
+		dirtyPrice = dirtyDiscount = true;
 		ArrayList<OrderItem>  items = activeOrder.getItems();
 		for (OrderItem i : items)
 			if (i.getItem().equals(item)) {
@@ -128,6 +133,8 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void cancelOrder() {
 		activeOrder = null;
+		cachedPrice = cachedDiscount = 0;
+		dirtyPrice = dirtyDiscount = false;
 	}
 	
 	/**
@@ -176,10 +183,16 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	public float getTotalPrice() {
 		if (activeOrder == null)
 			return 0;
-		return activeOrder.getSumAmount();
+		if (!dirtyPrice)
+			return cachedPrice;
+		cachedPrice = activeOrder.getSumAmount();
+		dirtyPrice = false;
+		return cachedPrice;
 	}
 	
 	public float getDiscount() {
+		if (!dirtyDiscount)
+			return cachedDiscount;
 		float discount = 0;
 		LocalDateTime now = LocalDateTime.now();
 		ArrayList<SaleDiscount> sales;
@@ -206,6 +219,9 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 					discount += (item.getItemQuantity() / 2) * item.getItem().getItemPrice();
 			}
 		}
+		
+		cachedDiscount = discount;
+		dirtyDiscount = false;
 		
 		return discount;
 	}
