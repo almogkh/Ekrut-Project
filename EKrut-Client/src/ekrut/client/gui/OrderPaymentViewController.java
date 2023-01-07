@@ -81,7 +81,12 @@ public class OrderPaymentViewController {
 	
 	private void orderSuccess() {
 		new Alert(AlertType.INFORMATION, "The order was successfully placed!", ButtonType.OK).showAndWait();
-		BaseTemplateController.getBaseTemplateController().switchStages("MainMenu");
+		if (EKrutClientUI.ekrutLocation == null) {
+			BaseTemplateController.getBaseTemplateController().switchStages("MainMenu");
+		} else {
+			EKrutClientUI.getEkrutClient().getClientSessionManager().logoutUser();
+			BaseTemplateController.getBaseTemplateController().logout();
+		}
 	}
 	
 	@FXML
