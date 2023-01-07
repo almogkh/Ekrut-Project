@@ -98,10 +98,14 @@ public class BaseTemplateController {
 	}
 
 	public void loadCreateOrder() {
-		if (EKrutClientUI.ekrutLocation != null)
+		if (EKrutClientUI.ekrutLocation != null) {
 			switchStages("OrderItemBrowser");
-		else
-			switchStages("OrderCreation");
+		} else {
+			if (EKrutClientUI.getEkrutClient().getClientOrderManager().isActiveOrder())
+				switchStages("OrderItemBrowser");
+			else
+				switchStages("OrderCreation");
+		}
 	}
 
 	public void loadPickupOrder() {
