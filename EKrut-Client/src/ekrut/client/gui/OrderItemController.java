@@ -1,7 +1,7 @@
 package ekrut.client.gui;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
@@ -55,16 +55,17 @@ public class OrderItemController extends HBox {
 	private Label noDigitOrQuantityError;
 
 	private Item item;
-	private Image image;
-	private Integer cartQuantity = 0;
+	private int cartQuantity;
 	private String ekrutLocation;
 	private InventoryItem inventoryItem;
-	private ClientOrderManager clientOrderManager;
+	private ClientOrderManager orderManager;
+	private OrderBrowserController controller;
 
-	public OrderItemController(Item item) {
+	public OrderItemController(OrderBrowserController controller, Item item) {
 		this.item = item;
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
-		clientOrderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
+		this.orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
+		this.controller = controller;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderItem.fxml"));
 
 		fxmlLoader.setRoot(this);
@@ -75,34 +76,23 @@ public class OrderItemController extends HBox {
 			throw new RuntimeException(e);
 		}
 
-		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
-		// Image(new ByteArrayInputStream(item.getImg()));
+		if (item.getImg() != null)
+			itemImage.setImage(new Image(new ByteArrayInputStream(item.getImg())));
 		itemName.setText(item.getItemName());
 		itemDiscription.setText(item.getItemDescription());
 		itemPrice.setText(Float.toString(item.getItemPrice()));
+		for (OrderItem i : orderManager.getActiveOrderItems()) {
+			if (i.getItem().equals(item)) {
+				cartQuantity = i.getItemQuantity();
+				quantityTxt.setText(Integer.toString(i.getItemQuantity()));
+				break;
+			}
+		}
 	}
 
-	public OrderItemController(InventoryItem inventoryItem) {
+	public OrderItemController(OrderBrowserController controller, InventoryItem inventoryItem) {
+		this(controller, inventoryItem.getItem());
 		this.inventoryItem = inventoryItem;
-		this.ekrutLocation = EKrutClientUI.ekrutLocation;
-		clientOrderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
-
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderItem.fxml"));
-		fxmlLoader.setRoot(this);
-		fxmlLoader.setController(this);
-
-		try {
-			fxmlLoader.load();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-
-		this.item = inventoryItem.getItem();
-		// Q.Nir - this.itemImage = item.getImg(); // initialize ItemView image = new
-		// Image(new ByteArrayInputStream(item.getImg()));
-		itemName.setText(item.getItemName());
-		itemDiscription.setText(item.getItemDescription());
-		itemPrice.setText(Float.toString(item.getItemPrice()));
 	}
 
 	@FXML
@@ -130,8 +120,8 @@ public class OrderItemController extends HBox {
 			noDigitOrQuantityError.setVisible(true);
 		}
 		OrderItem orderItem = new OrderItem(item, cartQuantity);
-		clientOrderManager.addItemToOrder(orderItem);
-
+		orderManager.addItemToOrder(orderItem);
+		controller.updateTotalPrice();
 	}
 
 	@FXML
@@ -180,10 +170,6 @@ public class OrderItemController extends HBox {
 						+ color + ";");
 	}
 
-	public Integer getCartQuantity() {
-		return cartQuantity;
-	}
-
 	private void CheckQuantityAvilability(int textQuantity) {
 		if (ekrutLocation != null) {
 			if (textQuantity + 1 > inventoryItem.getItemQuantity()) {
@@ -191,7 +177,6 @@ public class OrderItemController extends HBox {
 				noDigitOrQuantityError.setVisible(true);
 			} else {
 				quantityTxt.setText(Integer.toString(textQuantity + 1));
-				textQuantity++;
 			}
 		}
 	}

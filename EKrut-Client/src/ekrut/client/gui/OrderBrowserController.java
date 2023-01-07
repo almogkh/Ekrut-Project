@@ -1,8 +1,7 @@
 package ekrut.client.gui;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.Optional;
 
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientInventoryManager;
@@ -12,13 +11,15 @@ import ekrut.entity.Item;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-public class OrderBrowserController implements Initializable {
+public class OrderBrowserController {
 
 	@FXML
 	private VBox orderVBox;
@@ -32,17 +33,19 @@ public class OrderBrowserController implements Initializable {
 	@FXML
 	private Button cancelOrderBtn;
 
-
 	private BaseTemplateController BTC;
 	private String ekrutLocation;
-	private ClientInventoryManager clientInventoryManager;
+	private ClientInventoryManager inventoryManager;
+	private ClientOrderManager orderManager;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	@FXML
+	private void initialize() {
 		BTC = BaseTemplateController.getBaseTemplateController();
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
-		clientInventoryManager = EKrutClientUI.getEkrutClient().getClientInventoryManager();
+		inventoryManager = EKrutClientUI.getEkrutClient().getClientInventoryManager();
+		orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
 		AddItemViewToOrderVBox();
+		updateTotalPrice();
 	}
 
 	// need to consider
@@ -50,27 +53,31 @@ public class OrderBrowserController implements Initializable {
 	// 2. Remote Order
 	// 3. Shipment Order
 
-	public void AddItemViewToOrderVBox() {
+	private void AddItemViewToOrderVBox() {
 		if (ekrutLocation != null) {
-			ArrayList<InventoryItem> itemsForSale = clientInventoryManager.fetchInventoryItemsByEkrutLocation(ekrutLocation);
+			ArrayList<InventoryItem> itemsForSale = inventoryManager.fetchInventoryItemsByEkrutLocation(ekrutLocation);
 			ArrayList<OrderItemController> inventoryItemsToAdd = new ArrayList<>();
 			
 			for (InventoryItem inventoryItem : itemsForSale)
-				inventoryItemsToAdd.add(new OrderItemController(inventoryItem));
+				inventoryItemsToAdd.add(new OrderItemController(this, inventoryItem));
 			
 			ObservableList<Node> children = orderVBox.getChildren();
 			children.addAll(inventoryItemsToAdd);
 		}
 		else {
-			ArrayList<Item> itemsForSale = clientInventoryManager.fetchAllItems();
+			ArrayList<Item> itemsForSale = inventoryManager.fetchAllItems();
 			ArrayList<OrderItemController> itemsToAdd = new ArrayList<>();
 			
 			for (Item item : itemsForSale)
-				itemsToAdd.add(new OrderItemController(item));
+				itemsToAdd.add(new OrderItemController(this, item));
 			
 			ObservableList<Node> children = orderVBox.getChildren();
 			children.addAll(itemsToAdd);
 		}
+	}
+	
+	void updateTotalPrice() {
+		priceLbl.setText(Float.toString(orderManager.getTotalPrice()));
 	}
 
 	@FXML
@@ -80,13 +87,16 @@ public class OrderBrowserController implements Initializable {
 	}
 
 	@FXML
-	void back(ActionEvent event) {
-		BTC.switchStages("MainMenu");
-	}
-
-	@FXML
 	void cancelOrder(ActionEvent event) {
-
+		Optional<ButtonType> res = new Alert(AlertType.CONFIRMATION,
+										"Are you sure you want to cancel the order?",
+										ButtonType.YES, ButtonType.NO).showAndWait();
+		res.ifPresent((btn) -> {
+			if (btn == ButtonType.YES) {
+				orderManager.cancelOrder();
+				BTC.switchStages("OrderCreation");
+			}
+		});
 	}
 
 }

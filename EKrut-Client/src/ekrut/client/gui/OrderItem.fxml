@@ -59,7 +59,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </TextField>
-            <Button fx:id="AddBtn" defaultButton="true" layoutX="21.0" layoutY="84.0" mnemonicParsing="false" onAction="#addToCart" prefHeight="27.0" prefWidth="131.0" text="Update Quantity">
+            <Button fx:id="AddBtn" defaultButton="true" layoutX="21.0" layoutY="84.0" mnemonicParsing="false" onAction="#addToCart" prefHeight="29.0" prefWidth="137.0" text="Update Quantity">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font></Button>
