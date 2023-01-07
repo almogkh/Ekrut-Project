@@ -3,7 +3,7 @@ package ekrut.client.gui;
 import java.io.IOException;
 
 import ekrut.client.EKrutClientUI;
-import ekrut.entity.InventoryItem;
+import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.OrderItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,12 +30,6 @@ public class OrderItemInCartController extends HBox {
 
 	@FXML
 	private Label noDigitOrQuantityError;
-	
-	@FXML
-	private Button minusBtn;
-
-	@FXML
-	private Button plusBtn;
 
 	@FXML
 	private TextField quantityTxt;
@@ -44,18 +38,15 @@ public class OrderItemInCartController extends HBox {
 	private Button updateBtn;
 
 	private BaseTemplateController BTC;
-	private String ekrutLocation;
-	private InventoryItem inventoryItem;
-	private final static String DOTS_AFTER_ITEM_NAME = "....................................."
-                                                     + ".....................................";
-	
-	// order manager
-	private Integer cartQuantity = 0;
+	private OrderCartViewController controller;
+	private ClientOrderManager orderManager;
+	private OrderItem orderItem;
 
-
-	public OrderItemInCartController(OrderItem orderItem) {
-		this.ekrutLocation = EKrutClientUI.ekrutLocation;
+	public OrderItemInCartController(OrderCartViewController controller, OrderItem orderItem) {
 		BTC = BaseTemplateController.getBaseTemplateController();
+		this.controller = controller;
+		this.orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
+		this.orderItem = orderItem;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("OrderItemInCart.fxml"));
 		loader.setRoot(this);
 		loader.setController(this);
@@ -65,89 +56,24 @@ public class OrderItemInCartController extends HBox {
 			throw new RuntimeException(e);
 		}
 		
-		itemNameLbl.setText(orderItem.getItem().getItemName() + DOTS_AFTER_ITEM_NAME);
+		StringBuilder itemName = new StringBuilder(orderItem.getItem().getItemName());
+		int length = 96 - itemName.length();
+		for (int i = 0; i < length; i++)
+			itemName.append('.');
+		itemNameLbl.setText(itemName.toString());
 		itemPriceLbl.setText(Float.toString(orderItem.getItem().getItemPrice()));	
 		quantityTxt.setText(Integer.toString(orderItem.getItemQuantity()));
 	}
 
-
 	@FXML
 	void deleteItem(ActionEvent event) {
+		orderManager.removeItemFromOrder(orderItem.getItem());
+		controller.updatePrice();
 		((VBox) getParent()).getChildren().remove(this);
 	}
-
-	@FXML
-	void minusItem(ActionEvent event) {
-		noDigitOrQuantityError.setVisible(false);
-		try {
-			int textQuantity = Integer.parseInt(quantityTxt.getText());
-			if (textQuantity > 0) {
-				quantityTxt.setText(Integer.toString(textQuantity - 1));
-				textQuantity--;
-				if (cartQuantity == textQuantity)
-					setQuantityTxtStyle("#FFFFFF");
-				else
-					setQuantityTxtStyle("#FFB4AB");
-			}
-		} catch (NumberFormatException e) {
-			noDigitOrQuantityError.setVisible(true);
-		}
-	}
-
-	@FXML
-	void plusItem(ActionEvent event) {
-		noDigitOrQuantityError.setVisible(false);
-		try {
-			int textQuantity = Integer.parseInt(quantityTxt.getText());
-			if (ekrutLocation != null) {
-				if (textQuantity + 1 <= inventoryItem.getItemQuantity()) {
-					quantityTxt.setText(Integer.toString(textQuantity + 1));
-					textQuantity++;
-				} else {
-					noDigitOrQuantityError.setText("Not Enough Items!");
-					noDigitOrQuantityError.setVisible(true);
-				}
-			} else {
-				quantityTxt.setText(Integer.toString(textQuantity + 1));
-				textQuantity++;
-			}
-			if (cartQuantity == textQuantity)
-				setQuantityTxtStyle("#FFFFFF");
-			else
-				setQuantityTxtStyle("#FFB4AB");
-		} catch (NumberFormatException e) {
-			noDigitOrQuantityError.setText("Invalid Input!!!");
-			noDigitOrQuantityError.setVisible(true);
-		}
-
-	}
-
-	private void setQuantityTxtStyle(String color) {
-		quantityTxt.setStyle("-fx-border-color: #000000; -fx-background-radius: 20; " +
-							"-fx-border-radius: 20; -fx-background-color: " + color + ";");
-	}
-	
-	@FXML
-	void updateItemQuantity(ActionEvent event) {
-		noDigitOrQuantityError.setVisible(false);
-		try {
-			int textQuantity = Integer.parseInt(quantityTxt.getText());
-			cartQuantity = textQuantity;
-			setQuantityTxtStyle("#FFFFFF");
-		} catch (NumberFormatException e) { 
-			noDigitOrQuantityError.setVisible(true);
-		}
-	}
-	
 
     @FXML
     void back(ActionEvent event) {
     	BTC.switchStages("OrderItemBrowser");
     }
-
-    @FXML
-    void cancelOrder(ActionEvent event) {
-    	// popup to confirm cancelation?
-    }
-
 }
