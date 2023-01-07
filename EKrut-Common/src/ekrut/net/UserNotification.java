@@ -1,6 +1,10 @@
 package ekrut.net;
 
-public class UserNotification {
+import java.io.Serializable;
+
+public class UserNotification implements Serializable {
+
+	private static final long serialVersionUID = 682977901955530812L;
 	
 	private String notificationMsg;
 	
