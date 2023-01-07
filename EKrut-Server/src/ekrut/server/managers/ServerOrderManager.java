@@ -112,12 +112,16 @@ public class ServerOrderManager {
 		if (subscriber && !info.hasOrderedAsSub())
 			debitAmount *= 0.8f;
 		
+		String creditCardNumber = order.getCreditCard();
+		if (creditCardNumber == null)
+			creditCardNumber = info.getCreditCard();
+		
 		// Subscribers can choose to pay once a month for all of their orders
 		if (subscriber && info.isMonthlyCharge()) {
-			if (!paymentProcessor.addToCharges(info.getCreditCard(), debitAmount))
+			if (!paymentProcessor.addToCharges(creditCardNumber, debitAmount))
 				return new OrderResponse(ResultType.INVALID_INPUT);
 		} else {
-			if (!paymentProcessor.submitPayment(info.getCreditCard(), debitAmount))
+			if (!paymentProcessor.submitPayment(creditCardNumber, debitAmount))
 				return new OrderResponse(ResultType.INVALID_INPUT);
 		}
 		

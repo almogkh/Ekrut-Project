@@ -142,10 +142,12 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 * 
 	 * @return the result of the operation
 	 */
-	public ResultType confirmOrder() {
+	public ResultType confirmOrder(String creditCardNumber) {
 		if (activeOrder == null)
 			return ResultType.INVALID_INPUT;
 		
+		if (creditCardNumber != null)
+			activeOrder.setCreditCard(creditCardNumber);
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.CREATE, activeOrder));
 		if (response.getResult() == ResultType.OK) {
 			if (ekrutLocation != null) {

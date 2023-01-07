@@ -16,6 +16,7 @@ public class Order implements Serializable {
 	private String clientAddress;
 	private String ekrutLocation;
 	private String username;
+	private String creditCard;
 	private ArrayList<OrderItem> items;
 
 	public Order(OrderType type, String param) {
@@ -109,5 +110,13 @@ public class Order implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(String creditCard) {
+		this.creditCard = creditCard;
 	}
 }
