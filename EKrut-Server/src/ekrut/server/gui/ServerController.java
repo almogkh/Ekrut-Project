@@ -72,7 +72,6 @@ public class ServerController {
 	private Label ErrorConnection;
 
 	private PrintStream replaceConsole;
-	private ServerSessionManager session;
 
 	public String getLocalIp(){
 		String ip = null;
@@ -131,7 +130,6 @@ public class ServerController {
 	}
 
 	public void setTable(ServerSessionManager session) {
-		this.session = session;
 		this.ConnectedClients.setItems(session.getConnectedClientList());
 		this.IPColumn.setCellValueFactory(new PropertyValueFactory<>("ip"));
 		this.RoleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
