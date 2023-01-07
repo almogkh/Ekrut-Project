@@ -50,7 +50,8 @@ public class EKrutServer extends AbstractServer {
 		serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
 		serverTicketManager = new ServerTicketManager(dbCon);
 		serverSalesManager = new ServerSalesManager(dbCon, serverSessionManager);
-		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager, serverSalesManager);
+		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager, serverSalesManager,
+													serverInventoryManager);
 		serverShipmentManager = new ServerShipmentManager(dbCon, serverSessionManager);
 		serverReportManager = new ServerReportManager(dbCon);
 		

@@ -26,7 +26,6 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	private Order activeOrder;
 	private final String ekrutLocation;
 	private ClientSalesManager salesManager;
-	private ClientInventoryManager inventoryManager;
 	private float cachedPrice;
 	private float cachedDiscount;
 	private boolean dirtyPrice;
@@ -42,7 +41,6 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 		super(client, OrderResponse.class);
 		this.ekrutLocation = ekrutLocation;
 		this.salesManager = client.getClientSalesManager();
-		this.inventoryManager = client.getClientInventoryManager();
 		client.getClientSessionManager().registerOnLogoutHandler(this::cancelOrder);
 	}
 	
@@ -149,15 +147,8 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 		if (creditCardNumber != null)
 			activeOrder.setCreditCard(creditCardNumber);
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.CREATE, activeOrder));
-		if (response.getResult() == ResultType.OK) {
-			if (ekrutLocation != null) {
-				for (OrderItem item : activeOrder.getItems()) {
-					inventoryManager.updateInventoryQuantity(item.getItem().getItemId(), ekrutLocation,
-															item.getItemQuantity());
-				}
-			}
+		if (response.getResult() == ResultType.OK)
 			activeOrder = null;
-		}
 		return response.getResult();
 	}
 	
