@@ -147,9 +147,9 @@ public class OrderItemController extends HBox {
 		noDigitOrQuantityError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
-			if (ekrutLocation != null) 
-				CheckQuantityAvilability(textQuantity);
-				else {
+			if (ekrutLocation != null) {
+				textQuantity = CheckQuantityAvilability(textQuantity);
+			} else {
 				quantityTxt.setText(Integer.toString(textQuantity + 1));
 				textQuantity++;
 			}
@@ -170,14 +170,14 @@ public class OrderItemController extends HBox {
 						+ color + ";");
 	}
 
-	private void CheckQuantityAvilability(int textQuantity) {
-		if (ekrutLocation != null) {
-			if (textQuantity + 1 > inventoryItem.getItemQuantity()) {
-				noDigitOrQuantityError.setText("Not Enough Items!");
-				noDigitOrQuantityError.setVisible(true);
-			} else {
-				quantityTxt.setText(Integer.toString(textQuantity + 1));
-			}
+	private int CheckQuantityAvilability(int textQuantity) {
+		if (textQuantity + 1 > inventoryItem.getItemQuantity()) {
+			noDigitOrQuantityError.setText("Not Enough Items!");
+			noDigitOrQuantityError.setVisible(true);
+			return textQuantity;
+		} else {
+			quantityTxt.setText(Integer.toString(textQuantity + 1));
+			return textQuantity + 1;
 		}
 	}
 
