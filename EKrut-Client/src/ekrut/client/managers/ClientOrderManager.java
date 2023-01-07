@@ -1,12 +1,16 @@
 package ekrut.client.managers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import ekrut.client.EKrutClient;
+import ekrut.client.EKrutClientUI;
 import ekrut.entity.Item;
 import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
 import ekrut.entity.OrderType;
+import ekrut.entity.SaleDiscount;
+import ekrut.entity.SaleDiscountType;
 import ekrut.net.OrderRequest;
 import ekrut.net.OrderRequestType;
 import ekrut.net.OrderResponse;
@@ -22,6 +26,8 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 
 	private Order activeOrder;
 	private final String ekrutLocation;
+	private ClientSalesManager salesManager;
+	private ClientInventoryManager inventoryManager;
 	
 	/**
 	 * Constructs a new client order manager.
@@ -32,6 +38,8 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	public ClientOrderManager(EKrutClient client, String ekrutLocation) {
 		super(client, OrderResponse.class);
 		this.ekrutLocation = ekrutLocation;
+		this.salesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
+		this.inventoryManager = EKrutClientUI.getEkrutClient().getClientInventoryManager();
 	}
 	
 	/**
@@ -41,7 +49,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void createOrder() {
 		if (activeOrder != null)
-			throw new IllegalStateException("An order is already in progress");
+			return;
 		activeOrder = new Order(OrderType.PICKUP, ekrutLocation);
 	}
 	
@@ -54,7 +62,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void createOrder(String param, boolean isShipment) {
 		if (activeOrder != null)
-			throw new IllegalStateException("An order is already in progress");
+			return;
 		
 		OrderType type = isShipment ? OrderType.SHIPMENT : OrderType.REMOTE;
 		activeOrder = new Order(type, param);
@@ -67,7 +75,12 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void addItemToOrder(OrderItem item) {
 		if (activeOrder == null)
-			throw new IllegalStateException("No active order");
+			return;
+		
+		if (item.getItemQuantity() == 0) {
+			removeItemFromOrder(item.getItem());
+			return;
+		}
 		
 		// Check if this item is already in the order and if so, just update the quantity
 		for (OrderItem i : activeOrder.getItems()) {
@@ -87,7 +100,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void removeItemFromOrder(Item item) {
 		if (activeOrder == null)
-			throw new IllegalStateException("No active order");
+			return;
 		
 		ArrayList<OrderItem>  items = activeOrder.getItems();
 		for (OrderItem i : items)
@@ -104,7 +117,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public ArrayList<OrderItem> getActiveOrderItems() {
 		if (activeOrder == null)
-			throw new IllegalStateException("No active order");
+			return null;
 		
 		return activeOrder.getItems();
 	}
@@ -123,10 +136,18 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public ResultType confirmOrder() {
 		if (activeOrder == null)
-			throw new IllegalStateException("No active order");
+			return ResultType.INVALID_INPUT;
 		
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.CREATE, activeOrder));
-		activeOrder = null;
+		if (response.getResult() == ResultType.OK) {
+			if (ekrutLocation != null) {
+				for (OrderItem item : activeOrder.getItems()) {
+					inventoryManager.updateInventoryQuantity(item.getItem().getItemId(), ekrutLocation,
+															item.getItemQuantity());
+				}
+			}
+			activeOrder = null;
+		}
 		return response.getResult();
 	}
 	
@@ -149,6 +170,43 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	public ResultType pickupOrder(int orderId) {
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.PICKUP, orderId));
 		return response.getResult();
+	}
+	
+	public float getTotalPrice() {
+		if (activeOrder == null)
+			return 0;
+		return activeOrder.getSumAmount();
+	}
+	
+	public float getDiscount() {
+		float discount = 0;
+		LocalDateTime now = LocalDateTime.now();
+		ArrayList<SaleDiscount> sales;
+		if (activeOrder.getType() != OrderType.PICKUP)
+			sales = salesManager.fetchActiveSales();
+		else
+			sales = salesManager.fetchActiveSales(ekrutLocation);
+		
+		if (sales == null || sales.size() == 0)
+			return discount;
+		
+		for (SaleDiscount sale : sales) {
+			// Verify the active sale applies to right now
+			if (sale.getDayOfSale().charAt(now.getDayOfWeek().getValue() % 7) != 'T')
+				continue;
+			if (sale.getStartTime().isAfter(now.toLocalTime()) || sale.getEndTime().isBefore(now.toLocalTime()))
+				continue;
+			
+			if (sale.getType() == SaleDiscountType.THIRTY_PERCENT_OFF) {
+				for (OrderItem item : activeOrder.getItems())
+					discount += item.getItemQuantity() * item.getItem().getItemPrice() * 0.3;
+			} else { // one plus one free
+				for (OrderItem item : activeOrder.getItems())
+					discount += (item.getItemQuantity() / 2) * item.getItem().getItemPrice();
+			}
+		}
+		
+		return discount;
 	}
 	
 	/**
