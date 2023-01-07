@@ -138,18 +138,23 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	/**
 	 * Sends an order creation request to the server.
 	 * 
-	 * @return the result of the operation
+	 * @param creditCardNumber a string representing the credit card with which the payment
+	 * 	                       the payment should be made or null to use the registered credit
+	 *                         card number
+	 * @return the new order ID if successful or -1 if the operation failed
 	 */
-	public ResultType confirmOrder(String creditCardNumber) {
+	public int confirmOrder(String creditCardNumber) {
 		if (activeOrder == null)
-			return ResultType.INVALID_INPUT;
+			return -1;
 		
 		if (creditCardNumber != null)
 			activeOrder.setCreditCard(creditCardNumber);
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.CREATE, activeOrder));
-		if (response.getResult() == ResultType.OK)
+		if (response.getResult() == ResultType.OK) {
 			activeOrder = null;
-		return response.getResult();
+			return response.getOrderId();
+		}
+		return -1;
 	}
 	
 	/**

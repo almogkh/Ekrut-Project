@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
-import ekrut.net.ResultType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -79,8 +78,9 @@ public class OrderPaymentViewController {
 		newCardNumberTxt.setDisable(false);
 	}
 	
-	private void orderSuccess() {
-		new Alert(AlertType.INFORMATION, "The order was successfully placed!", ButtonType.OK).showAndWait();
+	private void orderSuccess(int orderId) {
+		new Alert(AlertType.INFORMATION, "The order was successfully placed! Your order ID is " + orderId,
+				ButtonType.OK).showAndWait();
 		if (EKrutClientUI.ekrutLocation == null) {
 			BaseTemplateController.getBaseTemplateController().switchStages("MainMenu");
 		} else {
@@ -91,14 +91,15 @@ public class OrderPaymentViewController {
 	
 	@FXML
 	void confirmOrder(ActionEvent event) {
+		int orderId;
 		if (currentCreditCardRadioBtn.isSelected()) {
-			if (orderManager.confirmOrder(null) == ResultType.OK) {
-				orderSuccess();
+			if ((orderId = orderManager.confirmOrder(null)) != -1) {
+				orderSuccess(orderId);
 				return;
 			}
 		} else {
-			if (orderManager.confirmOrder(newCardNumberTxt.getText()) == ResultType.OK) {
-				orderSuccess();
+			if ((orderId = orderManager.confirmOrder(newCardNumberTxt.getText())) != -1) {
+				orderSuccess(orderId);
 				return;
 			}
 		}
