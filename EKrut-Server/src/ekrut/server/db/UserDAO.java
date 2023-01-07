@@ -165,7 +165,7 @@ public class UserDAO {
 	*/
 	public User fetchManagerByArea(String area){
 		User user = null;
-		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE role = 'AREA_MANAGER' AND area = ?"); 
+		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE userType = 'AREA_MANAGER' AND area = ?"); 
 		try {
 			ps.setString(1,area);
 			ResultSet rs = ps.executeQuery();
