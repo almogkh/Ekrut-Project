@@ -42,4 +42,13 @@ public class Item implements Serializable{
 	public float getItemPrice() {
 		return itemPrice;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (!(other instanceof Item))
+			return false;
+		return itemId == ((Item) other).itemId;
+	}
 }

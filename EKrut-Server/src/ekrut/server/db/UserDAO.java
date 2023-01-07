@@ -141,8 +141,8 @@ public class UserDAO {
 			
 			if (rs.next())
 				return new Customer(rs.getString("subscriberNumber"), rs.getString("username"),
-                                    rs.getBoolean("monthlyCharge"), rs.getString("creditCardNumber"),
-                                    rs.getBoolean("orderedAsSub"));
+									rs.getString("address"), rs.getBoolean("monthlyCharge"),
+									rs.getString("creditCardNumber"), rs.getBoolean("orderedAsSub"));
 			return null;
 			
 		} catch (SQLException e) {
@@ -165,7 +165,7 @@ public class UserDAO {
 	*/
 	public User fetchManagerByArea(String area){
 		User user = null;
-		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE role = 'AREA_MANAGER' AND area = ?"); 
+		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE userType = 'AREA_MANAGER' AND area = ?"); 
 		try {
 			ps.setString(1,area);
 			ResultSet rs = ps.executeQuery();

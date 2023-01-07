@@ -16,9 +16,11 @@ public class Order implements Serializable {
 	private String clientAddress;
 	private String ekrutLocation;
 	private String username;
+	private String creditCard;
 	private ArrayList<OrderItem> items;
 
 	public Order(OrderType type, String param) {
+		items = new ArrayList<>();
 		this.type = type;
 		if (type == OrderType.PICKUP || type == OrderType.REMOTE)
 			this.ekrutLocation = param;
@@ -28,6 +30,7 @@ public class Order implements Serializable {
 
 	public Order(int orderId, LocalDateTime date, OrderStatus status, OrderType type, LocalDateTime dueDate,
 			String clientAddress, String ekrutLocation, String username) {
+		items = new ArrayList<>();
 		this.orderId = orderId;
 		this.date = date;
 		this.status = status;
@@ -107,5 +110,13 @@ public class Order implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getCreditCard() {
+		return creditCard;
+	}
+
+	public void setCreditCard(String creditCard) {
+		this.creditCard = creditCard;
 	}
 }

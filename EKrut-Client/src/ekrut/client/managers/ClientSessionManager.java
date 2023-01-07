@@ -17,9 +17,11 @@ import ekrut.net.UserResponse;
 public class ClientSessionManager extends AbstractClientManager<UserRequest, UserResponse> {
 
 	private User user;
+	private ArrayList<Runnable> onLogout;
 
 	public ClientSessionManager(EKrutClient client) {
 		super(client, UserResponse.class);
+		this.onLogout = new ArrayList<>();
 	}
 
 	/**
@@ -60,6 +62,9 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 	}
 
 	public void logoutUser(boolean quiet) {
+		for (Runnable r : onLogout)
+			r.run();
+		
 		if (quiet) {
 			user = null;
 			return;
@@ -76,6 +81,10 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 			user = null;
 		else
 			throw new RuntimeException(userResponse.getResultCode().toString());
+	}
+	
+	public void registerOnLogoutHandler(Runnable runnable) {
+		onLogout.add(runnable);
 	}
 
 	/**

@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ItemBrowserController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderBrowserController">
    <children>
       <HBox alignment="CENTER" prefHeight="120.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
@@ -31,11 +31,6 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Button fx:id="backBtn" layoutX="655.0" layoutY="2.0" mnemonicParsing="false" onAction="#back" prefHeight="27.0" prefWidth="112.0" text="Back">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="15.0" />
-               </font>
-            </Button>
             <Label layoutX="8.0" layoutY="4.0" text="Order process">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
@@ -71,7 +66,7 @@
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Recipt">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Receipt">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
@@ -86,7 +81,7 @@
                   <Font name="Arial Rounded MT Bold" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="viewCartBtn" layoutX="606.0" layoutY="502.0" mnemonicParsing="false" onAction="#ViewCart" prefHeight="20.0" prefWidth="144.0" text="View Crat">
+            <Button fx:id="viewCartBtn" layoutX="606.0" layoutY="502.0" mnemonicParsing="false" onAction="#ViewCart" prefHeight="20.0" prefWidth="144.0" text="View Cart">
                <font>
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>

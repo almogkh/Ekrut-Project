@@ -10,6 +10,7 @@ import ekrut.net.SaleDiscountRequest;
 import ekrut.net.SaleDiscountResponse;
 import ekrut.server.db.DBController;
 import ekrut.server.db.SaleDiscountDAO;
+import ekrut.server.db.TicketDAO;
 import ocsf.server.ConnectionToClient;
 
 /**
@@ -20,10 +21,12 @@ import ocsf.server.ConnectionToClient;
 public class ServerSalesManager {
 
 	private SaleDiscountDAO salesDAO;
+	private TicketDAO ticketDAO;
 	private ServerSessionManager serverSessionManager;
 	
 	public ServerSalesManager(DBController dbCon, ServerSessionManager serverSessionManager) {
 		this.salesDAO = new SaleDiscountDAO(dbCon);
+		this.ticketDAO = new TicketDAO(dbCon);
 		this.serverSessionManager = serverSessionManager;
 	}
 	
@@ -42,6 +45,9 @@ public class ServerSalesManager {
 			return fetchSaleTemplates();
 		case FETCH_SALES_BY_AREA:
 			return fetchSalesByArea(request.getArea());
+		case FETCH_SALES_BY_LOCATION:
+			String area = ticketDAO.fetchAreaByEkrutLocation(request.getEkrutLocation());
+			return fetchSalesByArea(area);
 		case ACTIVATE_SALE_FOR_AREA:
 			return activateSaleForArea(request.getDiscountId(), request.getArea(), client);
 		case DEACTIVATE_SALE_FOR_AREA:

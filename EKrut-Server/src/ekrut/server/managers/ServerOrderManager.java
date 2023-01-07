@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import ekrut.entity.Customer;
+import ekrut.entity.InventoryItem;
 import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
 import ekrut.entity.OrderStatus;
@@ -11,6 +12,8 @@ import ekrut.entity.OrderType;
 import ekrut.entity.SaleDiscount;
 import ekrut.entity.SaleDiscountType;
 import ekrut.entity.User;
+import ekrut.net.InventoryItemRequest;
+import ekrut.net.InventoryItemRequestType;
 import ekrut.net.OrderRequest;
 import ekrut.net.OrderRequestType;
 import ekrut.net.OrderResponse;
@@ -33,13 +36,16 @@ public class ServerOrderManager {
 	private TicketDAO ticketDAO;
 	private ServerSessionManager sessionManager;
 	private ServerSalesManager salesManager;
+	private ServerInventoryManager inventoryManager;
 	private IPaymentProcessor paymentProcessor;
 	
-	public ServerOrderManager(DBController dbCon, ServerSessionManager sessionManager, ServerSalesManager salesManager) {
+	public ServerOrderManager(DBController dbCon, ServerSessionManager sessionManager,
+							ServerSalesManager salesManager, ServerInventoryManager inventoryManager) {
 		this.orderDAO = new OrderDAO(dbCon);
 		this.ticketDAO = new TicketDAO(dbCon);
 		this.sessionManager = sessionManager;
 		this.salesManager = salesManager;
+		this.inventoryManager = inventoryManager;
 		this.paymentProcessor = new StubPaymentProcessor();
 	}
 	
@@ -95,7 +101,7 @@ public class ServerOrderManager {
 		
 		Order order = request.getOrder();
 		order.setDate(LocalDateTime.now());
-		order.setStatus(OrderStatus.SUBMITTED);
+		order.setStatus(order.getType() == OrderType.PICKUP ? OrderStatus.DONE : OrderStatus.SUBMITTED);
 		order.setUsername(user.getUsername());
 		
 		// Compute the total amount the user has to pay
@@ -112,17 +118,39 @@ public class ServerOrderManager {
 		if (subscriber && !info.hasOrderedAsSub())
 			debitAmount *= 0.8f;
 		
+		String creditCardNumber = order.getCreditCard();
+		if (creditCardNumber == null)
+			creditCardNumber = info.getCreditCard();
+		
 		// Subscribers can choose to pay once a month for all of their orders
 		if (subscriber && info.isMonthlyCharge()) {
-			if (!paymentProcessor.addToCharges(info.getCreditCard(), debitAmount))
+			if (!paymentProcessor.addToCharges(creditCardNumber, debitAmount))
 				return new OrderResponse(ResultType.INVALID_INPUT);
 		} else {
-			if (!paymentProcessor.submitPayment(info.getCreditCard(), debitAmount))
+			if (!paymentProcessor.submitPayment(creditCardNumber, debitAmount))
 				return new OrderResponse(ResultType.INVALID_INPUT);
 		}
 		
 		if (!orderDAO.createOrder(order, subscriber ? user.getUsername() : null))
 			return new OrderResponse(ResultType.UNKNOWN_ERROR);
+		
+		if (order.getEkrutLocation() != null) {
+			ArrayList<InventoryItem> items = inventoryManager.fetchInventoryItemsByEkrutLocation(
+					new InventoryItemRequest(InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE, 
+											order.getEkrutLocation())).getInventoryItems();
+			for (OrderItem item : order.getItems()) {
+				for (InventoryItem invItem : items) {
+					if (item.getItem().equals(invItem.getItem())) {
+						inventoryManager.updateInventoryQuantity(new InventoryItemRequest(
+															InventoryItemRequestType.UPDATE_ITEM_QUANTITY,
+															item.getItem().getItemId(),
+															invItem.getItemQuantity() - item.getItemQuantity(),
+															order.getEkrutLocation()));
+						break;
+					}
+				}
+			}
+		}
 		
 		// We need to return the order ID for remote orders.
 		return new OrderResponse(ResultType.OK, order.getOrderId());	

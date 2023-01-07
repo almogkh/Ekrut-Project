@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class ServerUI extends Application {
@@ -26,6 +27,7 @@ public class ServerUI extends Application {
 		controller = loader.getController();
 		
 		Scene scene = new Scene(root);
+		primaryStage.getIcons().add(new Image(ServerUI.class.getResourceAsStream("/ekrut/server/gui/gui-assets/icon-server.png")));
 		primaryStage.setTitle("Server");
 		primaryStage.setScene(scene);
 		primaryStage.show();

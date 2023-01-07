@@ -1,16 +1,11 @@
 package ekrut.server.db;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import com.mysql.cj.MysqlType;
-
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.server.intefaces.IItemQuantityFetcher;
@@ -241,21 +236,6 @@ public class InventoryItemDAO {
 		}
 	}
 	
-	private void loadItemImage(Item item) {
-		try (InputStream is = getClass().getResourceAsStream("/resources/images/" + item.getItemId() + ".jpg");
-			 ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-			if (is != null) {
-				byte[] arr = new byte[4096];
-				int bytes;
-				while ((bytes = is.read(arr)) != -1)
-					os.write(arr, 0, bytes);
-				item.setImg(os.toByteArray());
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
 	/**
 	 * Fetches all items in the inventory system at a given ekrut location.
 	 *
@@ -278,7 +258,6 @@ public class InventoryItemDAO {
 				Item item = itemDAO.fetchItem(rs.getInt("itemId"));
 				int itemActualQuantity = itemQuantityFetcher.fetchQuantity(rs.getInt("itemId"), ekrutLocation);
 				if (item != null && itemActualQuantity != -1) {
-					loadItemImage(item);
 					inventoryItems.add(new InventoryItem(item, itemActualQuantity, ekrutLocation, rs.getString("area"), rs.getInt("threshold")));
 				}
 			}
@@ -313,7 +292,6 @@ public class InventoryItemDAO {
 			Item item = itemDAO.fetchItem(itemId);
 			if (item == null)
 				throw new RuntimeException("There are no item with the given itemId.");
-			loadItemImage(item);
 
 			// Check if any results are available.
 			if (rs.next()) {

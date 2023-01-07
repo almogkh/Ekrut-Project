@@ -1,7 +1,6 @@
 package ekrut.server;
 
 import java.io.IOException;
-
 import ekrut.entity.User;
 import ekrut.net.InventoryItemRequest;
 import ekrut.net.InventoryItemResponse;
@@ -51,7 +50,8 @@ public class EKrutServer extends AbstractServer {
 		serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
 		serverTicketManager = new ServerTicketManager(dbCon);
 		serverSalesManager = new ServerSalesManager(dbCon, serverSessionManager);
-		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager, serverSalesManager);
+		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager, serverSalesManager,
+													serverInventoryManager);
 		serverShipmentManager = new ServerShipmentManager(dbCon, serverSessionManager);
 		serverReportManager = new ServerReportManager(dbCon);
 		
@@ -74,6 +74,7 @@ public class EKrutServer extends AbstractServer {
 		} else if (msg instanceof SaleDiscountRequest) {
 			handleMessageSales((SaleDiscountRequest) msg, client);
 		}
+		// TBD OFEK: NEED TO SEND A ERROR RESPONSE
 	}
 
 	private void handleMessageUser(UserRequest userRequest, ConnectionToClient client) {
@@ -232,7 +233,7 @@ public class EKrutServer extends AbstractServer {
 
 	public static void sendRequestToClient(Object msg, ConnectionToClient client) {
 		try {
-			client.sendToClient((UserRequest) msg);
+			client.sendToClient(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);

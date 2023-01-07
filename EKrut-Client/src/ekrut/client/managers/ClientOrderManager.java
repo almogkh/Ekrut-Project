@@ -1,5 +1,6 @@
 package ekrut.client.managers;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import ekrut.client.EKrutClient;
@@ -7,6 +8,8 @@ import ekrut.entity.Item;
 import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
 import ekrut.entity.OrderType;
+import ekrut.entity.SaleDiscount;
+import ekrut.entity.SaleDiscountType;
 import ekrut.net.OrderRequest;
 import ekrut.net.OrderRequestType;
 import ekrut.net.OrderResponse;
@@ -22,6 +25,11 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 
 	private Order activeOrder;
 	private final String ekrutLocation;
+	private ClientSalesManager salesManager;
+	private float cachedPrice;
+	private float cachedDiscount;
+	private boolean dirtyPrice;
+	private boolean dirtyDiscount;
 	
 	/**
 	 * Constructs a new client order manager.
@@ -32,6 +40,8 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	public ClientOrderManager(EKrutClient client, String ekrutLocation) {
 		super(client, OrderResponse.class);
 		this.ekrutLocation = ekrutLocation;
+		this.salesManager = client.getClientSalesManager();
+		client.getClientSessionManager().registerOnLogoutHandler(this::cancelOrder);
 	}
 	
 	/**
@@ -41,7 +51,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void createOrder() {
 		if (activeOrder != null)
-			throw new IllegalStateException("An order is already in progress");
+			return;
 		activeOrder = new Order(OrderType.PICKUP, ekrutLocation);
 	}
 	
@@ -54,7 +64,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void createOrder(String param, boolean isShipment) {
 		if (activeOrder != null)
-			throw new IllegalStateException("An order is already in progress");
+			return;
 		
 		OrderType type = isShipment ? OrderType.SHIPMENT : OrderType.REMOTE;
 		activeOrder = new Order(type, param);
@@ -67,8 +77,14 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void addItemToOrder(OrderItem item) {
 		if (activeOrder == null)
-			throw new IllegalStateException("No active order");
+			return;
 		
+		if (item.getItemQuantity() == 0) {
+			removeItemFromOrder(item.getItem());
+			return;
+		}
+		
+		dirtyPrice = dirtyDiscount = true;
 		// Check if this item is already in the order and if so, just update the quantity
 		for (OrderItem i : activeOrder.getItems()) {
 			if (i.getItem().equals(item.getItem())) {
@@ -87,8 +103,9 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void removeItemFromOrder(Item item) {
 		if (activeOrder == null)
-			throw new IllegalStateException("No active order");
+			return;
 		
+		dirtyPrice = dirtyDiscount = true;
 		ArrayList<OrderItem>  items = activeOrder.getItems();
 		for (OrderItem i : items)
 			if (i.getItem().equals(item)) {
@@ -104,7 +121,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public ArrayList<OrderItem> getActiveOrderItems() {
 		if (activeOrder == null)
-			throw new IllegalStateException("No active order");
+			return null;
 		
 		return activeOrder.getItems();
 	}
@@ -114,20 +131,30 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	 */
 	public void cancelOrder() {
 		activeOrder = null;
+		cachedPrice = cachedDiscount = 0;
+		dirtyPrice = dirtyDiscount = false;
 	}
 	
 	/**
 	 * Sends an order creation request to the server.
 	 * 
-	 * @return the result of the operation
+	 * @param creditCardNumber a string representing the credit card with which the payment
+	 * 	                       the payment should be made or null to use the registered credit
+	 *                         card number
+	 * @return the new order ID if successful or -1 if the operation failed
 	 */
-	public ResultType confirmOrder() {
+	public int confirmOrder(String creditCardNumber) {
 		if (activeOrder == null)
-			throw new IllegalStateException("No active order");
+			return -1;
 		
+		if (creditCardNumber != null)
+			activeOrder.setCreditCard(creditCardNumber);
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.CREATE, activeOrder));
-		activeOrder = null;
-		return response.getResult();
+		if (response.getResult() == ResultType.OK) {
+			activeOrder = null;
+			return response.getOrderId();
+		}
+		return -1;
 	}
 	
 	/**
@@ -149,6 +176,52 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	public ResultType pickupOrder(int orderId) {
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.PICKUP, orderId));
 		return response.getResult();
+	}
+	
+	public float getTotalPrice() {
+		if (activeOrder == null)
+			return 0;
+		if (!dirtyPrice)
+			return cachedPrice;
+		cachedPrice = activeOrder.getSumAmount();
+		dirtyPrice = false;
+		return cachedPrice;
+	}
+	
+	public float getDiscount() {
+		if (!dirtyDiscount)
+			return cachedDiscount;
+		float discount = 0;
+		LocalDateTime now = LocalDateTime.now();
+		ArrayList<SaleDiscount> sales;
+		if (activeOrder.getType() != OrderType.PICKUP)
+			sales = salesManager.fetchActiveSales();
+		else
+			sales = salesManager.fetchActiveSales(ekrutLocation);
+		
+		if (sales == null || sales.size() == 0)
+			return discount;
+		
+		for (SaleDiscount sale : sales) {
+			// Verify the active sale applies to right now
+			if (sale.getDayOfSale().charAt(now.getDayOfWeek().getValue() % 7) != 'T')
+				continue;
+			if (sale.getStartTime().isAfter(now.toLocalTime()) || sale.getEndTime().isBefore(now.toLocalTime()))
+				continue;
+			
+			if (sale.getType() == SaleDiscountType.THIRTY_PERCENT_OFF) {
+				for (OrderItem item : activeOrder.getItems())
+					discount += item.getItemQuantity() * item.getItem().getItemPrice() * 0.3;
+			} else { // one plus one free
+				for (OrderItem item : activeOrder.getItems())
+					discount += (item.getItemQuantity() / 2) * item.getItem().getItemPrice();
+			}
+		}
+		
+		cachedDiscount = discount;
+		dirtyDiscount = false;
+		
+		return discount;
 	}
 	
 	/**

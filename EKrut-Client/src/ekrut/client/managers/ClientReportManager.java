@@ -1,7 +1,6 @@
 package ekrut.client.managers;
 import ekrut.net.ReportRequest;
 import ekrut.net.ReportResponse;
-import ekrut.net.ResultType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,13 +40,9 @@ public class ClientReportManager extends AbstractClientManager<ReportRequest, Re
 		return reportResponse.getReport();  
 	} 
 	
-	public ArrayList<String> getFacilitiesByArea(String area) throws Exception{
+	public ArrayList<String> getFacilitiesByArea(String area) {
 		ReportRequest reportRequest = new ReportRequest(area);
 		ReportResponse reportResponse = sendRequest(reportRequest);
-		ResultType resultType = reportResponse.getResultCode(); 
-		// ResultCode is not "OK" meaning we encountered an error.
-		if (!resultType.equals(ResultType.OK))
-			throw new Exception(resultType.toString()); // TBD CHANGE TO SPESIFIC EXCEPTION
 		return reportResponse.getFacilities();  
 	}
 }
