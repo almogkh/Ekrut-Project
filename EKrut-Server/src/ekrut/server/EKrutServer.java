@@ -232,7 +232,7 @@ public class EKrutServer extends AbstractServer {
 
 	public static void sendRequestToClient(Object msg, ConnectionToClient client) {
 		try {
-			client.sendToClient((UserRequest) msg);
+			client.sendToClient(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(-1);
