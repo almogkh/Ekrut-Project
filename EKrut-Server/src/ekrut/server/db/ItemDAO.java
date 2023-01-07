@@ -1,4 +1,7 @@
 package ekrut.server.db;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +22,18 @@ public class ItemDAO {
 	public ItemDAO(DBController con) {
 		this.con = con;
 	}
+	
+	private void loadItemImage(Item item) {
+		try (InputStream is = getClass().getResourceAsStream("/resources/images/" + item.getItemId() + ".jpg");
+			 ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+			if (is != null) {
+				is.transferTo(os);
+				item.setImg(os.toByteArray());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Fetch a single Item object from DB, identified by itemId.
@@ -32,11 +47,14 @@ public class ItemDAO {
 		try {
 			ps.setInt(1, itemId);
 			ResultSet rs = con.executeQuery(ps);
-			if(rs.next())
-				return new Item(rs.getInt("itemId"),
+			if(rs.next()) {
+				Item item = new Item(rs.getInt("itemId"),
 						rs.getString("itemName"), 
 						rs.getString("itemDescription"),
 						rs.getFloat("itemPrice"));
+				loadItemImage(item);
+				return item;
+			}
 			return null;
 		} catch (SQLException e1) {
 			return null;
@@ -55,12 +73,15 @@ public class ItemDAO {
 				"SELECT * FROM items;");
 		try {
 			ResultSet rs = con.executeQuery(ps);
-			while(rs.next())
-				allItems.add(new Item(
+			while(rs.next()) {
+				Item item = new Item(
 						rs.getInt("itemId"),
 						rs.getString("itemName"), 
 						rs.getString("itemDescription"),
-						rs.getFloat("itemPrice")));
+						rs.getFloat("itemPrice"));
+				loadItemImage(item);
+				allItems.add(item);
+			}
 			return allItems;
 		} catch (SQLException e1) {
 			return null;
