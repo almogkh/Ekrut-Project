@@ -12,7 +12,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
-public class PaymentViewController implements Initializable {
+public class OrderPaymentViewController implements Initializable {
 
 	// private final
 

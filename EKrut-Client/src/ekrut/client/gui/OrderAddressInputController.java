@@ -9,7 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 
 
-public class AddressInputController {
+public class OrderAddressInputController {
 
     @FXML
     private Button ContinueBtn;
