@@ -31,8 +31,6 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	 * @param item the item its quantity will be changed.
 	 * @param ekrutLocation the specific machine string descriptor.
 	 * @param quantity the new item's quantity at the given ekrutLocation.
-	 * @throws IllegalArgumentException when a null item is provided.
-	 * @throws Exception when the servers response is anything but "OK".
 	 */
 	public ResultType updateInventoryQuantity(int itemId, String ekrutLocation, int quantity) {
 		if (quantity < 0) return ResultType.INVALID_INPUT;
@@ -46,10 +44,8 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	 * Return InentoryItem list for a given ekrutLocation.
 	 * 
 	 * @param ekrutLocation the specific machine string descriptor.
-	 * @throws IllegalArgumentException when a null item is provided.
-	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public ArrayList<InventoryItem> fetchInventoryItemsByEkrutLocation(String ekrutLocation) throws RuntimeException {
+	public ArrayList<InventoryItem> fetchInventoryItemsByEkrutLocation(String ekrutLocation) {
 		InventoryItemRequest inventoryItemRequest = new InventoryItemRequest(
 				InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE, ekrutLocation);
 		InventoryItemResponse inventoryItemResponse = sendRequest(inventoryItemRequest);
@@ -67,10 +63,8 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	 * @param item the item its threshold will be changed.
 	 * @param ekrutLocation the specific machine string descriptor.
 	 * @param threshold the new item's threshold for the given ekrutLocation.
-	 * @throws IllegalArgumentException when a null item is provided.
-	 * @throws Exception when the servers response is anything but "OK".
 	 */
-	public void updateItemThreshold(int itemId, String ekrutLocation, int threshold) throws IllegalArgumentException, RuntimeException {
+	public void updateItemThreshold(int itemId, String ekrutLocation, int threshold) {
 		if (threshold < 0) throw new IllegalArgumentException("Threshold must be a non-negative integer.");
 		InventoryItemRequest inventoryItemRequest = new InventoryItemRequest(
 				InventoryItemRequestType.UPDATE_ITEM_THRESHOLD, itemId, threshold, ekrutLocation);
