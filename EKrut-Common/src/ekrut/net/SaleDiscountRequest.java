@@ -12,6 +12,7 @@ public class SaleDiscountRequest implements Serializable {
 	private SaleDiscount sale;
 	private int discountId;
 	private String area;
+	private String ekrutLocation;
 
 	public SaleDiscountRequest(SaleDiscount sale) {
 		this.action = SaleDiscountRequestType.CREATE_SALE;
@@ -28,9 +29,12 @@ public class SaleDiscountRequest implements Serializable {
 		this.action = SaleDiscountRequestType.FETCH_SALE_TEMPLATES;
 	}
 
-	public SaleDiscountRequest(String area) {
-		this.action = SaleDiscountRequestType.FETCH_SALES_BY_AREA;
-		this.area = area;
+	public SaleDiscountRequest(SaleDiscountRequestType type, String areaOrLocation) {
+		this.action = type;
+		if (type == SaleDiscountRequestType.FETCH_SALES_BY_AREA)
+			this.area = areaOrLocation;
+		else
+			this.ekrutLocation = areaOrLocation;
 	}
 
 	public SaleDiscountRequestType getAction() {
@@ -47,5 +51,13 @@ public class SaleDiscountRequest implements Serializable {
 
 	public String getArea() {
 		return area;
+	}
+
+	public String getEkrutLocation() {
+		return ekrutLocation;
+	}
+
+	public void setEkrutLocation(String ekrutLocation) {
+		this.ekrutLocation = ekrutLocation;
 	}
 }

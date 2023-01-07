@@ -58,7 +58,21 @@ public class ClientSalesManager extends AbstractClientManager<SaleDiscountReques
 	 */
 	public ArrayList<SaleDiscount> fetchActiveSales() {
 		User user = client.getClientSessionManager().getUser();
-		SaleDiscountRequest request = new SaleDiscountRequest(user.getArea());
+		SaleDiscountRequest request = new SaleDiscountRequest(SaleDiscountRequestType.FETCH_SALES_BY_AREA,
+															user.getArea());
+		SaleDiscountResponse response = sendRequest(request);
+
+		return response.getSales();
+	}
+	
+	/**
+	 * Retrieves the list of active sales for the area the specified machine is located in.
+	 * 
+	 * @return the list of active sales for the area
+	 */
+	public ArrayList<SaleDiscount> fetchActiveSales(String ekrutLocation) {
+		SaleDiscountRequest request = new SaleDiscountRequest(SaleDiscountRequestType.FETCH_SALES_BY_LOCATION,
+															ekrutLocation);
 		SaleDiscountResponse response = sendRequest(request);
 
 		return response.getSales();
