@@ -44,6 +44,8 @@ public class OrderBrowserController {
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		inventoryManager = EKrutClientUI.getEkrutClient().getClientInventoryManager();
 		orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
+		if (ekrutLocation != null)
+			orderManager.createOrder();
 		AddItemViewToOrderVBox();
 		updateTotalPrice();
 	}
