@@ -40,6 +40,7 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 		this.ekrutLocation = ekrutLocation;
 		this.salesManager = client.getClientSalesManager();
 		this.inventoryManager = client.getClientInventoryManager();
+		client.getClientSessionManager().registerOnLogoutHandler(this::cancelOrder);
 	}
 	
 	/**
