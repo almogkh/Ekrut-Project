@@ -245,7 +245,10 @@ public class InventoryItemDAO {
 		try (InputStream is = getClass().getResourceAsStream("/resources/images/" + item.getItemId() + ".jpg");
 			 ByteArrayOutputStream os = new ByteArrayOutputStream()) {
 			if (is != null) {
-				is.transferTo(os);
+				byte[] arr = new byte[4096];
+				int bytes;
+				while ((bytes = is.read(arr)) != -1)
+					os.write(arr, 0, bytes);
 				item.setImg(os.toByteArray());
 			}
 		} catch (IOException e) {
