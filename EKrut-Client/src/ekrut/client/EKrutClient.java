@@ -26,11 +26,11 @@ public class EKrutClient extends AbstractClient{
 	public EKrutClient(String host, int port) { 
 		super(host, port);
 		clientInventoryManager = new ClientInventoryManager(this);
+		clientSalesManager = new ClientSalesManager(this);
 		clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
 		clientReportManager = new ClientReportManager(this);
 		clientSessionManager = new ClientSessionManager(this);
 		//clientShipmentManager = new ClientShipmentManager(this);
-		clientSalesManager = new ClientSalesManager(this);
 		clientTicketManager = new ClientTicketManager(this);
 	}
 	

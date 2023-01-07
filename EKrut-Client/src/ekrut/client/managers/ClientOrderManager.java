@@ -38,8 +38,8 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	public ClientOrderManager(EKrutClient client, String ekrutLocation) {
 		super(client, OrderResponse.class);
 		this.ekrutLocation = ekrutLocation;
-		this.salesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
-		this.inventoryManager = EKrutClientUI.getEkrutClient().getClientInventoryManager();
+		this.salesManager = client.getClientSalesManager();
+		this.inventoryManager = client.getClientInventoryManager();
 	}
 	
 	/**
