@@ -101,7 +101,7 @@ public class ServerInventoryManager {
 			String notificationMsg = "The quantity of: " + inventoryItemInDB.getItem().getItemName() 
 									+ " in the machine: " + inventoryItemInDB.getEkrutLocation()
 									+ " is below the specified threshold of " + inventoryItemInDB.getItemThreshold() 
-									+ " and currently has " + inventoryItemInDB.getItemQuantity() 
+									+ " and currently has " + quantity
 									+ " units.";
 			User areaManagerUser = userDAO.fetchManagerByArea(inventoryItemInDB.getArea());
 			userNotifier.sendNotification(notificationMsg, areaManagerUser.getEmail(), areaManagerUser.getPhoneNumber());
