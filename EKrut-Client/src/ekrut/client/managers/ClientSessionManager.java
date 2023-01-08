@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import ekrut.client.EKrutClient;
 import ekrut.entity.User;
+import ekrut.entity.UserRegistration;
 import ekrut.net.FetchUserType;
 import ekrut.net.ResultType;
 import ekrut.net.UserRequest;
@@ -17,6 +18,7 @@ import ekrut.net.UserResponse;
 public class ClientSessionManager extends AbstractClientManager<UserRequest, UserResponse> {
 
 	private User user;
+	private ArrayList<UserRegistration> registrationList;
 
 	public ClientSessionManager(EKrutClient client) {
 		super(client, UserResponse.class);
@@ -47,6 +49,19 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 			return user;
 		} else
 			throw new RuntimeException(userResponse.getResultCode().toString());
+	}
+	public UserResponse RegisterUser(UserRegistration userToRegister) {
+		UserRequest userLoginRequest = new UserRequest(userToRegister);
+		UserResponse userResponse = sendRequest(userLoginRequest);
+		return userResponse;
+	}
+	
+	
+	
+	public UserResponse getRegistrationList(String area) {
+		UserRequest getUsersRegistrationList = new UserRequest(area);
+		UserResponse userResponse = sendRequest(getUsersRegistrationList);
+		return userResponse;
 	}
 
 	/**

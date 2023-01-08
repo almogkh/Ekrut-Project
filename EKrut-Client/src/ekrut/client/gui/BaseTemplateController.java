@@ -122,6 +122,15 @@ public class BaseTemplateController {
 	}
 
 	public void loadregistrationRequests() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/UsersRegistration.fxml"));
+		try {
+			loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Parent root = loader.getRoot();
+//		UserRegistrationController userRegistrationController = loader.getController();
+		setRightWindow(root);
 	}
 
 	public void loadViewReports() {
@@ -169,6 +178,9 @@ public class BaseTemplateController {
 		Hyperlink viewReportsHyp = new Hyperlink("Monthely reports");
 		viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
 		
+//		Hyperlink viewUsersRegistration = new Hyperlink("Users registration");
+//		viewReportsHyp.setOnAction((ActionEvent event) -> loadViewUsersRegistration());
+		
 		
 		switch (userType) {
 		case REGISTERED:
@@ -193,6 +205,7 @@ public class BaseTemplateController {
 			allHyperlinks.add(viewTicketsHyp);
 			allHyperlinks.add(registrationRequestsHyp);
 			allHyperlinks.add(viewReportsHyp);
+//			allHyperlinks.add(viewUsersRegistration);
 			//
 			// add order btn
 			//

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import ekrut.entity.User;
+import ekrut.entity.UserRegistration;
 
 public class UserResponse implements Serializable{
 	
@@ -11,6 +12,7 @@ public class UserResponse implements Serializable{
 	private ResultType resultCode;
 	private User user;
 	private ArrayList<User> usersList;
+	private ArrayList<UserRegistration> userRegistrationList;
 
 	//Constructor for loginUser
 	public UserResponse(ResultType resultCode, User user) {
@@ -28,6 +30,12 @@ public class UserResponse implements Serializable{
 	public UserResponse(ResultType resultCode) {
 		this.resultCode = resultCode;
 	}
+	
+	public UserResponse(ArrayList<UserRegistration> userRegistrationList,ResultType resultCode) {
+		this.resultCode = resultCode;
+		this.userRegistrationList=userRegistrationList;
+	}
+
 
 	public ResultType getResultCode() {
 		return resultCode;
@@ -47,7 +55,13 @@ public class UserResponse implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
+	public ArrayList<UserRegistration> getUserRegistrationList() {
+		return userRegistrationList;
+	}
 
+	public void setUserRegistrationList(ArrayList<UserRegistration> userRegistrationList) {
+		this.userRegistrationList = userRegistrationList;
+	}
 	
 	
 	

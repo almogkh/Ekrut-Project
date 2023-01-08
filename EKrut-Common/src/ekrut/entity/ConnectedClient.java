@@ -48,12 +48,12 @@ public class ConnectedClient {
 	public StringProperty roleProperty() {
 		return role;
 	}
-	
+
 	@Override
 	public boolean equals(Object o) {
 		if(o instanceof ConnectedClient) {
 			ConnectedClient other = (ConnectedClient)o;
-			return getUsername().equals(other.getUsername());
+			return this.getUsername().equals(other.getUsername());
 		}
 		return false;
 	}
