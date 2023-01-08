@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.TimerTask;
 
 import ekrut.entity.ConnectedClient;
+import ekrut.entity.Customer;
 import ekrut.entity.User;
+import ekrut.entity.UserRegistration;
 import ekrut.entity.UserType;
 import ekrut.net.FetchUserType;
 import ekrut.net.ResultType;
@@ -38,8 +40,9 @@ public class ServerSessionManager {
 	// The data access object for interacting with the database.
 	private UserDAO userDAO;
 	// A map of client connections and the users associated with them.
-	private HashMap<ConnectionToClient,User> clientUserMap;
-	//The time, in milliseconds, after which a user will be automatically logged out if they have not made any requests.
+	private HashMap<ConnectionToClient, User> clientUserMap;
+	// The time, in milliseconds, after which a user will be automatically logged
+	// out if they have not made any requests.
 	private static final long LOGOUT_TIME = 300_000; // 5 minutes
 	private ObservableList<ConnectedClient> connectedClientList;
 
@@ -63,6 +66,7 @@ public class ServerSessionManager {
 	public ObservableList<ConnectedClient> getConnectedClientList() {
 		return connectedClientList;
 	}
+
 
 	/**
 	 * Attempts to login the user with the given username and password. If
@@ -89,10 +93,11 @@ public class ServerSessionManager {
 			result = ResultType.INVALID_INPUT;
 		} else {
 			userResponse.setUser(user);
-			connectedUsers.put(user,startTimer(username,client));
-			clientUserMap.put(client,user);
-			connectedClientList.add(new ConnectedClient(client.getInetAddress().toString().replace("/", ""), username, user.getUserType()));
-			result= ResultType.OK;
+			connectedUsers.put(user, startTimer(username, client));
+			clientUserMap.put(client, user);
+			connectedClientList.add(new ConnectedClient(client.getInetAddress().toString().replace("/", ""), username,
+					user.getUserType()));
+			result = ResultType.OK;
 		}
 		userResponse.setResultCode(result);
 		return userResponse;
@@ -158,18 +163,18 @@ public class ServerSessionManager {
 	 * Imports users into the system from the external user management system.
 	 * 
 	 * @param dbCon the database connection to use for the operation
-	 * @return      response indicating if the operation was successful or not
+	 * @return response indicating if the operation was successful or not
 	 */
 	public UserResponse importUsers(DBController dbCon) {
 		if (!UsersImporter.importUsers(dbCon))
 			return new UserResponse(ResultType.UNKNOWN_ERROR);
 		return new UserResponse(ResultType.OK);
 	}
-	
+
 	/**
-	 * Returns the {@link User} object associated with the given {@link ConnectionToClient} object.
-	 * Also resets the timer for the user's session.
 	 * Returns the {@link User} object associated with the given
+	 * {@link ConnectionToClient} object. Also resets the timer for the user's
+	 * session. Returns the {@link User} object associated with the given
 	 * {@link ConnectionToClient} object. Also resets the timer for the user's
 	 * session.
 	 *
@@ -247,8 +252,11 @@ public class ServerSessionManager {
 		case EMAIL:
 			usersList.add(userDAO.fetchUserByEmail(argument));
 			break;
-		case AREA:
+		case AREA_MANAGER_AND_AREA:
 			usersList.add(userDAO.fetchManagerByArea(argument));
+			break;
+		case AREA:
+			usersList.add(userDAO.fetchUserByArea(argument));
 			break;
 		case ROLE:
 			usersList = userDAO.fetchAllUsersByRole(UserType.valueOf(argument));
@@ -257,5 +265,31 @@ public class ServerSessionManager {
 		if (usersList.size() != 0)
 			return new UserResponse(ResultType.OK, usersList);
 		return new UserResponse(ResultType.NOT_FOUND);
+	}
+
+	// String userName, String creditCardNumber,String phoneNumber,String email,
+	// boolean monthlyCharge, String customerOrSub,String subscriberNumber
+	public UserResponse acceptRegisterUser(UserRegistration userToRegister) {
+		Customer customer;
+		User user = userDAO.fetchUserByUsername(userToRegister.getUsername());
+		if (user.getUserType() == UserType.REGISTERED)
+			user.setUserType(UserType.CUSTOMER);
+		user.setEmail(userToRegister.getEmail());
+		user.setPhoneNumber(userToRegister.getPhoneNumber());
+		// String subscriberNumber, String username, boolean monthlyCharge, String
+		// creditCardNumber, boolean orderedAsSub
+		customer = new Customer(userToRegister.getCustomerOrSub().equals("subscriber") ? 0 : -1,
+				userToRegister.getUsername(), userToRegister.getMonthlyCharge(),
+				userToRegister.getCreditCardNumber(), false);
+		if (!userDAO.updateUser(user) || !userDAO.createOrUpdateCustomer(customer) || !userDAO.deleteUserFromRegistration(userToRegister.getUsername()))
+			return new UserResponse(ResultType.NOT_FOUND);
+		return new UserResponse(ResultType.OK);
+	}
+	
+	public UserResponse getRegistrationList(String area) {
+		ArrayList<UserRegistration> registrationList=userDAO.getUserRegistrationList(area);
+		if (registrationList==null)
+			return new UserResponse(ResultType.NOT_FOUND);
+		return new UserResponse(registrationList,ResultType.OK);
 	}
 }

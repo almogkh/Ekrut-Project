@@ -112,7 +112,7 @@ public class ServerOrderManager {
 		if (info == null)
 			return new OrderResponse(ResultType.UNKNOWN_ERROR);
 		
-		boolean subscriber = info.getSubscriberNumber() != null;
+		boolean subscriber = info.getSubscriberNumber() != -1;
 		
 		// First order from subscriber gets a 20% discount
 		if (subscriber && !info.hasOrderedAsSub())

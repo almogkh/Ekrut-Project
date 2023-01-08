@@ -126,11 +126,19 @@ public class BaseTemplateController {
 			throw new RuntimeException(e);
 		}
 		Parent root = loader.getRoot();
-		// TicketBrowserController ticketBrowserController = loader.getController();
 		setRightWindow(root);
 	}
 
-	public void loadregistrationRequests() {
+	public void loadRegistrationRequests() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/UsersRegistration.fxml"));
+		try {
+			loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Parent root = loader.getRoot();
+//		UserRegistrationController userRegistrationController = loader.getController();
+		setRightWindow(root);
 	}
 	
     // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
@@ -191,14 +199,13 @@ public class BaseTemplateController {
     	viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());
 
     	Hyperlink registrationRequestsHyp = new Hyperlink("Registration Requests");
-    	registrationRequestsHyp.setOnAction((ActionEvent event) -> loadregistrationRequests());
+    	registrationRequestsHyp.setOnAction((ActionEvent event) -> loadRegistrationRequests());
     	
     	Hyperlink viewReportsHyp = new Hyperlink("Monthly Reports");
     	viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
 		
 		Hyperlink thresholdSelector = new Hyperlink("Set Thresholds");
 		thresholdSelector.setOnAction((ActionEvent event) -> loadThresholdSelector());
-    	
 		switch (userType) {
 		case REGISTERED:
 		case CUSTOMER:

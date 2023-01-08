@@ -95,6 +95,12 @@ public class EKrutServer extends AbstractServer {
 		case FETCH_USER:
 			userResponse = serverSessionManager.fetchUser(userRequest.getFetchType(),userRequest.getArgument());
 			break;
+		case REGISTER_USER:
+			userResponse = serverSessionManager.acceptRegisterUser(userRequest.getUserToRegister());
+			break;
+		case GET_REGISTRATION_LIST:
+			userResponse = serverSessionManager.getRegistrationList(userRequest.getArea());
+			break;
 		default:
 			userResponse = new UserResponse(ResultType.UNKNOWN_ERROR);
 			break;

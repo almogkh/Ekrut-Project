@@ -6,27 +6,26 @@ public class Customer implements Serializable {
 
 	private static final long serialVersionUID = -2291478383986722760L;
 	
-	private String subscriberNumber;
+	private int subscriberNumber;
 	private String username;
 	private String creditCardNumber;
 	private String clientAddress;
 	private boolean monthlyCharge;
 	private boolean orderedAsSub;
 
-	public Customer(String subscriberNumber, String username, String clientAddress, boolean monthlyCharge, String creditCardNumber, boolean orderedAsSub) {
+	public Customer(int subscriberNumber, String username, boolean monthlyCharge, String creditCardNumber, boolean orderedAsSub) {
 		this.subscriberNumber = subscriberNumber;
 		this.username = username;
-		this.clientAddress = clientAddress;
 		this.creditCardNumber = creditCardNumber;
 		this.monthlyCharge = monthlyCharge;
 		this.orderedAsSub = orderedAsSub;
 	}
 
-	public String getSubscriberNumber() {
+	public int getSubscriberNumber() {
 		return subscriberNumber;
 	}
 
-	public void setSubscriberNumber(String subscriberNumber) {
+	public void setSubscriberNumber(int subscriberNumber) {
 		this.subscriberNumber = subscriberNumber;
 	}
 
