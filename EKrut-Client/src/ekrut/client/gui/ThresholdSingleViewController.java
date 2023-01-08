@@ -62,14 +62,14 @@ public class ThresholdSingleViewController extends HBox {
 			if (newThreshold < 0)
 				throw new NumberFormatException();
 		} catch (NumberFormatException e) {
-	    	Alert alert = new Alert(AlertType.ERROR, "Unvalid value was entered.", ButtonType.OK);
+	    	Alert alert = new Alert(AlertType.ERROR, "Invalid value was entered.", ButtonType.OK);
 	    	alert.showAndWait();
 	    	thresholdTxt.setText(Integer.toString(currThreshold));
 	    	return;
 		}
 		
 		if (newThreshold == currThreshold) {
-			Alert alert = new Alert(AlertType.WARNING, "New and current threahols values are equal.", ButtonType.OK);
+			Alert alert = new Alert(AlertType.WARNING, "New and current threshold values are equal.", ButtonType.OK);
     		alert.showAndWait();
     		return;
     	}
