@@ -19,7 +19,6 @@ import ekrut.entity.UserType;
 public class UserDAO {
 
 	private DBController con;
-	public static int generateSubNum = 0;
 
 	public UserDAO(DBController con) {
 		this.con = con;
@@ -135,7 +134,7 @@ public class UserDAO {
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next())
-				return new Customer(rs.getString("subscriberNumber"), rs.getString("username"),
+				return new Customer(rs.getInt("subscriberNumber"), rs.getString("username"),
 						rs.getBoolean("monthlyCharge"), rs.getString("creditCardNumber"),
 						rs.getBoolean("orderedAsSub"));
 			return null;
@@ -235,28 +234,21 @@ public class UserDAO {
 	}
 
 	/**
-	 * Creates a new user in the database.
+	 * Updates an existing user in the database.
 	 *
-	 * @return `true` if the user was successfully created, `false` if an error
+	 * @return `true` if the user was successfully updated, `false` if an error
 	 *         occurred. UserType userType, String username, String password, String
 	 *         firstName, String lastName, String id, String email, String
 	 *         phoneNumber, String area
 	 */
-	public boolean createUser(User user) {
-		String query = "INSERT INTO ekrut.users"
-				+ " (userType, username, password, firstName, lastName, id, email, phoneNumber, area)"
-				+ " VALUES (?,?,?,?,?,?,?,?,?)";
+	public boolean updateUser(User user) {
+		String query = "UPDATE users SET userType = ?, email = ?, phoneNumber = ? WHERE username = ?";
 		PreparedStatement ps = con.getPreparedStatement(query);
 		try {
 			ps.setString(1, user.getUserType().toString());
-			ps.setString(2, user.getUsername());
-			ps.setString(3, user.getPassword());
-			ps.setString(4, user.getFirstName());
-			ps.setString(5, user.getLastName());
-			ps.setString(6, user.getId());
-			ps.setString(7, user.getEmail());
-			ps.setString(8, user.getPhoneNumber());
-			ps.setString(9, user.getArea());
+			ps.setString(2, user.getEmail());
+			ps.setString(3, user.getPhoneNumber());
+			ps.setString(4, user.getUsername());
 			return 1 == ps.executeUpdate();
 		} catch (SQLException e1) {
 			return false;
@@ -282,8 +274,8 @@ public class UserDAO {
 				//String userName,  String creditCardNumber,String phoneNumber,String email,
 				//boolean monthlyCharge,  String customerOrSub
 				userRegistration = new UserRegistration(rs.getString(1), rs.getString(2), rs.getString(3),
-						rs.getString(4), rs.getInt(5) == 1 ? true : false,
-						rs.getInt(6) == 1 ? "customer" : "subscriber");
+						rs.getString(4), rs.getBoolean(5),
+						rs.getBoolean(6) ? "customer" : "subscriber");
 				usersRegistrationList.add(userRegistration);
 			}
 			return usersRegistrationList.size() != 0 ? usersRegistrationList : null;
@@ -300,18 +292,19 @@ public class UserDAO {
 
 	// String username, String subscriberNumber, Int monthlyCharge, String
 	// creditCardNumber, int orderedAsSub
-	public boolean createCustomer(Customer customer) {
-		String query = "INSERT INTO ekrut.customers"
-				+ " (username, subscriberNumber, monthlyCharge, creditCardNumber, orderedAsSub)"
-				+ " VALUES (?,?,?,?,?)";
+	public boolean createOrUpdateCustomer(Customer customer) {
+		String query = "INSERT INTO customers"
+				+ " VALUES(?,?,?,?,?) ON DUPLICATE KEY UPDATE subscriberNumber = ?, monthlyCharge = ?";
 		PreparedStatement ps = con.getPreparedStatement(query);
 		try {
 			ps.setString(1, customer.getUsername());
-			ps.setString(2, customer.getSubscriberNumber());
-			ps.setInt(3, customer.isMonthlyCharge() ? 1 : 0);
+			ps.setInt(2, customer.getSubscriberNumber());
+			ps.setBoolean(3, customer.isMonthlyCharge());
 			ps.setString(4, customer.getCreditCard());
-			ps.setInt(5, 0); // When we create a new customer he still not placed order as a subscriber
-			return 1 == ps.executeUpdate();
+			ps.setBoolean(5, false); // When we create a new customer he still not placed order as a subscriber
+			ps.setInt(6, customer.getSubscriberNumber());
+			ps.setBoolean(7, customer.isMonthlyCharge());
+			return 1 >= ps.executeUpdate();
 		} catch (SQLException e1) {
 			return false;
 		} finally {

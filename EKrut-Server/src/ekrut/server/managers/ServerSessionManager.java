@@ -271,11 +271,17 @@ public class ServerSessionManager {
 	// boolean monthlyCharge, String customerOrSub,String subscriberNumber
 	public UserResponse acceptRegisterUser(UserRegistration userToRegister) {
 		Customer customer;
+		User user = userDAO.fetchUserByUsername(userToRegister.getUsername());
+		if (user.getUserType() == UserType.REGISTERED)
+			user.setUserType(UserType.CUSTOMER);
+		user.setEmail(userToRegister.getEmail());
+		user.setPhoneNumber(userToRegister.getPhoneNumber());
 		// String subscriberNumber, String username, boolean monthlyCharge, String
 		// creditCardNumber, boolean orderedAsSub
-		customer = new Customer(null, userToRegister.getUserName(),
-				userToRegister.getMonthlyCharge(), userToRegister.getCreditCardNumber(), false);
-		if (!userDAO.createCustomer(customer) || !userDAO.deleteUserFromRegistration(userToRegister.getUserName()))
+		customer = new Customer(userToRegister.getCustomerOrSub().equals("subscriber") ? 0 : -1,
+				userToRegister.getUsername(), userToRegister.getMonthlyCharge(),
+				userToRegister.getCreditCardNumber(), false);
+		if (!userDAO.updateUser(user) || !userDAO.createOrUpdateCustomer(customer) || !userDAO.deleteUserFromRegistration(userToRegister.getUsername()))
 			return new UserResponse(ResultType.NOT_FOUND);
 		return new UserResponse(ResultType.OK);
 	}
