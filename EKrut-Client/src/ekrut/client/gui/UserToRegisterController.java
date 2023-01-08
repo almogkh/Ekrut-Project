@@ -4,13 +4,8 @@ import java.io.IOException;
 
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
-import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientSessionManager;
-import ekrut.client.managers.ClientTicketManager;
-import ekrut.entity.TicketStatus;
 import ekrut.entity.UserRegistration;
-import ekrut.net.ResultType;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,7 +22,8 @@ import javafx.scene.layout.VBox;
 
 public class UserToRegisterController extends HBox {
 	
-	UserRegistration user;
+	private UserRegistration user;
+	
 	@FXML
 	private Label emailLbl;
 
@@ -55,21 +51,21 @@ public class UserToRegisterController extends HBox {
 		}
 		
 		emailLbl.setText("Email: " + user.getEmail());
-		nameLbl.setText("userName: " + user.getUserName());
+		nameLbl.setText("Username: " + user.getUsername());
 		phoneLbl.setText("Phone: " + user.getPhoneNumber());
 		subOrCustomerLbl.setText(user.getCustomerOrSub());
 	}
 
 	@FXML
 	void markCompleted(ActionEvent event) {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Please confirm " + user.getUserName(),
+		Alert alert = new Alert(AlertType.CONFIRMATION, "Please confirm " + user.getUsername(),
 				ButtonType.YES, ButtonType.NO);
 		alert.showAndWait();
 		if (alert.getResult() == ButtonType.NO)
 			return;
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		ClientSessionManager clientSessionManager = client.getClientSessionManager();
-		clientSessionManager.RegisterUser(user);
+		clientSessionManager.registerUser(user);
 
 		Parent parent = getParent();
 		ObservableList<Node> vboxChildren = ((VBox) parent).getChildren();

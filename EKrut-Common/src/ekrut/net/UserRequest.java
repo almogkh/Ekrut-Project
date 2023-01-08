@@ -48,7 +48,7 @@ public class UserRequest implements Serializable{
 	}
 	
 	public UserRequest(String area) {
-		this.action = UserRequestType.GET_REGISRATION_LIST;
+		this.action = UserRequestType.GET_REGISTRATION_LIST;
 		this.area=area;
 	}
 
