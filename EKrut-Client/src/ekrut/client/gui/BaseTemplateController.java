@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 public class BaseTemplateController {
@@ -116,12 +115,11 @@ public class BaseTemplateController {
 			throw new RuntimeException(e);
 		}
 		Parent root = loader.getRoot();
-		TicketBrowserController ticketBrowserController = loader.getController();
 		setRightWindow(root);
 
 	}
 
-	public void loadregistrationRequests() {
+	public void loadRegistrationRequests() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/UsersRegistration.fxml"));
 		try {
 			loader.load();
@@ -173,7 +171,7 @@ public class BaseTemplateController {
 		viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());
 		
 		Hyperlink registrationRequestsHyp = new Hyperlink("Registration requests");
-		registrationRequestsHyp.setOnAction((ActionEvent event) -> loadregistrationRequests());
+		registrationRequestsHyp.setOnAction((ActionEvent event) -> loadRegistrationRequests());
 		
 		Hyperlink viewReportsHyp = new Hyperlink("Monthely reports");
 		viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
