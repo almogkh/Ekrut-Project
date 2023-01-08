@@ -145,6 +145,17 @@ public class BaseTemplateController {
 		// ReportChooserController reportChooserController = loader.getController();
 		setRightWindow(root);
 	}
+	
+	public void loadThresholdSelector() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ThresholdBrowser.fxml"));
+		try {
+			loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Parent root = loader.getRoot();
+		setRightWindow(root);
+	}
 
 	private static void setHyperlinkStyle(Hyperlink hyperLink) {
 		Font font = Font.font("Arial Rounded MT Bold", 18);
@@ -153,7 +164,14 @@ public class BaseTemplateController {
 		hyperLink.setWrapText(true);
 		hyperLink.setTextAlignment(TextAlignment.CENTER);
 
-		hyperLink.setStyle("-fx-text-fill: black; -fx-underline: false;-fx-border-color: black;-fx-border-radius: 20; -fx-background-color: rgba(255, 255, 255, 0.5); -fx-background-radius: 20;-fx-pref-width: 190; -fx-alignment: center ; ");
+		hyperLink.setStyle("-fx-text-fill: black;"
+				+ "-fx-underline: false;"
+				+ "-fx-border-color: black;"
+				+ "-fx-border-radius: 20;"
+				+ "-fx-background-color: rgba(255, 255, 255, 0.5);"
+				+ "-fx-background-radius: 20;"
+				+ "-fx-pref-width: 190;"
+				+ "-fx-alignment: center;");
 		  
 	}
 
@@ -178,7 +196,9 @@ public class BaseTemplateController {
     	Hyperlink viewReportsHyp = new Hyperlink("Monthly Reports");
     	viewReportsHyp.setOnAction((ActionEvent event) -> loadViewReports());
 		
-		
+		Hyperlink thresholdSelector = new Hyperlink("Set Thresholds");
+		thresholdSelector.setOnAction((ActionEvent event) -> loadThresholdSelector());
+    	
 		switch (userType) {
 		case REGISTERED:
 		case CUSTOMER:
@@ -201,6 +221,7 @@ public class BaseTemplateController {
 			allHyperlinks.add(viewTicketsHyp);
 			allHyperlinks.add(registrationRequestsHyp);
 			allHyperlinks.add(viewReportsHyp);
+			allHyperlinks.add(thresholdSelector);
 			break;
 		}
 		if (customer) {
