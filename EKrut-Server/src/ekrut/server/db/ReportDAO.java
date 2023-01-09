@@ -186,7 +186,7 @@ public class ReportDAO {
 	public Report fetchCustomerReportByID(Integer reportID) {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
 		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM customers_report_data WHERE reportID = ?");
-		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM monthly_orders_by_day WHERE reportID = ?");
+		PreparedStatement ps3 = con.getPreparedStatement("SELECT * FROM customer_reports WHERE reportID = ?");
 
 		try {
 			ps1.setInt(1, reportID);
