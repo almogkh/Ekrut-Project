@@ -1,13 +1,10 @@
 package ekrut.client.gui;
 
-import java.io.IOException;
-
+import ekrut.client.EKrutClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
-
+import javafx.scene.control.TextField;
 
 public class OrderAddressInputController {
 
@@ -15,25 +12,20 @@ public class OrderAddressInputController {
     private Button ContinueBtn;
 
     @FXML
+    private TextField addressTxt;
+
+    @FXML
     private Button backBtn;
 
-
-    
     @FXML
-    void Continue(ActionEvent event) throws IOException {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ItemBrowser.fxml"));
-			try {
-				loader.load();
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		Parent root = loader.getRoot();
-		BaseTemplateController.getBaseTemplateController().setRightWindow(root);
+    void Continue(ActionEvent event) {
+    	EKrutClientUI.getEkrutClient().getClientOrderManager().createOrder(addressTxt.getText(), true);
+		BaseTemplateController.getBaseTemplateController().switchStages("OrderItemBrowser");
     }
-  
+
     @FXML
     void back(ActionEvent event) {
-
+    	BaseTemplateController.getBaseTemplateController().switchStages("OrderCreation");
     }
 
 }

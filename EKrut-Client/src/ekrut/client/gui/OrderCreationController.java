@@ -41,11 +41,14 @@ public class OrderCreationController {
     @FXML
     void createOrder(ActionEvent event) {
     	OrderType type = cachedTypeChoice.equals("Shipment") ? OrderType.SHIPMENT : OrderType.REMOTE;
-    	String param = type == OrderType.SHIPMENT ? EKrutClientUI.getEkrutClient().getClientSessionManager()
-    												.getUser().getArea() : pickupLocation.getValue();
-    	EKrutClientUI.getEkrutClient().getClientOrderManager().createOrder(param, type == OrderType.SHIPMENT);
     	BaseTemplateController btc = BaseTemplateController.getBaseTemplateController();
-    	btc.switchStages("OrderItemBrowser");
+    	if (type == OrderType.REMOTE) {
+    		EKrutClientUI.getEkrutClient().getClientOrderManager().createOrder(pickupLocation.getValue(),
+    																			false);
+	    	btc.switchStages("OrderItemBrowser");
+    	} else {
+    		btc.switchStages("OrderAddressInput");
+    	}
     }
 
     private void resetUI() {
@@ -78,9 +81,11 @@ public class OrderCreationController {
     	cachedTypeChoice = choice;
     	resetUI();
     	if (choice.equals("Self pickup")) {
+    		createOrderBtn.setText("Create order");
     		pickupArea.setDisable(false);
     		pickupArea.getItems().addAll("North", "South", "UAE");
     	} else {
+    		createOrderBtn.setText("Choose shipping address");
     		createOrderBtn.setDisable(false);
     	}
     }
