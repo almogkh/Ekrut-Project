@@ -20,13 +20,15 @@ public class ThresholdBrowserController {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		ClientInventoryManager CIM = client.getClientInventoryManager();
 		String currArea = client.getClientSessionManager().getUser().getArea();
+		ObservableList<Node> children = thresholdsVbox.getChildren();
 		
 		ArrayList<String> ekrutLocationsInArea = CIM.fetchAllEkrutLocationsByArea(currArea);
-		ObservableList<Node> children = thresholdsVbox.getChildren();
 		for (String ekrutLocation : ekrutLocationsInArea) {
 			ArrayList<InventoryItem> inventoryItemsInEkrutLocation = CIM.fetchInventoryItemsByEkrutLocation(ekrutLocation);
-			if (inventoryItemsInEkrutLocation.size() == 0)
+			if (inventoryItemsInEkrutLocation.size() == 0) {
+				children.add(new ThresholdSingleViewController(CIM, ekrutLocation, 0));
 				continue;
+			}
 			int currThreshold = inventoryItemsInEkrutLocation.get(0).getItemThreshold();
 			children.add(new ThresholdSingleViewController(CIM, ekrutLocation, currThreshold));
 		}
