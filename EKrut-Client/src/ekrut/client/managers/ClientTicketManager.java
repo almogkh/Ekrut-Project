@@ -72,10 +72,10 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
      * @throws Exception if there is an error fetching the tickets
      */
 	
-	public ArrayList<Ticket> fetchTicketsByArea(String area) throws Exception{
+	public ArrayList<Ticket> fetchTicketsByArea(String area) {
 		// WAIT FOR USER MANAGMENT TO BE FIXED
 		
-		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH_BY_AREA,area); 
+		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH_BY_AREA, area); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
 		return ticketResponse.getTicketsList();
@@ -89,9 +89,9 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
      * @return a list of tickets
      * @throws Exception if there is an error fetching the tickets
      */
-	public ArrayList<Ticket> fetchTicketsByUsername(String username) throws Exception{
+	public ArrayList<Ticket> fetchTicketsByUsername(String username) {
 	
-		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH_BY_USERNAME,username); 
+		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH_BY_USERNAME, username); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
 		return ticketResponse.getTicketsList();

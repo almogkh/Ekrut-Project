@@ -48,8 +48,8 @@ public class ThresholdSingleViewController extends HBox {
 			throw new RuntimeException(e);
 		}
 		
-		currThresholdLbl.setText("Currently: " + Integer.toString(currThreshold));
-		facilityNameLbl.setText(ekrutLocation);
+		currThresholdLbl.setText((currThreshold != 0) ? Integer.toString(currThreshold) : "N\\A");
+		facilityNameLbl.setText(ekrutLocation.replace("_", " "));
 		thresholdTxt.setText(Integer.toString(currThreshold));
 	}
 	

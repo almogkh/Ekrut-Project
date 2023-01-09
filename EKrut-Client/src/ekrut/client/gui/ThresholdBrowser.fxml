@@ -46,11 +46,16 @@
                         <Font name="Arial Rounded MT Bold" size="25.0" />
                      </font>
                   </Label>
+                  <Label layoutX="121.0" layoutY="-6.0" prefHeight="23.0" prefWidth="527.0" text="Notice: facilities with no items whould show a non-applicable (N\A) threshold.">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="14.0" />
+                     </font>
+                  </Label>
                </children>
             </Pane>
             <ScrollPane prefHeight="470.0" prefWidth="770.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <content>
-                  <VBox fx:id="thresholdsVbox" prefHeight="492.0" prefWidth="755.0" spacing="10.0" />
+                  <VBox fx:id="thresholdsVbox" prefHeight="677.0" prefWidth="755.0" spacing="10.0" />
                </content>
             </ScrollPane>
          </children>
