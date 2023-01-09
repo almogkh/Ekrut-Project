@@ -35,21 +35,23 @@ public class TicketBrowserController implements Initializable {
     	client = EKrutClientUI.getEkrutClient();
     	clientTicketManager = client.getClientTicketManager();
     	UserType usertype = client.getClientSessionManager().getUser().getUserType();
-    	if (usertype != UserType.AREA_MANAGER)
-    		createTicketBtn.setVisible(false);
-    	String userArea = client.getClientSessionManager().getUser().getArea();
+    	String username = client.getClientSessionManager().getUser().getUsername();
     	
-    	try {
-			ArrayList<Ticket> ticketsToShow = clientTicketManager.fetchTicketsByArea(userArea); // TBD OFEK: BUG WHEN WRONG AREA
-			if (ticketsToShow == null)
-				return;
-			ObservableList<Node> ticketsContainerVboxChildren = ticketsContainerVbox.getChildren();
-			for (Ticket ticket : ticketsToShow) {
-				ticketsContainerVboxChildren.add(new TicketViewController(ticket, usertype != UserType.OPERATIONS_WORKER));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    	ArrayList<Ticket> ticketsToShow;
+    	if (usertype == UserType.AREA_MANAGER) {
+    		createTicketBtn.setVisible(true);
+    		String userArea = client.getClientSessionManager().getUser().getArea();
+    		ticketsToShow = clientTicketManager.fetchTicketsByArea(userArea); // TBD OFEK: BUG WHEN WRONG AREA
+    	} else {
+    		createTicketBtn.setVisible(false);
+    		ticketsToShow = clientTicketManager.fetchTicketsByUsername(username);
+    	}
+    		if (ticketsToShow == null)
+    			return;
+    		ObservableList<Node> ticketsContainerVboxChildren = ticketsContainerVbox.getChildren();
+    		for (Ticket ticket : ticketsToShow) {
+    			ticketsContainerVboxChildren.add(new TicketViewController(ticket, usertype != UserType.OPERATIONS_WORKER));
+    		}
 	}
     
     
