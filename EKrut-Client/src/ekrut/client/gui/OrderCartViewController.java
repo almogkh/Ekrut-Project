@@ -3,6 +3,7 @@ package ekrut.client.gui;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.OrderItem;
@@ -39,10 +40,15 @@ public class OrderCartViewController {
 
     private BaseTemplateController BTC = BaseTemplateController.getBaseTemplateController();
 	private ClientOrderManager orderManager;
+	private boolean subscriber;
 
 	@FXML
 	private void initialize() {
-		orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
+		EKrutClient client = EKrutClientUI.getEkrutClient();
+		orderManager = client.getClientOrderManager();
+		subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
+		if (!subscriber)
+			priceAfterDiscountLbl.setVisible(false);
 		AddItemViewToCartVBox();
 		updatePrice();
 	}
@@ -59,7 +65,8 @@ public class OrderCartViewController {
     void updatePrice() {
     	float price = orderManager.getTotalPrice();
     	priceBeforeDiscountLbl.setText(String.format("%.2f", price));
-    	priceAfterDiscountLbl.setText(String.format("%.2f", price - orderManager.getDiscount()));
+    	if (subscriber)
+    		priceAfterDiscountLbl.setText(String.format("%.2f", price - orderManager.getDiscount()));
     }
     
     @FXML

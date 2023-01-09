@@ -2,8 +2,10 @@ package ekrut.client.gui;
 
 import java.util.Optional;
 
+import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
+import ekrut.entity.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,8 +47,12 @@ public class OrderPaymentViewController {
 
 	@FXML
 	private void initialize() {
-		this.orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
-		priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice() - orderManager.getDiscount()));
+		EKrutClient client = EKrutClientUI.getEkrutClient();
+		this.orderManager = client.getClientOrderManager();
+		User user = client.getClientSessionManager().getUser();
+		boolean subscriber = user.getCustomerInfo().getSubscriberNumber() != -1;
+		float discount = subscriber ? orderManager.getDiscount() : 0;
+		priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice() - discount));
 	}
 
 	@FXML

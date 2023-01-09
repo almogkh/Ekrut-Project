@@ -104,15 +104,15 @@ public class ServerOrderManager {
 		order.setStatus(order.getType() == OrderType.PICKUP ? OrderStatus.DONE : OrderStatus.SUBMITTED);
 		order.setUsername(user.getUsername());
 		
-		// Compute the total amount the user has to pay
-		float debitAmount = order.getSumAmount();
-		debitAmount -= computeDiscount(order, user);
-		
 		Customer info = user.getCustomerInfo();
 		if (info == null)
 			return new OrderResponse(ResultType.UNKNOWN_ERROR);
-		
 		boolean subscriber = info.getSubscriberNumber() != -1;
+
+		// Compute the total amount the user has to pay
+		float debitAmount = order.getSumAmount();
+		if (subscriber)
+			debitAmount -= computeDiscount(order, user);
 		
 		// First order from subscriber gets a 20% discount
 		if (subscriber && !info.hasOrderedAsSub())
