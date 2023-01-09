@@ -80,7 +80,7 @@ public class ServerController {
 	private Label ErrorImportData;
 
 	private PrintStream replaceConsole;
-	private EKrutServer server;
+	private EKrutServer server ;
 
 	public String getLocalIp(){
 		String ip = null;
@@ -186,7 +186,7 @@ public class ServerController {
 	}
 	@FXML
 	void importData(final ActionEvent event) {
-		if(server.importUsers().getResultCode()==ResultType.UNKNOWN_ERROR) {
+		if(ServerUI.getServer().importUsers().getResultCode()==ResultType.UNKNOWN_ERROR) {
 			System.out.println("not good");
 			this.ErrorImportData.setVisible(true);
 			return;

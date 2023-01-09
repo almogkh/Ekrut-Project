@@ -243,7 +243,7 @@
                               <Font name="Arial Rounded MT Bold" size="12.0" />
                            </font>
                         </TextField>
-                        <Button fx:id="importDataBTN" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="194.0" layoutY="233.0" mnemonicParsing="false" onAction="#importData" styleClass="button1" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Import Data" textFill="#68f4fd">
+                        <Button fx:id="importDataBTN" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="194.0" layoutY="233.0" mnemonicParsing="false" onAction="#importData" style="-fx-background-color: #55565f;" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Import Data" textFill="#68f4fd">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>

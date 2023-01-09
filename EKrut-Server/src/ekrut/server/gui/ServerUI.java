@@ -59,6 +59,9 @@ public class ServerUI extends Application {
 			return false;
 		}
 	}
+	public static EKrutServer getServer() {
+		return server;
+	}
 
 	
 	public static void disconnect() {
