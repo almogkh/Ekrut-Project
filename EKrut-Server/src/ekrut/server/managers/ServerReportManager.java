@@ -45,14 +45,11 @@ public class ServerReportManager {
 	}
 	
 	/**
-	 * This method fetches a report from the database based on the provided date, location, area, and type.
-	 * 
-	 * @param date the date of the report to fetch
-	 * @param location the location of the report to fetch
-	 * @param area the area of the report to fetch
-	 * @param type the type of the report to fetch
-	 * @return a ReportResponse object containing the report, or a ResultType value indicating if the report was not found
-	 * @throws SQLException if a database error occurs while executing the SQL query
+	 * Retrieves a report based on the provided request parameters.
+	 *
+	 * @param reportRequest the request containing the parameters to use for report retrieval
+	 * @param client the client requesting the report
+	 * @return a response containing the retrieved report or an error result if the report was not found
 	 */
 	public ReportResponse fetchReport(ReportRequest reportRequest, ConnectionToClient client) {
 
@@ -65,27 +62,27 @@ public class ServerReportManager {
 	}
 	
 	/**
-	 * This method fetches a list of facilities in a specific area from the database.
-	 * 
-	 * @param area the area to fetch facilities from
-	 * @return a ReportResponse object containing the list of facilities, or a ResultType value indicating if the list was not found
-	 * @throws SQLException if a database error occurs while executing the SQL query
+	 * Retrieves a list of facilities in a specific area.
+	 *
+	 * @param reportRequest the request containing the area to retrieve facilities for
+	 * @param client the client requesting the list of facilities
+	 * @return a response containing the list of facilities or an error result if no facilities were found in the specified area
 	 */
 	public ReportResponse fetchFacilitiesByArea(ReportRequest reportRequest, ConnectionToClient client){
+		
 		ArrayList<String> facilities = reportDAO.fetchFacilitiesByArea(reportRequest.getArea());
 		if (facilities == null) 
 			return new ReportResponse(ResultType.NOT_FOUND);
+		
 		return new ReportResponse(ResultType.OK, facilities); 
 	}
 	
 	/**
-	 * This method generates an Order report for a given month and area.
-	 * 
-	 * @param date the month for which the report is being generated
-	 * @param ekrutLocation the location of the report
-	 * @param area the area for which the report is being generated
-	 * @return a Report object containing the generated data for the Order report
-	 * @throws SQLException if a database error occurs while executing the SQL query
+	 * Generates an order report for a specific area and date.
+	 *
+	 * @param date the date to generate the report for
+	 * @param area the area to generate the report for
+	 * @return the generated order report
 	 */
 	public Report generateOrderReport(LocalDateTime date,String area) {
 		// Get all the locations of the given area
@@ -103,17 +100,17 @@ public class ServerReportManager {
 		Map<String, Integer> topSellers = new HashMap<>();
 		// proccesOrderArea process all the Orders into a order report
 		Map<String, ArrayList<Integer>> orderReportData = processOrdersArea(areaOrdersByLocations);
-		/* A ArrayList that will hold all orders of the shipment type so that the ArrayList will be filtered
-		 * so that only orders remain that the customer is from the given area*/
+		/* shipmentOrders will contain all orders of the shipment type.
+		 * The ArrayList will be filtered to include only orders from customers in the specified area.*/
 		ArrayList<Order> shipmentOrders = filterShipmentOrdersByUserArea(reportDAO.fetchAllMonthlyShipmentOrders(date), area);
 		
-		// Create those for later calculation
+		
 		int areaTotalOrders = 0;
 		int areaTotalOrdersInILS = 0;
 		// Iterate  trough each list of orders(by location)
 		for (Map.Entry<String, ArrayList<Order>> entry : areaOrdersByLocations.entrySet()) {	
 			// Process each list of orders: Adds to each item the number of times it was ordered in the list
-			topSellers = processOrdersLocation(entry.getValue(), topSellers);
+			topSellers = countItemQuantitiesByLocation(entry.getValue(), topSellers);
 			
 			int totalOrders = 0;
 			int totalOrdersInILS = 0;	
@@ -126,10 +123,10 @@ public class ServerReportManager {
 			areaTotalOrders += totalOrders;
 			areaTotalOrdersInILS += totalOrdersInILS;
 		}
-		//TODO add into aTO and aTOIILS all the shipment orders of the given area and same for topSellers
 		Integer shipmentTotalOrders = 0;
 		Integer shipmentTotalOrderInILS = 0;
 		
+		// Calculate the same for shipment Orders
 		for (Order order : shipmentOrders) {
 			areaTotalOrders += 1;
 			shipmentTotalOrders += 1;
@@ -137,12 +134,14 @@ public class ServerReportManager {
 			areaTotalOrdersInILS += order.getSumAmount();
 			shipmentTotalOrderInILS += Math.round(order.getSumAmount());
 		}
-		topSellers = processOrdersLocation(shipmentOrders, topSellers);
+		// Add the items at shipment orders into topSellers
+		topSellers = countItemQuantitiesByLocation(shipmentOrders, topSellers);
+		
 		// Sort out the top 5 best sellers
-		topSellers = processItemOrders(topSellers);
+		topSellers = sortItemOrdersByQuantity(topSellers);
 		
 		// Create a new report object with the generated data
-		Report report = new Report(null, ReportType.ORDER, date, null, area,
+		Report report = new Report(null, ReportType.ORDER, date, area, area,
 				areaTotalOrders, areaTotalOrdersInILS, shipmentTotalOrders, shipmentTotalOrderInILS, orderReportData, topSellers);
 		// Return the report
 		return report;
@@ -168,25 +167,26 @@ public class ServerReportManager {
 	}
 
 	/**
-	 * Generates a customer report for a given location and date.
-	 * 
-	 * @param date the date for which to generate the report
-	 * @param ekrutLocation the location for which to generate the report
+	 * Generates a customer report for a specific area, location, and date.
+	 *
+	 * @param date the date to generate the report for
+	 * @param ekrutLocation the location to generate the report for
+	 * @param area the area to generate the report for
 	 * @return the generated customer report
 	 */
 	public Report generateCustomerReport(LocalDateTime date, String ekrutLocation, String area) {
 		// Get a list of all customer orders for the given date and location	
 		ArrayList<String> allCustomersOrders = reportDAO.getAllCustomersOrdersByNameWithOutShipment(date, ekrutLocation); 
 		// Process the customer orders to count the number of orders made by each customer
-		Map<String, Integer> customersOrders = ProcessCustomersOrders(allCustomersOrders);
+		Map<String, Integer> customersOrders = countOrdersByCustomer(allCustomersOrders);
 		// Create a histogram of customer orders by dividing customers into categories based on their order count
 		Map<String, Integer> customersHistogram = createCustomersHistogram(customersOrders);
-		// Create a new report object with the generated data
-		
+
+		// Get a list of all customer orders by date for the given date and location
 		ArrayList<LocalDateTime> allCustomersOrdersByDate = reportDAO.getAllCustomersOrdersByDateWithOutShipment(date, ekrutLocation);
-		
-		Map<Integer, Integer> customersOrdersByDate = ProcessCustomersOrdersByDate(allCustomersOrdersByDate);
-				
+		// Process the customer orders by date to count the number of orders made by each customer on each day
+		Map<Integer, Integer> customersOrdersByDate = countOrdersByCustomerAndDate(allCustomersOrdersByDate);
+		// Create a new report object with the generated data
 		Report report = new Report(null, ReportType.CUSTOMER, date, ekrutLocation, area, customersHistogram, customersOrdersByDate);
 		// Return the report
 		return report;
@@ -194,17 +194,18 @@ public class ServerReportManager {
 	
 
 	/**
-	 * Generates an inventory report for a given location and date.
-	 * 
-	 * @param date the date for which to generate the report
-	 * @param ekrutLocation the location for which to generate the report
+	 * Generates an inventory report for a specific area, location, and date.
+	 *
+	 * @param date the date to generate the report for
+	 * @param ekrutLocation the location to generate the report for
+	 * @param area the area to generate the report for
 	 * @return the generated inventory report
 	 */
 	public Report generateInventoryReport(LocalDateTime date, String ekrutLocation, String area) {
-		// Get the list of threshold alert messages for the given date and location
-		ArrayList<String> thersholdAlerts = reportDAO.getThresholdAlert(date, ekrutLocation);
-		// Count the number of alerts for each item
-		Map<String, Integer> tresholdAlertCounted = CountAlerts(thersholdAlerts);
+		// Get a list of all threshold breaches for the given date and location
+		ArrayList<String> thersholdBreaches = reportDAO.getThresholdBreaches(date, ekrutLocation);
+		// Process the threshold breaches to count the number of breaches for each item
+		Map<String, Integer> tresholdBreachesCounted = CountThresholdBreaches(thersholdBreaches);
 		// Get the list of all items in the location
 		ArrayList<InventoryItem> allItemsInLocation = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
 		int facilityThreshold = 0;
@@ -214,7 +215,7 @@ public class ServerReportManager {
 		}
 		// Process the inventory data
 		Map<String, ArrayList<Integer>> inventoryReportData = 
-				ProcessInventoryData(allItemsInLocation, tresholdAlertCounted);
+				createInventoryReportData(allItemsInLocation, tresholdBreachesCounted);
 		// Create a new report object with the generated data
 		Report report = new Report(null, ReportType.INVENTORY, date,
 				ekrutLocation, area, inventoryReportData, facilityThreshold);
@@ -223,21 +224,21 @@ public class ServerReportManager {
 	}
 	
 	/**
-	 * Counts the number of threshold alerts for each item.
+	 * Counts the number of threshold breaches for each item.
 	 * 
-	 * @param thersholdAlerts a list of item names for which threshold alerts have been triggered
-	 * @return a map of item names to the number of threshold alerts for that item
+	 * @param thersholdBreaches a list of item names for which threshold breach have been triggered
+	 * @return a map of item names to the number of threshold breaches for that item
 	 */
-	private Map<String, Integer> CountAlerts(ArrayList<String> thersholdAlerts){
+	private Map<String, Integer> CountThresholdBreaches(ArrayList<String> thersholdBreaches){
 		
-		Map<String, Integer> tresholdAlertCounted = new HashMap<>();
+		Map<String, Integer> tresholdBreachesCounted = new HashMap<>();
 		// Iterate over the list of item names
-		for (String itemName : thersholdAlerts) {
+		for (String itemName : thersholdBreaches) {
 			// change doc
-			tresholdAlertCounted.merge(itemName, 1, Integer::sum);
+			tresholdBreachesCounted.merge(itemName, 1, Integer::sum);
 		}
-		// Return the map of alert counts
-		return tresholdAlertCounted;
+		// Return the map of threshold breaches counts
+		return tresholdBreachesCounted;
 	}
 	
 	/**
@@ -247,7 +248,7 @@ public class ServerReportManager {
 	 * @param tresholdAlertCounted a map of item names to threshold alert counts
 	 * @return a map of item names to lists containing the item quantity and threshold alert count
 	 */
-	private Map<String, ArrayList<Integer>> ProcessInventoryData(
+	private Map<String, ArrayList<Integer>> createInventoryReportData(
 			ArrayList<InventoryItem> allItemsInLocation, 
 			Map<String, Integer> tresholdAlertCounted){
 		
@@ -325,7 +326,7 @@ public class ServerReportManager {
 	 * @param allCustomersOrders a list of customer orders
 	 * @return a map containing customers as keys and their number of orders as values
 	 */
-	private Map<String, Integer> ProcessCustomersOrders(ArrayList<String> allCustomersOrders){
+	private Map<String, Integer> countOrdersByCustomer(ArrayList<String> allCustomersOrders){
 		Map<String, Integer> customersOrders = new HashMap<>();
 		// Iterate through the list of customer orders
 		for (String username : allCustomersOrders) {
@@ -342,7 +343,7 @@ public class ServerReportManager {
 	 * @param allCustomersOrdersByDate a list of customer order dates
 	 * @return a map of order counts by date
 	 */
-	private Map<Integer, Integer> ProcessCustomersOrdersByDate(ArrayList<LocalDateTime> allCustomersOrdersByDate) {
+	private Map<Integer, Integer> countOrdersByCustomerAndDate(ArrayList<LocalDateTime> allCustomersOrdersByDate) {
 		Map<Integer, Integer> customersOrdersByDate = new HashMap<>();
 		// Iterate through the list of customer orders
 		for (LocalDateTime date : allCustomersOrdersByDate) {
@@ -366,7 +367,7 @@ public class ServerReportManager {
 	 * @param itemsQuantityInOrders the map of item quantities to process
 	 * @return the map of the top 5 best-selling items
 	 */
-	private Map<String, Integer> processItemOrders(Map<String, Integer> itemsQuantityInOrders){
+	private Map<String, Integer> sortItemOrdersByQuantity(Map<String, Integer> itemsQuantityInOrders){
 		// Sort the items by quantity in descending order
 		List<Map.Entry<String, Integer>> sortedItemsInOrders = new ArrayList<>(itemsQuantityInOrders.entrySet());
 		
@@ -376,7 +377,6 @@ public class ServerReportManager {
 		    public int compare(Map.Entry<String, Integer> entry1, Map.Entry<String, Integer> entry2) {
 		        return -entry2.getValue().compareTo(entry1.getValue());
 		    }
-		    
 		});
 
 		Map<String, Integer> bestSellers = new HashMap<>();
@@ -398,7 +398,7 @@ public class ServerReportManager {
 	 * @param itemsQuantityInOrders the map to store the quantities of each item
 	 * @return the map of item quantities
 	 */
-	private Map<String, Integer> processOrdersLocation(ArrayList<Order> orders, Map<String, Integer> itemsQuantityInOrders){
+	private Map<String, Integer> countItemQuantitiesByLocation(ArrayList<Order> orders, Map<String, Integer> itemsQuantityInOrders){
 		
 	    // Iterate through the orders and count the quantities of each item sold
 		for (Order order : orders) {

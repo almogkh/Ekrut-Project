@@ -101,16 +101,13 @@ public class ReportChooserController implements Initializable{
     		}
     		else if (typeComboBox.getValue().equals("Inventory Report")) {
     			type = ReportType.INVENTORY;
-    			System.out.println("106");
     		}
     		else {
     			type = ReportType.CUSTOMER;
     		}
     		
     		Report report = clientReportManager.getReport(
-    				areaComboBox.getValue(), location, type, date);
-    		System.out.println(report == null);
-    		
+    				areaComboBox.getValue(), location, type, date);    		
     		
     		if (report == null) {
     			reportErrorLabel.setText("Error, there is not such report");
