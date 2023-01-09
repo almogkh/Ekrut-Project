@@ -62,12 +62,12 @@
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Text layoutX="14.0" layoutY="630.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Price: ">
+            <Text layoutX="14.0" layoutY="664.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price after discount:">
                <font>
                   <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
             </Text>
-            <Text layoutX="15.0" layoutY="660.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Price before discount: ">
+            <Text layoutX="15.0" layoutY="631.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total price:">
                <font>
                   <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
@@ -123,17 +123,17 @@
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="544.0" layoutY="99.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Recipt">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="544.0" layoutY="99.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Receipt">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <Label fx:id="priceAfterDiscountLbl" layoutX="148.0" layoutY="608.0" text="Price">
+            <Label fx:id="priceAfterDiscountLbl" layoutX="252.0" layoutY="642.0" text="Price">
                <font>
                   <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
             </Label>
-            <Label fx:id="priceBeforeDiscountLbl" layoutX="269.0" layoutY="639.0" text="Price">
+            <Label fx:id="priceBeforeDiscountLbl" layoutX="252.0" layoutY="610.0" text="Price">
                <font>
                   <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
