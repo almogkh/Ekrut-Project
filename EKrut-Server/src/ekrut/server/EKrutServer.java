@@ -89,9 +89,7 @@ public class EKrutServer extends AbstractServer {
 		case IS_LOGGEDIN:
 			userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
 			break;
-		case IMPORT_USERS:
-			userResponse = serverSessionManager.importUsers(dbCon);
-			break;
+		
 		case FETCH_USER:
 			userResponse = serverSessionManager.fetchUser(userRequest.getFetchType(),userRequest.getArgument());
 			break;
@@ -273,5 +271,17 @@ public class EKrutServer extends AbstractServer {
 
 	@Override
 	protected void clientConnected(final ConnectionToClient client) {
+	}
+	
+	/**
+	 * Imports users into the system from the external user management system.
+	 * 
+	 * @param dbCon the database connection to use for the operation
+	 * @return response indicating if the operation was successful or not
+	 */
+	public UserResponse importUsers() {
+		if (!UsersImporter.importUsers(dbCon))
+			return new UserResponse(ResultType.UNKNOWN_ERROR);
+		return new UserResponse(ResultType.OK);
 	}
 }

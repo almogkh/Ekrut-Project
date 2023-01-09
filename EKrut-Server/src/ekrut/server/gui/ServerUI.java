@@ -15,6 +15,7 @@ public class ServerUI extends Application {
 
 	private static EKrutServer server;
 	private static ServerController controller;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -25,40 +26,41 @@ public class ServerUI extends Application {
 
 		Parent root = loader.load();
 		controller = loader.getController();
-		
+
 		Scene scene = new Scene(root);
-		primaryStage.getIcons().add(new Image(ServerUI.class.getResourceAsStream("/ekrut/server/gui/gui-assets/icon-server.png")));
+		primaryStage.getIcons()
+				.add(new Image(ServerUI.class.getResourceAsStream("/ekrut/server/gui/gui-assets/icon-server.png")));
 		primaryStage.setTitle("Server");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
-	
 
 	@Override
 	public void stop() throws IOException {
 		disconnect();
 	}
 
-	public static boolean runServer(int port,String DBuserName, String username, String password) {
-		server = new EKrutServer(port,DBuserName, username, password);
+	public static boolean runServer(int port, String DBuserName, String username, String password) {
+		server = new EKrutServer(port, DBuserName, username, password);
 		controller.setTable(server.getSession());
 		try {
 			TimeScheduler.startTimer();
-			if(!server.connect()) {
+			if (!server.connect()) {
 				System.out.println("Can't connect to DB");
 				return false;
 			}
-			
+
 			server.listen();
 			System.out.println("Server listening for connections on port " + server.getPort());
-			
+
 			return true;
 		} catch (IOException e) {
-			  System.out.println("ERROR - Could not listen for clients!");
+			System.out.println("ERROR - Could not listen for clients!");
 			return false;
 		}
 	}
 
+	
 	public static void disconnect() {
 		TimeScheduler.stopTimer();
 		if (server == null)
