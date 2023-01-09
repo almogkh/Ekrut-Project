@@ -61,6 +61,7 @@ public class OrderItemController extends HBox {
 	private ClientOrderManager orderManager;
 	private OrderBrowserController controller;
 
+	// Q.Nir - is OrderBrowserController controller needed?
 	public OrderItemController(OrderBrowserController controller, Item item) {
 		this.item = item;
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;

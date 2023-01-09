@@ -2,7 +2,6 @@ package ekrut.client.gui;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientOrderManager;
@@ -61,6 +60,7 @@ public class OrderBrowserController {
 			ArrayList<OrderItemController> inventoryItemsToAdd = new ArrayList<>();
 			
 			for (InventoryItem inventoryItem : itemsForSale)
+				// Q.Nir - why are you use 'this'?
 				inventoryItemsToAdd.add(new OrderItemController(this, inventoryItem));
 			
 			ObservableList<Node> children = orderVBox.getChildren();

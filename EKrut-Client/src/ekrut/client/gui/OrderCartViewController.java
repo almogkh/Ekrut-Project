@@ -2,7 +2,6 @@ package ekrut.client.gui;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.OrderItem;
