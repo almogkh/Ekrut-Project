@@ -141,7 +141,7 @@ public class ServerReportManager {
 		topSellers = sortItemOrdersByQuantity(topSellers);
 		
 		// Create a new report object with the generated data
-		Report report = new Report(null, ReportType.ORDER, date, null, area,
+		Report report = new Report(null, ReportType.ORDER, date, area, area,
 				areaTotalOrders, areaTotalOrdersInILS, shipmentTotalOrders, shipmentTotalOrderInILS, orderReportData, topSellers);
 		// Return the report
 		return report;
