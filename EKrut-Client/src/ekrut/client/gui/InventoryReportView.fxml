@@ -32,65 +32,95 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.InventoryReportViewController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.InventoryReportViewController">
    <children>
-      <Pane prefHeight="147.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" styleClass="container">
          <children>
-            <VBox alignment="CENTER" prefHeight="147.0" prefWidth="770.0">
+            <Line endX="100.0" startX="-14.0" stroke="WHITE" />
+            <Label alignment="CENTER" prefHeight="85.0" prefWidth="779.0" text="Inventory Report">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="50.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.41999998688697815" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <Line endX="100.0" startX="-14.0" stroke="WHITE" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <VBox styleClass="container">
+         <children>
+            <HBox alignment="CENTER" prefHeight="50.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="39.0" prefWidth="779.0" text="Inventory Report">
+                  <Label fx:id="areaLbl" alignment="CENTER" prefHeight="39.0" prefWidth="150.0" text="North">
                      <font>
-                        <Font size="27.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="areaLbl" alignment="CENTER" prefHeight="39.0" prefWidth="770.0" text="North">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="•">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="locationLbl" alignment="CENTER" prefHeight="35.0" prefWidth="150.0" text="Akko" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="locationLbl" alignment="CENTER" prefHeight="35.0" prefWidth="768.0" text="Akko" textAlignment="CENTER">
+                  <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="•">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
-                  </Label>
-                  <Label fx:id="dateLbl" alignment="CENTER" prefHeight="34.0" prefWidth="769.0" text="01/2023">
+                  </Text>
+                  <Label fx:id="dateLbl" alignment="CENTER" prefHeight="34.0" prefWidth="150.0" text="01/2023">
                      <font>
-                        <Font size="23.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
                </children>
-            </VBox>
-         </children>
-      </Pane>
-      <Pane prefHeight="105.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-         <children>
-            <VBox alignment="CENTER" layoutX="1.0" layoutY="-3.0" prefHeight="113.0" prefWidth="770.0">
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="50.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="34.0" prefWidth="774.0" text="Facility Threshold">
+                  <Label alignment="CENTER" prefHeight="34.0" prefWidth="259.0" text="Facility Threshold:">
                      <font>
-                        <Font size="23.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
                   <Label fx:id="facilityThersholdLbl" text="20">
                      <font>
-                        <Font size="38.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
                </children>
-            </VBox>
+            </HBox>
          </children>
-      </Pane>
-      <Pane prefHeight="399.0" prefWidth="770.0" styleClass="container">
+      </VBox>
+      <HBox prefHeight="475.0" prefWidth="770.0" styleClass="container">
          <children>
-            <BarChart fx:id="itemThresholdBreachesBarChart" layoutX="6.0" legendVisible="false" prefHeight="408.0" prefWidth="768.0" style="-fx-background-color: transparent;" title="Items Threshold Breaches">
+            <BarChart fx:id="itemThresholdBreachesBarChart" legendVisible="false" prefHeight="461.0" prefWidth="768.0" style="-fx-background-color: transparent;" styleClass="graph" title="Items Threshold Breaches">
               <xAxis>
                 <CategoryAxis fx:id="ItemNameCategoryAxis" label="Item Name" side="BOTTOM" />
               </xAxis>
@@ -99,6 +129,6 @@
               </yAxis>
             </BarChart>
          </children>
-      </Pane>
+      </HBox>
    </children>
 </VBox>

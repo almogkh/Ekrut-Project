@@ -32,48 +32,67 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.CustomerReportViewController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.CustomerReportViewController">
    <children>
-      <Pane prefHeight="147.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container">
          <children>
-            <VBox alignment="CENTER" prefHeight="147.0" prefWidth="770.0">
-               <children>
-                  <Label alignment="CENTER" prefHeight="39.0" prefWidth="779.0" text="Customer Report">
-                     <font>
-                        <Font size="27.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="areaLbl" alignment="CENTER" prefHeight="39.0" prefWidth="770.0" text="North">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="locationLbl" alignment="CENTER" prefHeight="35.0" prefWidth="768.0" text="Akko" textAlignment="CENTER">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label fx:id="dateLbl" alignment="CENTER" prefHeight="34.0" prefWidth="769.0" text="01/2023">
-                     <font>
-                        <Font size="23.0" />
-                     </font>
-                  </Label>
-               </children>
-            </VBox>
+            <Line endX="100.0" startX="-14.0" stroke="WHITE" />
+            <Label alignment="CENTER" prefHeight="59.0" prefWidth="497.0" text="Customer Report">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="55.0" />
+               </font>
+            </Label>
+            <Line endX="100.0" startX="-14.0" stroke="WHITE" />
          </children>
-      </Pane>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="48.0" prefWidth="770.0" styleClass="container">
+         <children>
+            <Label fx:id="areaLbl1" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="North">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
+               </font>
+            </Label>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="•">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
+               </font>
+            </Text>
+            <Label fx:id="locationLbl1" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="Akko" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
+               </font>
+            </Label>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="•">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
+               </font>
+            </Text>
+            <Label fx:id="dateLbl1" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="01/2023">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
       <Pane prefHeight="229.0" prefWidth="770.0" styleClass="container">
          <children>
-            <LineChart fx:id="monthlyActivityLineChart" prefHeight="237.0" prefWidth="770.0" title="Customers Monthly Activity">
+            <LineChart fx:id="monthlyActivityLineChart" prefHeight="237.0" prefWidth="770.0" styleClass="graph" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Customers Monthly Activity">
               <xAxis>
                 <CategoryAxis fx:id="lineChartCategoryAxis" label="Day Of Month" side="BOTTOM" />
               </xAxis>
@@ -85,7 +104,7 @@
       </Pane>
       <Pane prefHeight="289.0" prefWidth="770.0" styleClass="container">
          <children>
-            <BarChart fx:id="CustomersActivityBarChart" prefHeight="294.0" prefWidth="770.0" title="Customers Activity By Categories">
+            <BarChart fx:id="CustomersActivityBarChart" prefHeight="294.0" prefWidth="770.0" styleClass="graph" title="Customers Activity By Categories">
               <xAxis>
                 <CategoryAxis fx:id="barChartCategoryAxis" label="Category" side="BOTTOM" />
               </xAxis>

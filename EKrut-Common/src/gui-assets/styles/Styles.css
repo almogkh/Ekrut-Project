@@ -84,3 +84,23 @@
   -fx-border-radius: 20;
   -fx-background-radius: 20;
 }
+.graph {
+  -fx-font-family: "Arial Rounded MT Bold", sans-serif;
+}
+
+.button1:hover {
+  -fx-background-color: #68f4fd;
+  -fx-text-fill: black;
+}
+.button1 {
+  -fx-background-color: #ffffff;
+  -fx-border-color: black;
+  -fx-border-radius: 20;
+  -fx-background-radius: 20;
+  -fx-text-fill: #2f88ff;
+}
+
+.button1:pressed {
+  -fx-background-color: #c3fbff;
+  -fx-text-fill: black;
+}

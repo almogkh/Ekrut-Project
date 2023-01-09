@@ -43,30 +43,30 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.TicketSubmissionController">
    <children>
-      <VBox alignment="CENTER" prefHeight="150.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
+      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Label contentDisplay="CENTER" text="Create a New Ticket" textFill="WHITE">
+            <Line endX="-58.5" startX="-110.0" stroke="WHITE" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="65.0" prefWidth="584.0" text="Create a New Ticket" textAlignment="CENTER">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="50.0" />
+                  <Font name="Arial Rounded MT Bold" size="55.0" />
                </font>
                <effect>
                   <DropShadow>
                      <color>
-                        <Color opacity="0.699999988079071" />
+                        <Color opacity="0.41999998688697815" />
                      </color>
                   </DropShadow>
                </effect>
             </Label>
+            <Line endX="-58.5" startX="-110.0" stroke="WHITE" />
          </children>
-      </VBox>
-      <Pane prefHeight="520.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      </HBox>
+      <Pane prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
             <Label layoutX="108.0" layoutY="107.0" text="Facility">
                <font>

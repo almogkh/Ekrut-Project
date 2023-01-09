@@ -33,26 +33,23 @@
 -->
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="680.0" prefWidth="770.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.HostSelectionController">
+<AnchorPane maxHeight="-1.0" maxWidth="1.7976931348623157E308" prefHeight="680.0" prefWidth="770.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.BaseTemplateController">
    <children>
       <VBox alignment="CENTER" prefHeight="126.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
          <children>
             <HBox alignment="CENTER">
                <children>
-                  <Line endX="-28.0" startX="-118.0" stroke="WHITE" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="71.0" prefWidth="770.0" text="Connect to server" textAlignment="CENTER">
+                  <Line endX="65.29289245605469" endY="-0.9999669790267944" startX="-118.0" stroke="WHITE" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="71.0" prefWidth="336.0" text="Welcome" textAlignment="CENTER">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="60.0" />
                      </font>
@@ -64,7 +61,7 @@
                         </DropShadow>
                      </effect>
                   </Label>
-                  <Line endX="-28.0" startX="-118.0" stroke="WHITE" />
+                  <Line endX="65.29289245605469" endY="-0.9999669790267944" startX="-118.0" stroke="WHITE" />
                </children>
                <padding>
                   <Insets left="20.0" right="20.0" />
@@ -77,49 +74,19 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Label text="Please provide Server's IP and Port">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="44.0" prefWidth="511.0" text="Hey user!" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="30.0" />
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
-               <VBox.margin>
-                  <Insets top="30.0" />
-               </VBox.margin>
             </Label>
-            <Pane prefHeight="275.0" prefWidth="759.0">
-               <children>
-                  <TextField fx:id="serverTxt" layoutX="309.0" layoutY="56.0" prefHeight="41.0" prefWidth="136.0" promptText="Server IP" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="127.0.0.1">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="portTxt" layoutX="309.0" layoutY="146.0" prefHeight="41.0" prefWidth="136.0" promptText="Server Port" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="5555">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
-                  </TextField>
-                  <Label layoutX="336.0" layoutY="32.0" text="Server IP">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="327.0" layoutY="123.0" text="Server Port">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="connectBtn" defaultButton="true" layoutX="325.0" layoutY="209.0" mnemonicParsing="false" onAction="#connect" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Connect">
-                     <font>
-                        <Font name="Candara Bold" size="20.0" />
-                     </font>
-                  </Button>
-               </children>
-            </Pane>
-            <Label fx:id="redErrorLbl" text="ERROR" textFill="RED" underline="true" visible="false">
-               <VBox.margin>
-                  <Insets top="50.0" />
-               </VBox.margin>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="511.0" text=" To perform operations in the EKrut system you must register as a customer or subscriber!" textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="Candara Bold" size="18.0" />
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="511.0" text="Please contact the service representative" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Label>
          </children>
