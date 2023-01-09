@@ -8,11 +8,13 @@ import java.util.Map;
 public class Report implements Serializable{
 
 	private static final long serialVersionUID = -5874512121114020139L;
+	
 	private Integer reportID;
 	private ReportType reportType;
 	private LocalDateTime date;
 	private String area;
 	private String ekrutLocation;
+	
 	// Each data structure holds the relevant data to make a report
 	private Map<String, ArrayList<Integer>> InventoryReportData;
 	private Map<String, Integer> customerReportData;
@@ -33,7 +35,7 @@ public class Report implements Serializable{
 		this.ekrutLocation = ekrutLocation;
 		this.area = area;
 	}
-
+ 
 	// Order report constructor
 	public Report(
 			Integer reportID, ReportType reportType, LocalDateTime date,
@@ -68,16 +70,8 @@ public class Report implements Serializable{
 		return reportID;
 	}
 
-	public void setReportID(Integer reportID) {
-		this.reportID = reportID;
-	}
-
 	public ReportType getReportType() {
 		return reportType;
-	}
-
-	public void setReportType(ReportType reportType) {
-		this.reportType = reportType;
 	}
 
 	public LocalDateTime getDate() {
@@ -92,87 +86,51 @@ public class Report implements Serializable{
 		return ekrutLocation;
 	}
 
-	public void setEkrutLocation(String ekrutLocation) {
-		this.ekrutLocation = ekrutLocation;
-	}
-
 	public Map<String, ArrayList<Integer>> getInventoryReportData() {
 		return InventoryReportData;
-	}
-
-	public void setInventoryReportData(Map<String, ArrayList<Integer>> inventoryReportData) {
-		InventoryReportData = inventoryReportData;
 	}
 
 	public Map<String, Integer> getCustomerReportData() {
 		return customerReportData;
 	}
 
-	public void setCustomerReportData(Map<String, Integer> customerReportData) {
-		this.customerReportData = customerReportData;
-	}
-
 	public Map<String, ArrayList<Integer>>  getOrderReportData() {
 		return orderReportData;
-	}
-	public void setOrderReportData(Map<String, ArrayList<Integer>> orderReportData) {
-		this.orderReportData = orderReportData;
 	}
 
 	public Integer getThreshold() {
 		return threshold;
 	}
 
-	public void setThreshold(Integer threshold) {
-		this.threshold = threshold;
-	}
-
 	public Map<String, Integer> getTopSellersData() {
 		return topSellersData;
-	}
-
-	public void setTopSellersData(Map<String, Integer> topSellersData) {
-		this.topSellersData = topSellersData;
 	}
 
 	public Integer getTotalOrders() {
 		return totalOrders;
 	}
 
-	public void setTotalOrders(Integer totalOrders) {
-		this.totalOrders = totalOrders;
-	}
-
 	public Integer getTotalOrdersInILS() {
 		return totalOrdersInILS;
-	}
-
-	public void setTotalOrdersInILS(Integer totalOrdersInILS) {
-		this.totalOrdersInILS = totalOrdersInILS;
 	}
 
 	public Map<Integer, Integer> getCustomersOrdersByDate() {
 		return customersOrdersByDate;
 	}
 
-	public void setCustomersOrdersByDate(Map<Integer, Integer> customersOrdersByDate) {
-		this.customersOrdersByDate = customersOrdersByDate;
-	}
-
 	public Integer getTotalShipmentOrders() {
 		return totalShipmentOrders;
-	}
-
-	public void setTotalShipmentOrders(Integer totalShipmentOrders) {
-		this.totalShipmentOrders = totalShipmentOrders;
 	}
 
 	public Integer getTotalShipmentOrdersInILS() {
 		return totalShipmentOrdersInILS;
 	}
 
-	public void setTotalShipmentOrdersInILS(Integer totalShipmentOrdersInILS) {
-		this.totalShipmentOrdersInILS = totalShipmentOrdersInILS;
+	public void setReportID(Integer reportID) {
+		this.reportID = reportID;
 	}
 
+	public void setReportType(ReportType reportType) {
+		this.reportType = reportType;
+	}
 }
