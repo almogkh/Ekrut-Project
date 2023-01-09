@@ -188,10 +188,8 @@ public class ServerController {
 	void importData(final ActionEvent event) {
 		if(ServerUI.getServer().importUsers().getResultCode()==ResultType.UNKNOWN_ERROR) {
 			System.out.println("not good");
-			this.ErrorImportData.setVisible(true);
 			return;
 		}
-		System.out.println("good");
 		this.importDataBTN.setDisable(true);
 		
 	}
