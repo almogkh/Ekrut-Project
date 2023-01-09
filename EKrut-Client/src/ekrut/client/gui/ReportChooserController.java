@@ -4,7 +4,6 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientReportManager;
@@ -101,7 +100,6 @@ public class ReportChooserController implements Initializable{
     		}
     		else if (typeComboBox.getValue().equals("Inventory Report")) {
     			type = ReportType.INVENTORY;
-    			System.out.println("106");
     		}
     		else {
     			type = ReportType.CUSTOMER;
@@ -109,7 +107,6 @@ public class ReportChooserController implements Initializable{
     		
     		Report report = clientReportManager.getReport(
     				areaComboBox.getValue(), location, type, date);
-    		System.out.println(report == null);
     		
     		
     		if (report == null) {
