@@ -14,53 +14,6 @@ import ekrut.entity.OrderType;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
 
-/*This is how the DB look like:
- * reports table:
- * 
- * 		ID	 | 		type 	|	 date  	| ekrutLocation | area
- * -------------------------------------------------------------------
- * 	  15678  |     order    |  28.12.22 |       U-TLV   | NORTH
- * 
- * #######################################################################
- * orders report data table:
- *  reportID |   location  |totalOrders | shipment | pickup | remote | totalOrdersInILS |shipmentInILS | pickupInILS | remoteInILS  |
- * -----------------------------------------------------------------------------------------------------------------------------------
- * 	  15678  |     U-TLV   |     130    |    40   |   50   |    40   |        12000     |       4000     |     5000    |    4000     | 
- * 
- * #######################################################################
- * orders top sellers table: 
- *   reportID  | itemName  | totalSales
- * -----------------------------------------
- * 	  15678    |    COKE   |  679
- * 
- * #######################################################################
- * orders monthly data table: 
- *   reportID  | totalOrders  | totalOrdersInILS
- * ---------------------------------------------
- * 	  15678    |      1362    |  340988
- * 
- * 
- * #######################################################################
- * inventory report data table:
- * 	 reportID  |  itemName | quantity | threshold | thresholdAlert
- * ------------------------------------------------------------------------
- * 	  32114    |    PEPSI  |	120	  |     10	  |		5
- *
- * #######################################################################
- * inventory items that reach their threshold
- * 	   date   | itemID | itemName |
- * --------------------------------
- * 	 12.01.23 | 17332  |   FANTA  |
- * 
- * #######################################################################
- * customers report table:
- *  how many customers did x-y orders
- * 	  reportID |  1  |  2  |   3   |  4  | 5   | 6+
- * ------------------------------------------------
- * 	   29993   | 256 | 324 |  122  |  70 | 104 | 152
- * 
- * #######################################################################
- **/
 
 /**
  * Handles all direct database interactions with reports
@@ -138,7 +91,7 @@ public class ReportDAO {
 	 * @param date
 	 * @param ekrutLocation
 	 * @param area 
-	 * @param type ("order", "inventory", or "customer").
+	 * @param type ("ORDER", "INVENTORY", or "CUSTOMER").
 	 * @return The report, or null if an error occurred.
 	 * */
 	public Report fetchReport(LocalDateTime date, String ekrutLocation, String area, ReportType type) {
@@ -167,9 +120,7 @@ public class ReportDAO {
 				
 			return report;
 			
-		//TBD.tal what to do here?
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -382,13 +333,12 @@ public class ReportDAO {
 			}
 	}
 	
-	/** TODO redo
-	 * Fetches all orders from the database that have the same month and year as the given date,
-	 * and the same location as the given location.
-	 * 
-	 * @param date the reference date to filter the orders by month and year
-	 * @param location the location to filter the orders by
-	 * @return a list of all orders that meet the criteria, or null if an exception is thrown
+	/**
+	 * Retrieves a list of all orders made at a specific location in a specific month.
+	 *
+	 * @param date the month to retrieve orders for
+	 * @param location the location to retrieve orders for
+	 * @return a list of orders made at the specified location in the specified month, or null if an error occurred
 	 */
 	public ArrayList<Order> fetchAllMonthlyOrdersByLocation(LocalDateTime date, String location) {
 
@@ -419,7 +369,13 @@ public class ReportDAO {
 			
 			}
 	}
-	//TODO document
+	
+	/**
+	 * Retrieves a list of all shipment orders made in a specific month.
+	 *
+	 * @param date the month to retrieve orders for
+	 * @return a list of shipment orders made in the specified month, or null if an error occurred
+	 */
 	public ArrayList<Order> fetchAllMonthlyShipmentOrders(LocalDateTime date) {
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT orderId FROM orders WHERE"
@@ -458,7 +414,6 @@ public class ReportDAO {
 	 * @param location the location to filter the orders by
 	 * @return a list of all usernames of orders that meet the criteria, or null if an exception is thrown
 	 */
-	//TODO make 2 new methods. the first one filter out all the orders that is shipment and the second is get all the shipment orders at given area
 	public ArrayList<String> getAllCustomersOrdersByName(LocalDateTime date, String location) {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
@@ -489,7 +444,14 @@ public class ReportDAO {
 				}
 			}
 	}
-	//get all orders without shipment orders
+	
+	/**
+	 * Retrieves a list of all customer names who made orders (excluding shipment orders) at a specific location in a specific month.
+	 *
+	 * @param date the month to retrieve orders for
+	 * @param location the location to retrieve orders for
+	 * @return a list of customer names who made orders at the specified location in the specified month, or null if an error occurred
+	 */
 	public ArrayList<String> getAllCustomersOrdersByNameWithOutShipment(LocalDateTime date, String location) {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM orders WHERE"
@@ -521,7 +483,13 @@ public class ReportDAO {
 			}
 	}
 
-	// Add document
+	/**
+	 * Retrieves a list of all order dates (excluding shipment orders) made by customers at a specific location in a specific month.
+	 *
+	 * @param date the month to retrieve orders for
+	 * @param location the location to retrieve orders for
+	 * @return a list of order dates made at the specified location in the specified month, or null if an error occurred
+	 */
 	public ArrayList<LocalDateTime> getAllCustomersOrdersByDateWithOutShipment(LocalDateTime date, String location) {
 		
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT date FROM orders WHERE"
@@ -562,7 +530,7 @@ public class ReportDAO {
 	 * @param ekrutLocation the location to filter the threshold breaches by
 	 * @return a list of all item names of threshold breaches that meet the criteria, or null if an exception is thrown
 	 */
-	public ArrayList<String> getThresholdAlert(LocalDateTime date, String ekrutLocation){
+	public ArrayList<String> getThresholdBreaches(LocalDateTime date, String ekrutLocation){
 
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT itemName FROM threshold_breaches WHERE"
 				+ " EXTRACT(MONTH FROM date) = EXTRACT(MONTH FROM ?)"
