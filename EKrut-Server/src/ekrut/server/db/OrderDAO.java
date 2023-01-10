@@ -274,7 +274,7 @@ public class OrderDAO {
 		PreparedStatement ps = con.getPreparedStatement(
 				"SELECT orderId, date, status, type, dueDate, clientAddress, location, username "
 				+ "FROM orders "
-				+ "WHERE type = 'SHIPMENT'");
+				+ "WHERE type = 'SHIPMENT' AND status = 'SUBMITTED'");
 		ArrayList<Order> orderList = new ArrayList<>();
 		try {
 			// Get all orders that their status is SHIPMENT
