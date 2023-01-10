@@ -115,6 +115,15 @@ public class BaseTemplateController {
 	}
 
 	public void loadViewShipment() {
+		switchStages("ShipmentWorkerApproval");
+	}
+	
+	private void loadActivateSale() {
+		switchStages("SaleActivate");
+	}
+	
+	public void loadSaleTemplate() {
+		switchStages("SaleTemplate");
 	}
 	
     // C.Nir - can use in *local* method load();
@@ -206,6 +215,13 @@ public class BaseTemplateController {
 		
 		Hyperlink thresholdSelector = new Hyperlink("Set Thresholds");
 		thresholdSelector.setOnAction((ActionEvent event) -> loadThresholdSelector());
+		
+		Hyperlink makeSaleTemplate = new Hyperlink("Make Sale Template");
+		makeSaleTemplate.setOnAction((ActionEvent event) -> loadSaleTemplate());
+		
+		Hyperlink activateSale = new Hyperlink("Sale Activation");
+		activateSale.setOnAction((ActionEvent event) -> loadActivateSale());
+		
 		switch (userType) {
 		case REGISTERED:
 		case CUSTOMER:
@@ -215,8 +231,10 @@ public class BaseTemplateController {
 			allHyperlinks.add(viewShipRequestsHyp);
 			break;
 		case MARKETING_MANAGER:
+			allHyperlinks.add(makeSaleTemplate);
 			break;
 		case MARKETING_WORKER:
+			allHyperlinks.add(activateSale);
 			break;
 		case OPERATIONS_WORKER:
 			allHyperlinks.add(viewTicketsHyp);
@@ -237,6 +255,8 @@ public class BaseTemplateController {
 		}
 		return allHyperlinks;
 	}
+
+
 
 	public void setUser(User me) {
 		// this.me = me;
@@ -261,8 +281,6 @@ public class BaseTemplateController {
 			setHyperlinkStyle((Hyperlink) node);
 		}
 	}
-
-
 
     // Q.Nir - is needed?
     // switch stages if any info dose not needed.

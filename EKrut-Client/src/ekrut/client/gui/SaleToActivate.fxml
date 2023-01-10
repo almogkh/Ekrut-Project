@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="124.0" prefWidth="753.0" style="-fx-background-radius: 20;" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane prefHeight="147.0" prefWidth="751.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <children>
+            <Text layoutX="34.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type of sale discount:" wrappingWidth="181.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text layoutX="34.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Days of sale discount:" wrappingWidth="181.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text layoutX="34.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" wrappingWidth="95.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text layoutX="34.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" wrappingWidth="84.80342102050781">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
+            <Button fx:id="deactivateSaleBtn" defaultButton="true" layoutX="542.0" layoutY="39.0" mnemonicParsing="false" onAction="#deactivateSale" prefHeight="35.0" prefWidth="201.0" style="-fx-background-color: red;" text="Press to deactivate" visible="false">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font></Button>
+            <Text fx:id="saleTypeTxt" layoutX="241.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SaleType" wrappingWidth="372.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text fx:id="startTimeTxt" layoutX="241.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="StartTime" wrappingWidth="181.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text fx:id="endTimeTxt" layoutX="242.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EndTime" wrappingWidth="181.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text fx:id="dayOfSaleTxt" layoutX="241.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DaysOfSale" wrappingWidth="372.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Text>
+            <Button fx:id="activateSaleBtn" defaultButton="true" layoutX="562.0" layoutY="39.0" mnemonicParsing="false" onAction="#activateSale" prefHeight="35.0" prefWidth="181.0" style="-fx-background-color: green;" text="Press to activate" textFill="#0a0a0a">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="17.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+   </children>
+</fx:root>

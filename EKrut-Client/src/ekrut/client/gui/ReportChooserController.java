@@ -1,10 +1,7 @@
 package ekrut.client.gui;
 
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
-
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientReportManager;
@@ -15,13 +12,12 @@ import ekrut.entity.UserType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 
-public class ReportChooserController implements Initializable{
+public class ReportChooserController {
 
     @FXML
     private ComboBox<String> areaComboBox;
@@ -51,8 +47,9 @@ public class ReportChooserController implements Initializable{
     private EKrutClient client;
     private User user;
     private ClientReportManager  clientReportManager;
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+
+    @FXML
+	private void initialize() {
 		client = EKrutClientUI.getEkrutClient();
 		user = client.getClientSessionManager().getUser();
 		clientReportManager = client.getClientReportManager(); 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ShipmentWorkerApprovalController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="120.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <children>
+            <Line endX="160.0" startX="-67.5" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Approve Orders">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="35.0" />
+               </font>
+            </Text>
+            <Line endX="148.5" startX="-88.0" />
+         </children>
+      </HBox>
+      <Pane prefHeight="550.0" prefWidth="770.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Text layoutX="131.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Approve Orders For Shipping ">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="35.0" />
+               </font>
+            </Text>
+            <ScrollPane layoutY="52.0" prefHeight="432.0" prefWidth="770.0">
+               <content>
+                  <VBox fx:id="ShipmentVBox" prefHeight="440.0" prefWidth="755.0" spacing="10.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+   </children>
+</VBox>
