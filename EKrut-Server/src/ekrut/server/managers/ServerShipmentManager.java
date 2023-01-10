@@ -41,10 +41,6 @@ public class ServerShipmentManager {
 		userNotifier = new PopupUserNotifier(con, serverSessionManager);
 	}
 
-	// Q.Nir , TBD - Need to change after Yovel implementation area at fetch...
-	// method?
-	// PLEASE, HOW CAN I DO IT?
-	// C.Nir - Message need to be sent after confirmation.
 
 	/**
 	 * Fetches a list of shipment requests for approval.
@@ -83,13 +79,14 @@ public class ServerShipmentManager {
 
 		// Prepare fields in order to calculate due date.
 		int orderId = shipmentRequest.getOrderId();
-		LocalDateTime date = shipmentRequest.getDate();
-		String clientAddress = shipmentRequest.getClientAddress();
+		
 		Order order = orderDAO.fetchOrderById(orderId);
-
 		// In case order is null return not found result.
 		if (order == null)
 			return new ShipmentResponse(ResultType.NOT_FOUND);
+		
+		LocalDateTime date = order.getDate();
+		String clientAddress = order.getClientAddress();
 
 		// In case order is not for shipping return invalid input result.
 		if (order.getType() != OrderType.SHIPMENT)
@@ -99,12 +96,13 @@ public class ServerShipmentManager {
 		if (order.getStatus() != OrderStatus.SUBMITTED)
 			return new ShipmentResponse(ResultType.INVALID_INPUT);
 		
-		// Try to confirm shipment and update order status to awaiting for delivery.
+		// Try to 1update order status to awaiting for delivery.
 		if (!orderDAO.updateOrderStatus(orderId, OrderStatus.AWAITING_DELIVERY))
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
-
+		
 		// Estimate delivery time.
 		LocalDateTime estimateDeliveryTime = ShipmentManagerUtils.estimatedArrivalTime(date, clientAddress);
+		System.out.println(estimateDeliveryTime);
 		// Set due date in order.
 		order.setDueDate(estimateDeliveryTime);
 		orderDAO.updateOrderDueDate(order.getOrderId(), estimateDeliveryTime);
