@@ -83,13 +83,11 @@ public class SaleTemplateController implements Initializable {
 	private String logicTimeError = "There is no logic in the time that you set to sale discount."
 			+ " Please check all the required fields and try again.";
 
-	private BaseTemplateController BTC;
 	private ClientSalesManager clientSalesManager;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		clientSalesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
-		BTC = BaseTemplateController.getBaseTemplateController();
 		templateList = clientSalesManager.fetchSaleTemplates();
 
 		for (Integer i = 0; i < HUORS_IN_DAY; i++) {
@@ -157,7 +155,7 @@ public class SaleTemplateController implements Initializable {
 				: SaleDiscountType.THIRTY_PERCENT_OFF;
 
 		// Create template.
-		SaleDiscount saleDiscount = new SaleDiscount(startTime, endTime, dayOfSale.toString(), type);
+		SaleDiscount saleDiscount = new SaleDiscount(startTime.toString(), endTime.toString(), dayOfSale.toString(), type);
 		
 		// Check if template is already exist in DB.
 		if (templateList.contains(saleDiscount)) {
