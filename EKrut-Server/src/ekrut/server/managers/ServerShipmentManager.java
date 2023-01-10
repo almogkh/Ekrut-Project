@@ -30,7 +30,7 @@ public class ServerShipmentManager {
 	private UserDAO userDAO;
 	private IUserNotifier userNotifier;
 	/**
-	 * 
+	 *  
 	 * Constructs a new {@code ServerShipmentManager} object.
 	 * 
 	 * @param con the database controller to use for accessing the database
