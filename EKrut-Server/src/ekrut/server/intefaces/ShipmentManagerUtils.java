@@ -58,8 +58,7 @@ public abstract class ShipmentManagerUtils {
      * @return the estimated arrival time
      */
     public static LocalDateTime estimatedArrivalTime(LocalDateTime date, String clientAddress) {
-        long overallDeliveryHours = deliveryDurationTimeInHours(clientAddress);
-        LocalDateTime deliveryDate = date.plusHours(overallDeliveryHours);
-        return deliveryDate;
+        long overallDeliveryHours = deliveryDurationTimeInHours(clientAddress);    
+        return date.plusHours(overallDeliveryHours);
     }
 }
