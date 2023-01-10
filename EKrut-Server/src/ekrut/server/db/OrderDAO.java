@@ -212,6 +212,7 @@ public class OrderDAO {
 		PreparedStatement p = con.getPreparedStatement("SELECT * FROM orders WHERE username = ?");
 		
 		try {
+			p.setString(1, username);
 			ResultSet rs = p.executeQuery();
 			ArrayList<Order> orders = new ArrayList<>();
 			
@@ -247,13 +248,13 @@ public class OrderDAO {
 	 */
 	public boolean updateOrderStatus(int orderId, OrderStatus status) {
 		PreparedStatement p = con.getPreparedStatement("UPDATE orders SET status = ? WHERE orderId = ?");
-		
 		try {
 			p.setString(1, status.toString());
 			p.setInt(2, orderId);
 			
 			if (p.executeUpdate() != 1)
 				return false;
+			return true;
 			
 		} catch (SQLException e) {
 			return false;
@@ -265,11 +266,8 @@ public class OrderDAO {
 				throw new RuntimeException(e);
 			}
 		}
-		
-		return true;
 	}
 
-	// For Almog: Added by Nir, get list of orders in Shipment status.
 	public ArrayList<Order> fetchOrderShipmentListByArea(String area) {
 		PreparedStatement ps = con.getPreparedStatement(
 				"SELECT orderId, date, status, type, dueDate, clientAddress, location, username "
@@ -277,12 +275,9 @@ public class OrderDAO {
 				+ "WHERE type = 'SHIPMENT' AND status = 'SUBMITTED'");
 		ArrayList<Order> orderList = new ArrayList<>();
 		try {
-			// Get all orders that their status is SHIPMENT
 			ResultSet rs = con.executeQuery(ps);
 			while (rs.next()) {
-				// Get customer area in order to match the requested area with manager area.
 				User user = userDAO.fetchUserByUsername(rs.getString(8));
-				// if areas matches add the order to list.
 				if (user.getArea().equals(area)) {
 					orderList.add(new Order(rs.getInt(1), rs.getObject(2, LocalDateTime.class),
 							OrderStatus.valueOf(rs.getString(3)), OrderType.valueOf(rs.getString(4)),
