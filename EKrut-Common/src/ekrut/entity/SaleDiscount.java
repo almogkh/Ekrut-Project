@@ -15,7 +15,6 @@ public class SaleDiscount implements Serializable {
 	private String dayOfSale;
 	private boolean isActive;
 
-	// Active Sale
 	public SaleDiscount(int discountId, LocalTime startTime, LocalTime endTime, String dayOfSale, SaleDiscountType type,
 			String area) {
 		this.discountId = discountId;
@@ -28,12 +27,11 @@ public class SaleDiscount implements Serializable {
 	}
 
 	// fetch Template
-	public SaleDiscount(int discountId, LocalTime startTime, LocalTime endTime, String dayOfSale,
-			SaleDiscountType type) {
+	public SaleDiscount(int discountId, String startTime, String endTime, String dayOfSale, SaleDiscountType type) {
 		this.discountId = discountId;
 		this.type = type;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.startTime = LocalTime.parse(startTime);
+		this.endTime = LocalTime.parse(endTime);
 		this.dayOfSale = dayOfSale;
 	}
 
@@ -65,9 +63,6 @@ public class SaleDiscount implements Serializable {
 		return endTime;
 	}
 
-	// day of sale is a 7 length string which each day with sale will be in T for
-	// example:
-	// TFTFFFF means that Sunday and Tuesday the sale is active.
 	public String getDayOfSale() {
 		return dayOfSale;
 	}
@@ -75,5 +70,37 @@ public class SaleDiscount implements Serializable {
 	public boolean isActive() {
 		return isActive;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SaleDiscount other = (SaleDiscount) obj;
+
+		if (dayOfSale == null) {
+			if (other.dayOfSale != null)
+				return false;
+		} else if (!dayOfSale.equals(other.dayOfSale))
+			return false;
+		if (endTime == null) {
+			if (other.endTime != null)
+				return false;
+		} else if (!endTime.equals(other.endTime))
+			return false;
+		if (startTime == null) {
+			if (other.startTime != null)
+				return false;
+		} else if (!startTime.equals(other.startTime))
+			return false;
+		if (type != other.type)
+			return false;
+		return true;
+	}
+	
+	
 
 }
