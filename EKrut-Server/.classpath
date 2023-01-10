@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -9,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.13.jar"/>
 	<classpathentry kind="src" path="/EKrut-Common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OCSF"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
