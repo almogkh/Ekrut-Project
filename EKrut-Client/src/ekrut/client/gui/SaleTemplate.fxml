@@ -106,11 +106,6 @@
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Text>
-            <Button fx:id="backBtn" layoutX="27.0" layoutY="486.0" mnemonicParsing="false" onAction="#backToMainMenu" prefHeight="36.0" prefWidth="88.0" text="Back">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="21.0" />
-               </font>
-            </Button>
             <Text layoutX="202.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create Sale Template">
                <font>
                   <Font name="Arial Rounded MT Bold" size="35.0" />

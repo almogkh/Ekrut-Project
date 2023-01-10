@@ -3,12 +3,17 @@ package ekrut.client.gui;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
-
+import ekrut.client.EKrutClientUI;
+import ekrut.client.managers.ClientSalesManager;
 import ekrut.entity.SaleDiscount;
+import ekrut.net.ResultType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
@@ -16,6 +21,9 @@ public class SaleToActivateController extends HBox {
 
     @FXML
     private Button activateSaleBtn;
+    
+    @FXML
+    private Button deactivateSaleBtn;
 
     @FXML
     private Text dayOfSaleTxt;
@@ -31,11 +39,17 @@ public class SaleToActivateController extends HBox {
     
     private final int DAYS_IN_WEEK = 7;
     private SaleDiscount saleDiscount;
-    
-    public SaleToActivateController(SaleDiscount saleDiscount) {
+    private ClientSalesManager clientSalesManager; 
+	private String activeSuccessMsg = "Sale discount was activate successfully.";
+	private String activeFaileMsg = "Failed to activate sale discunt. Please check your premissions";
+	private String unactiveSuccessMsg = "Sale discount was unactivate successfully.";
+	private String unactiveFaileMsg = "Failed to unactivate sale discunt. Please check your premissions";
+	private ArrayList<String> daysOfsaleList;
+
+    public SaleToActivateController(SaleDiscount saleDiscount, ArrayList<SaleDiscount> activeSales) {
     	this.saleDiscount = saleDiscount;
-    	ArrayList<String> daysOfsaleList = new ArrayList<>();
-    	String dayOfSale = saleDiscount.getDayOfSale();
+    	clientSalesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
+    	daysOfsaleList = new ArrayList<>();
     	
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SaleToActivate.fxml"));
 		fxmlLoader.setRoot(this);
@@ -45,7 +59,13 @@ public class SaleToActivateController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-
+		
+		if (activeSales.contains(saleDiscount)) {
+    		activateSaleBtn.setVisible(false);
+    		deactivateSaleBtn.setVisible(true);
+		}
+		
+		String dayOfSale = saleDiscount.getDayOfSale();
 		for (Integer i = 0; i < DAYS_IN_WEEK; i++) 
 			if(dayOfSale.charAt(i) == 'T') 
 				daysOfsaleList.add(getTheDay(i + 1));
@@ -56,7 +76,9 @@ public class SaleToActivateController extends HBox {
 		dayOfSaleTxt.setText(days);
 		startTimeTxt.setText(setTime(saleDiscount.getStartTime()));
 		endTimeTxt.setText(setTime(saleDiscount.getEndTime()));
-		saleTypeTxt.setText(saleDiscount.getType().toString());
+		
+		String saleType = saleDiscount.getType().toString().equals("ONE_PLUS_ONE") ? "One Plus One" : "30% Off";
+		saleTypeTxt.setText(saleType);
 		
     }
     
@@ -89,7 +111,25 @@ public class SaleToActivateController extends HBox {
     
     @FXML
     void activateSale(ActionEvent event) {
-
+    	if(clientSalesManager.activateSaleForArea(saleDiscount.getDiscountId()) == ResultType.OK) {
+    		new Alert(AlertType.INFORMATION, activeSuccessMsg, ButtonType.OK).showAndWait();
+    		activateSaleBtn.setVisible(false);
+    		deactivateSaleBtn.setVisible(true);
+    	}
+    	else
+    		new Alert(AlertType.ERROR, activeFaileMsg, ButtonType.OK).showAndWait();
     }
+    
+    @FXML
+    void deactivateSale(ActionEvent event) {
+    	if(clientSalesManager.deactivateSaleForArea(saleDiscount.getDiscountId()) == ResultType.OK) {
+    		new Alert(AlertType.INFORMATION, unactiveSuccessMsg, ButtonType.OK).showAndWait();
+    		deactivateSaleBtn.setVisible(false);
+    		activateSaleBtn.setVisible(true);
+    	}
+    	else
+    		new Alert(AlertType.ERROR, unactiveFaileMsg, ButtonType.OK).showAndWait();
+    }
+
 
 }

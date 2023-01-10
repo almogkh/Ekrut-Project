@@ -7,7 +7,6 @@ import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientSalesManager;
 import ekrut.entity.SaleDiscount;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -16,40 +15,31 @@ import javafx.scene.layout.VBox;
 
 public class SaleActivateController implements Initializable {
 
-    @FXML
-    private Button backBtn;
-    
-    @FXML
-    private VBox salesVBox;
-    
-    private ClientSalesManager clientSaleDiscount;
-    private String ekrutLocation;
-    
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    	this.ekrutLocation = EKrutClientUI.ekrutLocation;
-    	clientSaleDiscount  = EKrutClientUI.getEkrutClient().getClientSalesManager();
-    	ArrayList<SaleDiscount> activeSalesList = clientSaleDiscount.fetchSaleTemplates();
-    	ArrayList<SaleToActivateController> activeSalesToAdd = new ArrayList<>();
-    	
-    	for (SaleDiscount sale : activeSalesList) 
-    		activeSalesToAdd.add(new SaleToActivateController(sale));
-    	
-    	ObservableList<Node> children = salesVBox.getChildren();
-    	children.addAll(activeSalesToAdd);
+	@FXML
+	private Button backBtn;
 
-    	
-    }
-    
+	@FXML
+	private VBox salesVBox;
 
+	private ClientSalesManager clientSaleDiscount;
+	private ArrayList<SaleDiscount> activeSales = new ArrayList<>();
 
-    @FXML
-    void backToMainMenu(ActionEvent event) {
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		clientSaleDiscount = EKrutClientUI.getEkrutClient().getClientSalesManager();
+		ArrayList<SaleDiscount> activeSalesList = clientSaleDiscount.fetchSaleTemplates();
+		ArrayList<SaleToActivateController> activeSalesToAdd = new ArrayList<>();
+		activeSales = clientSaleDiscount.fetchActiveSales();
 
-    }
+		// Q.Nir - Is needed?
+		if (activeSalesList == null)
+			return;
+		
 
+		for (SaleDiscount sale : activeSalesList)
+			activeSalesToAdd.add(new SaleToActivateController(sale, activeSales));
 
-
-
-    
+		ObservableList<Node> children = salesVBox.getChildren();
+		children.addAll(activeSalesToAdd);
+	}
 }
