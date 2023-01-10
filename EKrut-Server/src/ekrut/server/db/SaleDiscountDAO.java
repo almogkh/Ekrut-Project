@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import com.mysql.cj.MysqlType;
 import ekrut.entity.SaleDiscount;
 import ekrut.entity.SaleDiscountType;
 
@@ -28,8 +27,6 @@ public class SaleDiscountDAO {
 	 * 
 	 * @param saleDiscount the discount template to create
 	 * @return true if the discount template was successfully created, false otherwise
-	 * @throws RuntimeException if there is an error closing the prepared statement
-	 * @throws SQLException if there is an error executing the prepared statement
 	*/
 	public boolean createDiscountTemplate(SaleDiscount saleDiscount) {
 		if (saleDiscount == null)
@@ -38,8 +35,8 @@ public class SaleDiscountDAO {
 		PreparedStatement ps = con.getPreparedStatement(
 				"INSERT INTO sale_discount (startTime,endTime,dayOfSale,saleType) VALUES(?,?,?,?)");
 		try {
-			ps.setObject(1, saleDiscount.getStartTime(), MysqlType.TIME);
-			ps.setObject(2, saleDiscount.getEndTime(), MysqlType.TIME);
+			ps.setString(1, saleDiscount.getStartTime().toString());
+			ps.setString(2, saleDiscount.getEndTime().toString());
 			ps.setString(3, saleDiscount.getDayOfSale());
 			ps.setString(4, saleDiscount.getType().toString());
 			
@@ -66,8 +63,6 @@ public class SaleDiscountDAO {
 	 * 
 	 * @param discountId the id of the discount to be fetched.
 	 * @return a SaleDiscount object with the data of the discount with the given id, or null if the discount was not found.
-	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
-	 * @throws RuntimeException if there is an error closing the prepared statement
 	 */
 	public SaleDiscount fetchSaleDiscountById(int discountId) {
 
@@ -76,8 +71,8 @@ public class SaleDiscountDAO {
 		try {
 			ps.setInt(1, discountId);
 			ResultSet rs = con.executeQuery(ps);
-			SaleDiscount saleDiscount = new SaleDiscount(rs.getInt(1), rs.getObject(2, LocalTime.class),
-					rs.getObject(3, LocalTime.class), rs.getString(4), SaleDiscountType.valueOf(rs.getString(5)));
+			SaleDiscount saleDiscount = new SaleDiscount(rs.getInt(1), rs.getString(2),
+					rs.getString(3), rs.getString(4), SaleDiscountType.valueOf(rs.getString(5)));
 
 			return saleDiscount;
 
@@ -96,8 +91,6 @@ public class SaleDiscountDAO {
 	 * Fetches all templates sales as a list.
 	 * 
 	 * @return a list of SaleDiscount objects representing the sale discount templates in the database.
-	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
-	 * @throws RuntimeException if there is an error closing the prepared statement
 	 */
 	public ArrayList<SaleDiscount> fetchSaleDiscountTemplatList() {
 
@@ -107,8 +100,8 @@ public class SaleDiscountDAO {
 		try {
 			ResultSet rs = con.executeQuery(ps);
 			while (rs.next())
-				saleDiscountTemplateList.add(new SaleDiscount(rs.getInt(1), rs.getObject(2, LocalTime.class),
-						rs.getObject(3, LocalTime.class), rs.getString(4), SaleDiscountType.valueOf(rs.getString(5))));
+				saleDiscountTemplateList.add(new SaleDiscount(rs.getInt(1), rs.getString(2),
+						rs.getString(3), rs.getString(4), SaleDiscountType.valueOf(rs.getString(5))));
 
 			return saleDiscountTemplateList;
 
@@ -128,8 +121,6 @@ public class SaleDiscountDAO {
 	 * 
 	 * @param area the area for which to fetch the active sales.
 	 * @return a list of SaleDiscount objects representing the active sales for the given area.
-	 * @throws SQLException if there is a problem executing the SQL query or processing the result set.
-	 * @throws RuntimeException if there is an error closing the prepared statement
 	 */
 	public ArrayList<SaleDiscount> fetchActivateSaleDiscountListByArea(String area) {
 
