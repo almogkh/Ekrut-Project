@@ -11,13 +11,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 public class BaseTemplateController {
 
@@ -141,6 +144,7 @@ public class BaseTemplateController {
 		setRightWindow(root);
 	}
 	
+	
     // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadViewReports() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ReportChooser.fxml"));
@@ -152,6 +156,7 @@ public class BaseTemplateController {
 		Parent root = loader.getRoot();
 		// ReportChooserController reportChooserController = loader.getController();
 		setRightWindow(root);
+		
 	}
 	
 	public void loadThresholdSelector() {
@@ -172,13 +177,14 @@ public class BaseTemplateController {
 		hyperLink.setWrapText(true);
 		hyperLink.setTextAlignment(TextAlignment.CENTER);
 
-		hyperLink.setStyle("-fx-text-fill: black;"
-				+ "-fx-underline: false;"
-				+ "-fx-border-color: black;"
-				+ "-fx-border-radius: 20;"
-				+ "-fx-background-color: rgba(255, 255, 255, 0.5);"
-				+ "-fx-background-radius: 20;"
-				+ "-fx-pref-width: 190;"
+		hyperLink.setStyle("-fx-text-fill: white;"
+				//+ "-fx-underline: false;"
+				//+ "-fx-border-color: black;"
+				//+ "-fx-border-radius: 20;"
+				//+ "-fx-background-color: rgba(255, 255, 255, 0.5);"
+				+ "-fx-background-color: #2F88FF;"
+				//+ "-fx-background-radius: 20;"
+				+ "-fx-pref-width: 200;"
 				+ "-fx-alignment: center;");
 		  
 	}
@@ -206,6 +212,8 @@ public class BaseTemplateController {
 		
 		Hyperlink thresholdSelector = new Hyperlink("Set Thresholds");
 		thresholdSelector.setOnAction((ActionEvent event) -> loadThresholdSelector());
+		
+		
 		switch (userType) {
 		case REGISTERED:
 		case CUSTOMER:
