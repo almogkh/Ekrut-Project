@@ -96,7 +96,7 @@ public class OrderBrowserController {
 		res.ifPresent((btn) -> {
 			if (btn == ButtonType.YES) {
 				orderManager.cancelOrder();
-				BTC.switchStages("OrderCreation");
+				BTC.switchStages(ekrutLocation == null ? "OrderCreation" : "MainMenu");
 			}
 		});
 	}

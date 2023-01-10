@@ -87,7 +87,7 @@ public class OrderCartViewController {
     	res.ifPresent((btn) -> {
 			if (btn == ButtonType.YES) {
 				orderManager.cancelOrder();
-				BTC.switchStages("OrderCreation");
+				BTC.switchStages(EKrutClientUI.ekrutLocation == null ? "OrderCreation" : "MainMenu");
 			}
 		});
     }

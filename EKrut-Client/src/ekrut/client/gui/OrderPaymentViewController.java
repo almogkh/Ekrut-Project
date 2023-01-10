@@ -68,7 +68,10 @@ public class OrderPaymentViewController {
 		res.ifPresent((btn) -> {
 			if (btn == ButtonType.YES) {
 				orderManager.cancelOrder();
-				BaseTemplateController.getBaseTemplateController().switchStages("OrderCreation");
+				BaseTemplateController.getBaseTemplateController().switchStages(
+											EKrutClientUI.ekrutLocation == null
+											? "OrderCreation"
+											: "MainMenu");
 			}
 		});
 	}
