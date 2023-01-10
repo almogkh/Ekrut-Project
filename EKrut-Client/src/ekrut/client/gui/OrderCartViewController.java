@@ -51,6 +51,8 @@ public class OrderCartViewController {
 			priceAfterDiscountLbl.setVisible(false);
 		AddItemViewToCartVBox();
 		updatePrice();
+		if (itemCartVBox.getChildren().isEmpty())
+			agreeAndPayBtn.setDisable(true);
 	}
     
     private void AddItemViewToCartVBox(){
