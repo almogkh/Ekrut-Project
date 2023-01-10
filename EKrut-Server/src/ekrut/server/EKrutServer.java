@@ -74,6 +74,7 @@ public class EKrutServer extends AbstractServer {
 		} else if (msg instanceof SaleDiscountRequest) {
 			handleMessageSales((SaleDiscountRequest) msg, client);
 		}
+		serverSessionManager.getUser(client); //use this method in order to reset the timer
 		// TBD OFEK: NEED TO SEND A ERROR RESPONSE
 	}
 
