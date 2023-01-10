@@ -15,12 +15,12 @@ public class SaleDiscount implements Serializable {
 	private String dayOfSale;
 	private boolean isActive;
 
-	public SaleDiscount(int discountId, LocalTime startTime, LocalTime endTime, String dayOfSale, SaleDiscountType type,
+	public SaleDiscount(int discountId, String startTime, String endTime, String dayOfSale, SaleDiscountType type,
 			String area) {
 		this.discountId = discountId;
 		this.type = type;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.startTime = LocalTime.parse(startTime);
+		this.endTime = LocalTime.parse(endTime);
 		this.dayOfSale = dayOfSale;
 		this.area = area;
 		this.isActive = true;
@@ -36,10 +36,10 @@ public class SaleDiscount implements Serializable {
 	}
 
 	// create template
-	public SaleDiscount(LocalTime startTime, LocalTime endTime, String dayOfSale, SaleDiscountType type) {
+	public SaleDiscount(String startTime, String endTime, String dayOfSale, SaleDiscountType type) {
 		this.type = type;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.startTime = LocalTime.parse(startTime);
+		this.endTime = LocalTime.parse(endTime);
 		this.dayOfSale = dayOfSale;
 	}
 
