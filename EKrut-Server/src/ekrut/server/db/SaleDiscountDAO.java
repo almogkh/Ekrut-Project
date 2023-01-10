@@ -3,7 +3,6 @@ package ekrut.server.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import ekrut.entity.SaleDiscount;
 import ekrut.entity.SaleDiscountType;
@@ -135,9 +134,8 @@ public class SaleDiscountDAO {
 			ResultSet rs = con.executeQuery(ps);
 
 			while (rs.next())
-				activeSaleList.add(new SaleDiscount(rs.getInt(1), rs.getObject(2, LocalTime.class),
-						rs.getObject(3, LocalTime.class), rs.getString(4),
-						SaleDiscountType.valueOf(rs.getString(5)), rs.getString(6)));
+				activeSaleList.add(new SaleDiscount(rs.getInt(1), rs.getString(2), rs.getString(3),
+							rs.getString(4), SaleDiscountType.valueOf(rs.getString(5)), rs.getString(6)));
 			return activeSaleList;
 		} catch (SQLException e) {
 			return null;
