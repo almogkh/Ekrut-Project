@@ -116,6 +116,26 @@
                   <Font name="Arial Rounded MT Bold" size="35.0" />
                </font>
             </Text>
+            <Text fill="RED" layoutX="91.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Text>
+            <Text fill="RED" layoutX="91.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Text>
+            <Text fill="RED" layoutX="91.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Text>
+            <Text fill="RED" layoutX="91.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>

@@ -149,5 +149,10 @@
             <ComboBox fx:id="typeComboBox" layoutX="123.0" layoutY="75.0" onAction="#setLocationsByType" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
          </children>
       </Pane>
+      <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Text>
   </children>
 </VBox>
