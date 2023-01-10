@@ -10,31 +10,31 @@
    <children>
       <Pane prefHeight="147.0" prefWidth="751.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Text layoutX="28.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order ID:" wrappingWidth="84.0">
+            <Text layoutX="28.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order ID:" wrappingWidth="104.0">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
             </Text>
-            <Text layoutX="28.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order Arrival Time:" wrappingWidth="179.0">
+            <Text layoutX="28.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Expected Arrival:" wrappingWidth="171.0">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
             </Text>
-            <Text fx:id="orderIdTxt" layoutX="211.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="orderID" wrappingWidth="148.0">
+            <Text fx:id="orderIdTxt" layoutX="140.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="orderID" wrappingWidth="148.0">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="17.0" />
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
             </Text>
-            <Text fx:id="orderDateTxt" layoutX="211.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OrderDate" wrappingWidth="239.0">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="17.0" />
-               </font>
-            </Text>
-            <Button fx:id="confirmBtn" defaultButton="true" layoutX="606.0" layoutY="23.0" mnemonicParsing="false" onAction="#confirmShipment" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: green;" text="Confirm" textFill="#0a0a0a">
+            <Button fx:id="confirmBtn" defaultButton="true" layoutX="606.0" layoutY="23.0" mnemonicParsing="false" onAction="#confirmShipment" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: green;" text="Arrived" textFill="#0a0a0a">
                <font>
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Button>
+            <Text fx:id="expectedArrivalTxt" layoutX="214.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="expectedArrivalTime" wrappingWidth="325.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="20.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>
