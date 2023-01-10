@@ -27,11 +27,11 @@ public class SaleDiscount implements Serializable {
 	}
 
 	// fetch Template
-	public SaleDiscount(int discountId, String startTime, String endTime, String dayOfSale, SaleDiscountType type) {
+	public SaleDiscount(int discountId, LocalTime startTime, LocalTime endTime, String dayOfSale, SaleDiscountType type) {
 		this.discountId = discountId;
 		this.type = type;
-		this.startTime = LocalTime.parse(startTime);
-		this.endTime = LocalTime.parse(endTime);
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.dayOfSale = dayOfSale;
 	}
 

@@ -2,10 +2,12 @@ package ekrut.client.gui;
 
 import java.io.IOException;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientSalesManager;
 import ekrut.entity.SaleDiscount;
+import ekrut.entity.SaleDiscountType;
 import ekrut.net.ResultType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,19 +39,20 @@ public class SaleToActivateController extends HBox {
     @FXML
     private Text startTimeTxt;
     
-    private final int DAYS_IN_WEEK = 7;
+    private static final int DAYS_IN_WEEK = 7;
+    private static final String ACTIVATION_SUCCESS_MSG = "Sale discount was activated successfully.";
+    private static final String ACTIVATION_FAIL_MSG = "Failed to activate sale discount. Please check your permissions";
+    private static final String DEACTIVATION_SUCCESS_MSG = "Sale discount was deactivated successfully.";
+    private static final String DEACTIVATION_FAIL_MSG = "Failed to deactivate sale discount. Please check your permissions";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+    
     private SaleDiscount saleDiscount;
     private ClientSalesManager clientSalesManager; 
-	private String activeSuccessMsg = "Sale discount was activate successfully.";
-	private String activeFaileMsg = "Failed to activate sale discunt. Please check your premissions";
-	private String unactiveSuccessMsg = "Sale discount was unactivate successfully.";
-	private String unactiveFaileMsg = "Failed to unactivate sale discunt. Please check your premissions";
-	private ArrayList<String> daysOfsaleList;
 
     public SaleToActivateController(SaleDiscount saleDiscount, ArrayList<SaleDiscount> activeSales) {
     	this.saleDiscount = saleDiscount;
     	clientSalesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
-    	daysOfsaleList = new ArrayList<>();
+    	ArrayList<String> daysOfSale = new ArrayList<>();
     	
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SaleToActivate.fxml"));
 		fxmlLoader.setRoot(this);
@@ -66,20 +69,19 @@ public class SaleToActivateController extends HBox {
 		}
 		
 		String dayOfSale = saleDiscount.getDayOfSale();
-		for (Integer i = 0; i < DAYS_IN_WEEK; i++) 
+		for (int i = 0; i < DAYS_IN_WEEK; i++) 
 			if(dayOfSale.charAt(i) == 'T') 
-				daysOfsaleList.add(getTheDay(i + 1));
+				daysOfSale.add(getTheDay(i + 1));
 			
-		String days = daysOfsaleList.toString();
+		String days = daysOfSale.toString();
 		days = days.substring(1, days.length() - 1);
 		
 		dayOfSaleTxt.setText(days);
 		startTimeTxt.setText(setTime(saleDiscount.getStartTime()));
 		endTimeTxt.setText(setTime(saleDiscount.getEndTime()));
 		
-		String saleType = saleDiscount.getType().toString().equals("ONE_PLUS_ONE") ? "One Plus One" : "30% Off";
+		String saleType = saleDiscount.getType() == SaleDiscountType.ONE_PLUS_ONE ? "One Plus One" : "30% Off";
 		saleTypeTxt.setText(saleType);
-		
     }
     
     private String getTheDay(int day) {
@@ -103,32 +105,30 @@ public class SaleToActivateController extends HBox {
 		}
     }
     
-    public String setTime(LocalTime time) {
-		int Hour = time.getHour();
-		int Min = time.getMinute();
-		return String.format("%02d:%02d", Hour, Min);
+    private String setTime(LocalTime time) {
+    	return time.format(FORMATTER);
     }
     
     @FXML
     void activateSale(ActionEvent event) {
     	if(clientSalesManager.activateSaleForArea(saleDiscount.getDiscountId()) == ResultType.OK) {
-    		new Alert(AlertType.INFORMATION, activeSuccessMsg, ButtonType.OK).showAndWait();
+    		new Alert(AlertType.INFORMATION, ACTIVATION_SUCCESS_MSG, ButtonType.OK).showAndWait();
     		activateSaleBtn.setVisible(false);
     		deactivateSaleBtn.setVisible(true);
     	}
     	else
-    		new Alert(AlertType.ERROR, activeFaileMsg, ButtonType.OK).showAndWait();
+    		new Alert(AlertType.ERROR, ACTIVATION_FAIL_MSG, ButtonType.OK).showAndWait();
     }
     
     @FXML
     void deactivateSale(ActionEvent event) {
     	if(clientSalesManager.deactivateSaleForArea(saleDiscount.getDiscountId()) == ResultType.OK) {
-    		new Alert(AlertType.INFORMATION, unactiveSuccessMsg, ButtonType.OK).showAndWait();
+    		new Alert(AlertType.INFORMATION, DEACTIVATION_SUCCESS_MSG, ButtonType.OK).showAndWait();
     		deactivateSaleBtn.setVisible(false);
     		activateSaleBtn.setVisible(true);
     	}
     	else
-    		new Alert(AlertType.ERROR, unactiveFaileMsg, ButtonType.OK).showAndWait();
+    		new Alert(AlertType.ERROR, DEACTIVATION_FAIL_MSG, ButtonType.OK).showAndWait();
     }
 
 

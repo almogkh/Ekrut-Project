@@ -1,19 +1,16 @@
 package ekrut.client.gui;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientSalesManager;
 import ekrut.entity.SaleDiscount;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
-public class SaleActivateController implements Initializable {
+public class SaleActivateController {
 
 	@FXML
 	private Button backBtn;
@@ -21,25 +18,19 @@ public class SaleActivateController implements Initializable {
 	@FXML
 	private VBox salesVBox;
 
-	private ClientSalesManager clientSaleDiscount;
-	private ArrayList<SaleDiscount> activeSales = new ArrayList<>();
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		clientSaleDiscount = EKrutClientUI.getEkrutClient().getClientSalesManager();
-		ArrayList<SaleDiscount> activeSalesList = clientSaleDiscount.fetchSaleTemplates();
-		ArrayList<SaleToActivateController> activeSalesToAdd = new ArrayList<>();
-		activeSales = clientSaleDiscount.fetchActiveSales();
+	@FXML
+	private void initialize() {
+		ClientSalesManager clientSaleDiscount = EKrutClientUI.getEkrutClient().getClientSalesManager();
+		ArrayList<SaleDiscount> saleTemplates = clientSaleDiscount.fetchSaleTemplates();
+		ArrayList<SaleDiscount> activeSales = clientSaleDiscount.fetchActiveSales();
 
 		// Q.Nir - Is needed?
-		if (activeSalesList == null)
+		if (saleTemplates == null)
 			return;
 		
-
-		for (SaleDiscount sale : activeSalesList)
-			activeSalesToAdd.add(new SaleToActivateController(sale, activeSales));
-
 		ObservableList<Node> children = salesVBox.getChildren();
-		children.addAll(activeSalesToAdd);
+		
+		for (SaleDiscount sale : saleTemplates)
+			children.add(new SaleToActivateController(sale, activeSales));
 	}
 }

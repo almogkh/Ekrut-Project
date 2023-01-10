@@ -216,7 +216,7 @@ public class BaseTemplateController {
 		Hyperlink thresholdSelector = new Hyperlink("Set Thresholds");
 		thresholdSelector.setOnAction((ActionEvent event) -> loadThresholdSelector());
 		
-		Hyperlink makeSaleTemplate = new Hyperlink("Make Sale Templeate");
+		Hyperlink makeSaleTemplate = new Hyperlink("Make Sale Template");
 		makeSaleTemplate.setOnAction((ActionEvent event) -> loadSaleTemplate());
 		
 		Hyperlink activateSale = new Hyperlink("Sale Activation");
