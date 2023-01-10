@@ -22,22 +22,21 @@ public class SaleActivateController implements Initializable {
 	private VBox salesVBox;
 
 	private ClientSalesManager clientSaleDiscount;
-	private ArrayList<SaleDiscount> activeSales = new ArrayList<>();
+	private ArrayList<SaleDiscount> activeSalesInThisArea = new ArrayList<>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		clientSaleDiscount = EKrutClientUI.getEkrutClient().getClientSalesManager();
 		ArrayList<SaleDiscount> activeSalesList = clientSaleDiscount.fetchSaleTemplates();
 		ArrayList<SaleToActivateController> activeSalesToAdd = new ArrayList<>();
-		activeSales = clientSaleDiscount.fetchActiveSales();
-
+		activeSalesInThisArea = clientSaleDiscount.fetchActiveSales();
+		
 		// Q.Nir - Is needed?
 		if (activeSalesList == null)
 			return;
 		
-
 		for (SaleDiscount sale : activeSalesList)
-			activeSalesToAdd.add(new SaleToActivateController(sale, activeSales));
+			activeSalesToAdd.add(new SaleToActivateController(sale, activeSalesInThisArea));
 
 		ObservableList<Node> children = salesVBox.getChildren();
 		children.addAll(activeSalesToAdd);
