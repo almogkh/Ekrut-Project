@@ -115,7 +115,7 @@ public class BaseTemplateController {
 	}
 
 	public void loadViewShipment() {
-		
+		switchStages("ShipmentWorkerApproval");
 	}
 	
 	private void loadActivateSale() {
