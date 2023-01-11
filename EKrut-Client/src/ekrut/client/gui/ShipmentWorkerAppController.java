@@ -13,40 +13,40 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-public class ShipmentWorkerAppController extends HBox  {
+public class ShipmentWorkerAppController extends HBox {
 
-    @FXML
-    private Button confirmBtn;
+	@FXML
+	private Button confirmBtn;
 
-    @FXML
-    private Text orderDateTxt;
+	@FXML
+	private Text orderDateTxt;
 
-    @FXML
-    private Text orderIdTxt;
+	@FXML
+	private Text orderIdTxt;
 
-    private Order order;
-    private ClientShipmentManager clientShipmentManager;
-    
-    public ShipmentWorkerAppController(Order order) {
-    	this.order = order;
-    	clientShipmentManager = EKrutClientUI.getEkrutClient().getClientShipmentManager();
-    	FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShipmentWorkerApp.fxml"));
-    	fxmlLoader.setRoot(this);
-    	fxmlLoader.setController(this);
-    
-    	try {
-    		fxmlLoader.load();
-    	} catch (IOException e){
-    		throw new RuntimeException(e);
-    	}
-    	
-    	orderIdTxt.setText(order.getOrderId().toString());
-    	orderDateTxt.setText(order.getDate().toString());	
-    }
-    
-    @FXML
-    void confirmShipment(ActionEvent event) {
-    	clientShipmentManager.confirmShipment(order);
-		((VBox)getParent()).getChildren().remove(this);
-    }
+	private Order order;
+	private ClientShipmentManager clientShipmentManager;
+
+	public ShipmentWorkerAppController(Order order) {
+		this.order = order;
+		clientShipmentManager = EKrutClientUI.getEkrutClient().getClientShipmentManager();
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ShipmentWorkerApp.fxml"));
+		fxmlLoader.setRoot(this);
+		fxmlLoader.setController(this);
+
+		try {
+			fxmlLoader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		orderIdTxt.setText(order.getOrderId().toString());
+		orderDateTxt.setText(order.getDate().toString());
+	}
+
+	@FXML
+	void confirmShipment(ActionEvent event) {
+		clientShipmentManager.confirmShipment(order);
+		((VBox) getParent()).getChildren().remove(this);
+	}
 }

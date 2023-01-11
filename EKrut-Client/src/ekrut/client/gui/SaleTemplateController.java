@@ -155,7 +155,7 @@ public class SaleTemplateController implements Initializable {
 				: SaleDiscountType.THIRTY_PERCENT_OFF;
 
 		// Create template.
-		SaleDiscount saleDiscount = new SaleDiscount(startTime.toString(), endTime.toString(), dayOfSale.toString(), type);
+		SaleDiscount saleDiscount = new SaleDiscount(startTime, endTime, dayOfSale.toString(), type);
 		
 		// Check if template is already exist in DB.
 		if (templateList.contains(saleDiscount)) {

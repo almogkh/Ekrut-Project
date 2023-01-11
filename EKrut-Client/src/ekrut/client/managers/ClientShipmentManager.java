@@ -26,7 +26,6 @@ public class ClientShipmentManager extends AbstractClientManager<ShipmentRequest
 	 * 
 	 * @param area the area to fetch orders for
 	 * @return a list of orders ready for shipment
-	 * @throws IllegalArgumentException if a null string is provided as the area
 	 */
 	public ArrayList<Order> fetchShipmentRequests(String area) {
 		if (area == null)
@@ -37,11 +36,6 @@ public class ClientShipmentManager extends AbstractClientManager<ShipmentRequest
 		// Send
 		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
 		
-		// In case resultType isn't "OK" exception will throws.
-		ResultType resultType = shipmentResponse.getResultCode();
-		if (resultType != ResultType.OK)
-			return null; // Q.Nir exception??
-		
 		return shipmentResponse.getOrdersForShipment();
 	}
 
@@ -49,24 +43,15 @@ public class ClientShipmentManager extends AbstractClientManager<ShipmentRequest
 	 * Creates a request to the delivery department to approve sending a shipment for the specified order.
 	 * 
 	 * @param order the order to send a shipment request for
-	 * @throws IllegalArgumentException if a null order is provided
 	 */
 	public void confirmShipment(Order order) {
 		if (order == null)
 			return;
-		System.out.println("1");
 		
 		// Prepare ShipmentRequest for sending.
 		ShipmentRequest shipmentRequest = 
 				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS, OrderStatus.SUBMITTED, order.getOrderId());
-		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
-		
-		System.out.println("2");
-
-		// In case resultType isn't "OK" exception will throws.
-		ResultType resultType = shipmentResponse.getResultCode();
-		if (resultType != ResultType.OK)
-			return; 
+		sendRequest(shipmentRequest);
 	}
 
 	/**
@@ -76,7 +61,6 @@ public class ClientShipmentManager extends AbstractClientManager<ShipmentRequest
 	 * an {@link Exception} is thrown with the {@link ResultType} as the message.
 	 * 
 	 * @param order the order to confirm the delivery of
-	 * @throws IllegalArgumentException if the provided order is null
 	 */
 	public void confirmDelivery(Order order) {
 		if (order == null)
@@ -85,12 +69,7 @@ public class ClientShipmentManager extends AbstractClientManager<ShipmentRequest
 		ShipmentRequest shipmentRequest = 
 				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS ,OrderStatus.AWAITING_DELIVERY, order.getOrderId());
 
-		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
-		
-		// In case resultType isn't "OK" exception will throws.
-		ResultType resultType = shipmentResponse.getResultCode();
-		if (resultType != ResultType.OK)
-			return; 
+		sendRequest(shipmentRequest);
 	}
 		
 	/**
@@ -99,7 +78,6 @@ public class ClientShipmentManager extends AbstractClientManager<ShipmentRequest
 	 * In case the {@link ShipmentResponse#getResultCode()} is not {@link ResultType#OK}, an {@link Exception} is thrown.
 	 * 
 	 * @param order the order to set the status to "done"
-	 * @throws IllegalArgumentException if the provided order is null
 	 */
 	public void setDone(Order order) {
 		if (order == null)
@@ -107,11 +85,6 @@ public class ClientShipmentManager extends AbstractClientManager<ShipmentRequest
 		
 		ShipmentRequest shipmentRequest = 
 				new ShipmentRequest(ShipmentRequestType.UPDATE_STATUS ,OrderStatus.DELIVERY_CONFIRMED, order.getOrderId());
-		ShipmentResponse shipmentResponse = sendRequest(shipmentRequest);
-		
-		// In case resultType isn't "OK" exception will throws.
-		ResultType resultType = shipmentResponse.getResultCode();
-		if (resultType != ResultType.OK)
-			return; 
-		}
+		sendRequest(shipmentRequest);
+	}
 }

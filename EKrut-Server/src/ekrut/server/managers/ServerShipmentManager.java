@@ -102,7 +102,6 @@ public class ServerShipmentManager {
 		
 		// Estimate delivery time.
 		LocalDateTime estimateDeliveryTime = ShipmentManagerUtils.estimatedArrivalTime(date, clientAddress);
-		System.out.println(estimateDeliveryTime);
 		// Set due date in order.
 		order.setDueDate(estimateDeliveryTime);
 		orderDAO.updateOrderDueDate(order.getOrderId(), estimateDeliveryTime);
