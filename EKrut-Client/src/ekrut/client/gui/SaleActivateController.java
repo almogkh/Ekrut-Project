@@ -22,7 +22,7 @@ public class SaleActivateController {
 	private void initialize() {
 		ClientSalesManager clientSaleDiscount = EKrutClientUI.getEkrutClient().getClientSalesManager();
 		ArrayList<SaleDiscount> saleTemplates = clientSaleDiscount.fetchSaleTemplates();
-		ArrayList<SaleDiscount> activeSales = clientSaleDiscount.fetchActiveSales();
+		ArrayList<SaleDiscount> activeSalesInThisArea = clientSaleDiscount.fetchActiveSales();
 
 		// Q.Nir - Is needed?
 		if (saleTemplates == null)
@@ -31,6 +31,6 @@ public class SaleActivateController {
 		ObservableList<Node> children = salesVBox.getChildren();
 		
 		for (SaleDiscount sale : saleTemplates)
-			children.add(new SaleToActivateController(sale, activeSales));
+			children.add(new SaleToActivateController(sale, activeSalesInThisArea));
 	}
 }

@@ -30,7 +30,7 @@ public class EKrutClient extends AbstractClient{
 		clientSessionManager = new ClientSessionManager(this);
 		clientOrderManager = new ClientOrderManager(this, EKrutClientUI.ekrutLocation);
 		clientReportManager = new ClientReportManager(this);
-		//clientShipmentManager = new ClientShipmentManager(this);
+		clientShipmentManager = new ClientShipmentManager(this);
 		clientTicketManager = new ClientTicketManager(this);
 	}
 	

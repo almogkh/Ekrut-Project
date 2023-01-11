@@ -112,10 +112,13 @@ public class BaseTemplateController {
 	}
 
 	public void loadApproveShipment() {
+		switchStages("ShipmentWorkerApproval");
 	}
 
-	public void loadViewShipment() {
-		switchStages("ShipmentWorkerApproval");
+	public void loadConfirmDelivery() {
+		switchStages("ShipmentClientConfirmation");
+
+		
 	}
 	
 	private void loadActivateSale() {
@@ -199,10 +202,10 @@ public class BaseTemplateController {
     	remoteOrderHyp.setOnAction((ActionEvent event) -> loadCreateOrder());
     	
     	Hyperlink approveShipmentHyp = new Hyperlink("Approve Shipment");
-    	approveShipmentHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
+    	approveShipmentHyp.setOnAction((ActionEvent event) -> loadConfirmDelivery());
     	
     	Hyperlink viewShipRequestsHyp = new Hyperlink("Shipment Requests");
-    	viewShipRequestsHyp.setOnAction((ActionEvent event) -> loadViewShipment());
+    	viewShipRequestsHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
 
     	Hyperlink viewTicketsHyp = new Hyperlink("Tickets");
     	viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());

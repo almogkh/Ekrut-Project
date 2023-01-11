@@ -42,7 +42,7 @@ public class EKrutServer extends AbstractServer {
 	private ServerShipmentManager serverShipmentManager;
 	private ServerSalesManager serverSalesManager;
 
-	public EKrutServer(int port,String DBuserName, String dbUsername, String dbPassword) {
+	public EKrutServer(int port, String DBuserName, String dbUsername, String dbPassword) {
 		super(port);
 		dbCon = new DBController(DBuserName, dbUsername, dbPassword);
 		serverSessionManager = new ServerSessionManager(dbCon);
@@ -51,10 +51,10 @@ public class EKrutServer extends AbstractServer {
 		serverTicketManager = new ServerTicketManager(dbCon);
 		serverSalesManager = new ServerSalesManager(dbCon, serverSessionManager);
 		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager, serverSalesManager,
-													serverInventoryManager);
+				serverInventoryManager);
 		serverShipmentManager = new ServerShipmentManager(dbCon, serverSessionManager);
 		serverReportManager = new ServerReportManager(dbCon);
-		
+
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class EKrutServer extends AbstractServer {
 			userResponse = serverSessionManager.importUsers(dbCon);
 			break;
 		case FETCH_USER:
-			userResponse = serverSessionManager.fetchUser(userRequest.getFetchType(),userRequest.getArgument());
+			userResponse = serverSessionManager.fetchUser(userRequest.getFetchType(), userRequest.getArgument());
 			break;
 		case REGISTER_USER:
 			userResponse = serverSessionManager.acceptRegisterUser(userRequest.getUserToRegister());
@@ -143,7 +143,8 @@ public class EKrutServer extends AbstractServer {
 
 	private void handleMessageInventory(InventoryItemRequest inventoryItemRequest, ConnectionToClient client) {
 		User currUser = serverSessionManager.getUser(client);
-		InventoryItemResponse inventoryItemResponse = serverInventoryManager.handleRequest(inventoryItemRequest, currUser);
+		InventoryItemResponse inventoryItemResponse = serverInventoryManager.handleRequest(inventoryItemRequest,
+				currUser);
 		try {
 			client.sendToClient(inventoryItemResponse);
 		} catch (IOException e) {
@@ -231,7 +232,7 @@ public class EKrutServer extends AbstractServer {
 			System.exit(-1);
 		}
 	}
-	
+
 	private void handleMessageSales(SaleDiscountRequest request, ConnectionToClient client) {
 		SaleDiscountResponse response = serverSalesManager.handleRequest(request, client);
 		sendRequestToClient(response, client);
@@ -255,8 +256,6 @@ public class EKrutServer extends AbstractServer {
 		return serverSessionManager;
 	}
 
-
-
 	public boolean connect() {
 		if (!dbCon.connect())
 			return false;
@@ -264,12 +263,10 @@ public class EKrutServer extends AbstractServer {
 		return true;
 	}
 
-
 	@Override
 	protected void serverStopped() {
 		System.out.println("Server has stopped listening for connections.");
 	}
- 
 
 	@Override
 	protected void clientConnected(final ConnectionToClient client) {
