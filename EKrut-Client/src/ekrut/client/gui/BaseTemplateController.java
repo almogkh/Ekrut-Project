@@ -109,6 +109,7 @@ public class BaseTemplateController {
 	}
 
 	public void loadPickupOrder() {
+		switchStages("OrderPickupLocation");
 	}
 
 	public void loadApproveShipment() {
