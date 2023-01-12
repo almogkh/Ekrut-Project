@@ -9,7 +9,6 @@ import java.util.Enumeration;
 
 import ekrut.entity.ConnectedClient;
 import ekrut.net.ResultType;
-import ekrut.server.EKrutServer;
 import ekrut.server.managers.ServerSessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -80,9 +79,8 @@ public class ServerController {
 	private Label ErrorImportData;
 
 	private PrintStream replaceConsole;
-	private EKrutServer server ;
 
-	public String getLocalIp(){
+	private String getLocalIp(){
 		String ip = null;
 		boolean virtual = false;
 		try {
@@ -126,7 +124,7 @@ public class ServerController {
 	}
 
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		this.connectionIP.setText(getLocalIp());
 		this.consoleStreamIntoGUI();
 		this.PortTXTfield.setText("5555");
@@ -170,7 +168,6 @@ public class ServerController {
 		this.ConnectedGreenIMG.setVisible(true);
 		this.ErrorConnection.setVisible(false);
 		this.importDataBTN.setVisible(true);
-		
 	}
 
 	@FXML
@@ -181,13 +178,15 @@ public class ServerController {
 		this.disableDataInput(false);
 		this.connectionStatus.setText("Not connected");
 		this.ConnectedGreenIMG.setVisible(false);
-		
-
+		this.ErrorImportData.setVisible(false);
 	}
+	
 	@FXML
 	void importData(final ActionEvent event) {
+		ErrorImportData.setVisible(false);
 		if(ServerUI.getServer().importUsers().getResultCode()==ResultType.UNKNOWN_ERROR) {
 			System.out.println("not good");
+			ErrorImportData.setVisible(true);
 			return;
 		}
 		this.importDataBTN.setDisable(true);

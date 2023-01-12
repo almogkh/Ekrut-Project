@@ -13,32 +13,28 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 public class UserRegistrationController {
-	private EKrutClient client;
-	private ClientSessionManager clientSessionManager;
 
 	@FXML
 	private VBox usersContainerVbox;
-	
 
-    @FXML
-    private Label nullRegistrationList;
+	@FXML
+	private Label nullRegistrationList;
 
 	@FXML
 	private void initialize() {
-
-		client = EKrutClientUI.getEkrutClient();
-		clientSessionManager = client.getClientSessionManager();
+		EKrutClient client = EKrutClientUI.getEkrutClient();
+		ClientSessionManager clientSessionManager = client.getClientSessionManager();
 		nullRegistrationList.setVisible(false);
 		String userArea = client.getClientSessionManager().getUser().getArea();
 		ArrayList<UserRegistration> registrationList = clientSessionManager.getRegistrationList(userArea);
-		if (registrationList==null)
+		if (registrationList == null)
 			nullRegistrationList.setVisible(true);
 		else {
 			ObservableList<Node> registerContainerVboxChildren = usersContainerVbox.getChildren();
-		for (UserRegistration user : registrationList) {
-			registerContainerVboxChildren.add(new UserToRegisterController(user));
+			for (UserRegistration user : registrationList) {
+				registerContainerVboxChildren.add(new UserToRegisterController(user));
+			}
 		}
-		}
-		
+
 	}
 }
