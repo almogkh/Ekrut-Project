@@ -743,7 +743,7 @@ public class ReportDAO {
 				con.abortTransaction();
 				return false; 
 			}
-			//fix
+			
 			ps2.setInt(1,  reportID);
 			for (int i = 1; i <= 31; i++) {
 				ps2.setInt(i + 1, report.getCustomersOrdersByDate().get(i));
@@ -778,57 +778,59 @@ public class ReportDAO {
 	 * @return true if the report was created successfully, false otherwise
 	 */
 	public boolean createInventoryReport(Report report) {
-	
-	con.beginTransaction();
 		
-	PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventory_report_data"
-													+ " (reportID,itemName,threshold,thresholdBreaches) " +
-                                                    "VALUES(?,?,?,?)");
-	if (!createReport(report)) {
-		con.abortTransaction();
-		return false;
-	}
-	Integer reportID = report.getReportID();
-	
-	try {
-		 // Iterate over the entries in the Map contained in the report object
-		for (Map.Entry<String, ArrayList<Integer>> entry : report.getInventoryReportData().entrySet()) {
-			 // Get the item name and threshold data from the entry
-			String itemName = entry.getKey();
-			ArrayList<Integer> thresholdData = entry.getValue();
+		con.beginTransaction();
 			
-			//TresholdData(0) is threshold of the item's facility, tresholdData(1) is how many breaches that item "cause"
-			int threshold = thresholdData.get(0);
-			int thresholdBreaches = thresholdData.get(1);
-			
-			ps1.setInt(1, reportID);
-			ps1.setString(2, itemName);
-			ps1.setInt(3, threshold);
-			ps1.setInt(4, thresholdBreaches);
-			ps1.addBatch();
-
+		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventory_report_data"
+														+ " (reportID,itemName,threshold,thresholdBreaches) " +
+	                                                    "VALUES(?,?,?,?)");
+		if (!createReport(report)) {
+			con.abortTransaction();
+			return false;
 		}
 		
-		int[] results = ps1.executeBatch();
-		for (int i : results) {
-			if (i != 1) {
-				con.abortTransaction();
-				return false;
+		Integer reportID = report.getReportID();
+		
+		int threshold = report.getThreshold();
+		
+		try {
+			 // Iterate over the entries in the Map contained in the report object
+			for (Map.Entry<String, ArrayList<Integer>> entry : report.getInventoryReportData().entrySet()) {
+				 // Get the item name and threshold data from the entry
+				String itemName = entry.getKey();
+				ArrayList<Integer> thresholdData = entry.getValue();
+				
+				//tresholdData(0) is how many breaches that item "cause"
+				int thresholdBreaches = thresholdData.get(0);
+				
+				ps1.setInt(1, reportID);
+				ps1.setString(2, itemName);
+				ps1.setInt(3, threshold);
+				ps1.setInt(4, thresholdBreaches);
+				ps1.addBatch();
+	
+			}
+			
+			int[] results = ps1.executeBatch();
+			for (int i : results) {
+				if (i != 1) {
+					con.abortTransaction();
+					return false;
+				}
+			}
+			con.commitTransaction();
+			return true;
+			
+		} catch (SQLException e) {
+			con.abortTransaction();
+			return false;
+		} finally {
+			try {
+				ps1.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
 			}
 		}
-		con.commitTransaction();
-		return true;
-		
-	} catch (SQLException e) {
-		con.abortTransaction();
-		return false;
-	} finally {
-		try {
-			ps1.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
 	}
 	
 	/**
