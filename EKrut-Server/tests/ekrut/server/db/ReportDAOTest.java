@@ -22,7 +22,9 @@ class ReportDAOTest {
 	String USERNAME = "root";
 	String PASSWORD = "Aa123456";
 	LocalDateTime jan_2022;
-	Report result;
+	LocalDateTime may_2021;
+	Report resultReport;
+	Report expectedReport;
 	Map<String, ArrayList<Integer>> expectedOrderData;
 	Map<String, Integer> expectedTopSellers;
 	Map<String, ArrayList<Integer>> expectedInventoryReportData;
@@ -38,10 +40,15 @@ class ReportDAOTest {
 		jan_2022 = jan_2022.withMonth(1);
 		jan_2022 = jan_2022.withYear(2022);
 		jan_2022 = jan_2022.withDayOfMonth(31);
+		
+		may_2021 = LocalDateTime.now();
+		may_2021 = may_2021.withMonth(5);
+		may_2021 = may_2021.withYear(2021);
+		may_2021 = may_2021.withDayOfMonth(31);
 	}
 	
 	@Test
-	public void fetchMonthlyOrdersReport_UAE_JAN_2022() {
+	public void testFetchMonthlyOrdersReport_UAE_JAN_2022() {
 		
 		expectedOrderData = new HashMap<>();
         // populate the map with the expected data
@@ -61,23 +68,32 @@ class ReportDAOTest {
 		expectedTopSellers.put("Coke", 40);
 		expectedTopSellers.put("Pepsi", 50);
 		
-		result = reportDAO.fetchOrderReportByID(1);
+		resultReport = reportDAO.fetchOrderReportByID(1);
 		
-		assertEquals(1, result.getReportID());
-		assertEquals(ReportType.ORDER, result.getReportType(), "Incorrect report type");
-		assertEquals(jan_2022, result.getDate(), "Incorrect report date");
-		assertEquals("UAE", result.getEkrutLocation(), "Incorrect report location");
-		assertEquals("UAE", result.getArea(), "Incorrect report area");
-		assertEquals(200, result.getTotalOrders(), "Incorrect report total orders");
-		assertEquals(1500, result.getTotalOrdersInILS(), "Incorrect report total orders in ILS");
-		//implement equals
-		assertEquals(expectedTopSellers, result.getTopSellersData(), "Incorrect top sellers data");
-		assertEquals(expectedOrderData, result.getOrderReportData(), "Incorrect order report data");
+		assertEquals(1, resultReport.getReportID(),
+				"Incorrect reportID");
+		assertEquals(ReportType.ORDER, resultReport.getReportType(),
+				"Incorrect report type");
+		assertEquals(jan_2022, resultReport.getDate(),
+				"Incorrect report date");
+		assertEquals("UAE", resultReport.getEkrutLocation(),
+				"Incorrect report location");
+		assertEquals("UAE", resultReport.getArea(),
+				"Incorrect report area");
+		assertEquals(200, resultReport.getTotalOrders(),
+				"Incorrect report total orders");
+		assertEquals(1500, resultReport.getTotalOrdersInILS(),
+				"Incorrect report total orders in ILS");
+		assertEquals(expectedTopSellers, resultReport.getTopSellersData(),
+				"Incorrect top sellers data");
+		assertEquals(expectedOrderData, resultReport.getOrderReportData(),
+				"Incorrect order report data");
 
 	}
+	// add not exist report test(equals null)
 	
 	@Test 
-	public void fetchMonthlyInventoryReport_North_Akko_JAN_2022() throws Exception {
+	public void testFetchMonthlyInventoryReport_North_Akko_JAN_2022(){
 		
 		expectedInventoryReportData = new HashMap<>();
 		 // populate the map with the expected data
@@ -88,21 +104,27 @@ class ReportDAOTest {
 		expectedInventoryReportData.put("Oreo", new ArrayList<>(Arrays.asList(1)));
 		expectedInventoryReportData.put("Bisli", new ArrayList<>(Arrays.asList(1)));
 
-		result = reportDAO.fetchInventoryReportByID(2);
+		resultReport = reportDAO.fetchInventoryReportByID(2);
 		
-		assertEquals(2, result.getReportID());
-		assertEquals(ReportType.INVENTORY, result.getReportType(), "Incorrect report type");
-		assertEquals(jan_2022, result.getDate(), "Incorrect report date");
-		assertEquals("Akko", result.getEkrutLocation(), "Incorrect report location");
-		assertEquals("North", result.getArea(), "Incorrect report area");
-		//implement equals
-		assertEquals(expectedInventoryReportData, result.getInventoryReportData(),
+		assertEquals(2, resultReport.getReportID(),
+				"Incorrect reportID");
+		assertEquals(ReportType.INVENTORY, resultReport.getReportType(),
+				"Incorrect report type");
+		assertEquals(jan_2022, resultReport.getDate(),
+				"Incorrect report date");
+		assertEquals("Akko", resultReport.getEkrutLocation(),
+				"Incorrect report location");
+		assertEquals("North", resultReport.getArea(),
+				"Incorrect report area");
+		assertEquals(expectedInventoryReportData, resultReport.getInventoryReportData(),
 				"Incorrect inventory report data");
+		assertEquals(15, resultReport.getThreshold(),
+				"Incorrect threshold");
 
 	}
 	
 	@Test 
-	public void fetchMonthlyCustomersReport_South_Dimona_JAN_2022() {
+	public void testFetchMonthlyCustomerReport_South_Dimona_JAN_2022() {
 		 
 		expectedCustomerReportData = new HashMap<>();
 		 // populate the map with the expected data
@@ -119,82 +141,150 @@ class ReportDAOTest {
 			expectedCustomersOrdersByDate.put(i, 1);
 		}
 		
-		result = reportDAO.fetchCustomerReportByID(3);
+		resultReport = reportDAO.fetchCustomerReportByID(3);
 		
-		assertEquals(3, result.getReportID());
-		assertEquals(ReportType.CUSTOMER, result.getReportType(), "Incorrect report type");
-		assertEquals(jan_2022, result.getDate(), "Incorrect report date");
-		assertEquals("Dimona", result.getEkrutLocation(), "Incorrect report location");
-		assertEquals("South", result.getArea(), "Incorrect report area");
+		assertEquals(3, resultReport.getReportID(),
+				"Incorrect reportID");
+		assertEquals(ReportType.CUSTOMER, resultReport.getReportType(),
+				"Incorrect report type");
+		assertEquals(jan_2022, resultReport.getDate(),
+				"Incorrect report date");
+		assertEquals("Dimona", resultReport.getEkrutLocation(),
+				"Incorrect report location");
+		assertEquals("South", resultReport.getArea(),
+				"Incorrect report area");
+		assertEquals(expectedCustomerReportData, resultReport.getCustomerReportData(),
+				"Incorrect customer report data");
+		assertEquals(expectedCustomersOrdersByDate, resultReport.getCustomersOrdersByDate(),
+				"Incorrect customer orders by date");
 
 	}
 	
 	@Test
-	public void createReportTest() {
-		// add the rest of the data
-		Report reportTest = new Report(4, ReportType.INVENTORY, jan_2022, "Nazereth", "North");
+	public void testCreateCustomerReport_North_Nazereth_may_2021() {
 		
-		reportDAO.createReport(reportTest);
+		expectedCustomerReportData = new HashMap<>();
+		 // populate the map with the expected data
+		expectedCustomerReportData.put("1", 1);
+		expectedCustomerReportData.put("2", 1);
+		expectedCustomerReportData.put("3", 1);
+		expectedCustomerReportData.put("4", 1);
+		expectedCustomerReportData.put("5", 1);
+		expectedCustomerReportData.put("6+", 1);
 		
-		Report result = reportDAO.fetchReport(jan_2022, "Nazereth", "North", ReportType.INVENTORY);
+		expectedCustomersOrdersByDate = new HashMap<>();
+		// populate the map with the expected data
+		for (int i = 1; i <= 31; i++) {
+			expectedCustomersOrdersByDate.put(i, 1);
+		} 
 		
-		assertEquals(4, result.getReportID());
-		assertEquals(ReportType.INVENTORY, result.getReportType(), "Incorrect report type");
-		assertEquals(jan_2022, result.getDate(), "Incorrect report date");
-		assertEquals("Nazereth", result.getEkrutLocation(), "Incorrect report location");
-		assertEquals("North", result.getArea(), "Incorrect report area");
+		expectedReport = new Report(null, ReportType.CUSTOMER, may_2021, "Nazereth", "North",
+				expectedCustomerReportData, expectedCustomersOrdersByDate);
+		
+		// check this later
+		assertNull(expectedReport.getReportID());
+		 
+		reportDAO.createCustomerReport(expectedReport);
+		
+		resultReport = reportDAO.fetchReport(may_2021, "Nazereth", "North", ReportType.CUSTOMER);
+		
+		assertEquals(expectedReport.getReportID(), resultReport.getReportID());
+		assertEquals(expectedReport.getReportType(), resultReport.getReportType(),
+				"Incorrect report type");
+		assertEquals(expectedReport.getDate(), resultReport.getDate(),
+				"Incorrect report date");
+		assertEquals(expectedReport.getEkrutLocation(), resultReport.getEkrutLocation(),
+				"Incorrect report location");
+		assertEquals(expectedReport.getArea(), resultReport.getArea(),
+				"Incorrect report area");
+		assertEquals(expectedReport.getCustomerReportData(), resultReport.getCustomerReportData(),
+				"Incorrect customer report data");
+		assertEquals(expectedReport.getCustomersOrdersByDate(), resultReport.getCustomersOrdersByDate(),
+				"Incorrect customer orders by date");
+	}
+	 
+	@Test
+	public void testCreateInventoryReport_North_Afula_may_2021() {
+		
+		expectedInventoryReportData = new HashMap<>();
+		 // populate the map with the expected data
+		expectedInventoryReportData.put("Bamba", new ArrayList<>(Arrays.asList(1)));
+		expectedInventoryReportData.put("Coke", new ArrayList<>(Arrays.asList(1)));
+		expectedInventoryReportData.put("Pepsi", new ArrayList<>(Arrays.asList(1)));
+		expectedInventoryReportData.put("Fanta", new ArrayList<>(Arrays.asList(1)));
+		expectedInventoryReportData.put("Oreo", new ArrayList<>(Arrays.asList(1)));
+		expectedInventoryReportData.put("Bisli", new ArrayList<>(Arrays.asList(1)));
+		
+		expectedReport = new Report(null, ReportType.INVENTORY, may_2021, "Afula", "North",
+				expectedInventoryReportData, 12);
+		 
+		reportDAO.createInventoryReport(expectedReport);
+		
+		resultReport = reportDAO.fetchReport(may_2021, "Afula", "North", ReportType.INVENTORY);
+		
+		assertEquals(expectedReport.getReportID(), resultReport.getReportID(),
+				"Incorrect reportID");
+		assertEquals(expectedReport.getReportType(), resultReport.getReportType(),
+				"Incorrect report type");
+		assertEquals(expectedReport.getDate(), resultReport.getDate(),
+				"Incorrect report date");
+		assertEquals(expectedReport.getEkrutLocation(), resultReport.getEkrutLocation(),
+				"Incorrect report location");
+		assertEquals(expectedReport.getArea(), resultReport.getArea(),
+				"Incorrect report area");
+		assertEquals(expectedReport.getInventoryReportData(), resultReport.getInventoryReportData(),
+				"Incorrect inventory report data");
+		assertEquals(expectedReport.getThreshold(), resultReport.getThreshold(),
+				"Incorrect threshold");
 	}
 	
 	@Test
-	public void createCustomerReportTest() {
-		// add the rest of the data
-		Report reportTest = new Report(4, ReportType.CUSTOMER, jan_2022, "Nazereth", "North");
-		 
-		reportDAO.createCustomerReport(reportTest);
+	public void testCreateOrderReport_North_may_2021() {
 		
-		Report result = reportDAO.fetchReport(jan_2022, "Nazereth", "North", ReportType.CUSTOMER);
-		
-		assertEquals(4, result.getReportID());
-		assertEquals(ReportType.INVENTORY, result.getReportType(), "Incorrect report type");
-		assertEquals(jan_2022, result.getDate(), "Incorrect report date");
-		assertEquals("Nazereth", result.getEkrutLocation(), "Incorrect report location");
-		assertEquals("North", result.getArea(), "Incorrect report area");
-		//more tests
-	}
-	
-	@Test
-	public void createInventoryReportTest() {
-		// add the rest of the data
-		Report reportTest = new Report(4, ReportType.INVENTORY, jan_2022, "Nazereth", "North");
-		 
-		reportDAO.createCustomerReport(reportTest);
-		
-		Report result = reportDAO.fetchReport(jan_2022, "Nazereth", "North", ReportType.INVENTORY);
-		
-		assertEquals(4, result.getReportID());
-		assertEquals(ReportType.INVENTORY, result.getReportType(), "Incorrect report type");
-		assertEquals(jan_2022, result.getDate(), "Incorrect report date");
-		assertEquals("Nazereth", result.getEkrutLocation(), "Incorrect report location");
-		assertEquals("North", result.getArea(), "Incorrect report area");
-		//more tests
-	}
-	
-	@Test
-	public void createOrderReportTest() {
-		// add the rest of the data
-		Report reportTest = new Report(4, ReportType.ORDER, jan_2022, "North", "North");
-		 
-		reportDAO.createCustomerReport(reportTest);
-		
-		Report result = reportDAO.fetchReport(jan_2022, "North", "North", ReportType.ORDER);
-		
-		assertEquals(4, result.getReportID());
-		assertEquals(ReportType.INVENTORY, result.getReportType(), "Incorrect report type");
-		assertEquals(jan_2022, result.getDate(), "Incorrect report date");
-		assertEquals("Nazereth", result.getEkrutLocation(), "Incorrect report location");
-		assertEquals("North", result.getArea(), "Incorrect report area");
-		//more tests
-	}
+		expectedOrderData = new HashMap<>();
+        // populate the map with the expected data
+		expectedOrderData.put("Abu Dhabi", new ArrayList<>(Arrays.asList(1,2,3,4,5,6)));
+		expectedOrderData.put("Amjan", new ArrayList<>(Arrays.asList(1,2,3,4,5,6)));
+		expectedOrderData.put("Dubai", new ArrayList<>(Arrays.asList(1,2,3,4,5,6)));
+		expectedOrderData.put("Fujarah", new ArrayList<>(Arrays.asList(1,2,3,4,5,6)));
+		expectedOrderData.put("Ras_Al_Khaimah", new ArrayList<>(Arrays.asList(1,2,3,4,5,6)));
+		expectedOrderData.put("Sharjah", new ArrayList<>(Arrays.asList(1,2,3,4,5,6)));
+		expectedOrderData.put("Umm_Al_Quwain", new ArrayList<>(Arrays.asList(1,2,3,4,5,6)));
 
-
+		expectedTopSellers = new HashMap<>();
+        // populate the map with the expected data
+		expectedTopSellers.put("Bamba", 10);
+		expectedTopSellers.put("Bisli", 20);
+		expectedTopSellers.put("Chips", 30);
+		expectedTopSellers.put("Coke", 40);
+		expectedTopSellers.put("Pepsi", 50);
+		
+		expectedReport = new Report(null, ReportType.ORDER, may_2021, "North", "North",
+				10, 1000, 5, 500, expectedOrderData, expectedTopSellers);
+		 
+		reportDAO.createCustomerReport(expectedReport);
+		
+		resultReport = reportDAO.fetchReport(may_2021, "North", "North", ReportType.ORDER);
+		
+		assertEquals(expectedReport.getReportID(), resultReport.getReportID(),
+				"Incorrect reportID");
+		assertEquals(expectedReport.getReportType(), resultReport.getReportType(),
+				"Incorrect report type");
+		assertEquals(expectedReport.getDate(), resultReport.getDate(),
+				"Incorrect report date");
+		assertEquals(expectedReport.getEkrutLocation(), resultReport.getEkrutLocation(),
+				"Incorrect report location");
+		assertEquals(expectedReport.getArea(), resultReport.getArea(),
+				"Incorrect report area");
+		assertEquals(expectedReport.getTotalOrders(), resultReport.getTotalOrders(),
+				"Incorrect report total orders");
+		assertEquals(expectedReport.getTotalOrdersInILS(), resultReport.getTotalOrdersInILS(),
+				"Incorrect report total orders in ILS");
+		assertEquals(expectedReport.getTopSellersData(), resultReport.getTopSellersData(),
+				"Incorrect top sellers data");
+		assertEquals(expectedReport.getOrderReportData(), resultReport.getOrderReportData(),
+				"Incorrect order report data");
+	}
+	
+	
 }
