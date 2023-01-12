@@ -31,42 +31,32 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Label layoutX="8.0" layoutY="4.0" text="Order process">
+            <Label layoutX="77.0" layoutY="4.0" text="Order process">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="106.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="175.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="218.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="287.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="255.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="324.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="367.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="436.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="404.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="21.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="516.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@gui-assets/right-arrow.png" />
-               </image>
-            </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="553.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Receipt">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="473.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>

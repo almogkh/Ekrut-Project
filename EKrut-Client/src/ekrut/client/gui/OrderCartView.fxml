@@ -52,9 +52,9 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <ScrollPane layoutX="12.0" layoutY="153.0" prefHeight="443.0" prefWidth="748.0">
+            <ScrollPane layoutX="-1.0" layoutY="178.0" prefHeight="418.0" prefWidth="770.0">
                <content>
-                  <VBox fx:id="itemCartVBox" prefHeight="442.0" prefWidth="730.0" />
+                  <VBox fx:id="itemCartVBox" prefHeight="442.0" prefWidth="753.0" spacing="10.0" />
                </content>
             </ScrollPane>
             <Button fx:id="agreeAndPayBtn" layoutX="592.0" layoutY="625.0" mnemonicParsing="false" onAction="#agreeAndPay" prefHeight="36.0" prefWidth="158.0" text="Agree and pay">
@@ -81,7 +81,7 @@
                   <Font name="Arial Rounded MT Bold" size="17.0" />
                </font>
             </Button>
-            <Label layoutX="12.0" layoutY="65.0" text="Order process">
+            <Label layoutX="89.0" layoutY="82.0" text="Order process">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
@@ -93,37 +93,27 @@
             </Text>
             <Line endX="177.0" layoutX="101.0" layoutY="51.0" startX="-88.0" />
             <Line endX="173.0" layoutX="584.0" layoutY="50.0" startX="-110.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="97.0" layoutY="99.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="116.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="209.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="286.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="246.0" layoutY="99.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="323.0" layoutY="116.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="358.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="435.0" layoutY="110.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="395.0" layoutY="99.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="21.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="507.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@gui-assets/right-arrow.png" />
-               </image>
-            </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="544.0" layoutY="99.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Recipt">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="472.0" layoutY="116.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
