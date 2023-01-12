@@ -197,7 +197,7 @@ public class ServerOrderManager {
 		if (order == null)
 			return new OrderResponse(ResultType.NOT_FOUND);
 		
-		if (order.getType() != OrderType.PICKUP || order.getUsername() != user.getUsername())
+		if (order.getType() != OrderType.REMOTE || !order.getUsername().equals(user.getUsername()))
 			return new OrderResponse(ResultType.INVALID_INPUT);
 		
 		orderDAO.updateOrderStatus(request.getOrderId(), OrderStatus.DONE);
