@@ -58,7 +58,7 @@
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="payBtn" layoutX="281.0" layoutY="591.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="47.0" prefWidth="195.0" text="Press to pay">
+            <Button fx:id="payBtn" layoutX="552.0" layoutY="608.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="47.0" prefWidth="195.0" text="Press to pay">
                <font>
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
@@ -97,7 +97,7 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <Button fx:id="cancelOrderBtn" layoutX="606.0" layoutY="603.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="28.0" prefWidth="149.0" text="Cancel order">
+            <Button fx:id="cancelOrderBtn" layoutX="378.0" layoutY="619.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="28.0" prefWidth="149.0" text="Cancel order">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font></Button>

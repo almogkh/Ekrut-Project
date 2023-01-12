@@ -33,7 +33,7 @@
 -->
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -41,7 +41,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderPickupController">
    <children>
       <HBox alignment="CENTER" prefHeight="120.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
@@ -56,17 +56,22 @@
       </HBox>
       <Pane prefHeight="550.0" prefWidth="770.0">
          <children>
-            <Text layoutY="35.0126953125" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Choose EKrut facility" textAlignment="CENTER" wrappingWidth="770.0">
+            <Text layoutY="35.0126953125" strokeType="OUTSIDE" strokeWidth="0.0" text="Please input order ID" textAlignment="CENTER" wrappingWidth="770.0">
                <font>
                   <Font name="Arial Rounded MT Bold" size="37.0" />
                </font>
             </Text>
-            <ComboBox fx:id="areaListCBox" layoutX="301.0" layoutY="96.0" onAction="#areaList" prefHeight="27.0" prefWidth="168.0" promptText="Choose facility" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
-            <Button fx:id="ContinueBtn" layoutX="311.0" layoutY="438.0" mnemonicParsing="false" onAction="#Continue" prefHeight="28.0" prefWidth="149.0" text="Continue">
+            <Button fx:id="getOrderBtn" layoutX="311.0" layoutY="379.0" mnemonicParsing="false" onAction="#getOrder" prefHeight="28.0" prefWidth="149.0" text="Get Order">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
+            <TextField fx:id="orderIdTxt" layoutX="318.0" layoutY="173.0" prefHeight="31.0" prefWidth="246.0" promptText="Order ID" styleClass="item" />
+            <Text layoutX="183.0" layoutY="196.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Order ID: " textAlignment="CENTER" wrappingWidth="119.0">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>
