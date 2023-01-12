@@ -46,7 +46,7 @@ public abstract class ShipmentManagerUtils {
      */
     private static long deliveryDurationTimeInHours(String clientAddress) {
         return flightTimeInHours(null, clientAddress)
-                + watingForDroneTimeInHours()
+        		+ ShipmentLoadTimeInHours()
                 + watingForDroneTimeInHours();
     }
 
