@@ -255,9 +255,6 @@ public class ServerSessionManager {
 		case AREA_MANAGER_AND_AREA:
 			usersList.add(userDAO.fetchManagerByArea(argument));
 			break;
-		case AREA:
-			usersList.add(userDAO.fetchUserByArea(argument));
-			break;
 		case ROLE:
 			usersList = userDAO.fetchAllUsersByRole(UserType.valueOf(argument));
 			break;

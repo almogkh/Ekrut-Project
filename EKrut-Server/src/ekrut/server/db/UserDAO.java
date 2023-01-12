@@ -66,6 +66,7 @@ public class UserDAO {
 	 * @return The `User` object if found, or `null` if not found or an error
 	 *         occurred.
 	 */
+	
 	public User fetchUserByPhoneNumber(String phoneNumber) {
 		User user = null;
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM users WHERE phoneNumber = ?");
@@ -73,7 +74,6 @@ public class UserDAO {
 			ps.setString(1, phoneNumber);
 			ResultSet rs = ps.executeQuery();
 			if(rs.next()) {
-				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
 				user = new User(UserType.valueOf(rs.getString(1)),rs.getString(2),
 						rs.getString(3), rs.getString(4),rs.getString(5),
 						rs.getString(6),  rs.getString(7),
@@ -197,30 +197,10 @@ public class UserDAO {
 		}
 	}
 
-	public User fetchUserByArea(String area) {
-		User user = null;
-		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM users WHERE area = ?");
-		try {
-			ps.setString(1, area);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				// (userType, username, password, firstName, lastName, id, email, phoneNumber,
-				// area)
-				user = new User(UserType.valueOf(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4),
-						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), area);
-			return user;
-		} catch (SQLException e1) {
-			return null;
-		} finally {
-			try {
-				ps.close();
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
 
 	public ArrayList<User> fetchAllUsersByRole(UserType userType) {
+		if (userType==null)
+			return null;
 		ArrayList<User> usersList = new ArrayList<>();
 		User user = null;
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM users WHERE userType = ?");
@@ -259,6 +239,8 @@ public class UserDAO {
 	 *         phoneNumber, String area
 	 */
 	public boolean updateUser(User user) {
+		if(user==null)
+			return false;
 		String query = "UPDATE users SET userType = ?, email = ?, phoneNumber = ? WHERE username = ?";
 		PreparedStatement ps = con.getPreparedStatement(query);
 		try {
@@ -307,8 +289,6 @@ public class UserDAO {
 		}
 	}
 
-	// String username, String subscriberNumber, Int monthlyCharge, String
-	// creditCardNumber, int orderedAsSub
 	public boolean createOrUpdateCustomer(Customer customer) {
 		String query = "INSERT INTO customers"
 				+ " VALUES(?,?,?,?,?) ON DUPLICATE KEY UPDATE subscriberNumber = ?, monthlyCharge = ?";

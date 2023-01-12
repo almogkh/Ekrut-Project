@@ -2,7 +2,7 @@ package ekrut.entity;
 
 import java.io.Serializable;
 
-public class UserRegistration  implements Serializable{
+public class UserRegistration implements Serializable {
 
 	private static final long serialVersionUID = -8284486543163289939L;
 	private String username;
@@ -20,8 +20,8 @@ public class UserRegistration  implements Serializable{
 		this.customerOrSub = customerOrSub;
 	}
 
-	public UserRegistration(String username,  String creditCardNumber,String phoneNumber,String email,
-			boolean monthlyCharge,  String customerOrSub) {
+	public UserRegistration(String username, String creditCardNumber, String phoneNumber, String email,
+			boolean monthlyCharge, String customerOrSub) {
 		this.username = username;
 		this.creditCardNumber = creditCardNumber;
 		this.phoneNumber = phoneNumber;
@@ -70,6 +70,18 @@ public class UserRegistration  implements Serializable{
 		this.creditCardNumber = creditCardNumber;
 	}
 
-
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof UserRegistration)) {
+			return false;
+		}
+		UserRegistration user = (UserRegistration) o;
+		return monthlyCharge == user.monthlyCharge && username.equals(user.username)
+				&& creditCardNumber.equals(user.creditCardNumber) && phoneNumber.equals(user.phoneNumber)
+				&& email.equals(user.email) && customerOrSub.equals(user.customerOrSub);
+	}
 
 }
