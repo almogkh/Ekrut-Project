@@ -25,7 +25,7 @@ public class ShipmentClientConfirmationController {
 			return;
 
 		for (Order order : orders)
-			if (order.getStatus().equals(OrderStatus.AWAITING_DELIVERY))
+			if (order.getStatus() == OrderStatus.AWAITING_DELIVERY)
 				children.add(new ShipmentClientConController(order));
 	}
 }

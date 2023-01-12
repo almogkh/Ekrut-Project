@@ -5,6 +5,7 @@ import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientSessionManager;
 import ekrut.client.managers.ClientShipmentManager;
 import ekrut.entity.Order;
+import ekrut.entity.OrderStatus;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -22,12 +23,13 @@ public class ShipmentWorkerApprovalController {
 		String area = clientSessionManager.getUser().getArea();
 		ObservableList<Node> children = ShipmentVBox.getChildren();
 
-		ArrayList<Order> ordersForShipping = clientShipmentManager.fetchShipmentRequests(area);
+		ArrayList<Order> orders = clientShipmentManager.fetchShipmentRequests(area);
 
-		if (ordersForShipping == null)
+		if (orders == null)
 			return;
 
-		for (Order order : ordersForShipping)
-			children.add(new ShipmentWorkerAppController(order));
+		for (Order order : orders)
+			if (order.getStatus() == OrderStatus.SUBMITTED)
+				children.add(new ShipmentWorkerAppController(order));
 	}
 }

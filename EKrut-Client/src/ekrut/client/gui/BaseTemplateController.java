@@ -114,11 +114,13 @@ public class BaseTemplateController {
 	public void loadApproveShipment() {
 		switchStages("ShipmentWorkerApproval");
 	}
+	
+	public void LoadSetShipmentAsDone() {
+		switchStages("ShipmentSetDone");
+	}
 
 	public void loadConfirmDelivery() {
 		switchStages("ShipmentClientConfirmation");
-
-		
 	}
 	
 	private void loadActivateSale() {
@@ -129,7 +131,7 @@ public class BaseTemplateController {
 		switchStages("SaleTemplate");
 	}
 	
-    // C.Nir - can use in *local* method load();
+    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadViewTickets() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/TicketBrowser.fxml"));
 		try {
@@ -141,6 +143,7 @@ public class BaseTemplateController {
 		setRightWindow(root);
 	}
 
+    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadRegistrationRequests() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/UsersRegistration.fxml"));
 		try {
@@ -166,6 +169,7 @@ public class BaseTemplateController {
 		setRightWindow(root);
 	}
 	
+    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadThresholdSelector() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ThresholdBrowser.fxml"));
 		try {
@@ -192,7 +196,6 @@ public class BaseTemplateController {
 				+ "-fx-background-radius: 20;"
 				+ "-fx-pref-width: 190;"
 				+ "-fx-alignment: center;");
-		  
 	}
 
 	private ArrayList<Hyperlink> getHyperlinks(UserType userType, boolean customer) {
@@ -206,6 +209,9 @@ public class BaseTemplateController {
     	
     	Hyperlink viewShipRequestsHyp = new Hyperlink("Shipment Requests");
     	viewShipRequestsHyp.setOnAction((ActionEvent event) -> loadApproveShipment());
+    	
+		Hyperlink shipmentStatus = new Hyperlink("Shipment Status");
+		shipmentStatus.setOnAction((ActionEvent event) -> LoadSetShipmentAsDone());
 
     	Hyperlink viewTicketsHyp = new Hyperlink("Tickets");
     	viewTicketsHyp.setOnAction((ActionEvent event) -> loadViewTickets());
@@ -230,8 +236,8 @@ public class BaseTemplateController {
 		case CUSTOMER:
 			break;
 		case SHIPMENT_OPERATOR:
-		case SHIPMENT_WORKER:
 			allHyperlinks.add(viewShipRequestsHyp);
+			allHyperlinks.add(shipmentStatus);
 			break;
 		case MARKETING_MANAGER:
 			allHyperlinks.add(makeSaleTemplate);
@@ -259,8 +265,6 @@ public class BaseTemplateController {
 		return allHyperlinks;
 	}
 
-
-
 	public void setUser(User me) {
 		// this.me = me;
 		infoPane.setVisible(true);
@@ -285,7 +289,7 @@ public class BaseTemplateController {
 		}
 	}
 
-    // Q.Nir - is needed?
+    // Q.Nir - is needed?  Ans - hell YES
     // switch stages if any info dose not needed.
     public void switchStages(String fxmlName) {
     	String path = "/ekrut/client/gui/";

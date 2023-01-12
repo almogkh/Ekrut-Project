@@ -41,7 +41,9 @@ public class ShipmentWorkerAppController extends HBox {
 		}
 
 		orderIdTxt.setText(order.getOrderId().toString());
-		orderDateTxt.setText(order.getDate().toString());
+		StringBuilder date = new StringBuilder(order.getDate().toString());
+		date.setCharAt(10, ' ');
+		orderDateTxt.setText(date + " o'clock");
 	}
 
 	@FXML

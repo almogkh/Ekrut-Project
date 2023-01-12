@@ -1,8 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
-</AnchorPane>
-
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ShipmentSetDoneController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="120.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <children>
+            <Line endX="60.0" startX="-104.21322631835938" startY="1.0758638381958008E-4" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Active Shipment Orders">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="35.0" />
+               </font>
+            </Text>
+            <Line endX="60.0" startX="-104.21322631835938" startY="1.0758638381958008E-4" />
+         </children>
+      </HBox>
+      <Pane prefHeight="550.0" prefWidth="770.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Text layoutX="116.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Set Done Completed Shipments">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="35.0" />
+               </font>
+            </Text>
+            <ScrollPane layoutY="52.0" prefHeight="432.0" prefWidth="770.0">
+               <content>
+                  <VBox fx:id="ShipmentVBox" prefHeight="440.0" prefWidth="755.0" spacing="10.0" />
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+   </children>
+</VBox>
