@@ -238,6 +238,7 @@ public class OrderDAO {
 			}
 		}
 	}
+
 	
 	/**
 	 * Updates the status of an order in the database.
@@ -272,7 +273,7 @@ public class OrderDAO {
 		PreparedStatement ps = con.getPreparedStatement(
 				"SELECT orderId, date, status, type, dueDate, clientAddress, location, username "
 				+ "FROM orders "
-				+ "WHERE type = 'SHIPMENT' AND status = 'SUBMITTED'");
+				+ "WHERE type = 'SHIPMENT'");
 		ArrayList<Order> orderList = new ArrayList<>();
 		try {
 			ResultSet rs = con.executeQuery(ps);
@@ -299,7 +300,6 @@ public class OrderDAO {
 		}
 	}
 	
-	
 	public boolean updateOrderDueDate(int orderId, LocalDateTime dueDate) {
 		PreparedStatement ps = con.getPreparedStatement("UPDATE orders SET dueDate = ? WHERE orderId = ?");
 		
@@ -323,7 +323,4 @@ public class OrderDAO {
 		}
 		
 	}
-
-	
-	
 }
