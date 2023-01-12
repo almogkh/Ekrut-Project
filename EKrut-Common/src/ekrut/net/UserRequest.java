@@ -16,9 +16,7 @@ public class UserRequest implements Serializable{
 	private String area;
 	
 	
-	public UserRequest() {
-		this.action = UserRequestType.IMPORT_USERS;
-	}
+	
 	public UserRequest(UserRequestType action) {
 		this.action = action;
 	}

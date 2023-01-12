@@ -32,11 +32,13 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
@@ -45,91 +47,110 @@
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
   <children>
-      <Pane prefHeight="120.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" minHeight="85.0">
          <children>
-            <Text layoutX="137.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report " wrappingWidth="495.1552734375">
+            <Line endX="-6.0" startX="-122.5" stroke="WHITE" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report " textAlignment="CENTER" wrappingWidth="449.1552734375">
                <font>
-                  <Font name="Candara Bold" size="78.0" />
+                  <Font name="Arial Rounded MT Bold" size="55.0" />
                </font>
                <effect>
                   <DropShadow>
                      <color>
-                        <Color opacity="0.29770994186401367" />
+                        <Color opacity="0.41999998688697815" />
                      </color>
                   </DropShadow>
                </effect>
             </Text>
-            <Line endX="-6.0" layoutX="115.0" layoutY="59.0" startX="-100.0" stroke="WHITE" />
-            <Line endX="-6.0" layoutX="761.0" layoutY="59.0" startX="-100.0" stroke="WHITE" />
+            <Line endX="-6.0" startX="-122.5" stroke="WHITE" />
          </children>
-      </Pane>
-      <Pane prefHeight="555.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <VBox alignment="CENTER" prefHeight="587.0" prefWidth="770.0" spacing="15.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Label alignment="CENTER" layoutX="125.0" layoutY="48.0" text="Type:" textFill="WHITE">
-               <font>
-                  <Font name="Candara Bold" size="19.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.3015267252922058" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Label>
-            <Label alignment="CENTER" layoutX="126.0" layoutY="123.0" text="Area:" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="Candara Bold" size="19.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.2977099120616913" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Label>
-            <ComboBox fx:id="areaComboBox" disable="true" layoutX="123.0" layoutY="147.0" onAction="#setLocationsByArea" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
-            <Label alignment="CENTER" layoutX="124.0" layoutY="193.0" text="Location:" textAlignment="CENTER" textFill="WHITE">
-               <font>
-                  <Font name="Candara Bold" size="18.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.2977099120616913" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Label>
-            <ComboBox fx:id="locationComboBox" disable="true" layoutX="123.0" layoutY="215.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
-            <Label alignment="CENTER" layoutX="124.0" layoutY="262.0" text="Year:" textFill="WHITE">
-               <font>
-                  <Font name="Candara Bold" size="19.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.2977099120616913" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Label>
-            <ComboBox fx:id="yearComboBox" layoutX="123.0" layoutY="285.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Year" styleClass="combo-box" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
-            <Label alignment="CENTER" layoutX="124.0" layoutY="335.0" text="Month:" textFill="WHITE">
-               <font>
-                  <Font name="Candara Bold" size="19.0" />
-               </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.2977099120616913" />
-                     </color>
-                  </DropShadow>
-               </effect>
-            </Label>
-            <ComboBox fx:id="monthComboBox" layoutX="123.0" layoutY="358.0" prefHeight="30.0" prefWidth="200.0" promptText="Choose Month" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
-            <Button fx:id="viewReportButton" layoutX="304.0" layoutY="422.0" mnemonicParsing="false" onAction="#viewReport" prefHeight="48.0" prefWidth="153.0" text="View Report" textFill="WHITE">
+            <HBox alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="•  ">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Label alignment="BOTTOM_LEFT" prefWidth="100.0" text="Type:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="typeComboBox" onAction="#setLocationsByType" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="•  ">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Label alignment="BOTTOM_LEFT" prefWidth="100.0" text="Area:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="areaComboBox" disable="true" onAction="#setLocationsByArea" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="•  ">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Label alignment="BOTTOM_LEFT" prefWidth="100.0" text="Location:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="locationComboBox" disable="true" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="•  ">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Label alignment="BOTTOM_LEFT" prefWidth="100.0" text="Year:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="yearComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Choose Year" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="•  ">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Text>
+                  <Label alignment="BOTTOM_LEFT" prefWidth="100.0" text="Month:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="20.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="monthComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Choose Month" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+                     <styleClass>
+                        <String fx:value="menu_button" />
+                        <String fx:value="table" />
+                     </styleClass>
+                  </ComboBox>
+               </children>
+            </HBox>
+            <Button fx:id="viewReportButton" mnemonicParsing="false" onAction="#viewReport" prefWidth="153.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="View Report" textFill="WHITE">
                <font>
                   <Font name="Candara Bold Italic" size="18.0" />
                </font>
@@ -140,19 +161,16 @@
                      </color>
                   </DropShadow>
                </effect>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
             </Button>
-            <Label fx:id="reportErrorLabel" alignment="CENTER" layoutX="-2.0" layoutY="483.0" prefHeight="56.0" prefWidth="770.0" textAlignment="CENTER" textFill="#ff0101" underline="true">
+            <Label fx:id="reportErrorLabel" alignment="CENTER" prefHeight="56.0" prefWidth="770.0" textAlignment="CENTER" textFill="#ff0101" underline="true">
                <font>
-                  <Font name="Candara Bold" size="34.0" />
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Label>
-            <ComboBox fx:id="typeComboBox" layoutX="123.0" layoutY="75.0" onAction="#setLocationsByType" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="menu_button" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
          </children>
-      </Pane>
-      <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
-         <font>
-            <Font size="22.0" />
-         </font>
-      </Text>
+      </VBox>
   </children>
 </VBox>

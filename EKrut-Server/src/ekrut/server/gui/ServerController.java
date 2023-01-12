@@ -8,6 +8,7 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import ekrut.entity.ConnectedClient;
+import ekrut.net.ResultType;
 import ekrut.server.managers.ServerSessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,6 +50,9 @@ public class ServerController {
 
 	@FXML
 	private Button DisconnectBTN;
+	
+	@FXML
+	private Button importDataBTN;
 
 	@FXML
 	private TableColumn<ConnectedClient, String> IPColumn;
@@ -71,9 +75,12 @@ public class ServerController {
 	@FXML
 	private Label ErrorConnection;
 
+	@FXML
+	private Label ErrorImportData;
+
 	private PrintStream replaceConsole;
 
-	public String getLocalIp(){
+	private String getLocalIp(){
 		String ip = null;
 		boolean virtual = false;
 		try {
@@ -83,6 +90,7 @@ public class ServerController {
 				// Not interested in interfaces that are down
 				if (!ni.isUp())
 					continue;
+
 				
 				Enumeration<InetAddress> addresses = ni.getInetAddresses();
 				while (addresses.hasMoreElements()) {
@@ -116,7 +124,7 @@ public class ServerController {
 	}
 
 	@FXML
-	public void initialize() {
+	private void initialize() {
 		this.connectionIP.setText(getLocalIp());
 		this.consoleStreamIntoGUI();
 		this.PortTXTfield.setText("5555");
@@ -124,9 +132,11 @@ public class ServerController {
 		this.DBUserNameTXTfield.setText("root");
 		this.DBPasswordTXTfield.setText("1qazZ2wsxX!@");
 		this.DisconnectBTN.setVisible(false);
+		this.importDataBTN.setVisible(false);
 		this.ConnectedGreenIMG.setVisible(false);
 		this.connectionStatus.setText("Not connected");
 		this.ErrorConnection.setVisible(false);
+		this.ErrorImportData.setVisible(false);
 	}
 
 	public void setTable(ServerSessionManager session) {
@@ -157,6 +167,7 @@ public class ServerController {
 		this.connectionStatus.setText("Connected");
 		this.ConnectedGreenIMG.setVisible(true);
 		this.ErrorConnection.setVisible(false);
+		this.importDataBTN.setVisible(true);
 	}
 
 	@FXML
@@ -167,9 +178,20 @@ public class ServerController {
 		this.disableDataInput(false);
 		this.connectionStatus.setText("Not connected");
 		this.ConnectedGreenIMG.setVisible(false);
-
+		this.ErrorImportData.setVisible(false);
 	}
-
+	
+	@FXML
+	void importData(final ActionEvent event) {
+		ErrorImportData.setVisible(false);
+		if(ServerUI.getServer().importUsers().getResultCode()==ResultType.UNKNOWN_ERROR) {
+			System.out.println("not good");
+			ErrorImportData.setVisible(true);
+			return;
+		}
+		this.importDataBTN.setDisable(true);
+		
+	}
 	void disableDataInput(final boolean Condition) {
 		PortTXTfield.setDisable(Condition);
 		DBNameTXTfield.setDisable(Condition);
@@ -177,4 +199,5 @@ public class ServerController {
 		DBPasswordTXTfield.setDisable(Condition);
 		ConnectedGreenIMG.setDisable(Condition);
 	}
+	
 }

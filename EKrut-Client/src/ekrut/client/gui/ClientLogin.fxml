@@ -40,47 +40,21 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ClientLoginController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ClientLoginController">
    <children>
-      <VBox alignment="CENTER" prefHeight="126.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
+      <HBox alignment="CENTER" minHeight="85.0" styleClass="container">
          <children>
-            <Pane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <Line endX="113.0" layoutX="147.0" layoutY="62.0" startX="-118.0" stroke="WHITE" />
-                  <Line endX="119.0" layoutX="598.0" layoutY="61.0" startX="-115.0" stroke="WHITE" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutY="13.0" prefHeight="81.0" prefWidth="750.0" text="Login">
-                     <font>
-                        <Font name="Arial Rounded MT Bold" size="68.0" />
-                     </font>
-                     <effect>
-                        <DropShadow>
-                           <color>
-                              <Color opacity="0.30000001192092896" />
-                           </color>
-                        </DropShadow>
-                     </effect>
-                  </Label>
-               </children>
-            </Pane>
-         </children>
-      </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="549.0" prefWidth="765.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-         <children>
-            <Label text="Welcome!">
+            <Line endX="113.0" startX="-118.0" stroke="WHITE" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="81.0" prefWidth="750.0" text="Login">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="30.0" />
+                  <Font name="Arial Rounded MT Bold" size="68.0" />
                </font>
                <effect>
                   <DropShadow>
@@ -89,6 +63,25 @@
                      </color>
                   </DropShadow>
                </effect>
+            </Label>
+            <Line endX="119.0" startX="-115.0" stroke="WHITE" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <VBox alignment="TOP_CENTER" prefHeight="590.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Label text="Welcome!">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
+               </font>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -98,15 +91,8 @@
             </Label>
             <Label text="In order to use the EKrut system, please login">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="30.0" />
+                  <Font name="Arial Rounded MT Bold" size="25.0" />
                </font>
-               <effect>
-                  <DropShadow>
-                     <color>
-                        <Color opacity="0.30000001192092896" />
-                     </color>
-                  </DropShadow>
-               </effect>
                <VBox.margin>
                   <Insets />
                </VBox.margin>

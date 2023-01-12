@@ -5,6 +5,7 @@ import java.io.IOException;
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.entity.User;
+import ekrut.entity.UserType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ public class ClientLoginController {
 
     @FXML
     private Label errorLbl;
+
 
 	private static final String BLANK_USER_OR_PASS_ERROR = "Username or password cannot remain blank.";
 	private static final String INCORRECT_USER_PASS_ERROR = "Incorrect username and password combination.";
@@ -77,7 +79,10 @@ public class ClientLoginController {
 		//C.Nir - can use method login() in BaseTemplateController
 		// LOGIN SUCCESS!
 		if (loader == null) {
-			loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/MainMenu.fxml"));
+			if (me.getUserType()==UserType.REGISTERED)
+				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/RegisterUserView.fxml"));
+			else 
+				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/MainMenu.fxml"));
 			try {
 				loader.load();
 			} catch (IOException e) {

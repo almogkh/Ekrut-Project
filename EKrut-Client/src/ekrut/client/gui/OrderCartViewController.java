@@ -17,6 +17,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class OrderCartViewController {
 
@@ -34,6 +35,9 @@ public class OrderCartViewController {
 
     @FXML
     private Label priceAfterDiscountLbl;
+    
+    @FXML
+    private Text priceAfterDiscountPreLbl;
 
     @FXML
     private Label priceBeforeDiscountLbl;
@@ -47,8 +51,10 @@ public class OrderCartViewController {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		orderManager = client.getClientOrderManager();
 		subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
-		if (!subscriber)
+		if (!subscriber) {
 			priceAfterDiscountLbl.setVisible(false);
+			priceAfterDiscountPreLbl.setVisible(false);
+		}
 		AddItemViewToCartVBox();
 		updatePrice();
 		if (itemCartVBox.getChildren().isEmpty())

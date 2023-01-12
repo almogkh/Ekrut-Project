@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<fx:root type="javafx.scene.layout.HBox" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="755.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<fx:root alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="755.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="266.0">
          <children>
@@ -35,12 +34,12 @@
       </Pane>
       <Pane prefHeight="100.0" prefWidth="157.0">
          <children>
-            <TextField fx:id="thresholdTxt" alignment="CENTER" layoutX="52.0" layoutY="14.0" prefHeight="41.0" prefWidth="54.0" style="-fx-border-color: black; -fx-background-radius: 20; -fx-border-radius: 20;" text="0">
+            <TextField fx:id="thresholdTxt" alignment="CENTER" layoutX="52.0" layoutY="13.0" prefHeight="29.0" prefWidth="54.0" style="-fx-border-color: black; -fx-background-radius: 20; -fx-border-radius: 20;" text="0">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </TextField>
-            <Button fx:id="updateThresholdBtn" defaultButton="true" layoutX="3.0" layoutY="55.0" mnemonicParsing="false" onAction="#updateThreshold" prefHeight="29.0" prefWidth="151.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Update Threhsold">
+            <Button fx:id="updateThresholdBtn" defaultButton="true" layoutX="4.0" layoutY="59.0" mnemonicParsing="false" onAction="#updateThreshold" prefHeight="29.0" prefWidth="151.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Update Threhsold">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>

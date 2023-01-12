@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ThresholdBrowserController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ThresholdBrowserController">
    <children>
-      <VBox alignment="CENTER" prefHeight="120.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" prefHeight="85.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Threshold Selector">
+            <Line endX="-40.70710754394531" endY="0.17157280445098877" startX="-116.02082824707031" startY="0.17157357931137085" stroke="WHITE" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Threshold Selector" textAlignment="CENTER" wrappingWidth="541.06591796875">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="68.0" />
+                  <Font name="Arial Rounded MT Bold" size="55.0" />
                </font>
                <effect>
                   <DropShadow>
@@ -25,25 +29,42 @@
                   </DropShadow>
                </effect>
             </Text>
+            <Line endX="-33.36396789550781" endY="0.5147140026092529" startX="-105.6568603515625" startY="0.34314340353012085" stroke="WHITE" />
          </children>
-      </VBox>
-      <VBox prefHeight="550.0" prefWidth="770.0">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <VBox prefHeight="585.0" prefWidth="867.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
             <Pane prefHeight="82.0" prefWidth="770.0">
                <children>
                   <Label layoutX="14.0" layoutY="34.0" prefHeight="46.0" prefWidth="170.0" text="Facility Name" underline="true">
                      <font>
-                        <Font name="Arial Rounded MT Bold" size="25.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label layoutX="244.0" layoutY="34.0" prefHeight="46.0" prefWidth="226.0" text="Current Threshold" underline="true">
+                  <Text fill="WHITE" layoutX="505.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="•">
                      <font>
-                        <Font name="Arial Rounded MT Bold" size="25.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Text>
+                  <Label layoutX="255.0" layoutY="34.0" prefHeight="46.0" prefWidth="226.0" text="Current Threshold" underline="true">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
+                  <Text fill="WHITE" layoutX="207.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="•">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
+                     </font>
+                  </Text>
                   <Label layoutX="557.0" layoutY="34.0" prefHeight="46.0" prefWidth="188.0" text="New Threshold" underline="true">
                      <font>
-                        <Font name="Arial Rounded MT Bold" size="25.0" />
+                        <Font name="Arial Rounded MT Bold" size="24.0" />
                      </font>
                   </Label>
                   <Label layoutX="121.0" layoutY="-6.0" prefHeight="23.0" prefWidth="527.0" text="Notice: facilities with no items whould show a non-applicable (N\A) threshold.">
@@ -53,7 +74,7 @@
                   </Label>
                </children>
             </Pane>
-            <ScrollPane prefHeight="470.0" prefWidth="770.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <ScrollPane prefHeight="470.0" prefWidth="867.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <content>
                   <VBox fx:id="thresholdsVbox" prefHeight="677.0" prefWidth="755.0" spacing="10.0" />
                </content>

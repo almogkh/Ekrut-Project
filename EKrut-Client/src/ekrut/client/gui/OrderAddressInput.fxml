@@ -37,13 +37,29 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderAddressInputController">
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderAddressInputController">
    <children>
-      <Pane prefHeight="681.0" prefWidth="770.0" styleClass="container">
+      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <children>
+            <Line endX="78.5" startX="-118.0" stroke="WHITE" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address" textAlignment="CENTER" wrappingWidth="257.69970703125">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="55.0" />
+               </font>
+            </Text>
+            <Line endX="78.5" startX="-118.0" stroke="WHITE" />
+         </children>
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+      </HBox>
+      <Pane prefHeight="538.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
@@ -53,17 +69,11 @@
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="ContinueBtn" layoutX="595.0" layoutY="610.0" mnemonicParsing="false" onAction="#Continue" prefHeight="28.0" prefWidth="149.0" text="Continue">
+            <Button fx:id="ContinueBtn" layoutX="593.0" layoutY="490.0" mnemonicParsing="false" onAction="#Continue" prefHeight="28.0" prefWidth="149.0" text="Continue">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
-               </font></Button>
-            <Text layoutX="302.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="38.0" />
                </font>
-            </Text>
-            <Line endX="183.0" layoutX="99.0" layoutY="59.0" startX="-89.5" />
-            <Line endX="173.0" layoutX="582.0" layoutY="58.0" startX="-99.0" />
+            </Button>
             <Text layoutX="39.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please input your address for delivery">
                <font>
                   <Font name="Arial Rounded MT Bold" size="37.0" />
@@ -76,10 +86,10 @@
             </Text>
             <TextField fx:id="addressTxt" layoutX="39.0" layoutY="238.0" prefHeight="35.0" prefWidth="274.0" promptText="E.g: Isarel, Haifa, Zohar 10">
                <font>
-                  <Font size="16.0" />
+                  <Font name="Arial Rounded MT Bold" size="16.0" />
                </font>
             </TextField>
          </children>
       </Pane>
    </children>
-</HBox>
+</VBox>

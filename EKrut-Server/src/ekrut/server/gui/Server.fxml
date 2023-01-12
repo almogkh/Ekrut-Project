@@ -124,7 +124,7 @@
                   </Pane>
                   <Pane layoutX="3.0" layoutY="114.0" prefHeight="304.0" prefWidth="375.0" styleClass="container">
                      <children>
-                        <Button fx:id="ConnectToServerBTN" alignment="TOP_LEFT" defaultButton="true" layoutX="86.0" layoutY="235.0" mnemonicParsing="false" onAction="#Connect" style="-fx-background-radius: 20;" text="Connect to Server" textFill="WHITE">
+                        <Button fx:id="ConnectToServerBTN" alignment="TOP_LEFT" layoutX="59.0" layoutY="234.0" mnemonicParsing="false" onAction="#Connect" style="-fx-background-radius: 20;" text="Connect" textFill="WHITE">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
@@ -204,7 +204,7 @@
                               </DropShadow>
                            </effect>
                         </Text>
-                        <Button fx:id="DisconnectBTN" alignment="TOP_LEFT" layoutX="115.0" layoutY="235.0" mnemonicParsing="false" onAction="#Disconnect" style="-fx-background-radius: 20;" text="Disconnect" textFill="WHITE">
+                        <Button fx:id="DisconnectBTN" alignment="TOP_LEFT" layoutX="51.0" layoutY="234.0" mnemonicParsing="false" onAction="#Disconnect" style="-fx-background-radius: 20;" text="Disconnect" textFill="WHITE">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>
@@ -243,6 +243,23 @@
                               <Font name="Arial Rounded MT Bold" size="12.0" />
                            </font>
                         </TextField>
+                        <Button fx:id="importDataBTN" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="194.0" layoutY="233.0" mnemonicParsing="false" onAction="#importData" style="-fx-background-color: #55565f;" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Import Data" textFill="#68f4fd">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                           <effect>
+                              <DropShadow>
+                                 <color>
+                                    <Color opacity="0.30000001192092896" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </Button>
+                        <Label fx:id="ErrorImportData" alignment="CENTER" contentDisplay="CENTER" layoutX="111.0" layoutY="277.0" text="Can't import data" textAlignment="CENTER" textFill="RED">
+                           <font>
+                              <Font name="Arial Rounded MT Bold" size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

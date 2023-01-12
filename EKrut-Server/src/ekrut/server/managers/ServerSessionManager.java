@@ -159,17 +159,7 @@ public class ServerSessionManager {
 		return new UserResponse(ResultType.NOT_FOUND);
 	}
 
-	/**
-	 * Imports users into the system from the external user management system.
-	 * 
-	 * @param dbCon the database connection to use for the operation
-	 * @return response indicating if the operation was successful or not
-	 */
-	public UserResponse importUsers(DBController dbCon) {
-		if (!UsersImporter.importUsers(dbCon))
-			return new UserResponse(ResultType.UNKNOWN_ERROR);
-		return new UserResponse(ResultType.OK);
-	}
+
 
 	/**
 	 * Returns the {@link User} object associated with the given

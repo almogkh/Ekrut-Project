@@ -84,3 +84,6 @@
   -fx-border-radius: 20;
   -fx-background-radius: 20;
 }
+.graph {
+  -fx-font-family: "Arial Rounded MT Bold", sans-serif;
+}

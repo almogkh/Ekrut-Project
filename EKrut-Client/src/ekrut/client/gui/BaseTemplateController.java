@@ -156,6 +156,7 @@ public class BaseTemplateController {
 		setRightWindow(root);
 	}
 	
+	
     // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadViewReports() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ReportChooser.fxml"));
@@ -167,6 +168,7 @@ public class BaseTemplateController {
 		Parent root = loader.getRoot();
 		// ReportChooserController reportChooserController = loader.getController();
 		setRightWindow(root);
+		
 	}
 	
     // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
@@ -188,13 +190,14 @@ public class BaseTemplateController {
 		hyperLink.setWrapText(true);
 		hyperLink.setTextAlignment(TextAlignment.CENTER);
 
-		hyperLink.setStyle("-fx-text-fill: black;"
-				+ "-fx-underline: false;"
-				+ "-fx-border-color: black;"
-				+ "-fx-border-radius: 20;"
-				+ "-fx-background-color: rgba(255, 255, 255, 0.5);"
-				+ "-fx-background-radius: 20;"
-				+ "-fx-pref-width: 190;"
+		hyperLink.setStyle("-fx-text-fill: white;"
+				//+ "-fx-underline: false;"
+				//+ "-fx-border-color: black;"
+				//+ "-fx-border-radius: 20;"
+				//+ "-fx-background-color: rgba(255, 255, 255, 0.5);"
+				+ "-fx-background-color: #2F88FF;"
+				//+ "-fx-background-radius: 20;"
+				+ "-fx-pref-width: 200;"
 				+ "-fx-alignment: center;");
 	}
 
