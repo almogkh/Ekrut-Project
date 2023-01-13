@@ -14,6 +14,8 @@ import ekrut.net.UserResponse;
 /**
  * The `ClientSessionManager` class provides methods for managing user sessions
  * on the client side.
+ * 
+ * @author Yovel Gabay
  */
 public class ClientSessionManager extends AbstractClientManager<UserRequest, UserResponse> {
 
@@ -51,13 +53,25 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 		} else
 			throw new RuntimeException(userResponse.getResultCode().toString());
 	}
-	
+
+	/**
+	 * Register a new user
+	 *
+	 * @param userToRegister the user to register
+	 * @return UserResponse with the result of the registration
+	 */
 	public UserResponse registerUser(UserRegistration userToRegister) {
 		UserRequest userLoginRequest = new UserRequest(userToRegister);
 		UserResponse userResponse = sendRequest(userLoginRequest);
 		return userResponse;
 	}
-	
+
+	/**
+	 * Request the list of registered users by area
+	 *
+	 * @param area the area of the registered users
+	 * @return ArrayList of UserRegistration
+	 */
 	public ArrayList<UserRegistration> getRegistrationList(String area) {
 		UserRequest getUsersRegistrationList = new UserRequest(area);
 		UserResponse userResponse = sendRequest(getUsersRegistrationList);
@@ -77,7 +91,7 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 	public void logoutUser(boolean quiet) {
 		for (Runnable r : onLogout)
 			r.run();
-		
+
 		if (quiet) {
 			user = null;
 			return;
@@ -95,7 +109,12 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 		else
 			throw new RuntimeException(userResponse.getResultCode().toString());
 	}
-	
+
+	/**
+	 * Register a runnable to be called when the user logout
+	 *
+	 * @param runnable the runnable to be called when the user logout
+	 */
 	public void registerOnLogoutHandler(Runnable runnable) {
 		onLogout.add(runnable);
 	}
@@ -116,20 +135,30 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 			return true;
 		return false;
 	}
-	
 
+	/**
+	 * Request users from the server based on a specific criteria.
+	 *
+	 * @param fetchType the criteria to fetch user by
+	 * @param argument  the argument of the criteria
+	 * @return ArrayList of User
+	 */
 	/*
 	 * if someone need to fetchUser by somthing, he need to call to fetchUser()
-	 * function that return ArrayList<User>. if he expecting for result with one user
-	 * he need to: user = userResponse.getUsersList().get(0);
+	 * function that return ArrayList<User>. if he expecting for result with one
+	 * user he need to: user = userResponse.getUsersList().get(0);
 	 */
-
 	public ArrayList<User> fetchUser(FetchUserType fetchType, String argument) {
 		UserRequest userRequest = new UserRequest(fetchType, argument);
 		UserResponse userResponse = sendRequest(userRequest);
 		return userResponse.getUsersList();
 	}
 
+	/**
+	 * Get the logged in user.
+	 *
+	 * @return User object
+	 */
 	public User getUser() {
 		return user;
 	}

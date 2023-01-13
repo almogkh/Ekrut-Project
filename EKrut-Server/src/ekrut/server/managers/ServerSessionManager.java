@@ -67,7 +67,6 @@ public class ServerSessionManager {
 		return connectedClientList;
 	}
 
-
 	/**
 	 * Attempts to login the user with the given username and password. If
 	 * successful, adds the user to the list of connected users, adds the user and
@@ -140,12 +139,23 @@ public class ServerSessionManager {
 		return userResponse;
 	}
 
+	/**
+	 * 
+	 * Sends a user request to a client.
+	 * 
+	 * @param userRequest the {@link UserRequest} object to send to the client
+	 * @param client      the {@link ConnectionToClient} object representing the
+	 *                    client to send the request to
+	 */
 	private void sendRequestToClient(UserRequest userRequest, ConnectionToClient client) {
 		EKrutServer.sendRequestToClient(userRequest, client);
 	}
 
 	/**
-	 * Determines if the user with the given username is logged in.
+	 * private void sendRequestToClient(UserRequest userRequest, ConnectionToClient
+	 * client) { EKrutServer.sendRequestToClient(userRequest, client); }
+	 * 
+	 * /** Determines if the user with the given username is logged in.
 	 *
 	 * @param username The username of the user.
 	 * @return `true` if the user is logged in, `false` if the user is not logged in
@@ -158,8 +168,6 @@ public class ServerSessionManager {
 				return new UserResponse(ResultType.OK);
 		return new UserResponse(ResultType.NOT_FOUND);
 	}
-
-
 
 	/**
 	 * Returns the {@link User} object associated with the given
@@ -228,6 +236,17 @@ public class ServerSessionManager {
 		return task;
 	}
 
+	/**
+	 * Fetches a user from the database based on the given fetch type and argument.
+	 * 
+	 * @param fetchType the {@link FetchUserType} that specify the type of the data
+	 *                  to fetch by
+	 * @param argument  the argument to use for fetching the user, can be a
+	 *                  username, phone number, email or area
+	 * @return a {@link UserResponse} object with the result of the fetch attempt
+	 *         and the {@link User} object, if successful.
+	 */
+
 	public UserResponse fetchUser(FetchUserType fetchType, String argument) {
 		if (argument == null)
 			return new UserResponse(ResultType.INVALID_INPUT);
@@ -257,8 +276,20 @@ public class ServerSessionManager {
 		return new UserResponse(ResultType.NOT_FOUND);
 	}
 
-	// String userName, String creditCardNumber,String phoneNumber,String email,
-	// boolean monthlyCharge, String customerOrSub,String subscriberNumber
+	/**
+	 * 
+	 * Accepts a user registration request and updates the user's information in the
+	 * database. This method will update the user's email, phone number, user type
+	 * and also create a new customer object. If the user is a subscriber, a new
+	 * subscriber number will be created.
+	 * 
+	 * @param userToRegister The UserRegistration object to be added to the system.
+	 * @return a {@link UserResponse} object with the result of the registration
+	 *         process. If the registration was successful, the result code will be
+	 *         {@link ResultType#OK}, otherwise it will be
+	 *         {@link ResultType#NOT_FOUND}.
+	 * 
+	 */
 	public UserResponse acceptRegisterUser(UserRegistration userToRegister) {
 		Customer customer;
 		User user = userDAO.fetchUserByUsername(userToRegister.getUsername());
@@ -266,20 +297,27 @@ public class ServerSessionManager {
 			user.setUserType(UserType.CUSTOMER);
 		user.setEmail(userToRegister.getEmail());
 		user.setPhoneNumber(userToRegister.getPhoneNumber());
-		// String subscriberNumber, String username, boolean monthlyCharge, String
-		// creditCardNumber, boolean orderedAsSub
 		customer = new Customer(userToRegister.getCustomerOrSub().equals("subscriber") ? 0 : -1,
-				userToRegister.getUsername(), userToRegister.getMonthlyCharge(),
-				userToRegister.getCreditCardNumber(), false);
-		if (!userDAO.updateUser(user) || !userDAO.createOrUpdateCustomer(customer) || !userDAO.deleteUserFromRegistration(userToRegister.getUsername()))
+				userToRegister.getUsername(), userToRegister.getMonthlyCharge(), userToRegister.getCreditCardNumber(),
+				false);
+		if (!userDAO.updateUser(user) || !userDAO.createOrUpdateCustomer(customer)
+				|| !userDAO.deleteUserFromRegistration(userToRegister.getUsername()))
 			return new UserResponse(ResultType.NOT_FOUND);
 		return new UserResponse(ResultType.OK);
 	}
-	
+
+	/**
+	 * 
+	 * Fetches a user registration list from the database based on the given area.
+	 * 
+	 * @param area the area to use for fetching the registration list
+	 * @return a {@link UserResponse} object with the registration list, if
+	 *         successful, or the result of the fetch attempt.
+	 */
 	public UserResponse getRegistrationList(String area) {
-		ArrayList<UserRegistration> registrationList=userDAO.getUserRegistrationList(area);
-		if (registrationList==null)
+		ArrayList<UserRegistration> registrationList = userDAO.getUserRegistrationList(area);
+		if (registrationList == null)
 			return new UserResponse(ResultType.NOT_FOUND);
-		return new UserResponse(registrationList,ResultType.OK);
+		return new UserResponse(registrationList, ResultType.OK);
 	}
 }

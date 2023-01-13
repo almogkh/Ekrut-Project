@@ -26,10 +26,17 @@ import ekrut.server.managers.ServerSalesManager;
 import ekrut.server.managers.ServerSessionManager;
 import ekrut.server.managers.ServerShipmentManager;
 import ekrut.server.managers.ServerTicketManager;
-//import ekrut.server.managers.ServerTicketManager;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
+/**
+ * 
+ * The EKrutServer class is the main server class of the EKrut application. It
+ * extends the AbstractServer class from the OCSF library and provides methods
+ * for handling incoming client requests.
+ * 
+ * @author Yovel Gabay
+ */
 public class EKrutServer extends AbstractServer {
 
 	public static final int DEFAULT_PORT = 5555;
@@ -42,6 +49,18 @@ public class EKrutServer extends AbstractServer {
 	private ServerShipmentManager serverShipmentManager;
 	private ServerSalesManager serverSalesManager;
 
+	/**
+	 * 
+	 * Constructs a new EKrutServer object and initializes the dbCon,
+	 * serverSessionManager, serverTicketManager, serverOrderManager,
+	 * serverInventoryManager, serverReportManager, serverShipmentManager,
+	 * serverSalesManager.
+	 * 
+	 * @param port       the port number to use for the server
+	 * @param DBuserName the username of the database user
+	 * @param dbUsername the username of the database
+	 * @param dbPassword the password of the database
+	 */
 	public EKrutServer(int port, String DBuserName, String dbUsername, String dbPassword) {
 		super(port);
 		dbCon = new DBController(DBuserName, dbUsername, dbPassword);
@@ -57,6 +76,15 @@ public class EKrutServer extends AbstractServer {
 
 	}
 
+	/**
+	 * 
+	 * Handles incoming messages from the client and routes them to the appropriate
+	 * handling method based on the message's type.
+	 * 
+	 * @param msg    the incoming message from the client
+	 * @param client the {@link ConnectionToClient} object associated with the
+	 *               client
+	 */
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		if (msg instanceof UserRequest) {
@@ -89,7 +117,7 @@ public class EKrutServer extends AbstractServer {
 		case IS_LOGGEDIN:
 			userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
 			break;
-		
+
 		case FETCH_USER:
 			userResponse = serverSessionManager.fetchUser(userRequest.getFetchType(), userRequest.getArgument());
 			break;
@@ -236,6 +264,13 @@ public class EKrutServer extends AbstractServer {
 		sendRequestToClient(response, client);
 	}
 
+	/**
+	 * 
+	 * The method sends object message to the client.
+	 * 
+	 * @param msg    The message object to send to the client.
+	 * @param client The client to send the message to.
+	 */
 	public static void sendRequestToClient(Object msg, ConnectionToClient client) {
 		try {
 			client.sendToClient(msg);
@@ -245,15 +280,36 @@ public class EKrutServer extends AbstractServer {
 		}
 	}
 
+	/**
+	 * 
+	 * This method is called when a client disconnects or when an exception is
+	 * thrown by a client. it logs out the user associated with the disconnected
+	 * client.
+	 * 
+	 * @param client    the client that disconnected
+	 * @param exception the exception that was thrown
+	 */
 	@Override
 	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
 		serverSessionManager.logoutUser(client, null);
 	}
 
+	/**
+	 * 
+	 * This method returns the session manager
+	 * 
+	 * @return the session manager
+	 */
 	public ServerSessionManager getSession() {
 		return serverSessionManager;
 	}
 
+	/**
+	 * 
+	 * This method connects the server to the database
+	 * 
+	 * @return true if the connection was successful, false otherwise
+	 */
 	public boolean connect() {
 		if (!dbCon.connect())
 			return false;
@@ -269,7 +325,7 @@ public class EKrutServer extends AbstractServer {
 	@Override
 	protected void clientConnected(final ConnectionToClient client) {
 	}
-	
+
 	/**
 	 * Imports users into the system from the external user management system.
 	 * 
