@@ -17,7 +17,6 @@ import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
 import ekrut.server.EKrutServer;
 import ekrut.server.TimeScheduler;
-import ekrut.server.UsersImporter;
 import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
 import javafx.collections.FXCollections;
