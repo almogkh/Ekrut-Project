@@ -27,7 +27,7 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Text layoutX="107.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please confirm shimpment arrival">
+            <Text layoutX="107.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please confirm shipment arrival">
                <font>
                   <Font name="Arial Rounded MT Bold" size="35.0" />
                </font>
