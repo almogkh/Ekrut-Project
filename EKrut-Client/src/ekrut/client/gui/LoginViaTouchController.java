@@ -3,7 +3,6 @@ package ekrut.client.gui;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientSessionManager;
 import ekrut.entity.User;
@@ -48,6 +47,8 @@ public class LoginViaTouchController {
 	@FXML
 	void LoginViaTouch(ActionEvent event) {
 		String username = usersCBox.getValue();
+		if (username == null)
+			return;
 		String password = usersAndPasswords.get(username);
 
 		clientLoginController.usernameTxt.setText(username);
