@@ -1,6 +1,7 @@
 package ekrut.server.managers;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import ekrut.entity.Order;
 import ekrut.entity.OrderStatus;
@@ -9,7 +10,6 @@ import ekrut.entity.User;
 import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentResponse;
-import ekrut.server.PopupUserNotifier;
 import ekrut.server.db.DBController;
 import ekrut.server.db.OrderDAO;
 import ekrut.server.db.UserDAO;
@@ -24,7 +24,7 @@ import ekrut.server.intefaces.ShipmentManagerUtils;
  * 
  * @author Nir Betesh
  */
-public class ServerShipmentManager {
+public class ServerShipmentManager extends AbstractServerManager<ShipmentRequest, ShipmentResponse> {
 
 	private OrderDAO orderDAO;
 	private UserDAO userDAO;
@@ -35,12 +35,32 @@ public class ServerShipmentManager {
 	 * 
 	 * @param con the database controller to use for accessing the database
 	 */
-	public ServerShipmentManager(DBController con, ServerSessionManager serverSessionManager) {
+	public ServerShipmentManager(DBController con, IUserNotifier userNotifier) {
+		super(ShipmentRequest.class, new ShipmentResponse(ResultType.UNKNOWN_ERROR));
 		orderDAO = new OrderDAO(con);
 		userDAO = new UserDAO(con);
-		userNotifier = new PopupUserNotifier(con, serverSessionManager);
+		this.userNotifier = userNotifier;
 	}
 
+	@Override
+	protected ShipmentResponse handleRequest(ShipmentRequest request, User user) {
+		switch (request.getAction()) {
+		case FETCH_SHIPMENT_ORDERS:
+			return fetchShipmentRequests(request, user.getArea());
+		case UPDATE_STATUS:
+			switch (request.getStatus()) {
+			case SUBMITTED:
+				return confirmShipment(request);
+			case AWAITING_DELIVERY:
+				return confirmDelivery(request);
+			case DELIVERY_CONFIRMED:
+				return setDone(request);
+			default:
+			}
+		default:
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+		}
+	}
 
 	/**
 	 * Fetches a list of shipment requests for approval.
@@ -48,9 +68,8 @@ public class ServerShipmentManager {
 	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
 	 *                        request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
-	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
-	public ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest, String area) {
+	private ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest, String area) {
 		// Check if shipmentRequest is null.
 		if (shipmentRequest == null)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
@@ -70,9 +89,8 @@ public class ServerShipmentManager {
 	 * 
 	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
-	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
-	public ShipmentResponse confirmShipment(ShipmentRequest shipmentRequest) {
+	private ShipmentResponse confirmShipment(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
@@ -109,12 +127,14 @@ public class ServerShipmentManager {
 		// Send message to customer when his shippment was approved.
 		String username = order.getUsername();
 		
+		String estimateTime = estimateDeliveryTime.format(DateTimeFormatter.ofPattern("dd/MM/YY HH:mm"));
+		
 		// Q.Nir - Need to check if success??
 		User user = userDAO.fetchUserByUsername(username);	
 		String notificationMsg = "Hi " + user.getFirstName() + ",\n\n"
 							   + "We wanted to let you know that your delivery is approved by our shipment department,\n"
 							   + "and your shipment is currently in the checkout process!.\n"
-							   + "your shipment expected to arrive by " + estimateDeliveryTime.toString() + " o'clock.\n"
+							   + "your shipment expected to arrive by " + estimateTime + " o'clock.\n"
 							   + "When your shipment has arrived, please confirm that you have received the shipment in the application.\n"
 							   + "Keep an eye out for it and let us know if you have any questions or concerns.\n\n"
 							   + "Best regards,\nEKrut";
@@ -129,7 +149,7 @@ public class ServerShipmentManager {
 	 *                        request details.
 	 * @return a {@code ShipmentResponse} object with the result of the operation.
 	 */
-	public ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
+	private ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
@@ -164,7 +184,7 @@ public class ServerShipmentManager {
 	 *                        request details.
 	 * @return a {@code ShipmentResponse} object with the result of the operation.
 	 */
-	public ShipmentResponse setDone(ShipmentRequest shipmentRequest) {
+	private ShipmentResponse setDone(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);

@@ -16,7 +16,7 @@ public class Report implements Serializable{
 	private String ekrutLocation;
 	
 	// Each data structure holds the relevant data to make a report
-	private Map<String, ArrayList<Integer>> InventoryReportData;
+	private Map<String, ArrayList<Integer>> inventoryReportData;
 	private Map<String, Integer> customerReportData;
 	private Map<String, ArrayList<Integer>> orderReportData;
 	private Map<String, Integer> topSellersData;
@@ -60,9 +60,9 @@ public class Report implements Serializable{
 
 	// Inventory report constructor 
 	 public Report(Integer reportID, ReportType reportType, LocalDateTime date,
-			 String ekrutLocation, String area, Map<String, ArrayList<Integer>> InventoryReportData, Integer threshold) {
+			 String ekrutLocation, String area, Map<String, ArrayList<Integer>> inventoryReportData, Integer threshold) {
 		 this(reportID, reportType, date, ekrutLocation, area);
-		 this.InventoryReportData = InventoryReportData;
+		 this.inventoryReportData = inventoryReportData;
 		 this.threshold = threshold;
 	 }
 
@@ -87,7 +87,7 @@ public class Report implements Serializable{
 	}
 
 	public Map<String, ArrayList<Integer>> getInventoryReportData() {
-		return InventoryReportData;
+		return inventoryReportData;
 	}
 
 	public Map<String, Integer> getCustomerReportData() {

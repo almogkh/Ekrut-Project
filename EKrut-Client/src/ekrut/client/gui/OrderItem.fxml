@@ -13,7 +13,7 @@
 
 <fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="156.0" prefWidth="753.0" style="-fx-background-radius: 20;" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane prefHeight="200.0" prefWidth="200.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <Pane prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
             <ImageView fx:id="itemImage" fitHeight="144.0" fitWidth="180.0" pickOnBounds="true" styleClass="item" />
          </children>

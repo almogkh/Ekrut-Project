@@ -6,6 +6,7 @@ import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.entity.Ticket;
 import ekrut.entity.TicketStatus;
+import ekrut.entity.User;
 import ekrut.net.ResultType;
 import ekrut.net.TicketRequest;
 import ekrut.net.TicketResponse;
@@ -19,15 +20,13 @@ import ekrut.server.db.TicketDAO;
  * Uses a TicketDAO for database operations.
  * 
  * @author Noy Malka
- * 
  */
 
-public class ServerTicketManager {
+public class ServerTicketManager extends AbstractServerManager<TicketRequest, TicketResponse> {
 
 	private TicketDAO ticketDAO;
 	private ItemDAO itemDAO;
 	private InventoryItemDAO inventoryItemDAO;
-	
 	
 	/**
      * Constructs a new ServerTicketManager object with the given DBController.
@@ -35,20 +34,35 @@ public class ServerTicketManager {
      * @param con the DBController to use for database operations
      */
 	public ServerTicketManager(DBController con) {
+		super(TicketRequest.class, new TicketResponse(ResultType.UNKNOWN_ERROR));
 		ticketDAO = new TicketDAO(con);
 		itemDAO = new ItemDAO(con);
 		inventoryItemDAO = new InventoryItemDAO(con);
 	}
 	
+	@Override
+	protected TicketResponse handleRequest(TicketRequest request, User user) {
+		switch (request.getAction()) {
+		case CREATE:
+			return createTicket(request);
+		case UPDATE_STATUS:
+			return updateTicketStatus(request);
+		case FETCH_BY_AREA:
+			return fetchTicketsByArea(request);
+		case FETCH_BY_USERNAME:
+			return fetchTicketsByUsername(request);
+		default:
+			return new TicketResponse(ResultType.UNKNOWN_ERROR);
+		}
+	}
 	
 	/**
 	 * Creates a new ticket using the information provided in the TicketRequest.
 	 * 
 	 * @param ticketRequest the request containing the information for the ticket to be created
 	 * @return a TicketResponse indicating the result of the operation
-	 * @throws NullPointerException if the ticketRequest is null
 	 */
-	public TicketResponse CreateTicket(TicketRequest ticketRequest) {
+	private TicketResponse createTicket(TicketRequest ticketRequest) {
 		if (ticketRequest == null) {
 			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
@@ -59,12 +73,18 @@ public class ServerTicketManager {
 		//get area by ekrutLocation
 		String area = ticketDAO.fetchAreaByEkrutLocation(ekrutLocation);
 		
-		//get item details 
-		Item thisItem=itemDAO.fetchItem(itemID);
-		String itemName = thisItem.getItemName();
-		
-		//get ekrutLocation's threshold
-		InventoryItem thisInventoryItem = inventoryItemDAO.fetchInventoryItem(itemID,ekrutLocation);
+		InventoryItem thisInventoryItem;
+		String itemName;
+		try {
+			//get item details 
+			Item thisItem=itemDAO.fetchItem(itemID);
+			itemName = thisItem.getItemName();
+			
+			//get ekrutLocation's threshold
+			thisInventoryItem = inventoryItemDAO.fetchInventoryItem(itemID,ekrutLocation);
+		} catch (Exception e) {
+			return new TicketResponse(ResultType.UNKNOWN_ERROR);
+		}
 		int threshold = thisInventoryItem.getItemThreshold();
 		
 		//get username name of the operation worker
@@ -86,9 +106,8 @@ public class ServerTicketManager {
 	 * 
 	 * @param ticketRequest the request containing the ticket ID and new status
 	 * @return the response to the request, indicating the result of the update operation
-	 * @throws NullPointerException if ticketRequest is null
 	 */
-	public TicketResponse updateTicketStatus(TicketRequest ticketRequest) {
+	private TicketResponse updateTicketStatus(TicketRequest ticketRequest) {
 		if (ticketRequest == null) {
 			return new TicketResponse(ResultType.INVALID_INPUT);
 		}
@@ -110,10 +129,9 @@ public class ServerTicketManager {
 	 *
 	 * @param ticketRequest the ticket request containing the location to search for
 	 * @return a TicketResponse object with the result of the operation and the fetched tickets, if found
-	 * @throws NullPointerException if the ticketRequest parameter is null
 	 */
 	
-	public TicketResponse fetchTicketsByArea(TicketRequest ticketRequest) {
+	private TicketResponse fetchTicketsByArea(TicketRequest ticketRequest) {
 		//if ticketRequest is null throw NullPointerException
 		if (ticketRequest == null) {
 			return new TicketResponse(ResultType.INVALID_INPUT);
@@ -139,9 +157,8 @@ public class ServerTicketManager {
 	 *
 	 * @param ticketRequest The request containing the username to search for.
 	 * @return A response with a list of tickets that are associated with the specified username, if found
-	 * @throws NullPointerException if the ticketRequest is null.
 	 */
-	public TicketResponse fetchTicketsByUsername(TicketRequest ticketRequest) {
+	private TicketResponse fetchTicketsByUsername(TicketRequest ticketRequest) {
 		//if ticketRequest is null throw NullPointerException
 		if (ticketRequest == null) {
 			return new TicketResponse(ResultType.INVALID_INPUT);

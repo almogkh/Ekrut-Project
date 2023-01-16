@@ -50,10 +50,10 @@
    <children>
       <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Line endX="-58.5" startX="-110.0" stroke="WHITE" />
+            <Line endX="-21.5" startX="-110.0" stroke="WHITE" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="65.0" prefWidth="584.0" text="Create a New Ticket" textAlignment="CENTER">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="55.0" />
+                  <Font name="Arial Rounded MT Bold" size="50.0" />
                </font>
                <effect>
                   <DropShadow>
@@ -63,7 +63,7 @@
                   </DropShadow>
                </effect>
             </Label>
-            <Line endX="-58.5" startX="-110.0" stroke="WHITE" />
+            <Line endX="-58.5" startX="-137.5" stroke="WHITE" />
          </children>
       </HBox>
       <Pane prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">

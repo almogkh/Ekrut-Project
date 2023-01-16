@@ -9,6 +9,7 @@ import com.mysql.cj.MysqlType;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.server.intefaces.IItemQuantityFetcher;
+import ekrut.server.managers.DeadlockException;
 
 /**
  * InventoryItem DAO control all Inventory Item related DB interactions.
@@ -52,10 +53,11 @@ public class InventoryItemDAO {
 	 * @param ekrutLocation a String representing the location of the ekrut associated with the threshold breach
 	 * @param area a String representing the area associated with the threshold breach
 	 * @return a boolean value indicating whether the insertion was successful or not
+	 * @throws DeadlockException if a deadlock is detected during a transaction
 	 * @throws RuntimeException if an SQLException is thrown while trying to close the prepared statement
 	 * @see java.time.LocalDateTime
 	 */
-	public boolean addThresholdBreach(LocalDateTime date, String itemName, String ekrutLocation, String area) {
+	public boolean addThresholdBreach(LocalDateTime date, String itemName, String ekrutLocation, String area) throws DeadlockException {
 		PreparedStatement ps = con.getPreparedStatement(
 				"INSERT INTO threshold_breaches (date, itemName, ekrutLocation, area) VALUES(?, ?, ?, ?);");
 		try {
@@ -65,6 +67,8 @@ public class InventoryItemDAO {
 			ps.setString(4, area);
 			return 1 == con.executeUpdate(ps);
 		} catch (SQLException e) {
+			if (e.getSQLState().equals("40001"))
+				throw new DeadlockException();
 			return false;
 		} finally {
 			try {
@@ -73,37 +77,6 @@ public class InventoryItemDAO {
 				throw new RuntimeException(e);
 			}
 		}
-	}
-	
-	/**
-	 * Adds a new ekrut location to the ekrut_machines table in the database.
-	 *
-	 * @param area the area where the ekrut location is located
-	 * @param ekrutLocation the name of the ekrut location
-	 * @param threshold the threshold for the ekrut location
-	 * @return true if the ekrut location was added successfully, false otherwise
-	 */
-	public boolean addEkrutLocation(String area, String ekrutLocation, int threshold) {
-		PreparedStatement ps = con.getPreparedStatement(
-				"INSERT INTO ekrut_machines (area, ekrutLocation, threshold) VALUES(?, ?, ?);");
-		try {
-			ps.setString(1, area);
-			ps.setString(2, ekrutLocation);
-			ps.setInt(3, threshold);
-			return 1 == con.executeUpdate(ps);
-		} catch (SQLException e) {
-			return false;
-		} finally {
-			try {
-				ps.close();
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
-	
-	public boolean addItemToEkrutLocation(String area, String ekrutLocation, int itemId) {
-		return addItemToEkrutLocation(area, ekrutLocation, itemId, 0);
 	}
 
 	/**
@@ -114,8 +87,9 @@ public class InventoryItemDAO {
 	 * @param itemId The id of the item to be added.
 	 * @param quantity The quantity of the item to be added.
 	 * @return true if the item was successfully added to the ekrutLocation, false otherwise.
+	 * @throws DeadlockException if a deadlock is detected during a transaction
 	*/
-	public boolean addItemToEkrutLocation(String area, String ekrutLocation, int itemId, int quantity) {
+	public boolean addItemToEkrutLocation(String area, String ekrutLocation, int itemId, int quantity) throws DeadlockException {
 		PreparedStatement ps1 = con.getPreparedStatement(
 				"SELECT TRUE FROM ekrut_machines WHERE area = ? AND ekrutLocation = ?;");
 		PreparedStatement ps2 = con.getPreparedStatement(
@@ -133,6 +107,8 @@ public class InventoryItemDAO {
 				return false;
 			return 1 == con.executeUpdate(ps2);
 		} catch (SQLException e) {
+			if (e.getSQLState().equals("40001"))
+				throw new DeadlockException();
 			return false;
 		} finally {
 			try {
@@ -151,9 +127,10 @@ public class InventoryItemDAO {
 	 *	@param ekrutLocation the ekrut location whose threshold is being updated
 	 *	@param newThreshold the new threshold value
 	 *	@return true if the update was successful, false otherwise
+	 *  @throws DeadlockException if a deadlock is detected during a transaction
 	 *	@throws RuntimeException if there is an error executing the update query
 	 */
-	public boolean updateEkrutLocationThreshold(String ekrutLocation, int newThreshold) {
+	public boolean updateEkrutLocationThreshold(String ekrutLocation, int newThreshold) throws DeadlockException {
 		PreparedStatement ps = con.getPreparedStatement(
 				"UPDATE ekrut_machines SET threshold = ? WHERE ekrutLocation = ?;");
 		try {
@@ -161,6 +138,8 @@ public class InventoryItemDAO {
 			ps.setString(2, ekrutLocation);
 			return 1 == con.executeUpdate(ps);
 		} catch (SQLException e) {
+			if (e.getSQLState().equals("40001"))
+				throw new DeadlockException();
 			throw new RuntimeException(e);
 		} finally {
 			try {
@@ -180,8 +159,9 @@ public class InventoryItemDAO {
 	* @param itemId the ID of the item to be updated
 	* @param quantity the new quantity of the item
 	* @return true if the update was successful, false otherwise
+	* @throws DeadlockException if a deadlock is detected during a transaction
 	*/
-	public boolean updateItemQuantity(String ekrutLocation, int itemId, int quantity) {
+	public boolean updateItemQuantity(String ekrutLocation, int itemId, int quantity) throws DeadlockException {
 		// Check such item exists in ekrutLocation
 		if (fetchInventoryItem(itemId, ekrutLocation).getItemQuantity() == -1) {
 			String area = fetchAreaByEkrutLocation(ekrutLocation);
@@ -197,6 +177,8 @@ public class InventoryItemDAO {
 				ps.setInt(3, itemId);
 				return 1 == con.executeUpdate(ps);
 			} catch (SQLException e) {
+				if (e.getSQLState().equals("40001"))
+					throw new DeadlockException();
 				throw new RuntimeException(e);
 			} finally {
 				try {
@@ -243,7 +225,7 @@ public class InventoryItemDAO {
 	 * @return a list of InventoryItems, or null if there are no items at the given ekrut location or if there was an error
 	 * @throws RuntimeException if there is a problem closing the Prepared Statement object
 	 */
-	public ArrayList<InventoryItem> fetchAllItemsByEkrutLocation(String ekrutLocation) {
+	public ArrayList<InventoryItem> fetchAllItemsByEkrutLocation(String ekrutLocation) throws DeadlockException {
 		PreparedStatement ps = con.getPreparedStatement(
 				"SELECT ii.area, ii.ekrutLocation, ii.itemId, ii.quantity, em.threshold "
 				+ "FROM inventory_items ii, ekrut_machines em "
@@ -263,6 +245,8 @@ public class InventoryItemDAO {
 			}
 			return inventoryItems;
 		} catch (SQLException e1) {
+			if (e1.getSQLState().equals("40001"))
+				throw new DeadlockException();
 			return null;
 		} finally {
 			try {
@@ -281,7 +265,7 @@ public class InventoryItemDAO {
 	 * @return the InventoryItem, or null if the item could not be found or there was an error
 	 * @throws RuntimeException if there is a problem closing the Prepared Statement object
 	 */
-	public InventoryItem fetchInventoryItem(int itemId, String ekrutLocation) {
+	public InventoryItem fetchInventoryItem(int itemId, String ekrutLocation) throws DeadlockException {
 		PreparedStatement ps = con.getPreparedStatement("SELECT area, threshold FROM ekrut_machines WHERE ekrutLocation = ?;");
 		
 		try {
@@ -300,6 +284,8 @@ public class InventoryItemDAO {
 			}
 			return null;
 		} catch (SQLException e1) {
+			if (e1.getSQLState().equals("40001"))
+				throw new DeadlockException();
 			return null;
 		} finally {
 			try {

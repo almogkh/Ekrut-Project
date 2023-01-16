@@ -23,30 +23,44 @@ import ekrut.server.db.OrderDAO;
 import ekrut.server.db.TicketDAO;
 import ekrut.server.intefaces.IPaymentProcessor;
 import ekrut.server.intefaces.StubPaymentProcessor;
-import ocsf.server.ConnectionToClient;
 
 /**
  * Manages order management on the server side.
  * 
  * @author Almog Khaikin
  */
-public class ServerOrderManager {
+public class ServerOrderManager extends AbstractServerManager<OrderRequest, OrderResponse> {
 
+	private DBController dbCon;
 	private OrderDAO orderDAO;
 	private TicketDAO ticketDAO;
-	private ServerSessionManager sessionManager;
 	private ServerSalesManager salesManager;
 	private ServerInventoryManager inventoryManager;
 	private IPaymentProcessor paymentProcessor;
 	
-	public ServerOrderManager(DBController dbCon, ServerSessionManager sessionManager,
-							ServerSalesManager salesManager, ServerInventoryManager inventoryManager) {
+	public ServerOrderManager(DBController dbCon, ServerSalesManager salesManager,
+							ServerInventoryManager inventoryManager) {
+		super(OrderRequest.class, new OrderResponse(ResultType.UNKNOWN_ERROR));
+		this.dbCon = dbCon;
 		this.orderDAO = new OrderDAO(dbCon);
 		this.ticketDAO = new TicketDAO(dbCon);
-		this.sessionManager = sessionManager;
 		this.salesManager = salesManager;
 		this.inventoryManager = inventoryManager;
 		this.paymentProcessor = new StubPaymentProcessor();
+	}
+	
+	@Override
+	protected OrderResponse handleRequest(OrderRequest request, User user) {
+		switch (request.getAction()) {
+		case CREATE:
+			return createOrder(request, user);
+		case FETCH:
+			return fetchOrders(request, user);
+		case PICKUP:
+			return pickupOrder(request, user);
+		default:
+			return new OrderResponse(ResultType.UNKNOWN_ERROR);
+		}
 	}
 	
 	private float computeDiscount(Order order, User user) {
@@ -88,14 +102,13 @@ public class ServerOrderManager {
 	 * the user's credit card and inserts the order into the database.
 	 * 
 	 * @param request the order creation request
-	 * @param con     the connection through which the request was received
+	 * @param user    the user that sent the request
 	 * @return        a response detailing whether the operation was successful
 	 */
-	public OrderResponse createOrder(OrderRequest request, ConnectionToClient con) {
+	private OrderResponse createOrder(OrderRequest request, User user) {
 		if (request.getAction() != OrderRequestType.CREATE || request.getOrder() == null)
 			return new OrderResponse(ResultType.INVALID_INPUT);
 		
-		User user = getAssociatedUser(con);
 		if (user == null)
 			return new OrderResponse(ResultType.LOGIN_REQUIRED);
 		
@@ -131,43 +144,56 @@ public class ServerOrderManager {
 				return new OrderResponse(ResultType.INVALID_INPUT);
 		}
 		
-		if (!orderDAO.createOrder(order, subscriber ? user.getUsername() : null))
-			return new OrderResponse(ResultType.UNKNOWN_ERROR);
-		
-		if (order.getEkrutLocation() != null) {
-			ArrayList<InventoryItem> items = inventoryManager.fetchInventoryItemsByEkrutLocation(
-					new InventoryItemRequest(InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE, 
-											order.getEkrutLocation())).getInventoryItems();
-			for (OrderItem item : order.getItems()) {
-				for (InventoryItem invItem : items) {
-					if (item.getItem().equals(invItem.getItem())) {
-						inventoryManager.updateInventoryQuantity(new InventoryItemRequest(
+		int retries = 5;
+		do {
+			dbCon.beginTransaction();
+			try {
+				if (!orderDAO.createOrder(order, subscriber ? user.getUsername() : null)) {
+					dbCon.abortTransaction();
+					return new OrderResponse(ResultType.UNKNOWN_ERROR);
+				}
+				
+				if (order.getEkrutLocation() != null) {
+					ArrayList<InventoryItem> items = inventoryManager.fetchInventoryItemsByEkrutLocation(
+						new InventoryItemRequest(InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE, 
+												order.getEkrutLocation())).getInventoryItems();
+					for (OrderItem item : order.getItems()) {
+						for (InventoryItem invItem : items) {
+							if (item.getItem().equals(invItem.getItem())) {
+								inventoryManager.updateInventoryQuantity(new InventoryItemRequest(
 															InventoryItemRequestType.UPDATE_ITEM_QUANTITY,
 															item.getItem().getItemId(),
 															invItem.getItemQuantity() - item.getItemQuantity(),
 															order.getEkrutLocation()));
-						break;
+								break;
+							}
+						}
 					}
 				}
+				
+				dbCon.commitTransaction();
+				// We need to return the order ID for remote orders.
+				return new OrderResponse(ResultType.OK, order.getOrderId());	
+			} catch (DeadlockException e) {
+				dbCon.abortTransaction();
+				retries--;
 			}
-		}
+		} while (retries > 0);
 		
-		// We need to return the order ID for remote orders.
-		return new OrderResponse(ResultType.OK, order.getOrderId());	
+		return new OrderResponse(ResultType.UNKNOWN_ERROR);
 	}
 	
 	/**
 	 * Retrieves all the orders that belong to this user.
 	 * 
 	 * @param request the fetch request
-	 * @param con     the connection through which the request was received
+	 * @param user    the user that sent the request
 	 * @return        a response containing the list of orders or an error if one occurred
 	 */
-	public OrderResponse fetchOrders(OrderRequest request, ConnectionToClient con) {
+	private OrderResponse fetchOrders(OrderRequest request, User user) {
 		if (request.getAction() != OrderRequestType.FETCH)
 			return new OrderResponse(ResultType.INVALID_INPUT);
 		
-		User user = getAssociatedUser(con);
 		if (user == null)
 			return new OrderResponse(ResultType.LOGIN_REQUIRED);
 		
@@ -182,14 +208,13 @@ public class ServerOrderManager {
 	 * Handles pickup of an order that was ordered remotely.
 	 * 
 	 * @param request the order pickup request
-	 * @param con     the connection through which the request was received
+	 * @param user    the user that sent the request
 	 * @return        the result of the operation
 	 */
-	public OrderResponse pickupOrder(OrderRequest request, ConnectionToClient con) {
+	private OrderResponse pickupOrder(OrderRequest request, User user) {
 		if (request.getAction() != OrderRequestType.PICKUP)
 			return new OrderResponse(ResultType.INVALID_INPUT);
 		
-		User user = getAssociatedUser(con);
 		if (user == null)
 			return new OrderResponse(ResultType.LOGIN_REQUIRED);
 		
@@ -200,11 +225,8 @@ public class ServerOrderManager {
 		if (order.getType() != OrderType.REMOTE || !order.getUsername().equals(user.getUsername()))
 			return new OrderResponse(ResultType.INVALID_INPUT);
 		
-		orderDAO.updateOrderStatus(request.getOrderId(), OrderStatus.DONE);
+		if (!orderDAO.updateOrderStatus(request.getOrderId(), OrderStatus.DONE))
+			return new OrderResponse(ResultType.UNKNOWN_ERROR);
 		return new OrderResponse(ResultType.OK);
-	}
-	
-	private User getAssociatedUser(ConnectionToClient con) {
-		return sessionManager.getUser(con);
 	}
 }

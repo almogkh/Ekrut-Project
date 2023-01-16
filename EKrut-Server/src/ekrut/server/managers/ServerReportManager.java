@@ -19,6 +19,7 @@ import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
 import ekrut.entity.Report;
 import ekrut.entity.ReportType;
+import ekrut.entity.User;
 import ekrut.net.ReportRequest;
 import ekrut.net.ReportResponse;
 import ekrut.net.ResultType;
@@ -27,21 +28,34 @@ import ekrut.server.db.DBController;
 import ekrut.server.db.InventoryItemDAO;
 import ekrut.server.db.ReportDAO;
 import ekrut.server.db.UserDAO;
-import ocsf.server.ConnectionToClient;
 
 /**
  * Manages Report management on the server side.
  * @author Tal Gaon
  */
-public class ServerReportManager {
+public class ServerReportManager extends AbstractServerManager<ReportRequest, ReportResponse> {
+	
 	private ReportDAO reportDAO;
 	private InventoryItemDAO inventoryItemDAO;
 	private UserDAO userDAO;
 	
 	public ServerReportManager(DBController con) {
+		super(ReportRequest.class, new ReportResponse(ResultType.UNKNOWN_ERROR));
 		reportDAO = new ReportDAO(con);
 		inventoryItemDAO = new InventoryItemDAO(con);
 		userDAO = new UserDAO(con);
+	}
+	
+	@Override
+	protected ReportResponse handleRequest(ReportRequest request, User user) {
+		switch (request.getReportRequestType()) {
+		case FETCH_FACILITIES:
+			return fetchFacilitiesByArea(request, user);
+		case FETCH_REPORT:
+			return fetchReport(request, user);
+		default:
+			return new ReportResponse(ResultType.UNKNOWN_ERROR);
+		}
 	}
 	
 	/**
@@ -51,7 +65,7 @@ public class ServerReportManager {
 	 * @param client the client requesting the report
 	 * @return a response containing the retrieved report or an error result if the report was not found
 	 */
-	public ReportResponse fetchReport(ReportRequest reportRequest, ConnectionToClient client) {
+	public ReportResponse fetchReport(ReportRequest reportRequest, User user) {
 
 		Report report = reportDAO.fetchReport(reportRequest.getDate(), reportRequest.getLocation(), reportRequest.getArea(), reportRequest.getReportType());
 		
@@ -68,7 +82,7 @@ public class ServerReportManager {
 	 * @param client the client requesting the list of facilities
 	 * @return a response containing the list of facilities or an error result if no facilities were found in the specified area
 	 */
-	public ReportResponse fetchFacilitiesByArea(ReportRequest reportRequest, ConnectionToClient client){
+	public ReportResponse fetchFacilitiesByArea(ReportRequest reportRequest, User user) {
 		
 		ArrayList<String> facilities = reportDAO.fetchFacilitiesByArea(reportRequest.getArea());
 		if (facilities == null) 
@@ -207,7 +221,12 @@ public class ServerReportManager {
 		// Process the threshold breaches to count the number of breaches for each item
 		Map<String, Integer> tresholdBreachesCounted = CountThresholdBreaches(thersholdBreaches);
 		// Get the list of all items in the location
-		ArrayList<InventoryItem> allItemsInLocation = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
+		ArrayList<InventoryItem> allItemsInLocation;
+		try {
+			allItemsInLocation = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
+		} catch (DeadlockException e) {
+			allItemsInLocation = new ArrayList<>();
+		}
 		int facilityThreshold = 0;
 		// If the list of items is not empty, extract the facility threshold from the first item
 		if (!allItemsInLocation.isEmpty()) {
@@ -469,7 +488,6 @@ public class ServerReportManager {
 	 * @param date the date for which to generate the reports
 	 */
 	public void generateMonthlyReports(LocalDateTime date) {
-
 		String areas[] = {"UAE", "North", "South"};
 		ArrayList<String> locationsList;
 		for (String area : areas) {

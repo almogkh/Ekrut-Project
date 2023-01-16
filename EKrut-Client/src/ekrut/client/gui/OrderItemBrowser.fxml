@@ -40,39 +40,39 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Label layoutX="293.0" layoutY="1.0" text="Order process">
+            <Label layoutX="284.0" layoutY="7.0" text="Order process">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="174.0" layoutY="40.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="175.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="21.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="287.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="286.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="324.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="323.0" layoutY="40.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="436.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="435.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="473.0" layoutY="36.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="472.0" layoutY="40.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: #F77D6E; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <ScrollPane layoutY="75.0" prefHeight="445.0" prefWidth="770.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <ScrollPane layoutY="139.0" prefHeight="381.0" prefWidth="770.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <content>
-                  <VBox fx:id="orderVBox" prefHeight="445.0" prefWidth="752.0" spacing="10.0" />
+                  <VBox fx:id="orderVBox" prefHeight="436.0" prefWidth="754.0" spacing="10.0" />
                </content>
             </ScrollPane>
             <Button fx:id="cancelOrderBtn" layoutX="447.0" layoutY="535.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="36.0" prefWidth="151.0" style="-fx-background-color: #55565f;" text="Cancel order">
@@ -95,6 +95,18 @@
                   <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
             </Label>
+            <Text layoutX="28.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select the desired quantity and click 'update quantity' to update your cart products" textAlignment="CENTER" wrappingWidth="680.0771484375">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="22.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.41999998688697815" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Text>
          </children>
       </Pane>
    </children>

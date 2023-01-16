@@ -5,6 +5,7 @@ import ekrut.server.db.InventoryItemDAO;
 import ekrut.server.db.ItemDAO;
 import ekrut.server.db.UserDAO;
 import ekrut.server.intefaces.IUserNotifier;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import ekrut.entity.InventoryItem;
@@ -21,8 +22,9 @@ import ekrut.net.ResultType;
  * 
  * @author Ofek Malka
  */
-public class ServerInventoryManager {
+public class ServerInventoryManager extends AbstractServerManager<InventoryItemRequest, InventoryItemResponse> {
 	
+	private DBController con;
 	private InventoryItemDAO inventoryItemDAO;
 	private ItemDAO itemDAO;
 	private UserDAO userDAO;
@@ -33,6 +35,8 @@ public class ServerInventoryManager {
 	 * Constructs a new ServerInventoryManager.
 	 */
 	public ServerInventoryManager(DBController con, IUserNotifier userNotifier) {
+		super(InventoryItemRequest.class, new InventoryItemResponse(ResultType.UNKNOWN_ERROR));
+		this.con = con;
 		inventoryItemDAO = new InventoryItemDAO(con);
 		itemDAO = new ItemDAO(con);
 		userDAO = new UserDAO(con);
@@ -47,23 +51,38 @@ public class ServerInventoryManager {
 	 * @param user the user making the request
 	 * @return an {@link InventoryItemResponse} indicating the result of the request
 	 */
-	public InventoryItemResponse handleRequest(InventoryItemRequest inventoryItemRequest, User user) {
+	@Override
+	protected InventoryItemResponse handleRequest(InventoryItemRequest inventoryItemRequest, User user) {
 		if (inventoryItemRequest == null) return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		InventoryItemRequestType action = inventoryItemRequest.getAction();
-		switch (action) {
-		case UPDATE_ITEM_QUANTITY:
-			return updateInventoryQuantity(inventoryItemRequest);
-		case FETCH_ALL_LOCATIONS_IN_AREA:
-			return fetchAllEkrutLocationsByArea(inventoryItemRequest);
-		case UPDATE_ITEM_THRESHOLD:
-			return updateItemThreshold(inventoryItemRequest);
-		case FETCH_ALL_ITEMS:
-			return fetchAllItems(inventoryItemRequest);
-		case FETCH_ALL_INVENTORYITEMS_IN_MACHINE:
-			return fetchInventoryItemsByEkrutLocation(inventoryItemRequest);
-		default:
-			return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
-		}
+		InventoryItemResponse response;
+		int retries = 5;
+		do {
+			try {
+				con.beginTransaction();
+				switch (action) {
+				case UPDATE_ITEM_QUANTITY:
+					response = updateInventoryQuantity(inventoryItemRequest);
+				case FETCH_ALL_LOCATIONS_IN_AREA:
+					response = fetchAllEkrutLocationsByArea(inventoryItemRequest);
+				case UPDATE_ITEM_THRESHOLD:
+					response = updateItemThreshold(inventoryItemRequest);
+				case FETCH_ALL_ITEMS:
+					response =fetchAllItems(inventoryItemRequest);
+				case FETCH_ALL_INVENTORYITEMS_IN_MACHINE:
+					response = fetchInventoryItemsByEkrutLocation(inventoryItemRequest);
+				default:
+					response = new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
+				}
+				con.commitTransaction();
+				return response;
+			} catch (DeadlockException e) {
+				con.abortTransaction();
+				retries--;
+			}
+		} while (retries > 0);
+		
+		return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 	}
 	
 	
@@ -73,9 +92,8 @@ public class ServerInventoryManager {
 	 *
 	 * @param inventoryUpdateItemRequest an InventoryItemRequest object that contains the item ID, ekrut location, and new quantity value for the InventoryItem to be updated
 	 * @return an InventoryItemResponse object indicating the result of the update operation
-	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	public InventoryItemResponse updateInventoryQuantity(InventoryItemRequest inventoryItemRequest) {
+	public InventoryItemResponse updateInventoryQuantity(InventoryItemRequest inventoryItemRequest) throws DeadlockException {
 		if (inventoryItemRequest == null || 
 			inventoryItemRequest.getAction() != InventoryItemRequestType.UPDATE_ITEM_QUANTITY)
 			return new InventoryItemResponse(ResultType.INVALID_INPUT);
@@ -125,9 +143,8 @@ public class ServerInventoryManager {
 	 * @param inventoryGetItemsRequest an InventoryItemRequest object that contains the ekrut location for the InventoryItem(s) to be retrieved
 	 * @return an InventoryItemResponse object that contains the result of the fetch operation and, if successful,
 	 * 			 a list of the retrieved InventoryItem objects
-	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	public InventoryItemResponse fetchInventoryItemsByEkrutLocation(InventoryItemRequest inventoryItemRequest) {
+	public InventoryItemResponse fetchInventoryItemsByEkrutLocation(InventoryItemRequest inventoryItemRequest) throws DeadlockException {
 		if (inventoryItemRequest == null ||
 			inventoryItemRequest.getAction() != InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE)
 			return new InventoryItemResponse(ResultType.INVALID_INPUT);
@@ -155,9 +172,8 @@ public class ServerInventoryManager {
 	 * @param inventoryUpdateItemThresholdRequest an InventoryItemRequest object that contains the 
 	 * 			item ID, ekrut location, and new threshold value for the InventoryItem to be updated
 	 * @return an InventoryItemResponse object indicating the result of the update operation
-	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
-	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryItemRequest) {
+	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryItemRequest) throws DeadlockException {
 		if (inventoryItemRequest == null ||
 			inventoryItemRequest.getAction() != InventoryItemRequestType.UPDATE_ITEM_THRESHOLD)
 			return new InventoryItemResponse(ResultType.INVALID_INPUT);
