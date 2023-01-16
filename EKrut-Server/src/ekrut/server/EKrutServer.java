@@ -25,8 +25,11 @@ public class EKrutServer extends AbstractServer {
 	private ServerReportManager serverReportManager;
 	private HashMap<Class<?>, IRequestHandler> handlers = new HashMap<>();
 
-	public EKrutServer(int port, String DBuserName, String dbUsername, String dbPassword) {
+	public EKrutServer(int port) {
 		super(port);
+	}
+	
+	public void init(String DBuserName, String dbUsername, String dbPassword) {
 		dbCon = new DBController(DBuserName, dbUsername, dbPassword);
 		serverSessionManager = new ServerSessionManager(dbCon);
 		IUserNotifier userNotifier = new PopupUserNotifier(dbCon, serverSessionManager);
@@ -36,7 +39,6 @@ public class EKrutServer extends AbstractServer {
 		new ServerOrderManager(dbCon, serverSalesManager, serverInventoryManager);
 		new ServerShipmentManager(dbCon, serverSessionManager);
 		serverReportManager = new ServerReportManager(dbCon);
-
 	}
 	
 	public void registerHandler(Class<?> klass, IRequestHandler handler) {

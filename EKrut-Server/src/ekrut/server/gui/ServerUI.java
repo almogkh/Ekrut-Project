@@ -41,7 +41,8 @@ public class ServerUI extends Application {
 	}
 
 	public static boolean runServer(int port, String DBuserName, String username, String password) {
-		server = new EKrutServer(port, DBuserName, username, password);
+		server = new EKrutServer(port);
+		server.init(DBuserName, username, password);
 		controller.setTable(server.getSession());
 		try {
 			TimeScheduler.startTimer();
