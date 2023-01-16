@@ -148,7 +148,7 @@ public class ServerController {
 
 	@FXML
 	void consoleStreamIntoGUI() {
-		System.setOut(this.replaceConsole = new PrintStream(new Console(this.Console)));
+		System.setOut(this.replaceConsole = new PrintStream(new Console(this.Console), true));
 		System.setErr(this.replaceConsole);
 	}
 
