@@ -73,7 +73,7 @@ public class SaleTemplateController {
 			+ " Please check all the required fields and try again.";
 	private static final String[] SALE_TYPE = { "30% off", "One Plus One" };
 
-	private ArrayList<SaleDiscount> templates;
+	private ArrayList<SaleDiscount> templates = new ArrayList<>();
 
 	private ClientSalesManager clientSalesManager;
 	
@@ -111,10 +111,10 @@ public class SaleTemplateController {
 		dayOfSale.append(isDaySelected(saturdayCheckB));
 		String saleDays = dayOfSale.toString();
 
-		if (startTimeInHourChoiceB.getValue() == null   || endTimeInHourChoiceB.getValue() == null
-			|| startTimeInMinChoiceB.getValue() == null || endTimeInMinChoiceB.getValue() == null
-			|| saleDays.equals("FFFFFFF")   || saleTypeChoiceB.getValue() == null) {
-
+		if (startTimeInHourChoiceB.getValue() == null|| endTimeInHourChoiceB.getValue() == null
+		 || startTimeInMinChoiceB.getValue() == null || endTimeInMinChoiceB.getValue() == null
+		 || saleTypeChoiceB.getValue() == null       || saleDays.equals("FFFFFFF")) {
+			
 			new Alert(AlertType.ERROR, MISSING_INPUT_MSG, ButtonType.OK).showAndWait();
 			return;
 		}
@@ -141,7 +141,7 @@ public class SaleTemplateController {
 		SaleDiscount saleDiscount = new SaleDiscount(startTime, endTime, saleDays, type);
 		
 		// Check if template is already exist in DB.
-		if (templates.contains(saleDiscount)) {
+		if ( templates != null && templates.contains(saleDiscount)) {
 			new Alert(AlertType.ERROR, EXISTS_MSG, ButtonType.OK).showAndWait();
 			return;
 		}
