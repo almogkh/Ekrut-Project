@@ -11,13 +11,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 public class BaseTemplateController {
 
@@ -39,7 +42,6 @@ public class BaseTemplateController {
 	@FXML
 	private Pane infoPane;
 
-	// private User me;
 	private static BaseTemplateController baseTemplateController;
 
 	public static BaseTemplateController getBaseTemplateController() {
@@ -56,21 +58,14 @@ public class BaseTemplateController {
 	}
 
 	public void logout() {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ClientLogin.fxml"));
-		try {
-			loader.load();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		Parent root = loader.getRoot();
-		setRightWindow(root);
+		openLoginStage();
+
 		ObservableList<Node> vboxChildren = navigationVbox.getChildren();
 		vboxChildren.clear();
 		infoPane.setVisible(false);
 		logoutBtn.setVisible(false);
 	}
 	
-    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
     @FXML
     void logout(ActionEvent event) {
     	try {
@@ -81,20 +76,12 @@ public class BaseTemplateController {
 		}
 	}
 
-	public void loadHostSelection() {
-		baseTemplateController = this; // TBD OFEK ????????
+	public void loadHostSelection() throws IOException {
+		baseTemplateController = this;
 		infoPane.setVisible(false);
 		logoutBtn.setVisible(false);
-        // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/HostSelection.fxml"));
-		Parent root = null;
-		try {
-			root = loader.load();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(-1);
-		}
-		setRightWindow(root);
+		switchStages("HostSelection");
+
 	}
 
 	public void loadCreateOrder() {
@@ -132,65 +119,27 @@ public class BaseTemplateController {
 		switchStages("SaleTemplate");
 	}
 	
-    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadViewTickets() {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/TicketBrowser.fxml"));
-		try {
-			loader.load();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		Parent root = loader.getRoot();
-		setRightWindow(root);
+		switchStages("TicketBrowser");
 	}
 
-    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadRegistrationRequests() {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/UsersRegistration.fxml"));
-		try {
-			loader.load();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		Parent root = loader.getRoot();
-//		UserRegistrationController userRegistrationController = loader.getController();
-		setRightWindow(root);
+		switchStages("UsersRegistration");
 	}
 	
-	
-    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadViewReports() {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ReportChooser.fxml"));
-		try {
-			loader.load();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		Parent root = loader.getRoot();
-		// ReportChooserController reportChooserController = loader.getController();
-		setRightWindow(root);
-		
+		switchStages("ReportChooser");
 	}
 	
-    // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
-	public void loadThresholdSelector() {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ThresholdBrowser.fxml"));
-		try {
-			loader.load();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		Parent root = loader.getRoot();
-		setRightWindow(root);
+	public void loadThresholdSelector() {		
+		switchStages("ThresholdBrowser");
 	}
 
 	private static void setHyperlinkStyle(Hyperlink hyperLink) {
 		Font font = Font.font("Arial Rounded MT Bold", 18);
-		// hyperLink.getFont().getName()
 		hyperLink.setFont(font);
 		hyperLink.setWrapText(true);
 		hyperLink.setTextAlignment(TextAlignment.CENTER);
-
 		hyperLink.setStyle("-fx-text-fill: white;"
 				//+ "-fx-underline: false;"
 				//+ "-fx-border-color: black;"
@@ -270,7 +219,6 @@ public class BaseTemplateController {
 	}
 
 	public void setUser(User me) {
-		// this.me = me;
 		infoPane.setVisible(true);
 		logoutBtn.setVisible(true);
 		nameInitialsLbl.setText((me.getFirstName().substring(0, 1) + me.getLastName().substring(0, 1)).toUpperCase());
@@ -293,8 +241,7 @@ public class BaseTemplateController {
 		}
 	}
 
-    // Q.Nir - is needed?  Ans - hell YES
-    // switch stages if any info dose not needed.
+    // Switch stages if any info dose not needed.
     public void switchStages(String fxmlName) {
     	String path = "/ekrut/client/gui/";
     	String fileExtention = ".fxml";
@@ -305,10 +252,10 @@ public class BaseTemplateController {
 			throw new RuntimeException(e);
 		}
 		Parent root = loader.getRoot();
-		BaseTemplateController.getBaseTemplateController().setRightWindow(root);
+		setRightWindow(root);
     }
    
-    // load fxml and return parent
+    // Load fxml and return parent, good for case that information is needed
     public Parent load(FXMLLoader loader) {
     	try {
 			loader.load();
@@ -316,5 +263,26 @@ public class BaseTemplateController {
 			throw new RuntimeException(e);
 		}
 		return loader.getRoot();
+    }
+    
+    public void openLoginStage() {
+    	FXMLLoader loader;
+			loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ClientLogin.fxml"));
+		Parent root = load(loader);
+		ClientLoginController clientLoginController = loader.getController();
+		setRightWindow(root);
+		
+		if (EKrutClientUI.ekrutLocation != null) {
+			Stage touchStage = new Stage();
+			FXMLLoader loaderTouch = new FXMLLoader(getClass().getResource("/ekrut/client/gui/LoginViaTouch.fxml"));
+			Parent rootTouch = load(loaderTouch);
+			LoginViaTouchController loginViaTouchController = loaderTouch.getController();
+			loginViaTouchController.setClientLoginController(clientLoginController);
+			Scene scene = new Scene(rootTouch);
+			touchStage.getIcons().add(new Image(EKrutClientUI.class.getResourceAsStream("/ekrut/client/gui/gui-assets/icon.png")));
+			touchStage.setScene(scene);
+			touchStage.show();
+		}
+    	
     }
 }
