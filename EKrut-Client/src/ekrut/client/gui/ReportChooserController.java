@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.text.Text;
 
 public class ReportChooserController {
 
@@ -27,6 +28,9 @@ public class ReportChooserController {
 
     @FXML
     private ComboBox<String> monthComboBox;
+    
+    @FXML
+    private Text locationAsterisk;
 
     @FXML 
     private Label nameInitialsLabel;
@@ -43,7 +47,6 @@ public class ReportChooserController {
     @FXML
     private ComboBox<String> yearComboBox;
     
-    // TBD check what is this doing
     private EKrutClient client;
     private User user;
     private ClientReportManager  clientReportManager;
@@ -55,7 +58,6 @@ public class ReportChooserController {
 		clientReportManager = client.getClientReportManager(); 
 		
 		// Set months, years, types combo boxes
-		// Can be changed later to English months
  		String[] months = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"};
  		monthComboBox.getItems().addAll(months);
  		
@@ -65,7 +67,6 @@ public class ReportChooserController {
  		String[] types = {"Orders Report", "Inventory Report", "Customer Activity Report"};
  		typeComboBox.getItems().addAll(types);		
  		
- 		// i think it should be here
  		setAreaComboBox();
  		
 	}
@@ -137,7 +138,6 @@ public class ReportChooserController {
     }
     
     private void setAreaComboBox() {
-    	//TBD better way to create those areas list
     	String[] areas = null;
     	// Set area comboBox
  		if (user.getUserType().equals(UserType.CEO)) {
@@ -181,10 +181,12 @@ public class ReportChooserController {
     	if (type.equals("Orders Report")) {
      			locationComboBox.setPromptText("Not Available");
      			locationComboBox.setDisable(true);
+     			locationAsterisk.setVisible(false);
      			locationComboBox.getItems().clear();
     	}
     	else {
     		locationComboBox.setDisable(false);
+ 			locationAsterisk.setVisible(true);
     		if (areaComboBox.getValue() != null) {
     			setLocationComboBox(areaComboBox.getValue());
     		}
