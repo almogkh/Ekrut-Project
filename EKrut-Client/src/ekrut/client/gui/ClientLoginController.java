@@ -1,7 +1,6 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
-
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.entity.User;
@@ -18,10 +17,10 @@ import javafx.stage.WindowEvent;
 public class ClientLoginController {
 	
 	@FXML
-	private TextField usernameTxt;
-	
+	TextField usernameTxt;
+	 
 	@FXML
-	private TextField passwordTxt;
+	TextField passwordTxt;
 	
 	@FXML
 	private Button loginBtn;
@@ -46,9 +45,9 @@ public class ClientLoginController {
 	
 	@FXML
 	void attemptLogin(ActionEvent event){
-		// reset red error labels
+		// Reset red error labels
 		errorLbl.setVisible(false);
-		// gather info from the form
+		// Gather info from the form
 		String username = usernameTxt.getText().trim();
 		String password = passwordTxt.getText();
 		if (username.isEmpty() || password.isEmpty()) {
@@ -76,10 +75,9 @@ public class ClientLoginController {
 			return;
 		}
 		
-		//C.Nir - can use method login() in BaseTemplateController
 		// LOGIN SUCCESS!
 		if (loader == null) {
-			if (me.getUserType()==UserType.REGISTERED)
+			if (me.getUserType() == UserType.REGISTERED)
 				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/RegisterUserView.fxml"));
 			else 
 				loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/MainMenu.fxml"));
@@ -94,5 +92,4 @@ public class ClientLoginController {
 		BaseTemplateController.getBaseTemplateController().setUser(me);
 		BaseTemplateController.getBaseTemplateController().setRightWindow(root);
 	}
-
 }
