@@ -1,6 +1,7 @@
 package ekrut.client.managers;
 
 import ekrut.client.EKrutClient;
+import ekrut.client.IResponseHandler;
 
 /**
  * Base class for all client manager classes.
@@ -11,7 +12,7 @@ import ekrut.client.EKrutClient;
  * @param <T> the request type this manager sends
  * @param <R> the response type this manager receives
  */
-public abstract class AbstractClientManager<T, R> {
+public abstract class AbstractClientManager<T, R> implements IResponseHandler {
 
 	private R response;
 	private Object lock = new Object();
@@ -22,14 +23,18 @@ public abstract class AbstractClientManager<T, R> {
 	 * @param client the EKrutClient instance
 	 * @param klass  a Class object representing the response type the manager uses
 	 */
-	public AbstractClientManager(EKrutClient client, Class<R> klass) {
+	protected AbstractClientManager(EKrutClient client, Class<R> klass) {
 		this.client = client;
-		client.registerHandler(klass, (res) -> {
-			synchronized (lock) {
-				response = res;
-				lock.notify();
-			}
-		});
+		client.registerHandler(klass, this);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void handleResponse(Object response) {
+		synchronized (lock) {
+			this.response = (R) response;
+			lock.notify();
+		}
 	}
 	
 	/**

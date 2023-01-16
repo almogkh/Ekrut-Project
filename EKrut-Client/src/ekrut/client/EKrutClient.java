@@ -3,7 +3,6 @@ package ekrut.client;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 import ekrut.client.gui.BaseTemplateController;
 import ekrut.client.managers.*;
@@ -21,7 +20,7 @@ public class EKrutClient extends AbstractClient{
 	private ClientShipmentManager clientShipmentManager;
 	private ClientSalesManager clientSalesManager;
 	private ClientTicketManager clientTicketManager;
-	private Map<Class<?>, Consumer<Object>> handlers = new HashMap<>();
+	private Map<Class<?>, IResponseHandler> handlers = new HashMap<>();
 	
 	public EKrutClient(String host, int port) { 
 		super(host, port);
@@ -66,8 +65,8 @@ public class EKrutClient extends AbstractClient{
 
 
 
-	public <T> void registerHandler(Class<T> klass, Consumer<T> handler) {
-		handlers.put(klass, (response) -> handler.accept(klass.cast(response)));
+	public <T> void registerHandler(Class<T> klass, IResponseHandler handler) {
+		handlers.put(klass, handler);
 	}
 	
 	
@@ -97,9 +96,9 @@ public class EKrutClient extends AbstractClient{
 			return;
 		}
 		
-		Consumer<Object> handler = handlers.get(msg.getClass());
+		IResponseHandler handler = handlers.get(msg.getClass());
 		if (handler == null)
 			throw new RuntimeException("Unknown message received");
-		handler.accept(msg);
+		handler.handleResponse(msg);
 	}
 }
