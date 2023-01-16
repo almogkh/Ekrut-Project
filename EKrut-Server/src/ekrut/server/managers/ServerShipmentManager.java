@@ -9,7 +9,6 @@ import ekrut.entity.User;
 import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentResponse;
-import ekrut.server.PopupUserNotifier;
 import ekrut.server.db.DBController;
 import ekrut.server.db.OrderDAO;
 import ekrut.server.db.UserDAO;
@@ -35,11 +34,11 @@ public class ServerShipmentManager extends AbstractServerManager<ShipmentRequest
 	 * 
 	 * @param con the database controller to use for accessing the database
 	 */
-	public ServerShipmentManager(DBController con, ServerSessionManager serverSessionManager) {
+	public ServerShipmentManager(DBController con, IUserNotifier userNotifier) {
 		super(ShipmentRequest.class, new ShipmentResponse(ResultType.UNKNOWN_ERROR));
 		orderDAO = new OrderDAO(con);
 		userDAO = new UserDAO(con);
-		userNotifier = new PopupUserNotifier(con, serverSessionManager);
+		this.userNotifier = userNotifier;
 	}
 
 	@Override

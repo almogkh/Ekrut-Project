@@ -13,8 +13,11 @@ public class PopupUserNotifier implements IUserNotifier {
 	private UserDAO userDAO;
 	private ServerSessionManager sessionManager;
 	
-	public PopupUserNotifier(DBController dbCon, ServerSessionManager sessionManager) {
+	public PopupUserNotifier(DBController dbCon) {
 		this.userDAO = new UserDAO(dbCon);
+	}
+	
+	public void setSessionManager(ServerSessionManager sessionManager) {
 		this.sessionManager = sessionManager;
 	}
 	

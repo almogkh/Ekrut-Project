@@ -58,11 +58,15 @@ public class UserToRegisterController extends HBox {
 
 	@FXML
 	void markCompleted(ActionEvent event) {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Please confirm " + user.getUsername(),
+		Alert alert = new Alert(AlertType.CONFIRMATION, "Please confirm " + user.getUsername() + " registration",
 				ButtonType.YES, ButtonType.NO);
 		alert.showAndWait();
 		if (alert.getResult() == ButtonType.NO)
 			return;
+		if (alert.getResult() == ButtonType.YES) {
+		    Alert secondAlert = new Alert(AlertType.CONFIRMATION, "An SMS message and email was sent to the customer",ButtonType.OK);
+		    secondAlert.showAndWait();
+		}
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		ClientSessionManager clientSessionManager = client.getClientSessionManager();
 		clientSessionManager.registerUser(user);

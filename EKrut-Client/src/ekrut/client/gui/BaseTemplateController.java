@@ -131,7 +131,16 @@ public class BaseTemplateController {
 	public void loadSaleTemplate() {
 		switchStages("SaleTemplate");
 	}
-	
+	public void loadUsersRegistration() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ServiceRepresentativeView.fxml"));
+		try {
+			loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Parent root = loader.getRoot();
+		setRightWindow(root);
+	}
     // C.Nir - can use in *local* method switchStages() all fo this can be repalce in one row.
 	public void loadViewTickets() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/TicketBrowser.fxml"));
@@ -235,6 +244,9 @@ public class BaseTemplateController {
 		Hyperlink activateSale = new Hyperlink("Sale Activation");
 		activateSale.setOnAction((ActionEvent event) -> loadActivateSale());
 		
+		Hyperlink usersRegistration = new Hyperlink("users Registration");
+		usersRegistration.setOnAction((ActionEvent event) -> loadUsersRegistration());
+		
 		switch (userType) {
 		case REGISTERED:
 		case CUSTOMER:
@@ -260,6 +272,9 @@ public class BaseTemplateController {
 			allHyperlinks.add(registrationRequestsHyp);
 			allHyperlinks.add(viewReportsHyp);
 			allHyperlinks.add(thresholdSelector);
+			break;
+		case SERVICE_REPRESENTATIVE:
+			allHyperlinks.add(usersRegistration);
 			break;
 		}
 		if (customer) {
