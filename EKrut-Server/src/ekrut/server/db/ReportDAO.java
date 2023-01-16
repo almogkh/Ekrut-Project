@@ -125,7 +125,7 @@ public class ReportDAO {
 		}
 		return null;
 	}
-	
+	 
 	/**
 	 * Return a customer report with the given report ID.
 	 * 
@@ -278,8 +278,6 @@ public class ReportDAO {
 			}
 	}
 		
-	
-	
 	/**
 	 * Return an inventory report with the given report ID.
 	 * 
@@ -609,7 +607,6 @@ public class ReportDAO {
 			}
 		}
 	} 
-	//TODO redoing document
 	/**
 	 * This method creates a new order report in the database based on the provided report object.
 	 * 
@@ -902,7 +899,6 @@ public class ReportDAO {
 				}
 			}
 	}
-	
 }
 	
 

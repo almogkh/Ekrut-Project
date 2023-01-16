@@ -50,6 +50,7 @@ public class CustomerReportViewController {
     ClientReportManager  clientReportManager = client.getClientReportManager();
     Report report;
     
+    // Set the customer report
     public void setCustomerReport(Report report) {
     	this.report = report;
     	setHeadLabels();
@@ -84,10 +85,7 @@ public class CustomerReportViewController {
      	series.getNode().setStyle("-fx-stroke: #FFD6DC");
     }
     
-    
-    
     private void setCustomersActivityBarChart() {
-    	
 		Map<String, Integer> CustomersActivityData = report.getCustomerReportData();
   
     	String[] categories = {"1", "2", "3", "4", "5", "6+"};		
@@ -101,12 +99,9 @@ public class CustomerReportViewController {
 		//Prepare XYChart.Series objects by setting data       
 			series.getData().add(new XYChart.Data<>(entry.getKey(), entry.getValue())); 
     	}
-    	
     	CustomersActivityBarChart.getData().addAll(series);
     	CustomersActivityBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
-
     }
-    
     
     private void setHeadLabels() {
     	
@@ -114,6 +109,5 @@ public class CustomerReportViewController {
     	locationLbl.setText(report.getEkrutLocation());
     	String date = (String.valueOf(report.getDate().getMonthValue()) + '/' + String.valueOf(report.getDate().getYear()));
     	dateLbl.setText(date);
-    	
     }
 }

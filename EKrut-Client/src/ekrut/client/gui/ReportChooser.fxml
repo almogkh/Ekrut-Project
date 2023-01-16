@@ -45,9 +45,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
   <children>
-      <HBox alignment="CENTER" minHeight="85.0">
+      <HBox alignment="CENTER" minHeight="85.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
             <Line endX="-6.0" startX="-122.5" stroke="WHITE" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report " textAlignment="CENTER" wrappingWidth="449.1552734375">
@@ -82,6 +82,14 @@
                         <Font name="Arial Rounded MT Bold" size="20.0" />
                      </font>
                   </Label>
+                  <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Text>
                   <ComboBox fx:id="typeComboBox" onAction="#setLocationsByType" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
                </children>
             </HBox>
@@ -97,6 +105,14 @@
                         <Font name="Arial Rounded MT Bold" size="20.0" />
                      </font>
                   </Label>
+                  <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Text>
                   <ComboBox fx:id="areaComboBox" disable="true" onAction="#setLocationsByArea" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
                </children>
             </HBox>
@@ -112,6 +128,14 @@
                         <Font name="Arial Rounded MT Bold" size="20.0" />
                      </font>
                   </Label>
+                  <Text fx:id="locationAsterisk" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="*" visible="false">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Text>
                   <ComboBox fx:id="locationComboBox" disable="true" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
                </children>
             </HBox>
@@ -127,6 +151,14 @@
                         <Font name="Arial Rounded MT Bold" size="20.0" />
                      </font>
                   </Label>
+                  <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Text>
                   <ComboBox fx:id="yearComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Choose Year" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
                </children>
             </HBox>
@@ -142,6 +174,14 @@
                         <Font name="Arial Rounded MT Bold" size="20.0" />
                      </font>
                   </Label>
+                  <Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Text>
                   <ComboBox fx:id="monthComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Choose Month" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                      <styleClass>
                         <String fx:value="menu_button" />
