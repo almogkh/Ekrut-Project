@@ -84,14 +84,18 @@ public class ServiceRepresentativeViewController {
 	private void initialize() {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		this.sessionManager = client.getClientSessionManager();
-		errorFetchLabel.setVisible(false);
 		monthlyChrgeRBtn.setDisable(true);
-		errorDetails.setVisible(false);
-		errorRegister.setVisible(false);
-		errorExistRegister.setVisible(false);
+		hideErrors();
 		setText("");
 		setDisable(true);
 
+	}
+	
+	private void hideErrors() {
+		errorDetails.setVisible(false);
+		errorRegister.setVisible(false);
+		errorExistRegister.setVisible(false);
+		errorFetchLabel.setVisible(false);
 	}
 
 	private void setText(String str) {
@@ -169,6 +173,7 @@ public class ServiceRepresentativeViewController {
 
 	@FXML
 	void register(ActionEvent event) {
+		hideErrors();
 		if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty() || emailField.getText().isEmpty()
 				|| phoneField.getText().isEmpty() || creditCardField.getText().isEmpty()
 				|| areaField.getText().isEmpty() || idField.getText().isEmpty() || (!subscriberRBtn.isSelected() && !clientRBtn.isSelected())) {

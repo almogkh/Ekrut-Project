@@ -364,15 +364,15 @@ public class UserDAO {
 	 *         otherwise.
 	 */
 	public boolean createUserToRegister(UserRegistration user) {
-		String query = "INSERT INTO user_registration" + " VALUES(?,?,?,?,?,?,?)";
+		String query = "INSERT INTO user_registration VALUES(?,?,?,?,?,?,?)";
 		PreparedStatement ps = con.getPreparedStatement(query);
 		try {
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getCreditCardNumber());
 			ps.setString(3, user.getPhoneNumber());
 			ps.setString(4, user.getEmail());
-			ps.setInt(5, user.getMonthlyCharge() ? 1 : 0);
-			ps.setInt(6, user.getCustomerOrSub() == "customer" ? 1 : 0);
+			ps.setBoolean(5, user.getMonthlyCharge());
+			ps.setBoolean(6, user.getCustomerOrSub().equals("customer"));
 			ps.setString(7, user.getArea());
 			return 1 >= ps.executeUpdate();
 		} catch (SQLException e1) {

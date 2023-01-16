@@ -10,7 +10,8 @@ public class UserRegistration  implements Serializable{
 	private String creditCardNumber;
 	private String email;
 	private String phoneNumber;
-	private String customerOrSub;private String area;
+	private String customerOrSub;
+	private String area;
 
 
 	public UserRegistration(String username,  String creditCardNumber,String phoneNumber,String email,
@@ -21,7 +22,7 @@ public class UserRegistration  implements Serializable{
 		this.email = email;
 		this.monthlyCharge = monthlyCharge;
 		this.customerOrSub = customerOrSub;
-		this.area=area;
+		this.area = area;
 	}
 
 	public String getEmail() {

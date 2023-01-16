@@ -18,7 +18,6 @@ import ekrut.net.TicketResponse;
 import ekrut.net.UserRequest;
 import ekrut.net.UserResponse;
 import ekrut.server.db.DBController;
-import ekrut.server.intefaces.IUserNotifier;
 import ekrut.server.managers.ServerInventoryManager;
 import ekrut.server.managers.ServerOrderManager;
 import ekrut.server.managers.ServerReportManager;
@@ -64,14 +63,15 @@ public class EKrutServer extends AbstractServer {
 	public EKrutServer(int port, String DBuserName, String dbUsername, String dbPassword) {
 		super(port);
 		dbCon = new DBController(DBuserName, dbUsername, dbPassword);
-		serverSessionManager = new ServerSessionManager(dbCon);
-		IUserNotifier userNotifier = new PopupUserNotifier(dbCon, serverSessionManager);
+		PopupUserNotifier userNotifier = new PopupUserNotifier(dbCon);
+		serverSessionManager = new ServerSessionManager(dbCon, userNotifier);
+		userNotifier.setSessionManager(serverSessionManager);
 		serverInventoryManager = new ServerInventoryManager(dbCon, userNotifier);
 		serverTicketManager = new ServerTicketManager(dbCon);
 		serverSalesManager = new ServerSalesManager(dbCon, serverSessionManager);
 		serverOrderManager = new ServerOrderManager(dbCon, serverSessionManager, serverSalesManager,
 				serverInventoryManager);
-		serverShipmentManager = new ServerShipmentManager(dbCon, serverSessionManager);
+		serverShipmentManager = new ServerShipmentManager(dbCon, userNotifier);
 		serverReportManager = new ServerReportManager(dbCon);
 
 	}

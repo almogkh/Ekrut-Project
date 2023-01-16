@@ -19,6 +19,7 @@ import ekrut.server.EKrutServer;
 import ekrut.server.TimeScheduler;
 import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
+import ekrut.server.intefaces.IUserNotifier;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import ocsf.server.ConnectionToClient;
@@ -44,6 +45,7 @@ public class ServerSessionManager {
 	// out if they have not made any requests.
 	private static final long LOGOUT_TIME = 300_000; // 5 minutes
 	private ObservableList<ConnectedClient> connectedClientList;
+	private IUserNotifier userNotifier;
 
 	public HashMap<ConnectionToClient, User> getClientUserMap() {
 		return clientUserMap;
@@ -55,11 +57,12 @@ public class ServerSessionManager {
 	 *
 	 * @param con the {@link DBController} object to use for database operations
 	 */
-	public ServerSessionManager(DBController con) {
+	public ServerSessionManager(DBController con, IUserNotifier userNotifier) {
 		connectedClientList = FXCollections.observableArrayList();
 		userDAO = new UserDAO(con);
 		connectedUsers = new HashMap<>();
 		clientUserMap = new HashMap<>();
+		this.userNotifier = userNotifier;
 	}
 
 	public ObservableList<ConnectedClient> getConnectedClientList() {
@@ -300,6 +303,8 @@ public class ServerSessionManager {
 		if (!userDAO.updateUser(user) || !userDAO.createOrUpdateCustomer(customer)
 				|| !userDAO.deleteUserFromRegistration(userToRegister.getUsername()))
 			return new UserResponse(ResultType.NOT_FOUND);
+		userNotifier.sendNotification("Your registration request has been accepted!", user.getEmail(),
+									user.getPhoneNumber());
 		return new UserResponse(ResultType.OK);
 	}
 
