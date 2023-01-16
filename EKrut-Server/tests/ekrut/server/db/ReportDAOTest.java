@@ -30,8 +30,6 @@ class ReportDAOTest {
 
 	Report expectedInventoryReport;
 
-	
-
 	Map<String, ArrayList<Integer>> expectedInventoryReportData;
 
 
@@ -66,11 +64,25 @@ class ReportDAOTest {
 		expectedInventoryReport = new Report(null, ReportType.INVENTORY, may_2021, "Afula", "North",
 				expectedInventoryReportData, 12);
 	}
+	
+	// Checking functionality fetchReport: fetch not exist report
+	// Input parameters: Parameters were entered so that there is no corresponding report in the DB
+	// Expected result: report is null
+	@Test
+	public void testFetchNotExsitsReport() {
+		
+		resultReport = reportDAO.fetchReport(jan_2022, "Eilat", "South", ReportType.CUSTOMER);
+		
+		assertNull(resultReport);
+	}
 
+	// Checking functionality fetchReport: fetch Inventory report from jan 2022 at "North" "Akko".
+	// Input parameters: date: 2022-01-31, ekrutLocation: "Akko", area: "North", type: INVENTORY.
+	// Expected result: All the result report data is equals to the data at the DB
 	@Test 
 	public void testFetchMonthlyInventoryReport_North_Akko_JAN_2022(){
 
-		resultReport = reportDAO.fetchInventoryReportByID(2);
+		resultReport = reportDAO.fetchReport(jan_2022, "Akko", "North", ReportType.INVENTORY);
 		
 		assertEquals(2, resultReport.getReportID(),
 				"Incorrect reportID");
@@ -88,8 +100,10 @@ class ReportDAOTest {
 				"Incorrect threshold");
 
 	}
-
-	@Test
+	// Checking functionality createInventoryReport: 
+	// Input parameters: 
+	// Expected result: 
+	@Test 
 	public void testCreateInventoryReport_North_Afula_may_2021() {
 		
 		reportDAO.createInventoryReport(expectedInventoryReport);
