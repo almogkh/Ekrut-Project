@@ -163,7 +163,7 @@ public class ServiceRepresentativeViewController {
 	}
 
 	private void registerSuccess(String username) {
-		new Alert(AlertType.INFORMATION,  username + "added to the registration list successfully!", ButtonType.OK)
+		new Alert(AlertType.INFORMATION,  username + " added to the registration list successfully!", ButtonType.OK)
 				.showAndWait();
 	}
 
@@ -171,7 +171,7 @@ public class ServiceRepresentativeViewController {
 	void register(ActionEvent event) {
 		if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty() || emailField.getText().isEmpty()
 				|| phoneField.getText().isEmpty() || creditCardField.getText().isEmpty()
-				|| areaField.getText().isEmpty() || (!subscriberRBtn.isSelected() && !clientRBtn.isSelected())) {
+				|| areaField.getText().isEmpty() || idField.getText().isEmpty() || (!subscriberRBtn.isSelected() && !clientRBtn.isSelected())) {
 			errorDetails.setVisible(true);
 			return;
 		}
