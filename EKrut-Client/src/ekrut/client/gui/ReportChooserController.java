@@ -169,13 +169,9 @@ public class ReportChooserController implements Initializable{
     
     private void setLocationComboBox(String area) throws Exception {
     	ArrayList<String> locations = clientReportManager.getFacilitiesByArea(area);
-		ArrayList<String> fixLocations = new ArrayList<>();
 
-    	for (String location : locations) {
-			fixLocations.add(location.replace("_", " "));
-		}
     	// Convert array list into a array
-    	String[] locationsArr = fixLocations.toArray(new String[fixLocations.size()]);
+    	String[] locationsArr = locations.toArray(new String[locations.size()]);
     	locationComboBox.getItems().addAll(locationsArr);
     }
     
