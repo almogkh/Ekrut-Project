@@ -49,7 +49,7 @@ public class ThresholdSingleViewController extends HBox {
 		}
 		
 		currThresholdLbl.setText((currThreshold != 0) ? Integer.toString(currThreshold) : "N\\A");
-		facilityNameLbl.setText(ekrutLocation.replace("_", " "));
+		facilityNameLbl.setText(ekrutLocation);
 		thresholdTxt.setText(Integer.toString(currThreshold));
 	}
 	
