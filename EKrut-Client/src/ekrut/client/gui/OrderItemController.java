@@ -2,12 +2,16 @@ package ekrut.client.gui;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
+import ekrut.client.managers.ClientSalesManager;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.entity.OrderItem;
+import ekrut.entity.SaleDiscount;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,12 +64,23 @@ public class OrderItemController extends HBox {
 	private InventoryItem inventoryItem;
 	private ClientOrderManager orderManager;
 	private OrderBrowserController controller;
+	private ClientSalesManager clientSalesManager;
+	private ArrayList<SaleDiscount> sale = new ArrayList<>();
+	private boolean subscriber;
 
+
+		
 	// Q.Nir - is OrderBrowserController controller needed?
 	public OrderItemController(OrderBrowserController controller, Item item) {
+		EKrutClient client = EKrutClientUI.getEkrutClient();
+		orderManager = client.getClientOrderManager();
+		subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
 		this.item = item;
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		this.orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
+		this.clientSalesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
+		sale = clientSalesManager.fetchActiveSales(ekrutLocation);
+		
 		this.controller = controller;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderItem.fxml"));
 
@@ -79,6 +94,7 @@ public class OrderItemController extends HBox {
 
 		if (item.getImg() != null)
 			itemImage.setImage(new Image(new ByteArrayInputStream(item.getImg())));
+		
 		itemName.setText(item.getItemName());
 		itemDiscription.setText(item.getItemDescription());
 		itemPrice.setText(Float.toString(item.getItemPrice()));
@@ -89,6 +105,12 @@ public class OrderItemController extends HBox {
 				break;
 			}
 		}
+		if (sale != null && subscriber) {
+			String saleDiscountType = sale.get(0).getType().toString().equals("ONE_PLUS_ONE") ? "One Plus One" : "30% Off";
+			saleType.setText(saleDiscountType);
+			saleType.setVisible(true);
+		}
+		
 	}
 
 	public OrderItemController(OrderBrowserController controller, InventoryItem inventoryItem) {
@@ -101,7 +123,7 @@ public class OrderItemController extends HBox {
 		noDigitOrQuantityError.setVisible(false);
 		try {
 			int textQuantity = Integer.parseInt(quantityTxt.getText());
-			// If its from machine
+			// If its from EKrut machine
 			if (ekrutLocation != null) {
 				if (textQuantity > inventoryItem.getItemQuantity()) {
 					setQuantityTxtStyle("#FFB4AB");
