@@ -51,10 +51,10 @@
    <children>
       <HBox alignment="CENTER" minHeight="85.0" styleClass="container">
          <children>
-            <Line endX="113.0" startX="-118.0" stroke="WHITE" />
+            <Line endX="151.5" startX="-118.0" stroke="WHITE" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="81.0" prefWidth="750.0" text="Login">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="68.0" />
+                  <Font name="Arial Rounded MT Bold" size="49.0" />
                </font>
                <effect>
                   <DropShadow>
@@ -64,7 +64,7 @@
                   </DropShadow>
                </effect>
             </Label>
-            <Line endX="119.0" startX="-115.0" stroke="WHITE" />
+            <Line endX="151.5" startX="-118.0" stroke="WHITE" />
          </children>
          <VBox.margin>
             <Insets />
@@ -80,7 +80,7 @@
          <children>
             <Label text="Welcome!">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="25.0" />
+                  <Font name="Arial Rounded MT Bold" size="51.0" />
                </font>
                <VBox.margin>
                   <Insets />
@@ -134,7 +134,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#attemptLogin" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Login" textFill="WHITE">
+            <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#attemptLogin" prefHeight="39.0" prefWidth="177.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Login" textFill="WHITE">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>

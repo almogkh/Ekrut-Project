@@ -38,42 +38,64 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderPaymentViewController">
+
+<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderPaymentViewController">
    <children>
-      <Pane prefHeight="681.0" prefWidth="770.0" styleClass="container">
+      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+         <children>
+            <Line endX="53.0400390625" startX="-180.4599609375" stroke="WHITE" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Payment" textAlignment="CENTER" wrappingWidth="273.0771484375">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="55.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color opacity="0.41999998688697815" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Text>
+            <Line endX="61.0400390625" startX="-170.9599609375" stroke="WHITE" />
+         </children>
+      </HBox>
+      <Pane prefHeight="596.0" prefWidth="770.0" styleClass="container">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
          <children>
-            <Button fx:id="backBtn" layoutX="12.0" layoutY="9.0" mnemonicParsing="false" onAction="#back" prefHeight="25.0" prefWidth="112.0" text="Back">
+            <Button fx:id="backBtn" layoutX="22.0" layoutY="14.0" mnemonicParsing="false" onAction="#back" prefHeight="27.0" prefWidth="112.0" text="Back">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="payBtn" layoutX="552.0" layoutY="608.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="47.0" prefWidth="195.0" text="Press to pay">
+            <Button fx:id="payBtn" layoutX="552.0" layoutY="536.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="47.0" prefWidth="195.0" text="Press to pay">
                <font>
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Button>
-            <Text layoutX="22.0" layoutY="638.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Price: ">
+            <Text layoutX="22.0" layoutY="573.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Price: ">
                <font>
                   <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
             </Text>
-            <Label fx:id="priceLbl" layoutX="161.0" layoutY="618.0" text="Price">
+            <Label fx:id="priceLbl" layoutX="160.0" layoutY="552.0" text="Price">
                <font>
                   <Font name="Arial Rounded MT Bold" size="23.0" />
                </font>
             </Label>
-            <RadioButton fx:id="currentCreditCardRadioBtn" layoutX="59.0" layoutY="242.0" mnemonicParsing="false" onAction="#useOldCard" selected="true" text="Use the credit card I signed up with">
+            <RadioButton fx:id="currentCreditCardRadioBtn" layoutX="59.0" layoutY="251.0" mnemonicParsing="false" onAction="#useOldCard" selected="true" text="Use the credit card I signed up with">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
@@ -81,79 +103,73 @@
                   <ToggleGroup fx:id="creditCardChoice" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="newCreditCardRadioBtn" layoutX="59.0" layoutY="323.0" mnemonicParsing="false" onAction="#useNewCard" text="Use a new credit card" toggleGroup="$creditCardChoice">
+            <RadioButton fx:id="newCreditCardRadioBtn" layoutX="59.0" layoutY="332.0" mnemonicParsing="false" onAction="#useNewCard" text="Use a new credit card" toggleGroup="$creditCardChoice">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </RadioButton>
-            <Label fx:id="cardNumberLbl" layoutX="127.0" layoutY="275.0" prefHeight="35.0" prefWidth="188.0" text="**** **** **** ****">
+            <Label fx:id="cardNumberLbl" layoutX="127.0" layoutY="284.0" prefHeight="35.0" prefWidth="188.0" text="**** **** **** ****">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <TextField fx:id="newCardNumberTxt" disable="true" layoutX="231.0" layoutY="362.0" prefHeight="25.0" prefWidth="295.0" promptText="Card number" />
-            <Text layoutX="125.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card number: ">
+            <TextField fx:id="newCardNumberTxt" disable="true" layoutX="231.0" layoutY="371.0" prefHeight="25.0" prefWidth="295.0" promptText="Card number" />
+            <Text layoutX="125.0" layoutY="389.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Card number: ">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Button fx:id="cancelOrderBtn" layoutX="378.0" layoutY="619.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="28.0" prefWidth="149.0" text="Cancel order">
+            <Button fx:id="cancelOrderBtn" layoutX="378.0" layoutY="547.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="28.0" prefWidth="149.0" text="Cancel order">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
-               </font></Button>
-            <Text layoutX="300.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="38.0" />
                </font>
-            </Text>
-            <Line endX="183.0" layoutX="99.0" layoutY="59.0" startX="-89.5" />
-            <Line endX="173.0" layoutX="582.0" layoutY="58.0" startX="-99.0" />
-            <Text layoutX="240.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Almost Done!">
+            </Button>
+            <Text layoutX="259.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Almost Done!">
                <font>
                   <Font name="Arial Rounded MT Bold" size="37.0" />
                </font>
             </Text>
-            <Text layoutX="59.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credit card details:">
+            <Text layoutX="59.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Credit card details:">
                <font>
                   <Font name="Arial Rounded MT Bold" size="29.0" />
                </font>
             </Text>
-            <ImageView fitHeight="28.0" fitWidth="33.0" layoutX="87.0" layoutY="361.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="28.0" fitWidth="33.0" layoutX="87.0" layoutY="370.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/card.png" />
                </image>
             </ImageView>
-            <Label layoutX="72.0" layoutY="73.0" text="Order process">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="173.0" layoutY="104.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="173.0" layoutY="49.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Order">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="285.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="285.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="322.0" layoutY="104.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="322.0" layoutY="49.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
                </font>
             </Label>
-            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="434.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="434.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="471.0" layoutY="104.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="471.0" layoutY="49.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
                <font>
                   <Font name="Arial Rounded MT Bold" size="21.0" />
+               </font>
+            </Label>
+            <Label layoutX="284.0" layoutY="17.0" text="Order process">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Label>
          </children>
       </Pane>
    </children>
-</HBox>
+</VBox>

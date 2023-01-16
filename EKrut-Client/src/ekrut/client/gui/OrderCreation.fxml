@@ -21,10 +21,10 @@
          <children>
             <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
                <children>
-                  <Line endX="88.5" startX="-88.0" stroke="WHITE" />
+                  <Line endX="110.29289245605469" endY="0.22355729341506958" startX="-88.0" stroke="WHITE" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Create order">
                      <font>
-                        <Font name="Arial Rounded MT Bold" size="55.0" />
+                        <Font name="Arial Rounded MT Bold" size="50.0" />
                      </font>
                      <effect>
                         <DropShadow>
@@ -34,7 +34,7 @@
                         </DropShadow>
                      </effect>
                   </Text>
-                  <Line endX="88.5" startX="-88.0" stroke="WHITE" />
+                  <Line endX="105.5" startX="-88.0" stroke="WHITE" />
                </children>
                <VBox.margin>
                   <Insets />
@@ -42,10 +42,11 @@
             </HBox>
             <VBox alignment="CENTER" prefHeight="587.0" prefWidth="770.0" styleClass="container">
                <children>
-                  <GridPane alignment="CENTER" hgap="40.0" prefHeight="215.0" prefWidth="770.0">
+                  <GridPane alignment="CENTER" hgap="40.0" prefHeight="215.0" prefWidth="641.0">
                     <columnConstraints>
-                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="224.0" minWidth="0.0" prefWidth="106.0" />
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="460.0" minWidth="10.0" prefWidth="232.0" />
+                      <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="354.0" minWidth="10.0" prefWidth="351.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -53,24 +54,39 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label prefHeight="28.0" prefWidth="220.0" text="•  Order type:">
+                        <Label prefHeight="28.0" prefWidth="220.0" text="Order type:" GridPane.columnIndex="1">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="24.0" />
                            </font>
                         </Label>
-                        <Label fx:id="pickupLocationLbl" prefWidth="220.0" text="•  Pickup location:" GridPane.rowIndex="2">
+                        <Label fx:id="pickupLocationLbl" prefWidth="220.0" text="Pickup location:" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="24.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="pickupLocation" disable="true" onAction="#enableButton" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label fx:id="pickupAreaLbl" layoutX="180.0" layoutY="453.0" prefWidth="220.0" text="•  Pickup area:" GridPane.rowIndex="1">
+                        <ComboBox fx:id="pickupLocation" disable="true" onAction="#enableButton" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label fx:id="pickupAreaLbl" layoutX="180.0" layoutY="453.0" prefWidth="220.0" text="Pickup area:" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="24.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="pickupArea" disable="true" onAction="#updateLocations" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="orderTypeBox" onAction="#updateUI" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="1" />
+                        <ComboBox fx:id="pickupArea" disable="true" onAction="#updateLocations" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="orderTypeBox" onAction="#updateUI" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="2" />
+                        <Text fill="#ff0101" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#ff0101" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#ff0101" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                        </Text>
                      </children>
                   </GridPane>
                   <Button fx:id="createOrderBtn" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#createOrder" text="Create order">

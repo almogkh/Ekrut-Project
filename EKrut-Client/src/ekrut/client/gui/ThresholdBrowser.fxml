@@ -16,10 +16,10 @@
    <children>
       <HBox alignment="CENTER" prefHeight="85.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
-            <Line endX="-40.70710754394531" endY="0.17157280445098877" startX="-116.02082824707031" startY="0.17157357931137085" stroke="WHITE" />
+            <Line endX="-20.727935791015625" endY="0.17157435417175293" startX="-116.02082824707031" startY="0.17157357931137085" stroke="WHITE" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Threshold Selector" textAlignment="CENTER" wrappingWidth="541.06591796875">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="55.0" />
+                  <Font name="Arial Rounded MT Bold" size="50.0" />
                </font>
                <effect>
                   <DropShadow>
@@ -29,7 +29,7 @@
                   </DropShadow>
                </effect>
             </Text>
-            <Line endX="-33.36396789550781" endY="0.5147140026092529" startX="-105.6568603515625" startY="0.34314340353012085" stroke="WHITE" />
+            <Line endX="-33.36396789550781" endY="0.5147140026092529" startX="-120.984130859375" startY="0.686284601688385" stroke="WHITE" />
          </children>
          <VBox.margin>
             <Insets />
