@@ -63,7 +63,7 @@
             <Line endX="80.5" startX="-110.0" stroke="WHITE" />
          </children>
       </HBox>
-      <Pane prefHeight="550.0" prefWidth="770.0">
+      <Pane prefHeight="583.0" prefWidth="770.0">
          <children>
             <Text layoutY="35.0126953125" strokeType="OUTSIDE" strokeWidth="0.0" text="Please input order ID" textAlignment="CENTER" wrappingWidth="770.0">
                <font>
