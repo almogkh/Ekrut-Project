@@ -3,7 +3,6 @@ package ekrut.client.gui;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
@@ -67,10 +66,7 @@ public class OrderItemController extends HBox {
 	private ClientSalesManager clientSalesManager;
 	private ArrayList<SaleDiscount> sale = new ArrayList<>();
 	private boolean subscriber;
-
-
 		
-	// Q.Nir - is OrderBrowserController controller needed?
 	public OrderItemController(OrderBrowserController controller, Item item) {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		orderManager = client.getClientOrderManager();
