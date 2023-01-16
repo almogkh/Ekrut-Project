@@ -124,7 +124,7 @@
                   </Pane>
                   <Pane layoutX="3.0" layoutY="114.0" prefHeight="304.0" prefWidth="375.0" styleClass="container">
                      <children>
-                        <Button fx:id="ConnectToServerBTN" alignment="TOP_LEFT" layoutX="59.0" layoutY="234.0" mnemonicParsing="false" onAction="#Connect" style="-fx-background-radius: 20;" text="Connect" textFill="WHITE">
+                        <Button fx:id="ConnectToServerBTN" alignment="TOP_LEFT" defaultButton="true" layoutX="59.0" layoutY="234.0" mnemonicParsing="false" onAction="#Connect" style="-fx-background-radius: 20;" text="Connect" textFill="WHITE">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="18.0" />
                            </font>

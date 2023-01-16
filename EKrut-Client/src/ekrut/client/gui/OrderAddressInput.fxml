@@ -34,31 +34,44 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderAddressInputController">
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderAddressInputController">
    <children>
-      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <VBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
          <children>
-            <Line endX="78.5" startX="-118.0" stroke="WHITE" />
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address" textAlignment="CENTER" wrappingWidth="257.69970703125">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="55.0" />
-               </font>
-            </Text>
-            <Line endX="78.5" startX="-118.0" stroke="WHITE" />
+            <HBox alignment="CENTER">
+               <children>
+                  <Line endX="63.79289245605469" endY="0.17157280445098877" startX="-151.5" stroke="WHITE" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="71.0" prefWidth="770.0" text="Address" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="50.0" />
+                     </font>
+                     <effect>
+                        <DropShadow>
+                           <color>
+                              <Color opacity="0.41999998688697815" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </Label>
+                  <Line endX="63.79289245605469" endY="0.17157280445098877" startX="-151.5" stroke="WHITE" />
+               </children>
+               <padding>
+                  <Insets left="20.0" right="20.0" />
+               </padding>
+            </HBox>
          </children>
-         <padding>
-            <Insets left="20.0" right="20.0" />
-         </padding>
-      </HBox>
+      </VBox>
       <Pane prefHeight="538.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
