@@ -81,9 +81,7 @@ public class OrderReportViewController{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		setTopSellersBarChart();
-		
     }
     // Get label and Integer and set the Integer after adding commas into the label
     private void setOrdersLabels(Label label, Integer total) {
@@ -118,7 +116,7 @@ public class OrderReportViewController{
 		ArrayList<String> locations = clientReportManager.getFacilitiesByArea(report.getArea());
 		ArrayList<String> fixLocations = new ArrayList<>();
 		for (String location : locations) {
-			fixLocations.add(location.replace("_", " "));
+			fixLocations.add(location);
 		}
    	 	// Convert array list into a array
    	 	String[] locationsArr = fixLocations.toArray(new String[fixLocations.size()]);
@@ -151,7 +149,6 @@ public class OrderReportViewController{
     	}
 		ordersBarChart.getData().addAll(series1, series2);
 		ordersBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
-		
     }
     
     private void setTopSellersBarChart() {
@@ -163,7 +160,6 @@ public class OrderReportViewController{
     		topSellersItems.add(entry.getKey());
     	}
   
-		
    	 	// Convert array list into a array
    	 	String[] topSellersArr = topSellersItems.toArray(new String[topSellersItems.size()]);
    	 	ItemNameAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(topSellersArr))); 

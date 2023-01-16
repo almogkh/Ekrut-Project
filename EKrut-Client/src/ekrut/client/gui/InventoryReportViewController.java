@@ -59,8 +59,6 @@ public class InventoryReportViewController {
 	    	String date = (String.valueOf(report.getDate().getMonthValue()) + '/' + String.valueOf(report.getDate().getYear()));
 	    	dateLbl.setText(date);
 	    	facilityThersholdLbl.setText(String.valueOf(report.getThreshold()));
-	    	
-	    	
 	    }  
 	    
 	    public void setTable(){
@@ -69,7 +67,6 @@ public class InventoryReportViewController {
 	    	for (Map.Entry<String, ArrayList<Integer>> entry : InventoryReportData.entrySet()) {
 	    		itemsName.add(entry.getKey());
 	    	}
-	    	
 	   	 	// Convert array list into a array
 	   	 	String[] itemsNameArr = itemsName.toArray(new String[itemsName.size()]);
 	   	 	
@@ -87,7 +84,5 @@ public class InventoryReportViewController {
 	    	itemThresholdBreachesBarChart.getData().addAll(series);
 	    	
 	    	itemThresholdBreachesBarChart.lookup(".chart-plot-background").setStyle("-fx-background-color: transparent;");
-	    	
-	    	
 	    }
 }
