@@ -31,8 +31,6 @@ import ocsf.server.ConnectionToClient;
  */
 public class ServerSessionManager {
 
-	// The user currently being managed by this session manager.
-	private User user = null;
 	// A map of logged-in users and their corresponding timer tasks, which will log
 	// them out after a certain time period.
 	private HashMap<User, TimerTask> connectedUsers;
@@ -80,9 +78,9 @@ public class ServerSessionManager {
 	 * @return a {@link UserResponse} object with the result of the login attempt
 	 *         and the {@link User} object, if successful
 	 */
-	public UserResponse loginUser(String username, String password, ConnectionToClient client) {
+	public synchronized UserResponse loginUser(String username, String password, ConnectionToClient client) {
 		ResultType result = null;
-		user = userDAO.fetchUserByUsername(username);
+		User user = userDAO.fetchUserByUsername(username);
 		UserResponse userResponse = new UserResponse(result, user);
 		if (user == null) {
 			result = ResultType.NOT_FOUND;
@@ -94,8 +92,8 @@ public class ServerSessionManager {
 			userResponse.setUser(user);
 			connectedUsers.put(user, startTimer(username, client));
 			clientUserMap.put(client, user);
-			connectedClientList.add(new ConnectedClient(client.getInetAddress().toString().replace("/", ""), username,
-					user.getUserType()));
+			connectedClientList.add(new ConnectedClient(client.getInetAddress().toString().replace("/", ""),
+					username, user.getUserType()));
 			result = ResultType.OK;
 		}
 		userResponse.setResultCode(result);
@@ -113,7 +111,7 @@ public class ServerSessionManager {
 	 * @param reason   the reason for the logout (e.g. "Session expired")
 	 * @return a {@link UserResponse} object with the result of the logout attempt
 	 */
-	public UserResponse logoutUser(ConnectionToClient client, String reason) {
+	public synchronized UserResponse logoutUser(ConnectionToClient client, String reason) {
 		ResultType result = null;
 		User user = clientUserMap.get(client);
 
@@ -127,8 +125,9 @@ public class ServerSessionManager {
 			// the session has expired
 			if (reason != null) {
 				sendRequestToClient(new UserRequest(UserRequestType.LOGOUT, user.getUsername()), client);
-			} else
+			} else {
 				result = ResultType.OK;
+			}
 			connectedUsers.get(user).cancel(); // cancel timer
 			connectedUsers.remove(user);
 			clientUserMap.remove(client);
@@ -150,8 +149,7 @@ public class ServerSessionManager {
 	 * @return `true` if the user is logged in, `false` if the user is not logged in
 	 *         or if a database error occurred.
 	 */
-	public UserResponse isLoggedin(String username) {
-		user = userDAO.fetchUserByUsername(username);
+	public synchronized UserResponse isLoggedin(String username) {
 		for (User connectedUser : connectedUsers.keySet())
 			if (connectedUser.getUsername().equals(username))
 				return new UserResponse(ResultType.OK);
@@ -171,8 +169,8 @@ public class ServerSessionManager {
 	 * @return the {@link User} object associated with the given
 	 *         {@link ConnectionToClient} object
 	 */
-	public User getUser(ConnectionToClient client) {
-		user = clientUserMap.get(client);
+	public synchronized User getUser(ConnectionToClient client) {
+		User user = clientUserMap.get(client);
 		resetTimer(user, client);
 		return user;
 
@@ -185,7 +183,7 @@ public class ServerSessionManager {
 	 * @param user the user whose connection should be retrieved
 	 * @return the user's client connection
 	 */
-	public ConnectionToClient getUsersConnection(User user) {
+	public synchronized ConnectionToClient getUsersConnection(User user) {
 		for (Map.Entry<ConnectionToClient, User> entry : clientUserMap.entrySet()) {
 			if (entry.getValue().getUsername().equals(user.getUsername())) {
 				resetTimer(entry.getValue(), entry.getKey());
@@ -201,7 +199,7 @@ public class ServerSessionManager {
 	 * @param user   the user whose timer is being reset
 	 * @param client the client associated with the given user
 	 */
-	public void resetTimer(User user, ConnectionToClient client) {
+	public synchronized void resetTimer(User user, ConnectionToClient client) {
 		// Cancel the current timer and start a new one
 		connectedUsers.get(user).cancel();
 		connectedUsers.put(user, startTimer(user.getUsername(), client));

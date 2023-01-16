@@ -73,12 +73,18 @@ public class ServerTicketManager extends AbstractServerManager<TicketRequest, Ti
 		//get area by ekrutLocation
 		String area = ticketDAO.fetchAreaByEkrutLocation(ekrutLocation);
 		
-		//get item details 
-		Item thisItem=itemDAO.fetchItem(itemID);
-		String itemName = thisItem.getItemName();
-		
-		//get ekrutLocation's threshold
-		InventoryItem thisInventoryItem = inventoryItemDAO.fetchInventoryItem(itemID,ekrutLocation);
+		InventoryItem thisInventoryItem;
+		String itemName;
+		try {
+			//get item details 
+			Item thisItem=itemDAO.fetchItem(itemID);
+			itemName = thisItem.getItemName();
+			
+			//get ekrutLocation's threshold
+			thisInventoryItem = inventoryItemDAO.fetchInventoryItem(itemID,ekrutLocation);
+		} catch (Exception e) {
+			return new TicketResponse(ResultType.UNKNOWN_ERROR);
+		}
 		int threshold = thisInventoryItem.getItemThreshold();
 		
 		//get username name of the operation worker

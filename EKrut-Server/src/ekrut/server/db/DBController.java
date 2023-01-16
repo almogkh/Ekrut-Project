@@ -14,7 +14,16 @@ import java.sql.Statement;
  */
 public class DBController {
 	
-	private Connection conn;
+	private final ThreadLocal<Connection> conn = new ThreadLocal<Connection>() {
+		@Override
+		protected Connection initialValue() {
+			try {
+				return DriverManager.getConnection(url, username, password);
+			} catch (SQLException e) {
+				return null;
+			}
+		}
+	};
 	private final String url, username, password;
 	
 	/**
@@ -38,14 +47,7 @@ public class DBController {
 	 * 	       false otherwise.
 	 */
 	public boolean connect() {
-		if (conn != null)
-			return true;
-		try {
-			conn = DriverManager.getConnection(url, username, password);
-			return true;
-		} catch (SQLException e) {
-			return false;
-		}
+		return conn.get() != null;
 	}
 	
 	/**
@@ -53,8 +55,8 @@ public class DBController {
 	 */
 	public void close() {
 		try {
-			conn.close();
-			conn = null;
+			conn.get().close();
+			conn.remove();
 		} catch (SQLException e) {}
 	}
 	
@@ -64,7 +66,10 @@ public class DBController {
 	 */
 	public void beginTransaction() {
 		try {
-			conn.setAutoCommit(false);
+			Connection con = conn.get();
+			if (!con.getAutoCommit())
+				return;
+			con.setAutoCommit(false);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -75,8 +80,11 @@ public class DBController {
 	 */
 	public void commitTransaction() {
 		try {
-			conn.commit();
-			conn.setAutoCommit(true);
+			Connection con = conn.get();
+			if (con.getAutoCommit())
+				return;
+			con.commit();
+			con.setAutoCommit(true);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -87,8 +95,11 @@ public class DBController {
 	 */
 	public void abortTransaction() {
 		try {
-			conn.rollback();
-			conn.setAutoCommit(true);
+			Connection con = conn.get();
+			if (con.getAutoCommit())
+				return;
+			con.rollback();
+			con.setAutoCommit(true);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -106,7 +117,7 @@ public class DBController {
 	 */
 	public PreparedStatement getPreparedStatement(String query, boolean autoGenKeys) {
 		try {
-			return conn.prepareStatement(query,
+			return conn.get().prepareStatement(query,
                                          autoGenKeys ? Statement.RETURN_GENERATED_KEYS : Statement.NO_GENERATED_KEYS);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

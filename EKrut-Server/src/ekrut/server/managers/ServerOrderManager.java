@@ -31,6 +31,7 @@ import ekrut.server.intefaces.StubPaymentProcessor;
  */
 public class ServerOrderManager extends AbstractServerManager<OrderRequest, OrderResponse> {
 
+	private DBController dbCon;
 	private OrderDAO orderDAO;
 	private TicketDAO ticketDAO;
 	private ServerSalesManager salesManager;
@@ -40,6 +41,7 @@ public class ServerOrderManager extends AbstractServerManager<OrderRequest, Orde
 	public ServerOrderManager(DBController dbCon, ServerSalesManager salesManager,
 							ServerInventoryManager inventoryManager) {
 		super(OrderRequest.class, new OrderResponse(ResultType.UNKNOWN_ERROR));
+		this.dbCon = dbCon;
 		this.orderDAO = new OrderDAO(dbCon);
 		this.ticketDAO = new TicketDAO(dbCon);
 		this.salesManager = salesManager;
@@ -142,29 +144,43 @@ public class ServerOrderManager extends AbstractServerManager<OrderRequest, Orde
 				return new OrderResponse(ResultType.INVALID_INPUT);
 		}
 		
-		if (!orderDAO.createOrder(order, subscriber ? user.getUsername() : null))
-			return new OrderResponse(ResultType.UNKNOWN_ERROR);
-		
-		if (order.getEkrutLocation() != null) {
-			ArrayList<InventoryItem> items = inventoryManager.fetchInventoryItemsByEkrutLocation(
-					new InventoryItemRequest(InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE, 
-											order.getEkrutLocation())).getInventoryItems();
-			for (OrderItem item : order.getItems()) {
-				for (InventoryItem invItem : items) {
-					if (item.getItem().equals(invItem.getItem())) {
-						inventoryManager.updateInventoryQuantity(new InventoryItemRequest(
+		int retries = 5;
+		do {
+			dbCon.beginTransaction();
+			try {
+				if (!orderDAO.createOrder(order, subscriber ? user.getUsername() : null)) {
+					dbCon.abortTransaction();
+					return new OrderResponse(ResultType.UNKNOWN_ERROR);
+				}
+				
+				if (order.getEkrutLocation() != null) {
+					ArrayList<InventoryItem> items = inventoryManager.fetchInventoryItemsByEkrutLocation(
+						new InventoryItemRequest(InventoryItemRequestType.FETCH_ALL_INVENTORYITEMS_IN_MACHINE, 
+												order.getEkrutLocation())).getInventoryItems();
+					for (OrderItem item : order.getItems()) {
+						for (InventoryItem invItem : items) {
+							if (item.getItem().equals(invItem.getItem())) {
+								inventoryManager.updateInventoryQuantity(new InventoryItemRequest(
 															InventoryItemRequestType.UPDATE_ITEM_QUANTITY,
 															item.getItem().getItemId(),
 															invItem.getItemQuantity() - item.getItemQuantity(),
 															order.getEkrutLocation()));
-						break;
+								break;
+							}
+						}
 					}
 				}
+				
+				dbCon.commitTransaction();
+				// We need to return the order ID for remote orders.
+				return new OrderResponse(ResultType.OK, order.getOrderId());	
+			} catch (DeadlockException e) {
+				dbCon.abortTransaction();
+				retries--;
 			}
-		}
+		} while (retries > 0);
 		
-		// We need to return the order ID for remote orders.
-		return new OrderResponse(ResultType.OK, order.getOrderId());	
+		return new OrderResponse(ResultType.UNKNOWN_ERROR);
 	}
 	
 	/**
@@ -209,7 +225,8 @@ public class ServerOrderManager extends AbstractServerManager<OrderRequest, Orde
 		if (order.getType() != OrderType.REMOTE || !order.getUsername().equals(user.getUsername()))
 			return new OrderResponse(ResultType.INVALID_INPUT);
 		
-		orderDAO.updateOrderStatus(request.getOrderId(), OrderStatus.DONE);
+		if (!orderDAO.updateOrderStatus(request.getOrderId(), OrderStatus.DONE))
+			return new OrderResponse(ResultType.UNKNOWN_ERROR);
 		return new OrderResponse(ResultType.OK);
 	}
 }

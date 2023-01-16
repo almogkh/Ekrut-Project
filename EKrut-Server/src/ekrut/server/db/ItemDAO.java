@@ -44,7 +44,7 @@ public class ItemDAO {
 	 * @param itemId the unique Item identifier. 
 	 * @return	an Item according to the provided itemId.
 	 */
-	public Item fetchItem(int itemId) {
+	public Item fetchItem(int itemId) throws SQLException {
 		PreparedStatement ps = con.getPreparedStatement(
 				"SELECT itemId, itemName, itemDescription, itemPrice FROM items WHERE itemId = ?;");
 		try {
@@ -59,9 +59,7 @@ public class ItemDAO {
 				return item;
 			}
 			return null;
-		} catch (SQLException e1) {
-			return null;
-		}finally {
+		} finally {
 			try {
 				ps.close();
 			} catch (SQLException e) {
@@ -86,9 +84,9 @@ public class ItemDAO {
 				allItems.add(item);
 			}
 			return allItems;
-		} catch (SQLException e1) {
+		} catch (SQLException e) {
 			return null;
-		}finally {
+		} finally {
 			try {
 				ps.close();
 			} catch (SQLException e) {

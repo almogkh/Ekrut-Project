@@ -105,10 +105,15 @@ public class EKrutServer extends AbstractServer {
 	@Override
 	protected synchronized void clientException(ConnectionToClient client, Throwable exception) {
 		serverSessionManager.logoutUser(client, null);
+		dbCon.close();
 	}
 
 	public ServerSessionManager getSession() {
 		return serverSessionManager;
+	}
+	
+	public DBController getDBController() {
+		return dbCon;
 	}
 
 	public boolean connect() {
@@ -121,6 +126,7 @@ public class EKrutServer extends AbstractServer {
 	@Override
 	protected void serverStopped() {
 		System.out.println("Server has stopped listening for connections.");
+		dbCon.close();
 	}
 
 	@Override

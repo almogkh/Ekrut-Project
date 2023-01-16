@@ -61,7 +61,7 @@ public class TicketDAO {
 			con.commitTransaction();
 		} catch (SQLException e) {
 			con.abortTransaction();
-			throw new RuntimeException(e);
+			return false;
 		} finally {
 			try {
 				ps.close();

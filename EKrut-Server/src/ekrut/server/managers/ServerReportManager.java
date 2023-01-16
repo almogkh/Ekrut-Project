@@ -34,6 +34,7 @@ import ekrut.server.db.UserDAO;
  * @author Tal Gaon
  */
 public class ServerReportManager extends AbstractServerManager<ReportRequest, ReportResponse> {
+	
 	private ReportDAO reportDAO;
 	private InventoryItemDAO inventoryItemDAO;
 	private UserDAO userDAO;
@@ -220,7 +221,12 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 		// Process the threshold breaches to count the number of breaches for each item
 		Map<String, Integer> tresholdBreachesCounted = CountThresholdBreaches(thersholdBreaches);
 		// Get the list of all items in the location
-		ArrayList<InventoryItem> allItemsInLocation = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
+		ArrayList<InventoryItem> allItemsInLocation;
+		try {
+			allItemsInLocation = inventoryItemDAO.fetchAllItemsByEkrutLocation(ekrutLocation);
+		} catch (DeadlockException e) {
+			allItemsInLocation = new ArrayList<>();
+		}
 		int facilityThreshold = 0;
 		// If the list of items is not empty, extract the facility threshold from the first item
 		if (!allItemsInLocation.isEmpty()) {
@@ -482,7 +488,6 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 	 * @param date the date for which to generate the reports
 	 */
 	public void generateMonthlyReports(LocalDateTime date) {
-
 		String areas[] = {"UAE", "North", "South"};
 		ArrayList<String> locationsList;
 		for (String area : areas) {

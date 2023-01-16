@@ -13,6 +13,7 @@ import ekrut.entity.OrderItem;
 import ekrut.entity.OrderStatus;
 import ekrut.entity.OrderType;
 import ekrut.entity.User;
+import ekrut.server.managers.DeadlockException;
 
 /**
  * Handles all direct database interactions with orders
@@ -52,8 +53,7 @@ public class OrderDAO {
 	 * @param order   the order that should be added to the database
 	 * @return        true if the operation succeeded, false otherwise
 	 */
-	public boolean createOrder(Order order, String username) {
-		con.beginTransaction();
+	public boolean createOrder(Order order, String username) throws DeadlockException {
 		
 		// Pass true so that we can get the new order ID
 		PreparedStatement p1 = con.getPreparedStatement("INSERT INTO orders " +
@@ -82,14 +82,12 @@ public class OrderDAO {
 			
 			int count = con.executeUpdate(p1);
 			if (count != 1) {
-				con.abortTransaction();
 				return false;
 			}
 			
 			// Get the new order's ID
 			ResultSet rs = p1.getGeneratedKeys();
 			if (!rs.next()) {
-				con.abortTransaction();
 				return false;
 			}
 			
@@ -110,7 +108,6 @@ public class OrderDAO {
 			int[] results = p2.executeBatch();
 			for (int i : results) {
 				if (i != 1) {
-					con.abortTransaction();
 					return false;
 				}
 			}
@@ -118,16 +115,15 @@ public class OrderDAO {
 			if (username != null) {
 				p3.setString(1, username);
 				if (p3.executeUpdate() != 1) {
-					con.abortTransaction();
 					return false;
 				}
 			}
 			
-			con.commitTransaction();
 			return true;
 			
 		} catch (SQLException e) {
-			con.abortTransaction();
+			if (e.getSQLState().equals("40001"))
+				throw new DeadlockException();
 			return false;
 		} finally {
 			try {
