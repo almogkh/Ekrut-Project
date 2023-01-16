@@ -11,33 +11,32 @@ import ekrut.net.SaleDiscountResponse;
 import ekrut.server.db.DBController;
 import ekrut.server.db.SaleDiscountDAO;
 import ekrut.server.db.TicketDAO;
-import ocsf.server.ConnectionToClient;
 
 /**
  * Manages sale related operations on the server side.
  * 
  * @author Almog Khaikin
  */
-public class ServerSalesManager {
+public class ServerSalesManager extends AbstractServerManager<SaleDiscountRequest, SaleDiscountResponse> {
 
 	private SaleDiscountDAO salesDAO;
 	private TicketDAO ticketDAO;
-	private ServerSessionManager serverSessionManager;
 	
 	public ServerSalesManager(DBController dbCon, ServerSessionManager serverSessionManager) {
+		super(SaleDiscountRequest.class, new SaleDiscountResponse(ResultType.UNKNOWN_ERROR));
 		this.salesDAO = new SaleDiscountDAO(dbCon);
 		this.ticketDAO = new TicketDAO(dbCon);
-		this.serverSessionManager = serverSessionManager;
 	}
 	
 	/**
 	 * Dispatches a sale related request to the appropriate handler.
 	 * 
 	 * @param request the request to dispatch
-	 * @param client  the client that sent the request
+	 * @param user    the user that sent the request
 	 * @return        a response for the request
 	 */
-	public SaleDiscountResponse handleRequest(SaleDiscountRequest request, ConnectionToClient client) {
+	@Override
+	protected SaleDiscountResponse handleRequest(SaleDiscountRequest request, User user) {
 		switch (request.getAction()) {
 		case CREATE_SALE:
 			return createSaleTemplate(request.getSale());
@@ -49,9 +48,9 @@ public class ServerSalesManager {
 			String area = ticketDAO.fetchAreaByEkrutLocation(request.getEkrutLocation());
 			return fetchSalesByArea(area);
 		case ACTIVATE_SALE_FOR_AREA:
-			return activateSaleForArea(request.getDiscountId(), request.getArea(), client);
+			return activateSaleForArea(request.getDiscountId(), request.getArea(), user);
 		case DEACTIVATE_SALE_FOR_AREA:
-			return deactivateSaleForArea(request.getDiscountId(), request.getArea(), client);
+			return deactivateSaleForArea(request.getDiscountId(), request.getArea(), user);
 		default:
 			return new SaleDiscountResponse(ResultType.UNKNOWN_ERROR);
 		}
@@ -100,12 +99,10 @@ public class ServerSalesManager {
 	 * 
 	 * @param discountId the ID of the sale template to activate
 	 * @param area       the area in which to activate the sale
-	 * @param client     the client that sent the request
+	 * @param user       the user that sent the request
 	 * @return           response indicating whether the operation was successful or not
 	 */
-	private SaleDiscountResponse activateSaleForArea(int discountId, String area, ConnectionToClient client) {
-		User user = serverSessionManager.getUser(client);
-		
+	private SaleDiscountResponse activateSaleForArea(int discountId, String area, User user) {
 		if (user.getUserType() != UserType.MARKETING_WORKER || !user.getArea().equals(area))
 			return new SaleDiscountResponse(ResultType.PERMISSION_DENIED);
 		
@@ -120,12 +117,10 @@ public class ServerSalesManager {
 	 * 
 	 * @param discountId the ID of the sale template to deactivate
 	 * @param area       the area in which to deactivate the sale
-	 * @param client     the client that sent the request
+	 * @param user       the user that sent the request
 	 * @return           response indicating whether the operation was successful or not
 	 */
-	private SaleDiscountResponse deactivateSaleForArea(int discountId, String area, ConnectionToClient client) {
-		User user = serverSessionManager.getUser(client);
-		
+	private SaleDiscountResponse deactivateSaleForArea(int discountId, String area, User user) {
 		if (user.getUserType() != UserType.MARKETING_WORKER || !user.getArea().equals(area))
 			return new SaleDiscountResponse(ResultType.PERMISSION_DENIED);
 		

@@ -24,7 +24,7 @@ import ekrut.server.intefaces.ShipmentManagerUtils;
  * 
  * @author Nir Betesh
  */
-public class ServerShipmentManager {
+public class ServerShipmentManager extends AbstractServerManager<ShipmentRequest, ShipmentResponse> {
 
 	private OrderDAO orderDAO;
 	private UserDAO userDAO;
@@ -36,11 +36,31 @@ public class ServerShipmentManager {
 	 * @param con the database controller to use for accessing the database
 	 */
 	public ServerShipmentManager(DBController con, ServerSessionManager serverSessionManager) {
+		super(ShipmentRequest.class, new ShipmentResponse(ResultType.UNKNOWN_ERROR));
 		orderDAO = new OrderDAO(con);
 		userDAO = new UserDAO(con);
 		userNotifier = new PopupUserNotifier(con, serverSessionManager);
 	}
 
+	@Override
+	protected ShipmentResponse handleRequest(ShipmentRequest request, User user) {
+		switch (request.getAction()) {
+		case FETCH_SHIPMENT_ORDERS:
+			return fetchShipmentRequests(request, user.getArea());
+		case UPDATE_STATUS:
+			switch (request.getStatus()) {
+			case SUBMITTED:
+				return confirmShipment(request);
+			case AWAITING_DELIVERY:
+				return confirmDelivery(request);
+			case DELIVERY_CONFIRMED:
+				return setDone(request);
+			default:
+			}
+		default:
+			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
+		}
+	}
 
 	/**
 	 * Fetches a list of shipment requests for approval.
@@ -48,9 +68,8 @@ public class ServerShipmentManager {
 	 * @param shipmentRequest the {@code ShipmentRequest} object containing the
 	 *                        request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
-	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
-	public ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest, String area) {
+	private ShipmentResponse fetchShipmentRequests(ShipmentRequest shipmentRequest, String area) {
 		// Check if shipmentRequest is null.
 		if (shipmentRequest == null)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
@@ -70,9 +89,8 @@ public class ServerShipmentManager {
 	 * 
 	 * @param shipmentRequest the {@code ShipmentRequest} object containing the request details
 	 * @return a {@code ShipmentResponse} object with the result of the operation
-	 * @throws IllegalArgumentException if {@code shipmentRequest} is {@code null}
 	 */
-	public ShipmentResponse confirmShipment(ShipmentRequest shipmentRequest) {
+	private ShipmentResponse confirmShipment(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
@@ -129,7 +147,7 @@ public class ServerShipmentManager {
 	 *                        request details.
 	 * @return a {@code ShipmentResponse} object with the result of the operation.
 	 */
-	public ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
+	private ShipmentResponse confirmDelivery(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);
@@ -164,7 +182,7 @@ public class ServerShipmentManager {
 	 *                        request details.
 	 * @return a {@code ShipmentResponse} object with the result of the operation.
 	 */
-	public ShipmentResponse setDone(ShipmentRequest shipmentRequest) {
+	private ShipmentResponse setDone(ShipmentRequest shipmentRequest) {
 		// In case the shipment request null an exception will be thrown.
 		if (shipmentRequest == null)
 			return new ShipmentResponse(ResultType.UNKNOWN_ERROR);

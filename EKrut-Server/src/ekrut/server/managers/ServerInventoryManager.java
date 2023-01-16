@@ -21,7 +21,7 @@ import ekrut.net.ResultType;
  * 
  * @author Ofek Malka
  */
-public class ServerInventoryManager {
+public class ServerInventoryManager extends AbstractServerManager<InventoryItemRequest, InventoryItemResponse> {
 	
 	private InventoryItemDAO inventoryItemDAO;
 	private ItemDAO itemDAO;
@@ -33,6 +33,7 @@ public class ServerInventoryManager {
 	 * Constructs a new ServerInventoryManager.
 	 */
 	public ServerInventoryManager(DBController con, IUserNotifier userNotifier) {
+		super(InventoryItemRequest.class, new InventoryItemResponse(ResultType.UNKNOWN_ERROR));
 		inventoryItemDAO = new InventoryItemDAO(con);
 		itemDAO = new ItemDAO(con);
 		userDAO = new UserDAO(con);
@@ -47,7 +48,8 @@ public class ServerInventoryManager {
 	 * @param user the user making the request
 	 * @return an {@link InventoryItemResponse} indicating the result of the request
 	 */
-	public InventoryItemResponse handleRequest(InventoryItemRequest inventoryItemRequest, User user) {
+	@Override
+	protected InventoryItemResponse handleRequest(InventoryItemRequest inventoryItemRequest, User user) {
 		if (inventoryItemRequest == null) return new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
 		InventoryItemRequestType action = inventoryItemRequest.getAction();
 		switch (action) {
@@ -73,7 +75,6 @@ public class ServerInventoryManager {
 	 *
 	 * @param inventoryUpdateItemRequest an InventoryItemRequest object that contains the item ID, ekrut location, and new quantity value for the InventoryItem to be updated
 	 * @return an InventoryItemResponse object indicating the result of the update operation
-	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
 	public InventoryItemResponse updateInventoryQuantity(InventoryItemRequest inventoryItemRequest) {
 		if (inventoryItemRequest == null || 
@@ -125,7 +126,6 @@ public class ServerInventoryManager {
 	 * @param inventoryGetItemsRequest an InventoryItemRequest object that contains the ekrut location for the InventoryItem(s) to be retrieved
 	 * @return an InventoryItemResponse object that contains the result of the fetch operation and, if successful,
 	 * 			 a list of the retrieved InventoryItem objects
-	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
 	public InventoryItemResponse fetchInventoryItemsByEkrutLocation(InventoryItemRequest inventoryItemRequest) {
 		if (inventoryItemRequest == null ||
@@ -155,7 +155,6 @@ public class ServerInventoryManager {
 	 * @param inventoryUpdateItemThresholdRequest an InventoryItemRequest object that contains the 
 	 * 			item ID, ekrut location, and new threshold value for the InventoryItem to be updated
 	 * @return an InventoryItemResponse object indicating the result of the update operation
-	 * @throws IllegalArgumentException if the provided InventoryItemRequest object is null
 	 */
 	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryItemRequest) {
 		if (inventoryItemRequest == null ||
