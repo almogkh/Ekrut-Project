@@ -2,6 +2,8 @@ package ekrut.client.gui;
 
 import java.util.ArrayList;
 import java.util.Optional;
+
+import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientOrderManager;
@@ -36,9 +38,12 @@ public class OrderBrowserController {
 	private String ekrutLocation;
 	private ClientInventoryManager inventoryManager;
 	private ClientOrderManager orderManager;
+	private boolean subscriber;
 
 	@FXML
 	private void initialize() {
+		EKrutClient client = EKrutClientUI.getEkrutClient();
+		subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
 		BTC = BaseTemplateController.getBaseTemplateController();
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		inventoryManager = EKrutClientUI.getEkrutClient().getClientInventoryManager();
@@ -48,11 +53,6 @@ public class OrderBrowserController {
 		AddItemViewToOrderVBox();
 		updateTotalPrice();
 	}
-
-	// need to consider
-	// 1. immidiate order
-	// 2. Remote Order
-	// 3. Shipment Order
 
 	private void AddItemViewToOrderVBox() {
 		if (ekrutLocation != null) {
@@ -79,7 +79,10 @@ public class OrderBrowserController {
 	}
 	
 	void updateTotalPrice() {
-		priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice()));
+		if (subscriber) 
+			priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice() - orderManager.getDiscount()));
+		else
+			priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice()));
 	}
 
 	@FXML
