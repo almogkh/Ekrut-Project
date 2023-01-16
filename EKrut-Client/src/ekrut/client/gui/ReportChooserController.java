@@ -147,19 +147,7 @@ public class ReportChooserController {
  			areas[2] = "UAE";
  		}
  		else if(user.getUserType().equals(UserType.AREA_MANAGER)) {
- 			if (user.getArea().equals("North")) {
- 				areas = new String[1];
- 				areas[0] = "North";
- 			}
- 			else if (user.getArea().equals("South")) {
- 				areas = new String[1];
- 				areas[0] = "South";
- 			}
- 			else {
- 				areas = new String[1];
- 	 			areas[0] = "UAE";
- 			}
-
+ 			areas = new String[]{user.getArea()};
  		}
  		areaComboBox.getItems().addAll(areas);
     }
