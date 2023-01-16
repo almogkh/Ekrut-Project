@@ -20,9 +20,14 @@ public class OrderPickupController {
 	private TextField orderIdTxt;
 
 	private final static String NOT_VALID_INPUT_ERROR_MSG = "Invalid input. Please enter a valid number.";
-	private final static String UNKONWUN_ERROR_MSG = "Order not found. Please try again.";
+	private final static String UNKONWUN_ERROR_MSG = "Order ID  was not found. Please try again.\n"
+												   + "If you dont have an order ID from any reason,\n"
+												   + "please call our customer service.\n"
+												   + "Have a good day!\n"
+												   + "EKrut.";
 	private final static String PICKUP_SUCCESS_MSG = "Your order is on its way to you!\n"
-			+ "Thank you for buying from EKrut,\n" + "Hope to see you soon!";
+												   + "Thank you for buying from EKrut,\n" 
+												   + "Hope to see you soon!";
 
 	private ClientOrderManager clientOrderManager;
 
