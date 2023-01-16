@@ -73,7 +73,7 @@ public class SaleTemplateController {
 			+ " Please check all the required fields and try again.";
 	private static final String[] SALE_TYPE = { "30% off", "One Plus One" };
 
-	private ArrayList<SaleDiscount> templates = new ArrayList<>();
+	private ArrayList<SaleDiscount> templates;
 
 	private ClientSalesManager clientSalesManager;
 	

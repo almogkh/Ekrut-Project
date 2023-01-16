@@ -64,22 +64,16 @@ public class OrderItemController extends HBox {
 	private InventoryItem inventoryItem;
 	private ClientOrderManager orderManager;
 	private OrderBrowserController controller;
-	private ClientSalesManager clientSalesManager;
-	private ArrayList<SaleDiscount> sale = new ArrayList<>();
-	private boolean subscriber;
 
-
-		
-	// Q.Nir - is OrderBrowserController controller needed?
 	public OrderItemController(OrderBrowserController controller, Item item) {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		orderManager = client.getClientOrderManager();
-		subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
+		boolean subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
 		this.item = item;
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		this.orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
-		this.clientSalesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
-		sale = clientSalesManager.fetchActiveSales(ekrutLocation);
+		ClientSalesManager clientSalesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
+		ArrayList<SaleDiscount> sale = clientSalesManager.fetchActiveSales(ekrutLocation);
 		
 		this.controller = controller;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderItem.fxml"));
