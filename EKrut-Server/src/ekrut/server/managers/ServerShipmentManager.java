@@ -1,6 +1,7 @@
 package ekrut.server.managers;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import ekrut.entity.Order;
 import ekrut.entity.OrderStatus;
@@ -109,12 +110,14 @@ public class ServerShipmentManager {
 		// Send message to customer when his shippment was approved.
 		String username = order.getUsername();
 		
+		String estimateTime = estimateDeliveryTime.format(DateTimeFormatter.ofPattern("dd/MM/YY HH:mm"));
+		
 		// Q.Nir - Need to check if success??
 		User user = userDAO.fetchUserByUsername(username);	
 		String notificationMsg = "Hi " + user.getFirstName() + ",\n\n"
 							   + "We wanted to let you know that your delivery is approved by our shipment department,\n"
 							   + "and your shipment is currently in the checkout process!.\n"
-							   + "your shipment expected to arrive by " + estimateDeliveryTime.toString() + " o'clock.\n"
+							   + "your shipment expected to arrive by " + estimateTime + " o'clock.\n"
 							   + "When your shipment has arrived, please confirm that you have received the shipment in the application.\n"
 							   + "Keep an eye out for it and let us know if you have any questions or concerns.\n\n"
 							   + "Best regards,\nEKrut";
