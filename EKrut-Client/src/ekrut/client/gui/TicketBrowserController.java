@@ -1,6 +1,5 @@
 package ekrut.client.gui;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -12,10 +11,8 @@ import ekrut.entity.UserType;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
@@ -41,7 +38,7 @@ public class TicketBrowserController implements Initializable {
     	if (usertype == UserType.AREA_MANAGER) {
     		createTicketBtn.setVisible(true);
     		String userArea = client.getClientSessionManager().getUser().getArea();
-    		ticketsToShow = clientTicketManager.fetchTicketsByArea(userArea); // TBD OFEK: BUG WHEN WRONG AREA
+    		ticketsToShow = clientTicketManager.fetchTicketsByArea(userArea);
     	} else {
     		createTicketBtn.setVisible(false);
     		ticketsToShow = clientTicketManager.fetchTicketsByUsername(username);
@@ -55,19 +52,9 @@ public class TicketBrowserController implements Initializable {
 	}
     
     
-    
     @FXML
     void createTicket(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/TicketSubmission.fxml"));
-		try {
-			loader.load();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		
-		Parent root = loader.getRoot();
-		//TicketSubmissionController ticketSubmissionController = loader.getController();
-		BaseTemplateController.getBaseTemplateController().setRightWindow(root);
+		BaseTemplateController.getBaseTemplateController().switchStages("TicketSubmission");
 	    }
 
 }

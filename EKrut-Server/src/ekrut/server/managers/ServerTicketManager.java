@@ -24,6 +24,7 @@ import ekrut.server.db.TicketDAO;
 
 public class ServerTicketManager extends AbstractServerManager<TicketRequest, TicketResponse> {
 
+	private DBController con;
 	private TicketDAO ticketDAO;
 	private ItemDAO itemDAO;
 	private InventoryItemDAO inventoryItemDAO;
@@ -35,6 +36,7 @@ public class ServerTicketManager extends AbstractServerManager<TicketRequest, Ti
      */
 	public ServerTicketManager(DBController con) {
 		super(TicketRequest.class, new TicketResponse(ResultType.UNKNOWN_ERROR));
+		this.con = con;
 		ticketDAO = new TicketDAO(con);
 		itemDAO = new ItemDAO(con);
 		inventoryItemDAO = new InventoryItemDAO(con);
@@ -115,12 +117,33 @@ public class ServerTicketManager extends AbstractServerManager<TicketRequest, Ti
 		int ticketID = ticketRequest.getTicketId();
 		TicketStatus status = ticketRequest.getStatus();
 		
-		//ticket's status update can only turn from IN_PROGRESS to DONE
-		if(!ticketDAO.updateTicketStatus(ticketID, status)) {
-			return new TicketResponse(ResultType.UNKNOWN_ERROR);
-		}
+		int retries = 5;
 		
-		return new TicketResponse(ResultType.OK);
+		do {
+			try {
+				con.beginTransaction();
+				//ticket's status update can only turn from IN_PROGRESS to DONE
+				if(!ticketDAO.updateTicketStatus(ticketID, status)) {
+					con.abortTransaction();
+					return new TicketResponse(ResultType.UNKNOWN_ERROR);
+				}
+				if (status == TicketStatus.DONE) {
+					String ekrutLocation = ticketRequest.getEkrutLocation();
+					int itemId = ticketRequest.getItemID();
+					if (!inventoryItemDAO.updateItemQuantity(ekrutLocation, itemId, ServerInventoryManager.RESTOCK_AMOUNT)) {
+						con.abortTransaction();
+						return new TicketResponse(ResultType.UNKNOWN_ERROR);
+					}
+				}
+				con.commitTransaction();
+				return new TicketResponse(ResultType.OK);
+			}
+			catch(DeadlockException e) {
+				con.abortTransaction();
+				retries--;
+			}
+		} while(retries > 0);
+		return new TicketResponse(ResultType.UNKNOWN_ERROR);
 	}
 	
 	
