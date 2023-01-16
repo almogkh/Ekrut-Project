@@ -61,7 +61,7 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 	 * @return UserResponse with the result of the registration
 	 */
 	public UserResponse registerUser(UserRegistration userToRegister) {
-		UserRequest userLoginRequest = new UserRequest(userToRegister);
+		UserRequest userLoginRequest = new UserRequest(userToRegister, UserRequestType.REGISTER_USER);
 		UserResponse userResponse = sendRequest(userLoginRequest);
 		return userResponse;
 	}
@@ -161,6 +161,33 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 	 */
 	public User getUser() {
 		return user;
+	}
+
+	/**
+	 * 
+	 * Add a user to the registration list
+	 * 
+	 * @param user the user to create
+	 * @return true if user created successfully, false otherwise
+	 */
+	public boolean createUserToRegister(UserRegistration user) {
+		UserRequest userRequest = new UserRequest(user, UserRequestType.CREATE_USER_TO_REGISTER);
+		UserResponse userResponse = sendRequest(userRequest);
+		return userResponse.getResultCode() == ResultType.OK ? true : false;
+
+	}
+
+	/**
+	 * 
+	 * Update a user in the database.
+	 * 
+	 * @param user the user to update
+	 * @return true if user updated successfully, false otherwise
+	 */
+	public boolean updateUser(User user) {
+		UserRequest userRequest = new UserRequest(user, UserRequestType.UPDATE_USER);
+		UserResponse userResponse = sendRequest(userRequest);
+		return userResponse.getResultCode() == ResultType.OK ? true : false;
 	}
 
 }

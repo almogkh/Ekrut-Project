@@ -117,7 +117,6 @@ public class EKrutServer extends AbstractServer {
 		case IS_LOGGEDIN:
 			userResponse = serverSessionManager.isLoggedin(userRequest.getUsername());
 			break;
-
 		case FETCH_USER:
 			userResponse = serverSessionManager.fetchUser(userRequest.getFetchType(), userRequest.getArgument());
 			break;
@@ -126,6 +125,12 @@ public class EKrutServer extends AbstractServer {
 			break;
 		case GET_REGISTRATION_LIST:
 			userResponse = serverSessionManager.getRegistrationList(userRequest.getArea());
+			break;
+		case CREATE_USER_TO_REGISTER:
+			userResponse = serverSessionManager.createUserToRegister(userRequest.getUserToRegister());
+			break;
+		case UPDATE_USER:
+			userResponse = serverSessionManager.updateUser(userRequest.getUser());
 			break;
 		default:
 			userResponse = new UserResponse(ResultType.UNKNOWN_ERROR);

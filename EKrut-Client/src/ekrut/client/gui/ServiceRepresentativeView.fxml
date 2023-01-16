@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Copyright (c) 2015, 2019, Gluon and/or its affiliates. All rights reserved. 
+	Use is subject to license terms. This file is available and licensed under 
+	the following license: Redistribution and use in source and binary forms, 
+	with or without modification, are permitted provided that the following conditions 
+	are met: - Redistributions of source code must retain the above copyright 
+	notice, this list of conditions and the following disclaimer. - Redistributions 
+	in binary form must reproduce the above copyright notice, this list of conditions 
+	and the following disclaimer in the documentation and/or other materials 
+	provided with the distribution. - Neither the name of Oracle Corporation 
+	nor the names of its contributors may be used to endorse or promote products 
+	derived from this software without specific prior written permission. THIS 
+	SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+	ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+	WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+	IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+	INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+	BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF 
+	USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
+	THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+	EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. -->
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ServiceRepresentativeViewController">
+	<children>
+		<HBox alignment="CENTER" prefHeight="85.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+			<children>
+				<Line endX="43.29289245605469" endY="0.2928932309150696" startX="-100.0" stroke="WHITE" />
+				<Label contentDisplay="CENTER" text="User Registration">
+					<font>
+						<Font name="Arial Rounded MT Bold" size="50.0" />
+					</font>
+					<effect>
+						<DropShadow>
+							<color>
+								<Color opacity="0.30000001192092896" />
+							</color>
+						</DropShadow>
+					</effect>
+				</Label>
+				<Line endX="27.5" startX="-100.0" stroke="WHITE" />
+			</children>
+		</HBox>
+		<VBox alignment="TOP_CENTER" prefHeight="586.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+			<VBox.margin>
+				<Insets />
+			</VBox.margin>
+			<children>
+				<Pane prefHeight="132.0" prefWidth="765.0">
+					<children>
+						<Label layoutX="29.0" layoutY="62.0" text="username:">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="18.0" />
+							</font>
+						</Label>
+						<Text layoutX="27.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter user name, to check if he exists in the system:">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="22.0" />
+							</font>
+						</Text>
+						<TextField fx:id="usernameField" layoutX="141.0" layoutY="60.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+						<Button fx:id="fetchDataBtn" layoutX="301.0" layoutY="60.0" mnemonicParsing="false" onAction="#fetchData" styleClass="bu" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="OK">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="12.0" />
+							</font>
+						</Button>
+						<Label fx:id="errorFetchLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="236.0" layoutY="103.0" text="Username doesn't exist in the system!" textAlignment="CENTER" textFill="#f50a0a">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="16.0" />
+							</font>
+						</Label>
+                  <Label fx:id="errorExistRegister" alignment="CENTER" contentDisplay="CENTER" layoutX="181.0" layoutY="103.0" text="The user is already on the waiting list for registration" textAlignment="CENTER" textFill="#f50a0a">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+					</children>
+				</Pane>
+				<Pane fx:id="paneRegister" prefHeight="415.0" prefWidth="770.0">
+					<children>
+						<Label layoutX="31.0" layoutY="79.0" text="email:">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="18.0" />
+							</font>
+						</Label>
+						<Text layoutX="23.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill user's details:">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="22.0" />
+							</font>
+						</Text>
+						<TextField fx:id="emailField" layoutX="137.0" layoutY="79.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+						<Button fx:id="registerBtn" layoutX="343.0" layoutY="347.0" mnemonicParsing="false" onAction="#register" styleClass="bu" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Register">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="12.0" />
+							</font>
+						</Button>
+						<Label layoutX="30.0" layoutY="110.0" text="phone:">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="18.0" />
+							</font>
+						</Label>
+						<TextField fx:id="phoneField" layoutX="137.0" layoutY="110.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+						<Label layoutX="337.0" layoutY="79.0" text="Credit card number:">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="18.0" />
+							</font>
+						</Label>
+						<TextField fx:id="creditCardField" layoutX="523.0" layoutY="79.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+						<Label layoutX="337.0" layoutY="111.0" text="Area:">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="18.0" />
+							</font>
+						</Label>
+						<TextField fx:id="areaField" layoutX="523.0" layoutY="111.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+						<RadioButton fx:id="clientRBtn" layoutX="31.0" layoutY="214.0" mnemonicParsing="false" onAction="#chooseClient" text="Client">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="13.0" />
+							</font>
+						</RadioButton>
+						<RadioButton fx:id="subscriberRBtn" layoutX="32.0" layoutY="245.0" mnemonicParsing="false" onAction="#chooseSub" text="Subscriber">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="13.0" />
+							</font>
+						</RadioButton>
+						<RadioButton fx:id="monthlyChrgeRBtn" layoutX="133.0" layoutY="246.0" mnemonicParsing="false" onAction="#chooseMonthlyCharge" text="Monthly charge">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="13.0" />
+							</font>
+						</RadioButton>
+						<Label alignment="CENTER" contentDisplay="CENTER" layoutX="19.0" layoutY="83.0" text="*" textAlignment="CENTER" textFill="#f50a0a">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="16.0" />
+							</font>
+						</Label>
+						<Label alignment="CENTER" contentDisplay="CENTER" layoutX="19.0" layoutY="115.0" text="*" textAlignment="CENTER" textFill="#f50a0a">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="16.0" />
+							</font>
+						</Label>
+						<Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="83.0" text="*" textAlignment="CENTER" textFill="#f50a0a">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="16.0" />
+							</font>
+						</Label>
+						<Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="118.0" text="*" textAlignment="CENTER" textFill="#f50a0a">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="16.0" />
+							</font>
+						</Label>
+						<Text layoutX="29.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register type:">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="18.0" />
+							</font>
+						</Text>
+						<Label alignment="CENTER" contentDisplay="CENTER" layoutX="20.0" layoutY="187.0" text="*" textAlignment="CENTER" textFill="#f50a0a">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="16.0" />
+							</font>
+						</Label>
+						<Label fx:id="errorDetails" alignment="CENTER" contentDisplay="CENTER" layoutX="291.0" layoutY="312.0" text="You must fill all details" textAlignment="CENTER" textFill="#f50a0a">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="16.0" />
+							</font>
+						</Label>
+						<Label fx:id="errorRegister" alignment="CENTER" contentDisplay="CENTER" layoutX="275.0" layoutY="378.0" text="Error! Registration problem" textAlignment="CENTER" textFill="#f50a0a">
+							<font>
+								<Font name="Arial Rounded MT Bold" size="16.0" />
+							</font>
+						</Label>
+                  <Label layoutX="31.0" layoutY="48.0" text="First name:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="firstNameField" layoutX="137.0" layoutY="48.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+                  <Label layoutX="337.0" layoutY="48.0" text="Last name:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="lastNameField" layoutX="523.0" layoutY="48.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="19.0" layoutY="52.0" text="*" textAlignment="CENTER" textFill="#f50a0a">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="52.0" text="*" textAlignment="CENTER" textFill="#f50a0a">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="31.0" layoutY="145.0" text="ID:">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="idField" layoutX="137.0" layoutY="141.0" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="19.0" layoutY="148.0" text="*" textAlignment="CENTER" textFill="#f50a0a">
+                     <font>
+                        <Font name="Arial Rounded MT Bold" size="16.0" />
+                     </font>
+                  </Label>
+					</children>
+				</Pane>
+			</children>
+		</VBox>
+	</children>
+</VBox>

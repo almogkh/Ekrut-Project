@@ -37,16 +37,15 @@ public class UserDAO {
 		try {
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
-				user = new User(UserType.valueOf(rs.getString(1)),username,
-						rs.getString(3), rs.getString(4),rs.getString(5),
-						rs.getString(6),  rs.getString(7),
-						rs.getString(8), rs.getString(9));
+			if (rs.next()) {
+				// (userType, username, password, firstName, lastName, id, email, phoneNumber,
+				// area)
+				user = new User(UserType.valueOf(rs.getString(1)), username, rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9));
 				Customer customerInfo = fetchCustomerInfo(user);
 				user.setCustomerInfo(customerInfo);
 			}
-			
+
 			return user;
 		} catch (SQLException e1) {
 			return null;
@@ -72,16 +71,15 @@ public class UserDAO {
 		try {
 			ps.setString(1, phoneNumber);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
-				user = new User(UserType.valueOf(rs.getString(1)),rs.getString(2),
-						rs.getString(3), rs.getString(4),rs.getString(5),
-						rs.getString(6),  rs.getString(7),
-						phoneNumber, rs.getString(9));
+			if (rs.next()) {
+				// (userType, username, password, firstName, lastName, id, email, phoneNumber,
+				// area)
+				user = new User(UserType.valueOf(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), phoneNumber, rs.getString(9));
 				Customer customerInfo = fetchCustomerInfo(user);
 				user.setCustomerInfo(customerInfo);
 			}
-			
+
 			return user;
 		} catch (SQLException e1) {
 			return null;
@@ -107,16 +105,15 @@ public class UserDAO {
 		try {
 			ps.setString(1, email);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
-				user = new User(UserType.valueOf(rs.getString(1)),rs.getString(2),
-						rs.getString(3), rs.getString(4),rs.getString(5),
-						rs.getString(6),  email,
-						rs.getString(8), rs.getString(9));
+			if (rs.next()) {
+				// (userType, username, password, firstName, lastName, id, email, phoneNumber,
+				// area)
+				user = new User(UserType.valueOf(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), email, rs.getString(8), rs.getString(9));
 				Customer customerInfo = fetchCustomerInfo(user);
 				user.setCustomerInfo(customerInfo);
 			}
-			
+
 			return user;
 		} catch (SQLException e1) {
 			return null;
@@ -173,15 +170,14 @@ public class UserDAO {
 	 */
 	public User fetchManagerByArea(String area) {
 		User user = null;
-		PreparedStatement ps= con.getPreparedStatement("SELECT * FROM users WHERE userType = 'AREA_MANAGER' AND area = ?"); 
+		PreparedStatement ps = con
+				.getPreparedStatement("SELECT * FROM users WHERE userType = 'AREA_MANAGER' AND area = ?");
 		try {
 			ps.setString(1, area);
 			ResultSet rs = ps.executeQuery();
-			if(rs.next()) {
-				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
-				user = new User(UserType.AREA_MANAGER, rs.getString(2),
-						rs.getString(3), rs.getString(4), rs.getString(5),
-						rs.getString(6),  rs.getString(7),  rs.getString(8), area);
+			if (rs.next()) {
+				user = new User(UserType.AREA_MANAGER, rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), area);
 				Customer customerInfo = fetchCustomerInfo(user);
 				user.setCustomerInfo(customerInfo);
 			}
@@ -197,6 +193,13 @@ public class UserDAO {
 		}
 	}
 
+	/**
+	 * 
+	 * Fetches a user from the users table by area.
+	 * 
+	 * @param area The area of the user to be fetched.
+	 * @return The user with the specified area. Returns null if no user is found.
+	 */
 	public User fetchUserByArea(String area) {
 		User user = null;
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM users WHERE area = ?");
@@ -204,8 +207,6 @@ public class UserDAO {
 			ps.setString(1, area);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next())
-				// (userType, username, password, firstName, lastName, id, email, phoneNumber,
-				// area)
 				user = new User(UserType.valueOf(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), area);
 			return user;
@@ -220,6 +221,14 @@ public class UserDAO {
 		}
 	}
 
+	/**
+	 * 
+	 * Fetches all users with a certain role from the users table.
+	 * 
+	 * @param userType The role of the users to be fetched.
+	 * @return A list of all users with the specified role. Returns null if no users
+	 *         are found.
+	 */
 	public ArrayList<User> fetchAllUsersByRole(UserType userType) {
 		ArrayList<User> usersList = new ArrayList<>();
 		User user = null;
@@ -227,14 +236,12 @@ public class UserDAO {
 		try {
 			ps.setString(1, userType.toString());
 			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
-				//(userType, username, password, firstName, lastName, id, email, phoneNumber, area)
-				user = new User(userType, rs.getString(2),
-						rs.getString(3), rs.getString(4), rs.getString(5),
-						rs.getString(6),  rs.getString(7),  rs.getString(8),  rs.getString(9));
+			while (rs.next()) {
+				user = new User(userType, rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9));
 				Customer customerInfo = fetchCustomerInfo(user);
 				user.setCustomerInfo(customerInfo);
-				usersList.add(user);				
+				usersList.add(user);
 			}
 
 			return usersList.size() != 0 ? usersList : null;
@@ -259,13 +266,17 @@ public class UserDAO {
 	 *         phoneNumber, String area
 	 */
 	public boolean updateUser(User user) {
-		String query = "UPDATE users SET userType = ?, email = ?, phoneNumber = ? WHERE username = ?";
+		String query = "UPDATE users SET userType = ?, firstName = ?, lastName = ?, id = ? , email = ?, phoneNumber = ?, area= ? WHERE username = ?";
 		PreparedStatement ps = con.getPreparedStatement(query);
 		try {
 			ps.setString(1, user.getUserType().toString());
-			ps.setString(2, user.getEmail());
-			ps.setString(3, user.getPhoneNumber());
-			ps.setString(4, user.getUsername());
+			ps.setString(2, user.getFirstName());
+			ps.setString(3, user.getLastName());
+			ps.setString(4, user.getId());
+			ps.setString(5, user.getEmail());
+			ps.setString(6, user.getPhoneNumber());
+			ps.setString(7, user.getArea());
+			ps.setString(8, user.getUsername());
 			return 1 == ps.executeUpdate();
 		} catch (SQLException e1) {
 			return false;
@@ -278,8 +289,14 @@ public class UserDAO {
 		}
 	}
 
-	// String userName, String creditCardNumber,String phoneNumber,String email,
-	// boolean monthlyCharge, String customerOrSub,String subscriberNumber
+	/**
+	 * 
+	 * Returns a list of all UserRegistration objects for a given area.
+	 * 
+	 * @param area The area to search for UserRegistration objects in.
+	 * @return An ArrayList of UserRegistration objects for the given area. Returns
+	 *         null if no UserRegistration objects are found.
+	 */
 	public ArrayList<UserRegistration> getUserRegistrationList(String area) {
 		ArrayList<UserRegistration> usersRegistrationList = new ArrayList<>();
 		UserRegistration userRegistration = null;
@@ -288,11 +305,10 @@ public class UserDAO {
 			ps.setString(1, area);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				//String userName,  String creditCardNumber,String phoneNumber,String email,
-				//boolean monthlyCharge,  String customerOrSub
+				// String userName, String creditCardNumber,String phoneNumber,String email,
+				// boolean monthlyCharge, String customerOrSub
 				userRegistration = new UserRegistration(rs.getString(1), rs.getString(2), rs.getString(3),
-						rs.getString(4), rs.getBoolean(5),
-						rs.getBoolean(6) ? "customer" : "subscriber");
+						rs.getString(4), rs.getBoolean(5), rs.getBoolean(6) ? "customer" : "subscriber", area);
 				usersRegistrationList.add(userRegistration);
 			}
 			return usersRegistrationList.size() != 0 ? usersRegistrationList : null;
@@ -307,8 +323,14 @@ public class UserDAO {
 		}
 	}
 
-	// String username, String subscriberNumber, Int monthlyCharge, String
-	// creditCardNumber, int orderedAsSub
+	/**
+	 * 
+	 * Creates or updates a customer in the customers table.
+	 * 
+	 * @param customer The customer to create or update.
+	 * @return True if the customer was successfully created or updated. False
+	 *         otherwise.
+	 */
 	public boolean createOrUpdateCustomer(Customer customer) {
 		String query = "INSERT INTO customers"
 				+ " VALUES(?,?,?,?,?) ON DUPLICATE KEY UPDATE subscriberNumber = ?, monthlyCharge = ?";
@@ -333,6 +355,45 @@ public class UserDAO {
 		}
 	}
 
+	/**
+	 * 
+	 * Creates a new user registration in the user_registration table.
+	 * 
+	 * @param user The UserRegistration object to be created.
+	 * @return True if the UserRegistration was successfully created. False
+	 *         otherwise.
+	 */
+	public boolean createUserToRegister(UserRegistration user) {
+		String query = "INSERT INTO user_registration" + " VALUES(?,?,?,?,?,?,?)";
+		PreparedStatement ps = con.getPreparedStatement(query);
+		try {
+			ps.setString(1, user.getUsername());
+			ps.setString(2, user.getCreditCardNumber());
+			ps.setString(3, user.getPhoneNumber());
+			ps.setString(4, user.getEmail());
+			ps.setInt(5, user.getMonthlyCharge() ? 1 : 0);
+			ps.setInt(6, user.getCustomerOrSub() == "customer" ? 1 : 0);
+			ps.setString(7, user.getArea());
+			return 1 >= ps.executeUpdate();
+		} catch (SQLException e1) {
+			return false;
+		} finally {
+			try {
+				ps.close();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * Deletes a user registration from the user_registration table.
+	 * 
+	 * @param username The username of the UserRegistration to be deleted.
+	 * @return True if the UserRegistration was successfully deleted. False
+	 *         otherwise.
+	 */
 	public boolean deleteUserFromRegistration(String username) {
 		PreparedStatement ps = con.getPreparedStatement("DELETE FROM user_registration WHERE userName = ?;");
 		try {

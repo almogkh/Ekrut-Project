@@ -17,7 +17,6 @@ import ekrut.net.UserRequestType;
 import ekrut.net.UserResponse;
 import ekrut.server.EKrutServer;
 import ekrut.server.TimeScheduler;
-import ekrut.server.UsersImporter;
 import ekrut.server.db.DBController;
 import ekrut.server.db.UserDAO;
 import javafx.collections.FXCollections;
@@ -295,8 +294,6 @@ public class ServerSessionManager {
 		User user = userDAO.fetchUserByUsername(userToRegister.getUsername());
 		if (user.getUserType() == UserType.REGISTERED)
 			user.setUserType(UserType.CUSTOMER);
-		user.setEmail(userToRegister.getEmail());
-		user.setPhoneNumber(userToRegister.getPhoneNumber());
 		customer = new Customer(userToRegister.getCustomerOrSub().equals("subscriber") ? 0 : -1,
 				userToRegister.getUsername(), userToRegister.getMonthlyCharge(), userToRegister.getCreditCardNumber(),
 				false);
@@ -320,4 +317,36 @@ public class ServerSessionManager {
 			return new UserResponse(ResultType.NOT_FOUND);
 		return new UserResponse(registrationList, ResultType.OK);
 	}
+
+	/**
+	 * 
+	 * Create a user to register in the database based .
+	 * 
+	 * @param a {@link UserRegistration} user the user to register
+	 * @return a {@link UserResponse} object with the result of the create process.
+	 *         If the create was successful, the result code will be
+	 *         {@link ResultType#OK}, otherwise it will be
+	 *         {@link ResultType#NOT_FOUND}.
+	 */
+	public UserResponse createUserToRegister(UserRegistration user) {
+		if (userDAO.createUserToRegister(user))
+			return new UserResponse(ResultType.OK);
+		return new UserResponse(ResultType.NOT_FOUND);
+
+	}
+
+	/**
+	 * 
+	 * Update a user in the system.
+	 * 
+	 * @param user the user to update
+	 * @return a {@link UserResponse} indicating the result of the update operation
+	 */
+	public UserResponse updateUser(User user) {
+		if (userDAO.updateUser(user))
+			return new UserResponse(ResultType.OK);
+		return new UserResponse(ResultType.NOT_FOUND);
+
+	}
+
 }

@@ -10,24 +10,18 @@ public class UserRegistration  implements Serializable{
 	private String creditCardNumber;
 	private String email;
 	private String phoneNumber;
-	private String customerOrSub;
+	private String customerOrSub;private String area;
 
-	public String getCustomerOrSub() {
-		return customerOrSub;
-	}
-
-	public void setCustomerOrSub(String customerOrSub) {
-		this.customerOrSub = customerOrSub;
-	}
 
 	public UserRegistration(String username,  String creditCardNumber,String phoneNumber,String email,
-			boolean monthlyCharge,  String customerOrSub) {
+			boolean monthlyCharge,  String customerOrSub,String area) {
 		this.username = username;
 		this.creditCardNumber = creditCardNumber;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.monthlyCharge = monthlyCharge;
 		this.customerOrSub = customerOrSub;
+		this.area=area;
 	}
 
 	public String getEmail() {
@@ -69,6 +63,22 @@ public class UserRegistration  implements Serializable{
 	public void setCreditCardNumber(String creditCardNumber) {
 		this.creditCardNumber = creditCardNumber;
 	}
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
+	}
+
+	public String getCustomerOrSub() {
+		return customerOrSub;
+	}
+
+	public void setCustomerOrSub(String customerOrSub) {
+		this.customerOrSub = customerOrSub;
+	}
+
 
 
 
