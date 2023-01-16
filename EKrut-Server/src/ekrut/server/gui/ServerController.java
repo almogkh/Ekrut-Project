@@ -130,7 +130,7 @@ public class ServerController {
 		this.PortTXTfield.setText("5555");
 		this.DBNameTXTfield.setText("jdbc:mysql://localhost/ekrut?serverTimezone=IST");
 		this.DBUserNameTXTfield.setText("root");
-		this.DBPasswordTXTfield.setText("1qazZ2wsxX!@");
+		this.DBPasswordTXTfield.setText("Aa123456");
 		this.DisconnectBTN.setVisible(false);
 		this.importDataBTN.setVisible(false);
 		this.ConnectedGreenIMG.setVisible(false);

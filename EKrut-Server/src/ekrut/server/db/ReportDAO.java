@@ -287,7 +287,7 @@ public class ReportDAO {
 	 * @return a {@link Report} object containing the report data, or null if the report does not exist
 	 * @throws Exception if there is an error executing the SQL query
 	 */
-	public Report fetchInventoryReportByID(Integer reportID) throws Exception {
+	public Report fetchInventoryReportByID(Integer reportID){
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");
 		PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM inventory_report_data WHERE reportID = ?");
 		try {
@@ -743,7 +743,7 @@ public class ReportDAO {
 				con.abortTransaction();
 				return false; 
 			}
-			//fix
+			
 			ps2.setInt(1,  reportID);
 			for (int i = 1; i <= 31; i++) {
 				ps2.setInt(i + 1, report.getCustomersOrdersByDate().get(i));
@@ -778,7 +778,6 @@ public class ReportDAO {
 	 * @return true if the report was created successfully, false otherwise
 	 */
 	public boolean createInventoryReport(Report report) {
-	
 		con.beginTransaction();
 			
 		PreparedStatement ps1 = con.getPreparedStatement("INSERT INTO inventory_report_data"
@@ -790,6 +789,8 @@ public class ReportDAO {
 		}
 		Integer reportID = report.getReportID();
 		
+		int threshold = report.getThreshold();
+		
 		try {
 			 // Iterate over the entries in the Map contained in the report object
 			for (Map.Entry<String, ArrayList<Integer>> entry : report.getInventoryReportData().entrySet()) {
@@ -797,8 +798,7 @@ public class ReportDAO {
 				String itemName = entry.getKey();
 				ArrayList<Integer> thresholdData = entry.getValue();
 				
-				//TresholdData(0) is threshold of the item's facility, tresholdData(1) is how many breaches that item "cause"
-				int threshold = thresholdData.get(0);
+				//tresholdData(1) is how many breaches that item "cause"
 				int thresholdBreaches = thresholdData.get(1);
 				
 				ps1.setInt(1, reportID);
