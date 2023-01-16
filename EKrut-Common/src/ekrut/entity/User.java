@@ -2,7 +2,7 @@ package ekrut.entity;
 
 import java.io.Serializable;
 
-public class User implements Serializable{
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 7107357504490406916L;
 	private UserType userType;
@@ -15,9 +15,9 @@ public class User implements Serializable{
 	private String phoneNumber;
 	private String area;
 	private Customer customerInfo;
-	// this entity on DB: (userType, username, password, firstName, lastName, 
-	//						id, email, phoneNumber, area)
-	
+	// this entity on DB: (userType, username, password, firstName, lastName,
+	// id, email, phoneNumber, area)
+
 	public User(UserType userType, String username, String password, String firstName, String lastName, String id,
 			String email, String phoneNumber, String area) {
 		this.userType = userType;
@@ -110,9 +110,23 @@ public class User implements Serializable{
 	public void setCustomerInfo(Customer customerInfo) {
 		this.customerInfo = customerInfo;
 	}
-	
+
 	public boolean isCustomer() {
 		return customerInfo != null;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+		if (!(o instanceof User)) {
+			return false;
+		}
+		User user = (User) o;
+		return userType == user.userType && username.equals(user.username) && password.equals(user.password)
+				&& firstName.equals(user.firstName) && lastName.equals(user.lastName) && id.equals(user.id)
+				&& email.equals(user.email) && phoneNumber.equals(user.phoneNumber) && area.equals(user.area);
 	}
 
 }

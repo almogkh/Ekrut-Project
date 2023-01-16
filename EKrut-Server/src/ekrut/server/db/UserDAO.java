@@ -65,6 +65,7 @@ public class UserDAO {
 	 * @return The `User` object if found, or `null` if not found or an error
 	 *         occurred.
 	 */
+	
 	public User fetchUserByPhoneNumber(String phoneNumber) {
 		User user = null;
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM users WHERE phoneNumber = ?");
@@ -72,8 +73,6 @@ public class UserDAO {
 			ps.setString(1, phoneNumber);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				// (userType, username, password, firstName, lastName, id, email, phoneNumber,
-				// area)
 				user = new User(UserType.valueOf(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getString(5), rs.getString(6), rs.getString(7), phoneNumber, rs.getString(9));
 				Customer customerInfo = fetchCustomerInfo(user);
@@ -195,34 +194,6 @@ public class UserDAO {
 
 	/**
 	 * 
-	 * Fetches a user from the users table by area.
-	 * 
-	 * @param area The area of the user to be fetched.
-	 * @return The user with the specified area. Returns null if no user is found.
-	 */
-	public User fetchUserByArea(String area) {
-		User user = null;
-		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM users WHERE area = ?");
-		try {
-			ps.setString(1, area);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				user = new User(UserType.valueOf(rs.getString(1)), rs.getString(2), rs.getString(3), rs.getString(4),
-						rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), area);
-			return user;
-		} catch (SQLException e1) {
-			return null;
-		} finally {
-			try {
-				ps.close();
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
-
-	/**
-	 * 
 	 * Fetches all users with a certain role from the users table.
 	 * 
 	 * @param userType The role of the users to be fetched.
@@ -230,6 +201,8 @@ public class UserDAO {
 	 *         are found.
 	 */
 	public ArrayList<User> fetchAllUsersByRole(UserType userType) {
+		if (userType==null)
+			return null;
 		ArrayList<User> usersList = new ArrayList<>();
 		User user = null;
 		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM users WHERE userType = ?");
@@ -266,6 +239,9 @@ public class UserDAO {
 	 *         phoneNumber, String area
 	 */
 	public boolean updateUser(User user) {
+		if(user==null)
+			return false;
+		
 		String query = "UPDATE users SET userType = ?, firstName = ?, lastName = ?, id = ? , email = ?, phoneNumber = ?, area= ? WHERE username = ?";
 		PreparedStatement ps = con.getPreparedStatement(query);
 		try {
