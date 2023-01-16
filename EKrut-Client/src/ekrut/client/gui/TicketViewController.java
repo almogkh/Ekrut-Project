@@ -1,9 +1,7 @@
 package ekrut.client.gui;
 
 import java.io.IOException;
-import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
-import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientTicketManager;
 import ekrut.entity.Ticket;
 import ekrut.entity.TicketStatus;
@@ -39,9 +37,12 @@ public class TicketViewController extends HBox{
 
     @FXML
     private Button markCompletedBtn;
+    
+    private ClientTicketManager clientTicketManager;
 
 	public TicketViewController(Ticket ticket, boolean disableCompetedBtn) {
 		this.ticket = ticket;
+    	this.clientTicketManager = EKrutClientUI.getEkrutClient().getClientTicketManager();
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TicketView.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
@@ -63,21 +64,11 @@ public class TicketViewController extends HBox{
     	alert.showAndWait();
     	if (alert.getResult() == ButtonType.NO)
     	    return;
-    	
-    	EKrutClient client = EKrutClientUI.getEkrutClient();
-    	ClientInventoryManager clientInventoryManager = client.getClientInventoryManager();
-    	ClientTicketManager clientTicketManager = client.getClientTicketManager();
-    	int itemId = ticket.getItemID();
-    	String ekrutLocation =  ticket.getEkrutLocation();
-    	if (clientTicketManager.updateTicketStatus(ticket, TicketStatus.DONE) == ResultType.OK) {
-    		if (clientInventoryManager.updateInventoryQuantity(itemId ,ekrutLocation, 50) != ResultType.OK) {
-    			clientTicketManager.updateTicketStatus(ticket, TicketStatus.IN_PROGRESS);
-    			// Couldn't update item quantity - show some message? TBD OFEK
-    			Platform.runLater(() ->{
-    				EKrutClientUI.popupUserNotification("Couldn't update item quantity - reach IT department for assistance.");
-    				} );
-    			return;
-    		}
+    	if (clientTicketManager.updateTicketStatus(ticket, TicketStatus.DONE) != ResultType.OK) {
+			Platform.runLater(() ->{
+				EKrutClientUI.popupUserNotification("Couldn't update item quantity - reach IT department for assistance.");
+				} );
+			return;
     	}
     	Parent parent = getParent();
     	ObservableList<Node> vboxChildren = ((VBox) parent).getChildren();

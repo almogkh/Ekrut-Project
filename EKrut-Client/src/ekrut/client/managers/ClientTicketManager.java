@@ -73,7 +73,8 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
      */
 	
 	public ArrayList<Ticket> fetchTicketsByArea(String area) {
-		// WAIT FOR USER MANAGMENT TO BE FIXED
+		if (area == null)
+			return null;
 		
 		TicketRequest ticketRequest = new TicketRequest(TicketRequestType.FETCH_BY_AREA, area); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);

@@ -24,26 +24,31 @@ import javafx.scene.image.ImageView;
 public class TicketSubmissionController implements Initializable {
     @FXML
     private ComboBox<String> facilityCombo;
+    
     @FXML
     private ComboBox<String> itemCombo;
+    
     @FXML
     private ComboBox<String> workerCombo;
     
-    
-
     @FXML
     private ImageView arrowToItem;
+    
     @FXML
     private ImageView arrowToWorker;
     
     @FXML
     private Label areaPlusLocationLbl;
+    
     @FXML
     private Label assignedForLbl;
+    
     @FXML
     private Label ticketMsgLbl;
+    
     @FXML
     private Button markCompletedBtn;
+    
     @FXML
     private Button submitBtn;
     
@@ -85,7 +90,6 @@ public class TicketSubmissionController implements Initializable {
 		areaPlusLocationLbl.setText(area + ", " + FACILITY_PLACEHOLDER);
 		submitBtn.setDisable(true);
 	}
-    
     
     @FXML
     void facilityComboSelected(ActionEvent event) {

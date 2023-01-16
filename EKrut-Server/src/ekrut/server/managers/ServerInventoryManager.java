@@ -29,6 +29,7 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 	private ItemDAO itemDAO;
 	private UserDAO userDAO;
 	private IUserNotifier userNotifier;
+	public static final int RESTOCK_AMOUNT = 50;
 	
 	
 	/**
