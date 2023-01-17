@@ -71,7 +71,7 @@ public class ClientLoginController {
 				errorLbl.setText(INCORRECT_USER_PASS_ERROR);
 				errorLbl.setVisible(true);
 				return;
-			} else {
+			} else if (e1.getMessage().contains("PERMISSION")) {
 				new Alert(AlertType.ERROR, "An error has occurred. Please make sure you're not already logged in",
 						ButtonType.OK).showAndWait();
 				return;

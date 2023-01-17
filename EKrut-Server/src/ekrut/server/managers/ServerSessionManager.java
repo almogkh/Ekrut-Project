@@ -92,7 +92,7 @@ public class ServerSessionManager {
 			result = ResultType.INVALID_INPUT;
 		} else {
 			if (connectedUsers.containsKey(user))
-				return new UserResponse(ResultType.UNKNOWN_ERROR);
+				return new UserResponse(ResultType.PERMISSION_DENIED);
 			userResponse.setUser(user);
 			connectedUsers.put(user, startTimer(username, client));
 			clientUserMap.put(client, user);
