@@ -261,7 +261,7 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 		// Return the map of threshold breaches counts
 		return tresholdBreachesCounted;
 	}
-	
+	 
 	/**
 	 * Processes inventory data for a given location.
 	 * 

@@ -94,7 +94,7 @@ public class ReportChooserController {
     		ReportType type;
     		
     		if (typeComboBox.getValue().equals("Orders Report")) {
-    			location = null;
+    			location = areaComboBox.getValue();
     			type = ReportType.ORDER; 
     		}
     		else if (typeComboBox.getValue().equals("Inventory Report")) {
