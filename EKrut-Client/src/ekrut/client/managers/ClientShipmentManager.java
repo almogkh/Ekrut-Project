@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import ekrut.client.EKrutClient;
 import ekrut.entity.Order;
 import ekrut.entity.OrderStatus;
-import ekrut.net.ResultType;
 import ekrut.net.ShipmentRequest;
 import ekrut.net.ShipmentRequestType;
 import ekrut.net.ShipmentResponse;
