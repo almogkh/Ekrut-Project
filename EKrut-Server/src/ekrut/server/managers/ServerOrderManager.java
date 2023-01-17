@@ -224,9 +224,11 @@ public class ServerOrderManager extends AbstractServerManager<OrderRequest, Orde
 		
 		if (order.getType() != OrderType.REMOTE || !order.getUsername().equals(user.getUsername()))
 			return new OrderResponse(ResultType.INVALID_INPUT);
-		
+		if (order.getStatus() != OrderStatus.SUBMITTED)
+			return new OrderResponse(ResultType.PERMISSION_DENIED);
 		if (!orderDAO.updateOrderStatus(request.getOrderId(), OrderStatus.DONE))
 			return new OrderResponse(ResultType.UNKNOWN_ERROR);
+		
 		return new OrderResponse(ResultType.OK);
 	}
 }

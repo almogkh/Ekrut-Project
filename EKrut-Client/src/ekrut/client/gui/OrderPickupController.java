@@ -28,6 +28,7 @@ public class OrderPickupController {
 	private final static String PICKUP_SUCCESS_MSG = "Your order is on its way to you!\n"
 												   + "Thank you for buying from EKrut,\n" 
 												   + "Hope to see you soon!";
+	private final static String PICKUP_DENIED = "This order has already been picked-up";
 
 	private ClientOrderManager clientOrderManager;
 
@@ -46,12 +47,18 @@ public class OrderPickupController {
 			new Alert(AlertType.ERROR, NOT_VALID_INPUT_ERROR_MSG, ButtonType.OK).showAndWait();
 			return;
 		}
-
-		if (clientOrderManager.pickupOrder(orderId) == ResultType.OK) {
+		
+		ResultType resultType = clientOrderManager.pickupOrder(orderId);
+		if (resultType == ResultType.OK) {
 			new Alert(AlertType.INFORMATION, PICKUP_SUCCESS_MSG, ButtonType.OK).showAndWait();
 			return;
 		}
-
+		
+		if (resultType == ResultType.PERMISSION_DENIED) {
+			new Alert(AlertType.INFORMATION, PICKUP_DENIED, ButtonType.OK).showAndWait();
+			return;
+		}
+		
 		new Alert(AlertType.ERROR, UNKONWUN_ERROR_MSG, ButtonType.OK).showAndWait();
 	}
 }
