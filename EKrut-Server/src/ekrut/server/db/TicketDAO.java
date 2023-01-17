@@ -117,7 +117,7 @@ public class TicketDAO {
 	 */
 	public ArrayList<Ticket> fetchTicketsByUsername(String username) {
 		ArrayList<Ticket> ticketsByUserId = new ArrayList<>();
-		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM tickets WHERE username = ?;");
+		PreparedStatement ps = con.getPreparedStatement("SELECT * FROM tickets WHERE status = 'IN_PROGRESS' AND username = ?;");
 		try {
 			ps.setString(1, username);
 			ResultSet rs = con.executeQuery(ps);
