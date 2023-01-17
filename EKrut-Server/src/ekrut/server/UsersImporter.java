@@ -30,7 +30,7 @@ public final class UsersImporter {
 		try (PreparedStatement ps1 = con.getPreparedStatement("SELECT username FROM users LIMIT 1");
 			 PreparedStatement ps2 = con.getPreparedStatement("SELECT * FROM external_user_data");
 			 PreparedStatement ps3 = con.getPreparedStatement("INSERT INTO users VALUES(?,?,?,?,?,?,?,?,?)");
-			 PreparedStatement ps4 = con.getPreparedStatement("INSERT INTO customers VALUES(?,?,?,?)")) {
+			 PreparedStatement ps4 = con.getPreparedStatement("INSERT INTO customers VALUES(?,?,?,?,?)")) {
 			
 			con.beginTransaction();
 			ResultSet rs1 = ps1.executeQuery();
