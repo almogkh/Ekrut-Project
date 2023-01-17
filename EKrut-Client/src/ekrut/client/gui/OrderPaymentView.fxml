@@ -51,7 +51,7 @@
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderPaymentViewController">
    <children>
-      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Line endX="53.0400390625" startX="-180.4599609375" stroke="WHITE" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Payment" textAlignment="CENTER" wrappingWidth="273.0771484375">
@@ -79,7 +79,7 @@
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="payBtn" layoutX="588.0" layoutY="544.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="36.0" prefWidth="170.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Press to pay">
+            <Button fx:id="payBtn" layoutX="588.0" layoutY="544.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="36.0" prefWidth="170.0" stylesheets="gui-assets/styles/Styles.css" text="Press to pay">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
@@ -163,7 +163,7 @@
                   <Font name="Arial Rounded MT Bold" size="26.0" />
                </font>
             </Text>
-            <Button fx:id="cancelOrderBtn1" layoutX="424.0" layoutY="544.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="36.0" prefWidth="144.0" style="-fx-background-color: #55565f;" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="cancel order">
+            <Button fx:id="cancelOrderBtn1" layoutX="424.0" layoutY="544.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="36.0" prefWidth="144.0" style="-fx-background-color: #55565f;" stylesheets="gui-assets/styles/Styles.css" text="cancel order">
                <font>
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>

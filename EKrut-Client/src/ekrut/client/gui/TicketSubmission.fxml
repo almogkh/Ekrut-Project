@@ -48,7 +48,7 @@
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.TicketSubmissionController">
    <children>
-      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Line endX="-21.5" startX="-110.0" stroke="WHITE" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="65.0" prefWidth="584.0" text="Create a New Ticket" textAlignment="CENTER">
@@ -66,7 +66,7 @@
             <Line endX="-58.5" startX="-137.5" stroke="WHITE" />
          </children>
       </HBox>
-      <Pane prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <Pane prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Label layoutX="108.0" layoutY="107.0" text="Facility">
                <font>
@@ -82,9 +82,9 @@
                   <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
             </Label>
-            <ComboBox fx:id="facilityCombo" layoutX="68.0" layoutY="138.0" onAction="#facilityComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select facility" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
-            <ComboBox fx:id="itemCombo" disable="true" layoutX="307.0" layoutY="138.0" onAction="#itemComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select item" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
-            <ComboBox fx:id="workerCombo" disable="true" layoutX="550.0" layoutY="138.0" onAction="#workerComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select worker" styleClass="item" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="facilityCombo" layoutX="68.0" layoutY="138.0" onAction="#facilityComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select facility" styleClass="item" stylesheets="gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="itemCombo" disable="true" layoutX="307.0" layoutY="138.0" onAction="#itemComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select item" styleClass="item" stylesheets="gui-assets/styles/Styles.css" />
+            <ComboBox fx:id="workerCombo" disable="true" layoutX="550.0" layoutY="138.0" onAction="#workerComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select worker" styleClass="item" stylesheets="gui-assets/styles/Styles.css" />
             <ImageView fx:id="arrowToItem" fitHeight="44.0" fitWidth="46.0" layoutX="241.0" layoutY="136.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@gui-assets/right-arrow.png" />
@@ -100,7 +100,7 @@
                   <Font name="Arial Rounded MT Bold" size="20.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="280.0" prefHeight="100.0" prefWidth="740.0" spacing="7.0" style="-fx-border-color: gray; -fx-border-radius: 20;" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="280.0" prefHeight="100.0" prefWidth="740.0" spacing="7.0" style="-fx-border-color: gray; -fx-border-radius: 20;" stylesheets="gui-assets/styles/Styles.css">
                <children>
                   <VBox alignment="CENTER_LEFT" prefHeight="98.0" prefWidth="314.0" spacing="10.0">
                      <children>

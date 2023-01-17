@@ -10,11 +10,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="463.0" prefWidth="464.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.LoginViaTouchController">
+<VBox prefHeight="463.0" prefWidth="464.0" styleClass="gradient-background" stylesheets="gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.LoginViaTouchController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <VBox alignment="TOP_CENTER" prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="gui-assets/styles/Styles.css">
          <children>
-            <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="container" text="Login Via Touch">
                      <font>
@@ -35,7 +35,7 @@
             </HBox>
             <VBox alignment="CENTER" prefHeight="587.0" prefWidth="770.0" styleClass="container">
                <children>
-                  <ComboBox fx:id="usersCBox" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="usersCBox" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="gui-assets/styles/Styles.css" />
                   <Button fx:id="loginBtn" defaultButton="true" mnemonicParsing="false" onAction="#LoginViaTouch" text="Login">
                      <VBox.margin>
                         <Insets bottom="70.0" top="60.0" />

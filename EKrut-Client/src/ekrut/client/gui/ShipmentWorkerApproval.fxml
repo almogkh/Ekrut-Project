@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ShipmentWorkerApprovalController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ShipmentWorkerApprovalController">
    <children>
-      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Line endX="-125.5" startX="-281.0" stroke="WHITE" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Approve Orders" textAlignment="CENTER" wrappingWidth="393.9423828125">

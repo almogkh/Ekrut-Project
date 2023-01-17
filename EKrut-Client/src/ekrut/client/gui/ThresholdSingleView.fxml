@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="755.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="755.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="266.0">
          <children>
@@ -39,7 +39,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </TextField>
-            <Button fx:id="updateThresholdBtn" defaultButton="true" layoutX="4.0" layoutY="59.0" mnemonicParsing="false" onAction="#updateThreshold" prefHeight="29.0" prefWidth="151.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Update Threhsold">
+            <Button fx:id="updateThresholdBtn" defaultButton="true" layoutX="4.0" layoutY="59.0" mnemonicParsing="false" onAction="#updateThreshold" prefHeight="29.0" prefWidth="151.0" stylesheets="gui-assets/styles/Styles.css" text="Update Threhsold">
                <font>
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>

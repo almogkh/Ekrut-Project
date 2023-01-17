@@ -46,7 +46,7 @@
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.MainMenuController">
   <children>
-      <HBox alignment="CENTER" minHeight="85.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" minHeight="85.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Line endX="113.0" startX="-118.0" stroke="WHITE" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Menu" textAlignment="CENTER" wrappingWidth="231.197265625">
@@ -67,7 +67,7 @@
             <Insets left="20.0" right="20.0" />
          </padding>
       </HBox>
-      <VBox alignment="TOP_CENTER" prefHeight="591.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <VBox alignment="TOP_CENTER" prefHeight="591.0" prefWidth="770.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Label text="Please choose your desired action">
                <font>

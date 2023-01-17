@@ -45,7 +45,7 @@
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.TicketBrowserController">
    <children>
-      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Line endX="39.5" startX="-110.0" stroke="WHITE" />
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="59.0" prefWidth="415.0" text="Pending Tickets" textAlignment="CENTER">
@@ -63,14 +63,14 @@
             <Line endX="39.5" startX="-110.0" stroke="WHITE" />
          </children>
       </HBox>
-      <VBox alignment="TOP_CENTER" prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
+      <VBox alignment="TOP_CENTER" prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <ScrollPane prefHeight="470.0" prefWidth="770.0">
               <content>
                   <VBox fx:id="ticketsContainerVbox" alignment="TOP_CENTER" prefHeight="548.0" prefWidth="755.0" spacing="10.0" />
               </content>
             </ScrollPane>
-            <Button fx:id="createTicketBtn" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#createTicket" prefHeight="39.0" prefWidth="136.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="New ticket">
+            <Button fx:id="createTicketBtn" contentDisplay="RIGHT" defaultButton="true" mnemonicParsing="false" onAction="#createTicket" prefHeight="39.0" prefWidth="136.0" stylesheets="gui-assets/styles/Styles.css" text="New ticket">
                <font>
                   <Font name="Candara Bold" size="20.0" />
                </font>

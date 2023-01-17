@@ -17,9 +17,9 @@
 
 <VBox xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderCreationController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <VBox alignment="TOP_CENTER" prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="gui-assets/styles/Styles.css">
          <children>
-            <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
                <children>
                   <Line endX="110.29289245605469" endY="0.22355729341506958" startX="-88.0" stroke="WHITE" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Create order">
@@ -64,14 +64,14 @@
                               <Font name="Arial Rounded MT Bold" size="24.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="pickupLocation" disable="true" onAction="#enableButton" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="pickupLocation" disable="true" onAction="#enableButton" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="gui-assets/styles/Styles.css" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                         <Label fx:id="pickupAreaLbl" layoutX="180.0" layoutY="453.0" prefWidth="220.0" text="Pickup area:" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="24.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="pickupArea" disable="true" onAction="#updateLocations" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <ComboBox fx:id="orderTypeBox" onAction="#updateUI" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" GridPane.columnIndex="2" />
+                        <ComboBox fx:id="pickupArea" disable="true" onAction="#updateLocations" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="gui-assets/styles/Styles.css" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="orderTypeBox" onAction="#updateUI" prefHeight="26.0" prefWidth="190.0" styleClass="table" stylesheets="gui-assets/styles/Styles.css" GridPane.columnIndex="2" />
                         <Text fill="#ff0101" strokeType="OUTSIDE" strokeWidth="0.0" text="*">
                            <font>
                               <Font size="22.0" />

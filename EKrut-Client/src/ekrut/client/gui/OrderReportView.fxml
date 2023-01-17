@@ -47,7 +47,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderReportViewController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" styleClass="gradient-background" stylesheets="gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderReportViewController">
   <children>
       <HBox alignment="CENTER" prefHeight="85.0" styleClass="container">
          <children>
@@ -104,7 +104,7 @@
          <children>
             <VBox prefHeight="199.0" prefWidth="283.0" spacing="4.0">
                <children>
-                  <Pane prefHeight="98.0" prefWidth="263.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+                  <Pane prefHeight="98.0" prefWidth="263.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
                      <children>
                         <VBox alignment="CENTER" layoutX="-10.0" prefHeight="88.0" prefWidth="278.0">
                            <children>
@@ -138,7 +138,7 @@
                         </VBox>
                      </children>
                   </Pane>
-                  <Pane prefHeight="98.0" prefWidth="278.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+                  <Pane prefHeight="98.0" prefWidth="278.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
                      <children>
                         <VBox alignment="CENTER" prefHeight="96.0" prefWidth="263.0">
                            <children>
@@ -174,9 +174,9 @@
                   </Pane>
                </children>
             </VBox>
-            <Pane prefHeight="200.0" prefWidth="518.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <Pane prefHeight="200.0" prefWidth="518.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
                <children>
-                  <BarChart fx:id="topSellersBarChart" layoutX="-1.0" layoutY="-5.0" prefHeight="206.0" prefWidth="510.0" styleClass="graph" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Top Sellers">
+                  <BarChart fx:id="topSellersBarChart" layoutX="-1.0" layoutY="-5.0" prefHeight="206.0" prefWidth="510.0" styleClass="graph" stylesheets="gui-assets/styles/Styles.css" title="Top Sellers">
                     <xAxis>
                       <CategoryAxis fx:id="ItemNameAxis" side="BOTTOM" />
                     </xAxis>
@@ -197,9 +197,9 @@
       </HBox>
       <HBox prefHeight="334.0" prefWidth="770.0" spacing="10.0">
          <children>
-            <Pane prefHeight="333.0" prefWidth="313.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <Pane prefHeight="333.0" prefWidth="313.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
                <children>
-                  <PieChart fx:id="ordersPieChart" layoutX="5.0" layoutY="6.0" prefHeight="322.0" prefWidth="306.0" styleClass="graph" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Orders Pie">
+                  <PieChart fx:id="ordersPieChart" layoutX="5.0" layoutY="6.0" prefHeight="322.0" prefWidth="306.0" styleClass="graph" stylesheets="gui-assets/styles/Styles.css" title="Orders Pie">
                      <effect>
                         <DropShadow>
                            <color>
@@ -210,9 +210,9 @@
                   </PieChart>
                </children>
             </Pane>
-            <Pane prefHeight="333.0" prefWidth="449.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <Pane prefHeight="333.0" prefWidth="449.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
                <children>
-                  <BarChart fx:id="ordersBarChart" prefHeight="322.0" prefWidth="448.0" styleClass="graph" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Orders">
+                  <BarChart fx:id="ordersBarChart" prefHeight="322.0" prefWidth="448.0" styleClass="graph" stylesheets="gui-assets/styles/Styles.css" title="Orders">
                     <xAxis>
                       <CategoryAxis fx:id="locationsAxis" side="BOTTOM" />
                     </xAxis>

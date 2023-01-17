@@ -47,7 +47,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.CustomerReportViewController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.CustomerReportViewController">
    <children>
       <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container">
          <children>
@@ -101,7 +101,7 @@
       </HBox>
       <Pane prefHeight="229.0" prefWidth="770.0" styleClass="container">
          <children>
-            <LineChart fx:id="monthlyActivityLineChart" prefHeight="237.0" prefWidth="770.0" styleClass="graph" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" title="Customers Monthly Activity">
+            <LineChart fx:id="monthlyActivityLineChart" prefHeight="237.0" prefWidth="770.0" styleClass="graph" stylesheets="gui-assets/styles/Styles.css" title="Customers Monthly Activity">
               <xAxis>
                 <CategoryAxis fx:id="lineChartCategoryAxis" label="Day Of Month" side="BOTTOM" />
               </xAxis>

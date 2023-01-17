@@ -47,7 +47,7 @@
 
 <VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
   <children>
-      <HBox alignment="CENTER" minHeight="85.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" minHeight="85.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Line endX="-6.0" startX="-122.5" stroke="WHITE" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Choose report " textAlignment="CENTER" wrappingWidth="449.1552734375">
@@ -68,7 +68,7 @@
             <Insets left="20.0" right="20.0" />
          </padding>
       </HBox>
-      <VBox alignment="CENTER" prefHeight="587.0" prefWidth="770.0" spacing="15.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <VBox alignment="CENTER" prefHeight="587.0" prefWidth="770.0" spacing="15.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <HBox alignment="CENTER">
                <children>
@@ -90,7 +90,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Text>
-                  <ComboBox fx:id="typeComboBox" onAction="#setLocationsByType" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="typeComboBox" onAction="#setLocationsByType" prefHeight="30.0" prefWidth="200.0" promptText="Choose Type" styleClass="table" stylesheets="gui-assets/styles/Styles.css" />
                </children>
             </HBox>
             <HBox alignment="CENTER">
@@ -113,7 +113,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Text>
-                  <ComboBox fx:id="areaComboBox" disable="true" onAction="#setLocationsByArea" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="areaComboBox" disable="true" onAction="#setLocationsByArea" prefHeight="30.0" prefWidth="200.0" promptText="Choose Area" styleClass="table" stylesheets="gui-assets/styles/Styles.css" />
                </children>
             </HBox>
             <HBox alignment="CENTER">
@@ -136,7 +136,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Text>
-                  <ComboBox fx:id="locationComboBox" disable="true" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="locationComboBox" disable="true" prefHeight="30.0" prefWidth="200.0" promptText="Choose Location" styleClass="table" stylesheets="gui-assets/styles/Styles.css" />
                </children>
             </HBox>
             <HBox alignment="CENTER">
@@ -159,7 +159,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Text>
-                  <ComboBox fx:id="yearComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Choose Year" styleClass="table" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" />
+                  <ComboBox fx:id="yearComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Choose Year" styleClass="table" stylesheets="gui-assets/styles/Styles.css" />
                </children>
             </HBox>
             <HBox alignment="CENTER">
@@ -182,7 +182,7 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Text>
-                  <ComboBox fx:id="monthComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Choose Month" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+                  <ComboBox fx:id="monthComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Choose Month" stylesheets="gui-assets/styles/Styles.css">
                      <styleClass>
                         <String fx:value="menu_button" />
                         <String fx:value="table" />
@@ -190,7 +190,7 @@
                   </ComboBox>
                </children>
             </HBox>
-            <Button fx:id="viewReportButton" mnemonicParsing="false" onAction="#viewReport" prefWidth="153.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="View Report" textFill="WHITE">
+            <Button fx:id="viewReportButton" mnemonicParsing="false" onAction="#viewReport" prefWidth="153.0" stylesheets="gui-assets/styles/Styles.css" text="View Report" textFill="WHITE">
                <font>
                   <Font name="Candara Bold Italic" size="18.0" />
                </font>

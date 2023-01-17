@@ -12,9 +12,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ThresholdBrowserController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ThresholdBrowserController">
    <children>
-      <HBox alignment="CENTER" prefHeight="85.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <HBox alignment="CENTER" prefHeight="85.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Line endX="-20.727935791015625" endY="0.17157435417175293" startX="-116.02082824707031" startY="0.17157357931137085" stroke="WHITE" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Threshold Selector" textAlignment="CENTER" wrappingWidth="541.06591796875">
@@ -38,7 +38,7 @@
             <Insets left="20.0" right="20.0" />
          </padding>
       </HBox>
-      <VBox prefHeight="585.0" prefWidth="867.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+      <VBox prefHeight="585.0" prefWidth="867.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <Pane prefHeight="82.0" prefWidth="770.0">
                <children>
@@ -74,7 +74,7 @@
                   </Label>
                </children>
             </Pane>
-            <ScrollPane prefHeight="470.0" prefWidth="867.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
+            <ScrollPane prefHeight="470.0" prefWidth="867.0" stylesheets="gui-assets/styles/Styles.css">
                <content>
                   <VBox fx:id="thresholdsVbox" prefHeight="677.0" prefWidth="755.0" spacing="10.0" />
                </content>

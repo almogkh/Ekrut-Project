@@ -47,7 +47,7 @@
 
 <VBox prefHeight="679.0" prefWidth="770.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.HostSelectionController">
    <children>
-      <VBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
+      <VBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>
             <HBox alignment="CENTER">
                <children>
@@ -72,7 +72,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox alignment="TOP_CENTER" prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
+      <VBox alignment="TOP_CENTER" prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
@@ -87,12 +87,12 @@
             </Label>
             <Pane prefHeight="352.0" prefWidth="750.0">
                <children>
-                  <TextField fx:id="serverTxt" alignment="CENTER" layoutX="288.0" layoutY="58.0" prefHeight="41.0" prefWidth="177.0" promptText="Server IP" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="127.0.0.1">
+                  <TextField fx:id="serverTxt" alignment="CENTER" layoutX="288.0" layoutY="58.0" prefHeight="41.0" prefWidth="177.0" promptText="Server IP" styleClass="text_field" stylesheets="gui-assets/styles/Styles.css" text="127.0.0.1">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="portTxt" alignment="CENTER" layoutX="288.0" layoutY="148.0" prefHeight="41.0" prefWidth="177.0" promptText="Server Port" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="5555">
+                  <TextField fx:id="portTxt" alignment="CENTER" layoutX="288.0" layoutY="148.0" prefHeight="41.0" prefWidth="177.0" promptText="Server Port" styleClass="text_field" stylesheets="gui-assets/styles/Styles.css" text="5555">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
@@ -107,7 +107,7 @@
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="connectBtn" defaultButton="true" layoutX="325.0" layoutY="268.0" mnemonicParsing="false" onAction="#connect" prefHeight="39.0" prefWidth="104.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Connect">
+                  <Button fx:id="connectBtn" defaultButton="true" layoutX="325.0" layoutY="268.0" mnemonicParsing="false" onAction="#connect" prefHeight="39.0" prefWidth="104.0" stylesheets="gui-assets/styles/Styles.css" text="Connect">
                      <font>
                         <Font name="Candara Bold" size="20.0" />
                      </font>
