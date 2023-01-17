@@ -6,6 +6,7 @@ import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientOrderManager;
+import ekrut.entity.Customer;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
 import ekrut.entity.OrderType;
@@ -39,11 +40,14 @@ public class OrderBrowserController {
 	private ClientInventoryManager inventoryManager;
 	private ClientOrderManager orderManager;
 	private boolean subscriber;
+	private boolean orderedAsSub;
 
 	@FXML
 	private void initialize() {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
-		subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
+		Customer info = client.getClientSessionManager().getUser().getCustomerInfo();
+		subscriber = info.getSubscriberNumber() != -1;
+		orderedAsSub = info.hasOrderedAsSub();
 		BTC = BaseTemplateController.getBaseTemplateController();
 		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		inventoryManager = EKrutClientUI.getEkrutClient().getClientInventoryManager();
@@ -73,8 +77,9 @@ public class OrderBrowserController {
 	}
 	
 	void updateTotalPrice() {
+		float mult = orderedAsSub ? 1 : 0.8f;
 		if (subscriber) 
-			priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice() - orderManager.getDiscount()));
+			priceLbl.setText(String.format("%.2f", mult * (orderManager.getTotalPrice() - orderManager.getDiscount())));
 		else
 			priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice()));
 	}

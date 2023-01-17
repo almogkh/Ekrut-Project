@@ -51,8 +51,9 @@ public class OrderPaymentViewController {
 		this.orderManager = client.getClientOrderManager();
 		User user = client.getClientSessionManager().getUser();
 		boolean subscriber = user.getCustomerInfo().getSubscriberNumber() != -1;
+		float mult = user.getCustomerInfo().hasOrderedAsSub() ? 1 : 0.8f;
 		float discount = subscriber ? orderManager.getDiscount() : 0;
-		priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice() - discount));
+		priceLbl.setText(String.format("%.2f", mult * (orderManager.getTotalPrice() - discount)));
 	}
 
 	@FXML

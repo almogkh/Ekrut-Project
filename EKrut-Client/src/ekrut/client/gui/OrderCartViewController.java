@@ -5,6 +5,7 @@ import java.util.Optional;
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
+import ekrut.entity.Customer;
 import ekrut.entity.OrderItem;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,12 +41,15 @@ public class OrderCartViewController {
 	private BaseTemplateController BTC = BaseTemplateController.getBaseTemplateController();
 	private ClientOrderManager orderManager;
 	private boolean subscriber;
+	private boolean orderedAsSub;
 
 	@FXML
 	private void initialize() {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		orderManager = client.getClientOrderManager();
-		subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
+		Customer info = client.getClientSessionManager().getUser().getCustomerInfo();
+		subscriber = info.getSubscriberNumber() != -1;
+		orderedAsSub = info.hasOrderedAsSub();
 
 		AddItemViewToCartVBox();
 		updatePrice();
@@ -64,7 +68,8 @@ public class OrderCartViewController {
 
 	void updatePrice() {
 		float price = orderManager.getTotalPrice();
-		float priceAfterDiscount = price - orderManager.getDiscount();
+		float mult = orderedAsSub ? 1 : 0.8f;
+		float priceAfterDiscount = mult * (price - orderManager.getDiscount());
 		if (subscriber && priceAfterDiscount != price) {
 			priceAfterDiscountTxt.setText(String.format("%.2f", priceAfterDiscount));
 			priceBeforeDiscountTxt.setText(String.format("%.2f", price));

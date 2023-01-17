@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import ekrut.client.EKrutClient;
+import ekrut.client.EKrutClientUI;
+import ekrut.entity.Customer;
 import ekrut.entity.Item;
 import ekrut.entity.Order;
 import ekrut.entity.OrderItem;
@@ -151,6 +153,9 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 			activeOrder.setCreditCard(creditCardNumber);
 		OrderResponse response = sendRequest(new OrderRequest(OrderRequestType.CREATE, activeOrder));
 		if (response.getResult() == ResultType.OK) {
+			Customer info = EKrutClientUI.getEkrutClient().getClientSessionManager().getUser().getCustomerInfo();
+			if (info.getSubscriberNumber() != -1)
+				info.setOrderedAsSub(true);
 			cancelOrder();
 			return response.getOrderId();
 		}
