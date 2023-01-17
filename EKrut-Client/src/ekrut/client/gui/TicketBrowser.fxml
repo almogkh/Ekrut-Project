@@ -43,7 +43,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.TicketBrowserController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.TicketBrowserController">
    <children>
       <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
@@ -63,7 +63,7 @@
             <Line endX="39.5" startX="-110.0" stroke="WHITE" />
          </children>
       </HBox>
-      <VBox alignment="TOP_CENTER" prefHeight="549.0" prefWidth="765.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
+      <VBox alignment="TOP_CENTER" prefHeight="585.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/bin/gui-assets/styles/Styles.css">
          <children>
             <ScrollPane prefHeight="470.0" prefWidth="770.0">
               <content>
