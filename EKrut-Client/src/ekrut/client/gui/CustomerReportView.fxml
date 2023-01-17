@@ -47,7 +47,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.CustomerReportViewController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.CustomerReportViewController">
    <children>
       <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" spacing="10.0" styleClass="container">
          <children>
@@ -115,10 +115,10 @@
          <children>
             <BarChart fx:id="CustomersActivityBarChart" prefHeight="294.0" prefWidth="770.0" styleClass="graph" title="Customers Activity By Categories">
               <xAxis>
-                <CategoryAxis fx:id="barChartCategoryAxis" label="Category" side="BOTTOM" />
+                <CategoryAxis fx:id="barChartCategoryAxis" label="Number Of Orders" side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis fx:id="barChartNumberAxis" label="Number Of Orders" side="LEFT" />
+                <NumberAxis fx:id="barChartNumberAxis" label="Number Of Customers" side="LEFT" />
               </yAxis>
             </BarChart>
          </children>
