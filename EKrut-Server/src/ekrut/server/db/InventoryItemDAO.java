@@ -123,7 +123,6 @@ public class InventoryItemDAO {
 	/**
 	 *	Updates the threshold for the given ekrut location in the given area.
 	 *	
-	 *	@param area the area in which the ekrut location is located
 	 *	@param ekrutLocation the ekrut location whose threshold is being updated
 	 *	@param newThreshold the new threshold value
 	 *	@return true if the update was successful, false otherwise

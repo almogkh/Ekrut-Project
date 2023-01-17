@@ -33,8 +33,11 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 	
 	
 	/**
-	 * Constructs a new ServerInventoryManager.
-	 */
+	* ServerInventoryManager Constructor
+	*
+	* @param con DBController for connecting to the database
+	* @param userNotifier Interface for sending notifications to users
+	*/
 	public ServerInventoryManager(DBController con, IUserNotifier userNotifier) {
 		super(InventoryItemRequest.class, new InventoryItemResponse(ResultType.UNKNOWN_ERROR));
 		this.con = con;
@@ -93,12 +96,12 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 	
 	
 	/**
-	 * Updates the quantity of an InventoryItem in the inventory system. 
-	 * If the updated quantity falls below the item's threshold, a notification may be sent to the appropriate parties.
-	 *
-	 * @param inventoryItemRequest an InventoryItemRequest object that contains the item ID, ekrut location, and new quantity value for the InventoryItem to be updated
-	 * @return an InventoryItemResponse object indicating the result of the update operation
-	 */
+	* Updates the quantity of an inventory item in the database.
+	*
+	* @param inventoryItemRequest An InventoryItemRequest object containing information about the item to update and the new quantity
+	* @return An InventoryItemResponse object indicating the result of the update
+	* @throws DeadlockException if a deadlock occurs while updating the item in the database
+	*/
 	public InventoryItemResponse updateInventoryQuantity(InventoryItemRequest inventoryItemRequest) throws DeadlockException {
 		if (inventoryItemRequest == null || 
 			inventoryItemRequest.getAction() != InventoryItemRequestType.UPDATE_ITEM_QUANTITY)
@@ -149,6 +152,7 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 	 * @param inventoryItemRequest an InventoryItemRequest object that contains the ekrut location for the InventoryItem(s) to be retrieved
 	 * @return an InventoryItemResponse object that contains the result of the fetch operation and, if successful,
 	 * 			 a list of the retrieved InventoryItem objects
+	 * @throws DeadlockException if a deadlock occurs while updating the item in the database
 	 */
 	public InventoryItemResponse fetchInventoryItemsByEkrutLocation(InventoryItemRequest inventoryItemRequest) throws DeadlockException {
 		if (inventoryItemRequest == null ||
@@ -178,6 +182,7 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 	 * @param inventoryItemRequest an InventoryItemRequest object that contains the 
 	 * 			item ID, ekrut location, and new threshold value for the InventoryItem to be updated
 	 * @return an InventoryItemResponse object indicating the result of the update operation
+	 * @throws DeadlockException if a deadlock occurs while updating the item in the database
 	 */
 	public InventoryItemResponse updateItemThreshold(InventoryItemRequest inventoryItemRequest) throws DeadlockException {
 		if (inventoryItemRequest == null ||
