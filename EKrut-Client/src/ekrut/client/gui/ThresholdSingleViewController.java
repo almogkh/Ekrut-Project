@@ -69,7 +69,7 @@ public class ThresholdSingleViewController extends HBox {
 	 * Method to update the threshold value
 	 * Validates the new threshold value and updates it if it's valid.
 	 * 
-	 * @param event the event that triggered this method.
+	 * @param event the event that triggered this method. 
 	 */
 	@FXML
 	void updateThreshold(ActionEvent event) {
