@@ -27,8 +27,10 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
      * Updates the status of a given ticket.
      * 
      * @param ticket the ticket to update
-     * @param status of ticket
+     * @param status the ticket new status
      * @return the result of the update operation
+     * @throws NullPointerException if ticket is null
+     * @throws RuntimeException if there is an error updating the ticket's status
      */
 	
 	public ResultType updateTicketStatus(Ticket ticket, TicketStatus status) {
@@ -47,9 +49,9 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
 	/**
 	 * Creates a ticket for a given item at a specified location.
 	 *
-	 * @param ekrutLocation the location where the ticket is to be created.
-	 * @param itemID the ID of the item for which the ticket is to be created.
-	 * @param username to create.
+	 * @param ekrutLocation the location where the ticket is to be created
+	 * @param itemID the ID of the item for which the ticket is to be created
+	 * @param username the username of the user who will be responsible for the ticket
 	 * @return the result of the ticket creation request
 	 */
 	public ResultType CreateTicket(String ekrutLocation, int itemID, String username) {
@@ -67,8 +69,8 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
 	/**
      * Fetches a list of tickets by area.
      * 
-     * @param area of tickets.
-     * @return ArrayList<Ticket> list of tickets
+     * @param area the area to fetch tickets by
+     * @return a list of tickets
      */
 	
 	public ArrayList<Ticket> fetchTicketsByArea(String area) {
@@ -86,8 +88,9 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
 	/**
      * Fetches a list of tickets by username.
      * 
-     * @param username for fetch ticket by username
-     * @return ArrayList<Ticket> a list of tickets
+     * @param username will fetch tickets assigned to this username
+     * @return a list of tickets
+     * @throws Exception if there is an error fetching the tickets
      */
 	public ArrayList<Ticket> fetchTicketsByUsername(String username) {
 	

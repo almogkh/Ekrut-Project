@@ -96,7 +96,7 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 	 * Updates the quantity of an InventoryItem in the inventory system. 
 	 * If the updated quantity falls below the item's threshold, a notification may be sent to the appropriate parties.
 	 *
-	 * @param inventoryUpdateItemRequest an InventoryItemRequest object that contains the item ID, ekrut location, and new quantity value for the InventoryItem to be updated
+	 * @param inventoryItemRequest an InventoryItemRequest object that contains the item ID, ekrut location, and new quantity value for the InventoryItem to be updated
 	 * @return an InventoryItemResponse object indicating the result of the update operation
 	 */
 	public InventoryItemResponse updateInventoryQuantity(InventoryItemRequest inventoryItemRequest) throws DeadlockException {
@@ -146,7 +146,7 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 	/**
 	 * Retrieves all InventoryItem objects associated with a specific ekrut location from the inventory system.
 	 *
-	 * @param inventoryGetItemsRequest an InventoryItemRequest object that contains the ekrut location for the InventoryItem(s) to be retrieved
+	 * @param inventoryItemRequest an InventoryItemRequest object that contains the ekrut location for the InventoryItem(s) to be retrieved
 	 * @return an InventoryItemResponse object that contains the result of the fetch operation and, if successful,
 	 * 			 a list of the retrieved InventoryItem objects
 	 */
@@ -175,7 +175,7 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 	/**
 	 * Updates the <b>threshold</b> of an InventoryItem in the inventory system.
 	 *
-	 * @param inventoryUpdateItemThresholdRequest an InventoryItemRequest object that contains the 
+	 * @param inventoryItemRequest an InventoryItemRequest object that contains the 
 	 * 			item ID, ekrut location, and new threshold value for the InventoryItem to be updated
 	 * @return an InventoryItemResponse object indicating the result of the update operation
 	 */

@@ -179,7 +179,6 @@ public class EKrutServer extends AbstractServer {
 	/**
 	 * Imports users into the system from the external user management system.
 	 * 
-	 * @param dbCon the database connection to use for the operation
 	 * @return response indicating if the operation was successful or not
 	 */
 	public UserResponse importUsers() {
