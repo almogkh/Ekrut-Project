@@ -77,5 +77,4 @@ public class UserToRegisterController extends HBox {
 		ObservableList<Node> vboxChildren = ((VBox) parent).getChildren();
 		vboxChildren.remove(this);
 	}
-
 }

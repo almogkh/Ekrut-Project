@@ -9,7 +9,6 @@ import ekrut.entity.UserRegistration;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 /*
@@ -17,8 +16,6 @@ import javafx.scene.layout.VBox;
  * by creating UserToRegisterController objects for each registration and adding them to a container.
  */
 public class UserRegistrationController {
-	private EKrutClient client;
-	private ClientSessionManager clientSessionManager;
 
 	@FXML
 	private VBox usersContainerVbox;
@@ -26,11 +23,14 @@ public class UserRegistrationController {
 	@FXML
 	private void initialize() {
 
-		client = EKrutClientUI.getEkrutClient();
-		clientSessionManager = client.getClientSessionManager();
+		EKrutClient client = EKrutClientUI.getEkrutClient();
+		ClientSessionManager clientSessionManager = client.getClientSessionManager();
 
 		String userArea = client.getClientSessionManager().getUser().getArea();
 		ArrayList<UserRegistration> registrationList = clientSessionManager.getRegistrationList(userArea);
+		
+		if (registrationList == null)
+			return;
 
 		ObservableList<Node> registerContainerVboxChildren = usersContainerVbox.getChildren();
 		for (UserRegistration user : registrationList) {
