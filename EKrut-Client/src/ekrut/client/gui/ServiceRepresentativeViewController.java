@@ -21,6 +21,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Alert.AlertType;
 
+/*
+ * The view is used by service representatives to register new customers or subscribers
+ */
 public class ServiceRepresentativeViewController {
 	@FXML
 	private TextField areaField;
@@ -90,7 +93,7 @@ public class ServiceRepresentativeViewController {
 		setDisable(true);
 
 	}
-	
+
 	private void hideErrors() {
 		errorDetails.setVisible(false);
 		errorRegister.setVisible(false);
@@ -121,6 +124,10 @@ public class ServiceRepresentativeViewController {
 		idField.setDisable(condition);
 	}
 
+	/*
+	 * Called when the user clicks the OK button, it is used to fetch the user data
+	 * based on the provided username, and display the user's details on the view
+	 */
 	@FXML
 	void fetchData(ActionEvent event) {
 		username = usernameField.getText().trim();
@@ -167,21 +174,27 @@ public class ServiceRepresentativeViewController {
 	}
 
 	private void registerSuccess(String username) {
-		new Alert(AlertType.INFORMATION,  username + " added to the registration list successfully!", ButtonType.OK)
+		new Alert(AlertType.INFORMATION, username + " added to the registration list successfully!", ButtonType.OK)
 				.showAndWait();
 	}
 
+	/*
+	 * Called when the user clicks the register button, it is used to register a new
+	 * user, either as a customer or subscriber, based on the information provided
+	 * in the text fields.
+	 */
 	@FXML
 	void register(ActionEvent event) {
 		hideErrors();
 		if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty() || emailField.getText().isEmpty()
 				|| phoneField.getText().isEmpty() || creditCardField.getText().isEmpty()
-				|| areaField.getText().isEmpty() || idField.getText().isEmpty() || (!subscriberRBtn.isSelected() && !clientRBtn.isSelected())) {
+				|| areaField.getText().isEmpty() || idField.getText().isEmpty()
+				|| (!subscriberRBtn.isSelected() && !clientRBtn.isSelected())) {
 			errorDetails.setVisible(true);
 			return;
 		}
 
-		// check if users exist in registration list
+		//Check if users exist in registration list
 		registerList = sessionManager.getRegistrationList(areaField.getText());
 		if (registerList != null) {
 			for (UserRegistration register : registerList) {
@@ -199,8 +212,6 @@ public class ServiceRepresentativeViewController {
 		user.setPhoneNumber(phoneField.getText());
 		user.setArea(areaField.getText());
 		user.setId(idField.getText());
-		// String username, String creditCardNumber,String phoneNumber,String email,
-		// boolean monthlyCharge, String customerOrSub
 		UserRegistration userToRegister = new UserRegistration(user.getUsername(), creditCardField.getText(),
 				phoneField.getText(), emailField.getText(), monthlyChrgeRBtn.isSelected() ? true : false,
 				clientRBtn.isSelected() ? "customer" : "subscriber", areaField.getText());

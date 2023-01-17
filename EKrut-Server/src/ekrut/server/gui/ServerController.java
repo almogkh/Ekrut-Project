@@ -22,6 +22,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
+/*
+ * This class handles all the interactions between the user and the server, such as connecting to the server,
+ * importing data, displaying console, and displaying connected clients.
+ */
 public class ServerController {
 
 	@FXML
@@ -50,13 +54,13 @@ public class ServerController {
 
 	@FXML
 	private Button DisconnectBTN;
-	
+
 	@FXML
 	private Button importDataBTN;
 
 	@FXML
 	private TableColumn<ConnectedClient, String> IPColumn;
-	
+
 	@FXML
 	private TextField PortTXTfield;
 
@@ -80,7 +84,7 @@ public class ServerController {
 
 	private PrintStream replaceConsole;
 
-	private String getLocalIp(){
+	private String getLocalIp() {
 		String ip = null;
 		boolean virtual = false;
 		try {
@@ -91,7 +95,6 @@ public class ServerController {
 				if (!ni.isUp())
 					continue;
 
-				
 				Enumeration<InetAddress> addresses = ni.getInetAddresses();
 				while (addresses.hasMoreElements()) {
 					InetAddress ia = addresses.nextElement();
@@ -155,7 +158,8 @@ public class ServerController {
 	@FXML
 	void Connect(final ActionEvent event) {
 		this.ErrorConnection.setVisible(false);
-		if (!ServerUI.runServer(Integer.parseInt(this.PortTXTfield.getText()),this.DBNameTXTfield.getText(), this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
+		if (!ServerUI.runServer(Integer.parseInt(this.PortTXTfield.getText()), this.DBNameTXTfield.getText(),
+				this.DBUserNameTXTfield.getText(), this.DBPasswordTXTfield.getText())) {
 			this.ErrorConnection.setVisible(true);
 			this.ConnectToServerBTN.setVisible(true);
 			this.DisconnectBTN.setVisible(false);
@@ -180,18 +184,19 @@ public class ServerController {
 		this.ConnectedGreenIMG.setVisible(false);
 		this.ErrorImportData.setVisible(false);
 	}
-	
+
 	@FXML
 	void importData(final ActionEvent event) {
 		ErrorImportData.setVisible(false);
-		if(ServerUI.getServer().importUsers().getResultCode()==ResultType.UNKNOWN_ERROR) {
+		if (ServerUI.getServer().importUsers().getResultCode() == ResultType.UNKNOWN_ERROR) {
 			System.out.println("not good");
 			ErrorImportData.setVisible(true);
 			return;
 		}
 		this.importDataBTN.setDisable(true);
-		
+
 	}
+
 	void disableDataInput(final boolean Condition) {
 		PortTXTfield.setDisable(Condition);
 		DBNameTXTfield.setDisable(Condition);
@@ -199,5 +204,5 @@ public class ServerController {
 		DBPasswordTXTfield.setDisable(Condition);
 		ConnectedGreenIMG.setDisable(Condition);
 	}
-	
+
 }
