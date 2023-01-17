@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+//The ServerUI class is the main class that runs the EKrut server's GUI.
 public class ServerUI extends Application {
 
 	private static EKrutServer server;
@@ -40,6 +41,10 @@ public class ServerUI extends Application {
 		disconnect();
 	}
 
+	/*
+	 * This method initializes the server, sets the connected clients table and
+	 * starts the TimeScheduler
+	 */
 	public static boolean runServer(int port, String DBuserName, String username, String password) {
 		server = new EKrutServer(port);
 		server.init(DBuserName, username, password);
@@ -60,11 +65,15 @@ public class ServerUI extends Application {
 			return false;
 		}
 	}
+
 	public static EKrutServer getServer() {
 		return server;
 	}
 
-	
+	/*
+	 * This method stops the TimeScheduler, stops listening for connections, closes
+	 * the server and sets the server to null.
+	 */
 	public static void disconnect() {
 		TimeScheduler.stopTimer();
 		if (server == null)

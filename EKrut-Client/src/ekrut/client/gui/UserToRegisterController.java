@@ -21,9 +21,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class UserToRegisterController extends HBox {
-	
+
 	private UserRegistration user;
-	
+
 	@FXML
 	private Label emailLbl;
 
@@ -49,24 +49,26 @@ public class UserToRegisterController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
+		//Sets the text of the Label fields with the appropriate user information.
 		emailLbl.setText("Email: " + user.getEmail());
 		nameLbl.setText("Username: " + user.getUsername());
 		phoneLbl.setText("Phone: " + user.getPhoneNumber());
 		subOrCustomerLbl.setText(user.getCustomerOrSub());
 	}
 
+	/*
+	 * Called when the markCompletedBtn is pressed. This method opens a confirmation
+	 * dialog and if the user confirms, it calls the registerUser() method from the
+	 * ClientSessionManager class to register the user. It then removes the current
+	 * UserToRegisterController object from its parent VBox.
+	 */
 	@FXML
 	void markCompleted(ActionEvent event) {
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Please confirm " + user.getUsername() + " registration",
-				ButtonType.YES, ButtonType.NO);
+		Alert alert = new Alert(AlertType.CONFIRMATION, "Please confirm " + user.getUsername(), ButtonType.YES,
+				ButtonType.NO);
 		alert.showAndWait();
 		if (alert.getResult() == ButtonType.NO)
 			return;
-		if (alert.getResult() == ButtonType.YES) {
-		    Alert secondAlert = new Alert(AlertType.CONFIRMATION, "An SMS message and email was sent to the customer",ButtonType.OK);
-		    secondAlert.showAndWait();
-		}
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		ClientSessionManager clientSessionManager = client.getClientSessionManager();
 		clientSessionManager.registerUser(user);
@@ -75,5 +77,4 @@ public class UserToRegisterController extends HBox {
 		ObservableList<Node> vboxChildren = ((VBox) parent).getChildren();
 		vboxChildren.remove(this);
 	}
-
 }
