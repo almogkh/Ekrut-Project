@@ -64,16 +64,22 @@ public class ServerInventoryManager extends AbstractServerManager<InventoryItemR
 				switch (action) {
 				case UPDATE_ITEM_QUANTITY:
 					response = updateInventoryQuantity(inventoryItemRequest);
+					break;
 				case FETCH_ALL_LOCATIONS_IN_AREA:
 					response = fetchAllEkrutLocationsByArea(inventoryItemRequest);
+					break;
 				case UPDATE_ITEM_THRESHOLD:
 					response = updateItemThreshold(inventoryItemRequest);
+					break;
 				case FETCH_ALL_ITEMS:
-					response =fetchAllItems(inventoryItemRequest);
+					response = fetchAllItems(inventoryItemRequest);
+					break;
 				case FETCH_ALL_INVENTORYITEMS_IN_MACHINE:
 					response = fetchInventoryItemsByEkrutLocation(inventoryItemRequest);
+					break;
 				default:
 					response = new InventoryItemResponse(ResultType.UNKNOWN_ERROR);
+					break;
 				}
 				con.commitTransaction();
 				return response;
