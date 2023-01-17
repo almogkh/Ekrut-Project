@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import ekrut.entity.Customer;
 import ekrut.entity.User;
 import ekrut.entity.UserType;
 import ekrut.server.db.DBController;
@@ -46,6 +47,9 @@ public final class UsersImporter {
 									 rs2.getString(3), rs2.getString(4),rs2.getString(5),
 									 rs2.getString(6), rs2.getString(7),
 									 rs2.getString(8), rs2.getString(9));
+				Customer customer = new Customer(rs2.getInt(10), user.getUsername(), rs2.getBoolean(11),
+										rs2.getString(12), rs2.getBoolean(13));
+				user.setCustomerInfo(customer);
 				
 				ps3.setString(1, user.getUserType().toString());
 				ps3.setString(2, user.getUsername());
@@ -61,7 +65,7 @@ public final class UsersImporter {
 				// Customers have additional information
 				if (rs2.getString(12) != null) {
 					ps4.setString(1, user.getUsername());
-					ps4.setString(2, rs2.getString(10));
+					ps4.setInt(2, rs2.getInt(10));
 					ps4.setBoolean(3, rs2.getBoolean(11));
 					ps4.setString(4, rs2.getString(12));
 					ps4.setBoolean(5, rs2.getBoolean(13));
