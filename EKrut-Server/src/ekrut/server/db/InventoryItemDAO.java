@@ -297,7 +297,12 @@ public class InventoryItemDAO {
 	}
 	
 	
-	
+	/**
+	 * Fetches the area associated with a specific ekrut location from the database
+	 * 
+	 * @param ekrutLocation the ekrut location to search for
+	 * @return the area associated with the ekrut location, or null if not found
+	 */
 	private String fetchAreaByEkrutLocation(String ekrutLocation) {
 		PreparedStatement ps = con.getPreparedStatement("SELECT area FROM ekrut_machines WHERE ekrutLocation = ?;");
 		try {
