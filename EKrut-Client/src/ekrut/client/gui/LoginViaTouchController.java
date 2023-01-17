@@ -16,6 +16,14 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * This class represents the controller for the Login via Touch in the
+ * EKrutClient application. It handles the UI elements and logic for logging in
+ * as a registered subscriber of the application using touch ID.
+ * 
+ * @author Nir Betesh
+ */
 public class LoginViaTouchController {
 
 	@FXML
@@ -31,16 +39,19 @@ public class LoginViaTouchController {
 	private ClientSessionManager clientSessionManager;
 	private Map<String, String> usersAndPasswords = new HashMap<>();
 
-
+	/**
+	 * This method initializes the controller by fetching all the customer users and
+	 * adding the subscribed customers' username to the combobox.
+	 */
 	@FXML
 	public void initialize() {
 		clientSessionManager = EKrutClientUI.getEkrutClient().getClientSessionManager();
 		ArrayList<User> customerUsers = new ArrayList<>();
 		customerUsers = clientSessionManager.fetchUser(FetchUserType.ROLE, UserType.CUSTOMER.toString());
-		for (User user : customerUsers) 
+		for (User user : customerUsers)
 			if (user.getCustomerInfo().getSubscriberNumber() != -1) {
 				usersAndPasswords.put(user.getUsername(), user.getPassword());
-				usersCBox.getItems().add(user.getUsername());	
+				usersCBox.getItems().add(user.getUsername());
 			}
 	}
 
@@ -54,9 +65,14 @@ public class LoginViaTouchController {
 		clientLoginController.usernameTxt.setText(username);
 		clientLoginController.passwordTxt.setText(password);
 		clientLoginController.attemptLogin(null);
-		((Stage)((Node)event.getSource()).getScene().getWindow()).close();
+		((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
 	}
 
+	/**
+	 * This method sets the client login controller for the class.
+	 *
+	 * @param clientLoginController the client login controller to set
+	 */
 	public void setClientLoginController(ClientLoginController clientLoginController) {
 		this.clientLoginController = clientLoginController;
 	}

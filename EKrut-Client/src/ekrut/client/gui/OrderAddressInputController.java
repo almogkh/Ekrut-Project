@@ -1,7 +1,5 @@
 package ekrut.client.gui;
 
-import java.util.Optional;
-
 import ekrut.client.EKrutClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +9,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * 
+ * This class represents the controller for the Order Address Input view in the
+ * EKrutClient application. It handles the UI elements and logic for inputting
+ * and submitting the address for a remote order.
+ * 
+ * @author Nir Beresh
+ * @author Almog Khaikin
+ */
 public class OrderAddressInputController {
 
 	@FXML
@@ -26,18 +33,11 @@ public class OrderAddressInputController {
 	@FXML
 	void Continue(ActionEvent event) {
 		String address = addressTxt.getText();
-		if (address.equals(""))
-			new Alert(AlertType.ERROR, "You must enter address for shipment!.", ButtonType.OK).showAndWait();
+		if (address.trim().isEmpty())
+			new Alert(AlertType.ERROR, "You must enter address for shipment!", ButtonType.OK).showAndWait();
 		else {
-			Optional<ButtonType> res = new Alert(AlertType.CONFIRMATION,
-					"Your address is: " + address + ", for continue in order press OK.", ButtonType.YES, ButtonType.NO)
-							.showAndWait();
-			res.ifPresent((btn) -> {
-				if (btn == ButtonType.YES) {
-					EKrutClientUI.getEkrutClient().getClientOrderManager().createOrder(address, true);
-					BaseTemplateController.getBaseTemplateController().switchStages("OrderItemBrowser");
-				}
-			});
+			EKrutClientUI.getEkrutClient().getClientOrderManager().createOrder(address, true);
+			BaseTemplateController.getBaseTemplateController().switchStages("OrderItemBrowser");
 		}
 	}
 

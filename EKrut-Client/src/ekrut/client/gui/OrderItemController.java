@@ -22,6 +22,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
+/**
+ * 
+ * OrderItemController is a class that represents an individual item in the
+ * order browser. It contains information about the item, such as its name,
+ * description, price, and image, as well as buttons to add or remove the item
+ * from the cart and a text field to specify the quantity of the item.
+ * 
+ * @author Nir Beresh
+ * @author Almog Khaikin
+ */
 public class OrderItemController extends HBox {
 
 	@FXML
@@ -63,7 +73,18 @@ public class OrderItemController extends HBox {
 	private InventoryItem inventoryItem;
 	private ClientOrderManager orderManager;
 	private OrderBrowserController controller;
-	
+
+	/**
+	 * Creates a new OrderItemController for the specified item and location.
+	 * 
+	 * @param controller    the OrderBrowserController that contains this
+	 *                      OrderItemController
+	 * 
+	 * @param item          the Item object being represented by the controller
+	 * 
+	 * @param ekrutLocation the location of the ekrut machine
+	 * 
+	 */
 	public OrderItemController(OrderBrowserController controller, Item item, String ekrutLocation) {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		orderManager = client.getClientOrderManager();
@@ -77,10 +98,10 @@ public class OrderItemController extends HBox {
 			else
 				sale = clientSalesManager.fetchActiveSales();
 		}
-		
+
 		this.item = item;
 		this.orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
-		
+
 		this.controller = controller;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderItem.fxml"));
 
@@ -94,7 +115,7 @@ public class OrderItemController extends HBox {
 
 		if (item.getImg() != null)
 			itemImage.setImage(new Image(new ByteArrayInputStream(item.getImg())));
-		
+
 		itemName.setText(item.getItemName());
 		itemDiscription.setText(item.getItemDescription());
 		itemPrice.setText(Float.toString(item.getItemPrice()));
@@ -105,14 +126,26 @@ public class OrderItemController extends HBox {
 				break;
 			}
 		}
-		
+
 		if (sale != null && sale.size() > 0 && subscriber) {
-			String saleDiscountType = sale.get(0).getType().toString().equals("ONE_PLUS_ONE") ? "One Plus One" : "30% Off";
+			String saleDiscountType = sale.get(0).getType().toString().equals("ONE_PLUS_ONE") ? "One Plus One"
+					: "30% Off";
 			saleType.setText(saleDiscountType);
 			saleType.setVisible(true);
 		}
 	}
 
+	/**
+	 * 
+	 * Creates a new OrderItemController for the specified inventory item and
+	 * location.
+	 * 
+	 * @param controller    the OrderBrowserController that contains this
+	 *                      OrderItemController
+	 * @param inventoryItem the InventoryItem object being represented by the
+	 *                      controller
+	 * @param ekrutLocation the location of the inventory item
+	 */
 	public OrderItemController(OrderBrowserController controller, InventoryItem inventoryItem, String ekrutLocation) {
 		this(controller, inventoryItem.getItem(), ekrutLocation);
 		this.inventoryItem = inventoryItem;
