@@ -352,7 +352,7 @@ public class ReportDAO {
 			ArrayList<Order> orders = new ArrayList<>();
 			// Fetch all the orders by ID and add them to orders ArrayList
 			while (rs1.next()) {
-				orders.add(orderDAO.fetchOrderById(rs1.getInt("reportId")));
+				orders.add(orderDAO.fetchOrderById(rs1.getInt("orderId")));
 			} 
 			return orders;
 			 
@@ -388,7 +388,7 @@ public class ReportDAO {
 			ArrayList<Order> orders = new ArrayList<>();
 			// Fetch all the orders by ID and add them to orders ArrayList
 			while (rs1.next()) {
-				orders.add(orderDAO.fetchOrderById(rs1.getInt("reportId")));
+				orders.add(orderDAO.fetchOrderById(rs1.getInt("orderId")));
 			} 
 			return orders;
 			 
