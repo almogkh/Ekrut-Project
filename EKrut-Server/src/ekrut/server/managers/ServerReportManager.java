@@ -86,7 +86,7 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 	 *
 	 * @param reportRequest the request containing the area to retrieve facilities
 	 *                      for
-	 * @param client        the client requesting the list of facilities
+	 * @param user        the user requesting the list of facilities
 	 * @return a response containing the list of facilities or an error result if no
 	 *         facilities were found in the specified area
 	 */
@@ -561,7 +561,6 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 	 * Starts a timer that expires at the end of the current month and runs the
 	 * generateMonthlyReports method when it expires.
 	 *
-	 * @return the timer object
 	 */
 	public void startReportGeneration() {
 		LocalDateTime now = LocalDateTime.now();

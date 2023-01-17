@@ -274,7 +274,6 @@ public class ReportDAO {
 	 * @param reportID the ID of the report to retrieve
 	 * @return a {@link Report} object containing the report data, or null if the
 	 *         report does not exist
-	 * @throws Exception if there is an error executing the SQL query
 	 */
 	public Report fetchInventoryReportByID(Integer reportID) {
 		PreparedStatement ps1 = con.getPreparedStatement("SELECT * FROM reports WHERE reportID = ?");

@@ -41,7 +41,6 @@ public class Console extends OutputStream {
 	 * Overrides the write method in the OutputStream class
 	 * 
 	 * @param b the integer to write to the stream
-	 * @throws IOException
 	 */
 	@Override
 	public void write(final int b) throws IOException {
