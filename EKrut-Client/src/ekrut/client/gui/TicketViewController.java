@@ -50,7 +50,7 @@ public class TicketViewController extends HBox{
      * Initializes class variables, loads an FXML file, and sets the text of various labels and the disable property of a button
      *
      * @param ticket the Ticket object to be used in the class
-     * @param disableCompletedBtn boolean value to set the disable property of the markCompletedBtn button
+     * @param disableCompetedBtn boolean value to set the disable property of the markCompletedBtn button
      */
 	public TicketViewController(Ticket ticket, boolean disableCompetedBtn) {
 		this.ticket = ticket;
@@ -70,10 +70,6 @@ public class TicketViewController extends HBox{
 	}
     
 	
-    /**
-	 * Method to mark a ticket as completed
-	 * Shows a confirmation dialog, updates the ticket status and removes the current object from its parent container if confirmed
-	 */
     @FXML
     void markCompleted(ActionEvent event) {
     	Alert alert = new Alert(AlertType.CONFIRMATION,
