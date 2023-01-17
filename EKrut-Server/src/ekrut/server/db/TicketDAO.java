@@ -76,9 +76,8 @@ public class TicketDAO {
 	/**
 	 * Retrieves a list of tickets from the database based on their area.
 	 * 
-	 * @param location the location of the tickets to be retrieved
+	 * @param area the area of the tickets to be retrieved
 	 * @return a list of Ticket objects if tickets were found, null otherwise
-	 * @throws RuntimeException if there was an error executing the SQL statement
 	 */
 	public ArrayList<Ticket> fetchTicketsByArea(String area) {
 		ArrayList<Ticket> ticketsByArea = new ArrayList<>();
@@ -113,7 +112,6 @@ public class TicketDAO {
 	 *
 	 * @param username The username of the operation worker to search for.
 	 * @return A list of tickets that are associated with the specified username, or null if no tickets are found.
-	 * @throws SQLException if there is an error executing the SQL statement.
 	 */
 	public ArrayList<Ticket> fetchTicketsByUsername(String username) {
 		ArrayList<Ticket> ticketsByUserId = new ArrayList<>();
@@ -182,11 +180,10 @@ public class TicketDAO {
 	
 	
 	/**
-	 * Retrieves a list of facilities in a given area.
+	 * Retrieves an area in which a given ekrutLocation is assigned to.
 	 *
-	 * @param area a string representing the area to search for facilities
-	 * @return an ArrayList of strings, each representing a facility in the given area.
-	 *         If no facilities are found or there is an error, the method returns null.
+	 * @param ekrutLocation a string representing the ekrutLocation in the wanted area.
+	 * @return String representing the area that the givan ekrutLocation is assigned to.
 	 */
 	public String fetchAreaByEkrutLocation(String ekrutLocation){
 

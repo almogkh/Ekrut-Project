@@ -28,9 +28,10 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	/**
 	 * Handles Client's request to <b>update</b> InventoryItem's <b>quantity</b>.
 	 * 
-	 * @param item the item its quantity will be changed.
+	 * @param itemId the item its quantity will be changed.
 	 * @param ekrutLocation the specific machine string descriptor.
 	 * @param quantity the new item's quantity at the given ekrutLocation.
+	 * @return a ResultType representing the server's response.
 	 */
 	public ResultType updateInventoryQuantity(int itemId, String ekrutLocation, int quantity) {
 		if (quantity < 0) return ResultType.INVALID_INPUT;
@@ -44,6 +45,7 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	 * Return InentoryItem list for a given ekrutLocation.
 	 * 
 	 * @param ekrutLocation the specific machine string descriptor.
+	 * @return an ArrayList of InventoryItem(s) available in the specified ekrutLocation.
 	 */
 	public ArrayList<InventoryItem> fetchInventoryItemsByEkrutLocation(String ekrutLocation) {
 		InventoryItemRequest inventoryItemRequest = new InventoryItemRequest(
@@ -60,7 +62,7 @@ public class ClientInventoryManager extends AbstractClientManager<InventoryItemR
 	/**
 	 * Handles Client's request to <b>update</b> InventoryItem's <b>threshold</b>.
 	 * 
-	 * @param item the item its threshold will be changed.
+	 * @param itemId the item its threshold will be changed.
 	 * @param ekrutLocation the specific machine string descriptor.
 	 * @param threshold the new item's threshold for the given ekrutLocation.
 	 */
