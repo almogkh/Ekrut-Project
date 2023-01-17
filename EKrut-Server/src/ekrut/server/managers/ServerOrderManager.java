@@ -160,11 +160,15 @@ public class ServerOrderManager extends AbstractServerManager<OrderRequest, Orde
 					for (OrderItem item : order.getItems()) {
 						for (InventoryItem invItem : items) {
 							if (item.getItem().equals(invItem.getItem())) {
-								inventoryManager.updateInventoryQuantity(new InventoryItemRequest(
+								ResultType result;
+								if ((result = inventoryManager.updateInventoryQuantity(new InventoryItemRequest(
 															InventoryItemRequestType.UPDATE_ITEM_QUANTITY,
 															item.getItem().getItemId(),
 															invItem.getItemQuantity() - item.getItemQuantity(),
-															order.getEkrutLocation()));
+															order.getEkrutLocation())).getResultType()) != ResultType.OK) {
+									dbCon.abortTransaction();
+									return new OrderResponse(result == ResultType.INVALID_INPUT ? ResultType.PERMISSION_DENIED : result);
+								}
 								break;
 							}
 						}

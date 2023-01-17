@@ -158,6 +158,8 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 				info.setOrderedAsSub(true);
 			cancelOrder();
 			return response.getOrderId();
+		} else if (response.getResult() == ResultType.PERMISSION_DENIED) {
+			return -2;
 		}
 		return -1;
 	}

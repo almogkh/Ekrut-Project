@@ -103,17 +103,19 @@ public class OrderPaymentViewController {
 	void confirmOrder(ActionEvent event) {
 		int orderId;
 		if (currentCreditCardRadioBtn.isSelected()) {
-			if ((orderId = orderManager.confirmOrder(null)) != -1) {
+			if ((orderId = orderManager.confirmOrder(null)) >= 0) {
 				orderSuccess(orderId);
 				return;
 			}
 		} else {
-			if ((orderId = orderManager.confirmOrder(newCardNumberTxt.getText())) != -1) {
+			if ((orderId = orderManager.confirmOrder(newCardNumberTxt.getText())) >= 0) {
 				orderSuccess(orderId);
 				return;
 			}
 		}
-		new Alert(AlertType.ERROR, "The order could not be placed.", ButtonType.OK).showAndWait();
+		new Alert(AlertType.ERROR, "The order could not be placed." +
+					(orderId == -2 ? " Someone else bought the items you were purchasing. " +
+							"Please choose new quantities based on the available inventory." : ""), ButtonType.OK).showAndWait();
 	}
 
 }
