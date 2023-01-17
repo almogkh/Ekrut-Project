@@ -232,4 +232,16 @@ public class ClientOrderManager extends AbstractClientManager<OrderRequest, Orde
 	public boolean isActiveOrder() {
 		return activeOrder != null;
 	}
+	
+	public OrderType getOrderType() {
+		if (activeOrder == null)
+			return null;
+		return activeOrder.getType();
+	}
+	
+	public String getEkrutLocation() {
+		if (activeOrder == null)
+			return null;
+		return activeOrder.getEkrutLocation();
+	}
 }

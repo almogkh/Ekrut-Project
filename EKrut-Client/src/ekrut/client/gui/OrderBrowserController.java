@@ -8,6 +8,7 @@ import ekrut.client.managers.ClientInventoryManager;
 import ekrut.client.managers.ClientOrderManager;
 import ekrut.entity.InventoryItem;
 import ekrut.entity.Item;
+import ekrut.entity.OrderType;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,25 +56,19 @@ public class OrderBrowserController {
 
 	// Adding item for scrollDown in order browser.
 	private void AddItemViewToOrderVBox() {
-		if (ekrutLocation != null) {
-			ArrayList<InventoryItem> itemsForSale = inventoryManager.fetchInventoryItemsByEkrutLocation(ekrutLocation);
-			ArrayList<OrderItemController> inventoryItemsToAdd = new ArrayList<>();
+		ObservableList<Node> children = orderVBox.getChildren();
+		
+		if (ekrutLocation != null || orderManager.getOrderType() == OrderType.REMOTE) {
+			String location = ekrutLocation != null ? ekrutLocation : orderManager.getEkrutLocation();
+			ArrayList<InventoryItem> itemsForSale = inventoryManager.fetchInventoryItemsByEkrutLocation(location);
 			
 			for (InventoryItem inventoryItem : itemsForSale)
-				inventoryItemsToAdd.add(new OrderItemController(this, inventoryItem));
-			
-			ObservableList<Node> children = orderVBox.getChildren();
-			children.addAll(inventoryItemsToAdd);
-		}
-		else {
+				children.add(new OrderItemController(this, inventoryItem, location));
+		} else {
 			ArrayList<Item> itemsForSale = inventoryManager.fetchAllItems();
-			ArrayList<OrderItemController> itemsToAdd = new ArrayList<>();
 			
 			for (Item item : itemsForSale)
-				itemsToAdd.add(new OrderItemController(this, item));
-			
-			ObservableList<Node> children = orderVBox.getChildren();
-			children.addAll(itemsToAdd);
+				children.add(new OrderItemController(this, item, null));
 		}
 	}
 	

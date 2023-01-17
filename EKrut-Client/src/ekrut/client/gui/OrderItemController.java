@@ -64,15 +64,22 @@ public class OrderItemController extends HBox {
 	private ClientOrderManager orderManager;
 	private OrderBrowserController controller;
 	
-	public OrderItemController(OrderBrowserController controller, Item item) {
+	public OrderItemController(OrderBrowserController controller, Item item, String ekrutLocation) {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		orderManager = client.getClientOrderManager();
+		this.ekrutLocation = ekrutLocation;
+		ClientSalesManager clientSalesManager = client.getClientSalesManager();
 		boolean subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
+		ArrayList<SaleDiscount> sale = null;
+		if (subscriber) {
+			if (ekrutLocation != null)
+				sale = clientSalesManager.fetchActiveSales(ekrutLocation);
+			else
+				sale = clientSalesManager.fetchActiveSales();
+		}
+		
 		this.item = item;
-		this.ekrutLocation = EKrutClientUI.ekrutLocation;
 		this.orderManager = EKrutClientUI.getEkrutClient().getClientOrderManager();
-		ClientSalesManager clientSalesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
-		ArrayList<SaleDiscount> sale = clientSalesManager.fetchActiveSales(ekrutLocation);
 		
 		this.controller = controller;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("OrderItem.fxml"));
@@ -98,16 +105,16 @@ public class OrderItemController extends HBox {
 				break;
 			}
 		}
+		
 		if (sale != null && sale.size() > 0 && subscriber) {
 			String saleDiscountType = sale.get(0).getType().toString().equals("ONE_PLUS_ONE") ? "One Plus One" : "30% Off";
 			saleType.setText(saleDiscountType);
 			saleType.setVisible(true);
 		}
-		
 	}
 
-	public OrderItemController(OrderBrowserController controller, InventoryItem inventoryItem) {
-		this(controller, inventoryItem.getItem());
+	public OrderItemController(OrderBrowserController controller, InventoryItem inventoryItem, String ekrutLocation) {
+		this(controller, inventoryItem.getItem(), ekrutLocation);
 		this.inventoryItem = inventoryItem;
 	}
 
