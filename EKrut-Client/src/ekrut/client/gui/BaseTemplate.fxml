@@ -78,12 +78,12 @@
                               </Circle>
                               <Label fx:id="nameInitialsLbl" alignment="CENTER" contentDisplay="CENTER" prefHeight="80.0" prefWidth="200.0" text="OO" textAlignment="CENTER" textFill="WHITE">
                                  <font>
-                                    <Font name="Arial Rounded MT Bold" size="40.0" />
+                                    <Font name="Arial Rounded MT Bold" size="33.0" />
                                  </font>
                               </Label>
                               <Label fx:id="roleLbl" alignment="CENTER" contentDisplay="CENTER" layoutY="90.0" prefHeight="61.0" prefWidth="200.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="MARKETING MANAGER" textAlignment="CENTER" wrapText="true">
                                  <font>
-                                    <Font name="Arial Rounded MT Bold" size="24.0" />
+                                    <Font name="Arial Rounded MT Bold" size="18.0" />
                                  </font>
                                  <effect>
                                     <DropShadow>

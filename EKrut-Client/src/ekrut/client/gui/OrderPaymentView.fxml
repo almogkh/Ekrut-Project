@@ -49,7 +49,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderPaymentViewController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.OrderPaymentViewController">
    <children>
       <HBox alignment="CENTER" prefHeight="85.0" prefWidth="770.0" styleClass="container" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css">
          <children>
@@ -79,19 +79,14 @@
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Button fx:id="payBtn" layoutX="552.0" layoutY="536.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="47.0" prefWidth="195.0" text="Press to pay">
+            <Button fx:id="payBtn" layoutX="588.0" layoutY="544.0" mnemonicParsing="false" onAction="#confirmOrder" prefHeight="36.0" prefWidth="170.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="Press to pay">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="24.0" />
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Text layoutX="22.0" layoutY="573.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Price: ">
+            <Label fx:id="priceLbl" layoutX="160.0" layoutY="537.0" text="Price">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="23.0" />
-               </font>
-            </Text>
-            <Label fx:id="priceLbl" layoutX="160.0" layoutY="552.0" text="Price">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="23.0" />
+                  <Font name="Arial Rounded MT Bold" size="26.0" />
                </font>
             </Label>
             <RadioButton fx:id="currentCreditCardRadioBtn" layoutX="59.0" layoutY="251.0" mnemonicParsing="false" onAction="#useOldCard" selected="true" text="Use the credit card I signed up with">
@@ -118,11 +113,6 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <Button fx:id="cancelOrderBtn" layoutX="378.0" layoutY="547.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="28.0" prefWidth="149.0" text="Cancel order">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="18.0" />
-               </font>
-            </Button>
             <Text layoutX="259.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Almost Done!">
                <font>
                   <Font name="Arial Rounded MT Bold" size="37.0" />
@@ -168,6 +158,16 @@
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Label>
+            <Text layoutX="12.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total price:">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="26.0" />
+               </font>
+            </Text>
+            <Button fx:id="cancelOrderBtn1" layoutX="424.0" layoutY="544.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="36.0" prefWidth="144.0" style="-fx-background-color: #55565f;" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="cancel order">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>
