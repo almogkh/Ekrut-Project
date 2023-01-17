@@ -111,7 +111,6 @@ public class OrderReportViewController{
     }
     
     private void setOrdersBarChart() throws Exception {
-    	//TBD handle two or more words at location name
     	//Defining the x axis
 		ArrayList<String> locations = clientReportManager.getFacilitiesByArea(report.getArea());
 		ArrayList<String> fixLocations = new ArrayList<>();
@@ -125,8 +124,6 @@ public class OrderReportViewController{
 		
 		//Defining the y axis 
    	 	numberOfOrderAxis.setLabel("Total in ILS");
-		
-		//OrdersHistogram = new BarChart<>(xAxis, yAxis);  
 		
 		//Prepare XYChart.Series objects by setting data        
 		Map<String, ArrayList<Integer>> orderData = report.getOrderReportData();
@@ -159,7 +156,6 @@ public class OrderReportViewController{
     	for (Map.Entry<String, Integer> entry : topSellersData.entrySet()) {
     		topSellersItems.add(entry.getKey());
     	}
-  
    	 	// Convert array list into a array
    	 	String[] topSellersArr = topSellersItems.toArray(new String[topSellersItems.size()]);
    	 	ItemNameAxis.setCategories(FXCollections.<String>observableArrayList(Arrays.asList(topSellersArr))); 
