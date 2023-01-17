@@ -21,6 +21,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 
+/**
+ * Ticket Submission Controller, manage the ticket submission process. 
+ * 
+ * @author Ofek Malka
+ */
 public class TicketSubmissionController implements Initializable {
     @FXML
     private ComboBox<String> facilityCombo;
@@ -61,7 +66,11 @@ public class TicketSubmissionController implements Initializable {
 	private static final String WORKER_PLACEHOLDER = "<Worker's Name>";
 	private static final String ITEM_PLACEHOLDER = "<Item Name>";
 	private static final String FACILITY_PLACEHOLDER = "<Machine ID>";
-
+	
+	/*
+	 * Initializes the fields and UI elements on the scene
+	 * Fetches and sets the ekrutLocations, marketing workers and sets the area name in the GUI preview
+	*/
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// Getting the connected area manager's ekrutLocations. 

@@ -21,6 +21,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * Ticket View Controlle, contain information regarding a ticket and manage ticket-specific actions.
+ * 
+ * @author Ofek Malka
+ */
 
 public class TicketViewController extends HBox{
 
@@ -40,6 +45,13 @@ public class TicketViewController extends HBox{
     
     private ClientTicketManager clientTicketManager;
 
+    /**
+     * Constructor for TicketViewController class
+     * Initializes class variables, loads an FXML file, and sets the text of various labels and the disable property of a button
+     *
+     * @param ticket the Ticket object to be used in the class
+     * @param disableCompletedBtn boolean value to set the disable property of the markCompletedBtn button
+     */
 	public TicketViewController(Ticket ticket, boolean disableCompetedBtn) {
 		this.ticket = ticket;
     	this.clientTicketManager = EKrutClientUI.getEkrutClient().getClientTicketManager();
@@ -57,6 +69,11 @@ public class TicketViewController extends HBox{
 		markCompletedBtn.setDisable(disableCompetedBtn);
 	}
     
+	
+    /**
+	 * Method to mark a ticket as completed
+	 * Shows a confirmation dialog, updates the ticket status and removes the current object from its parent container if confirmed
+	 */
     @FXML
     void markCompleted(ActionEvent event) {
     	Alert alert = new Alert(AlertType.CONFIRMATION,

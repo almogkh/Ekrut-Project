@@ -14,7 +14,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 
-
+/**
+ * Threshold View Controller, shows the threshold data and manage threshold updating. 
+ * 
+ * @author Ofek Malka
+ */
 public class ThresholdSingleViewController extends HBox {
 
     @FXML
@@ -33,6 +37,14 @@ public class ThresholdSingleViewController extends HBox {
     private String ekrutLocation;
     private int currThreshold;
 	
+    /**
+     * Constructor for ThresholdSingleViewController class
+     * Initializes the class variables and loads an FXML file
+     * 
+     * @param CIM the ClientInventoryManager object to be used in the class
+     * @param ekrutLocation the ekrut location associated with the threshold
+     * @param currThreshold the current threshold value
+     */
 	public ThresholdSingleViewController(ClientInventoryManager CIM, String ekrutLocation, int currThreshold) {
 		this.CIM = CIM;
 		this.ekrutLocation = ekrutLocation;
@@ -53,7 +65,10 @@ public class ThresholdSingleViewController extends HBox {
 		thresholdTxt.setText(Integer.toString(currThreshold));
 	}
 	
-	
+	/**
+	 * Method to update the threshold value
+	 * Validates the new threshold value and updates it if it's valid.
+	 */
 	@FXML
 	void updateThreshold(ActionEvent event) {
 		int newThreshold;
