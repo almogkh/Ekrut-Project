@@ -90,7 +90,6 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
      * 
      * @param username will fetch tickets assigned to this username
      * @return a list of tickets
-     * @throws Exception if there is an error fetching the tickets
      */
 	public ArrayList<Ticket> fetchTicketsByUsername(String username) {
 	

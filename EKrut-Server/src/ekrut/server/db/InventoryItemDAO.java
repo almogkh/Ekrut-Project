@@ -153,7 +153,6 @@ public class InventoryItemDAO {
 	* This method updates the quantity of the inventory item with the given item ID in the specified ekrut location.
 	* The new quantity is specified in the input.
 	* 
-	* @param area the area where the ekrut location is located
 	* @param ekrutLocation the ekrut location where the inventory item is located
 	* @param itemId the ID of the item to be updated
 	* @param quantity the new quantity of the item
@@ -190,11 +189,11 @@ public class InventoryItemDAO {
 	}
 	
 	/**
-	 * Fetches all locations of ekrut machines from the ekrut_machines table.
+	 * Fetches all locations of ekrut machines in a given area from the ekrut_machines table.
 	 *
-	 * @param ekrutLocation a location of an ekrut machine; this parameter is not used
-	 * @return a list of all ekrut locations, or null if an error occurs
-	 * @throws RuntimeException if an error occurs while closing the Prepared Statement
+	 * @param area a area descriptor to fetch ekrut machines from.
+	 * @return a list of all ekrut locations, or null if an error occurs.
+	 * @throws RuntimeException if an error occurs while closing the Prepared Statement.
 	 */
 	public ArrayList<String> fetchAllEkrutLocationsByArea(String area){
 		PreparedStatement ps = con.getPreparedStatement("SELECT ekrutLocation FROM ekrut_machines WHERE area = ?");
@@ -222,7 +221,7 @@ public class InventoryItemDAO {
 	 *
 	 * @param ekrutLocation the ekrut location of the items to fetch
 	 * @return a list of InventoryItems, or null if there are no items at the given ekrut location or if there was an error
-	 * @throws RuntimeException if there is a problem closing the Prepared Statement object
+	 * @throws DeadlockException if a deadlock is detected during a transaction
 	 */
 	public ArrayList<InventoryItem> fetchAllItemsByEkrutLocation(String ekrutLocation) throws DeadlockException {
 		PreparedStatement ps = con.getPreparedStatement(
@@ -262,7 +261,7 @@ public class InventoryItemDAO {
 	 * @param itemId the ID of the item
 	 * @param ekrutLocation the ekrut location of the item
 	 * @return the InventoryItem, or null if the item could not be found or there was an error
-	 * @throws RuntimeException if there is a problem closing the Prepared Statement object
+	 * @throws DeadlockException if a deadlock is detected during a transaction
 	 */
 	public InventoryItem fetchInventoryItem(int itemId, String ekrutLocation) throws DeadlockException {
 		PreparedStatement ps = con.getPreparedStatement("SELECT area, threshold FROM ekrut_machines WHERE ekrutLocation = ?;");
