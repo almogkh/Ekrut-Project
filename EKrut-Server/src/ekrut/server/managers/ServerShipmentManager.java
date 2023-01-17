@@ -29,11 +29,12 @@ public class ServerShipmentManager extends AbstractServerManager<ShipmentRequest
 	private OrderDAO orderDAO;
 	private UserDAO userDAO;
 	private IUserNotifier userNotifier;
+	
 	/**
-	 *  
 	 * Constructs a new {@code ServerShipmentManager} object.
 	 * 
-	 * @param con the database controller to use for accessing the database
+	 * @param con the database controller to use for accessing the database.
+	 * @param userNotifier the message that sens to user.
 	 */
 	public ServerShipmentManager(DBController con, IUserNotifier userNotifier) {
 		super(ShipmentRequest.class, new ShipmentResponse(ResultType.UNKNOWN_ERROR));
@@ -42,6 +43,13 @@ public class ServerShipmentManager extends AbstractServerManager<ShipmentRequest
 		this.userNotifier = userNotifier;
 	}
 
+	/**
+	* Handles a shipment request and returns a shipment response
+	*
+	* @param request  the shipment request
+	* @param user the user making the request
+	* @return a shipment response indicating the result of the request
+	*/
 	@Override
 	protected ShipmentResponse handleRequest(ShipmentRequest request, User user) {
 		switch (request.getAction()) {

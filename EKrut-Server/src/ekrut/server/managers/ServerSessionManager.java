@@ -54,6 +54,7 @@ public class ServerSessionManager {
 	 * `connectedUsers` list, `clientUserMap` hash map, and `userDAO` object.
 	 *
 	 * @param con the {@link DBController} object to use for database operations
+ 	 * @param userNotifier the message that sens to user.
 	 */
 	public ServerSessionManager(DBController con, IUserNotifier userNotifier) {
 		connectedClientList = FXCollections.observableArrayList();
@@ -110,7 +111,6 @@ public class ServerSessionManager {
 	 * user's session, and removes the {@link ConnectionToClient} object associated
 	 * with the user from the `clientUserMap` hash map.
 	 *
-	 * @param username the username of the user to log out
 	 * @param client   the client connection associated with the user
 	 * @param reason   the reason for the logout (e.g. "Session expired")
 	 * @return a {@link UserResponse} object with the result of the logout attempt
@@ -224,7 +224,7 @@ public class ServerSessionManager {
 	 *
 	 * @param username the username of the user whose timer is being started
 	 * @param client   the client associated with the given user
-	 * @return the timer that was started
+	 * @return TimerTask the timer that was started
 	 */
 	public TimerTask startTimer(String username, ConnectionToClient client) {
 		// Start the timer
@@ -245,7 +245,7 @@ public class ServerSessionManager {
 	 *                  to fetch by
 	 * @param argument  the argument to use for fetching the user, can be a
 	 *                  username, phone number, email or area
-	 * @return a {@link UserResponse} object with the result of the fetch attempt
+	 * @return UserResponse {@link UserResponse} object with the result of the fetch attempt
 	 *         and the {@link User} object, if successful.
 	 */
 
@@ -283,7 +283,7 @@ public class ServerSessionManager {
 	 * subscriber number will be created.
 	 * 
 	 * @param userToRegister The UserRegistration object to be added to the system.
-	 * @return a {@link UserResponse} object with the result of the registration
+	 * @return UserResponse {@link UserResponse} object with the result of the registration
 	 *         process. If the registration was successful, the result code will be
 	 *         {@link ResultType#OK}, otherwise it will be
 	 *         {@link ResultType#NOT_FOUND}.
@@ -310,7 +310,7 @@ public class ServerSessionManager {
 	 * Fetches a user registration list from the database based on the given area.
 	 * 
 	 * @param area the area to use for fetching the registration list
-	 * @return a {@link UserResponse} object with the registration list, if
+	 * @return UserResponse {@link UserResponse} object with the registration list, if
 	 *         successful, or the result of the fetch attempt.
 	 */
 	public UserResponse getRegistrationList(String area) {
@@ -324,8 +324,8 @@ public class ServerSessionManager {
 	 * 
 	 * Create a user to register in the database based .
 	 * 
-	 * @param a {@link UserRegistration} user the user to register
-	 * @return a {@link UserResponse} object with the result of the create process.
+	 * @param user {@link UserRegistration} user the user to register
+	 * @return UserResponse {@link UserResponse} object with the result of the create process.
 	 *         If the create was successful, the result code will be
 	 *         {@link ResultType#OK}, otherwise it will be
 	 *         {@link ResultType#NOT_FOUND}.
