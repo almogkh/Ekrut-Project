@@ -29,10 +29,12 @@ public class TicketRequest implements Serializable{
 		} 
 	
 	//UPDATE
-	public TicketRequest(TicketRequestType action, int ticketId, TicketStatus status) {
+	public TicketRequest(TicketRequestType action, int ticketId, int itemId, String ekrutLocation, TicketStatus status) {
 		this.action = action;
 		this.ticketId = ticketId;
+		this.itemID = itemId;
 		this.status = status;
+		this.ekrutLocation = ekrutLocation;
 	}
 
 	//CREATE 

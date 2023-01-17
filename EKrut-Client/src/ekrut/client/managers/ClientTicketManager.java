@@ -37,7 +37,7 @@ public class ClientTicketManager extends AbstractClientManager<TicketRequest, Ti
 			return ResultType.INVALID_INPUT;
 		}
 		TicketRequest ticketRequest = new TicketRequest(
-				TicketRequestType.UPDATE_STATUS, ticket.getTicketId(), status); 
+				TicketRequestType.UPDATE_STATUS, ticket.getTicketId(), ticket.getItemID(), ticket.getEkrutLocation(), status); 
 		TicketResponse ticketResponse = sendRequest(ticketRequest);
 		
 		return ticketResponse.getResultType();
