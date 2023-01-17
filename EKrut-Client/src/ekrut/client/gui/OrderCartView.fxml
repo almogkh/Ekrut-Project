@@ -79,7 +79,7 @@
                         <VBox fx:id="itemCartVBox" prefHeight="415.0" prefWidth="754.0" spacing="10.0" />
                      </content>
                   </ScrollPane>
-                  <Button fx:id="agreeAndPayBtn" layoutX="596.0" layoutY="537.0" mnemonicParsing="false" onAction="#agreeAndPay" prefHeight="36.0" prefWidth="158.0" text="Agree and pay">
+                  <Button fx:id="agreeAndPayBtn" layoutX="600.0" layoutY="540.0" mnemonicParsing="false" onAction="#agreeAndPay" prefHeight="36.0" prefWidth="158.0" text="Agree and pay">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
@@ -89,7 +89,7 @@
                         <Font name="Arial Rounded MT Bold" size="26.0" />
                      </font>
                   </Text>
-                  <Button fx:id="cancelOrderBtn" layoutX="427.0" layoutY="537.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="36.0" prefWidth="144.0" style="-fx-background-color: #55565f;" text="cancel order">
+                  <Button fx:id="cancelOrderBtn" layoutX="428.0" layoutY="540.0" mnemonicParsing="false" onAction="#cancelOrder" prefHeight="36.0" prefWidth="144.0" style="-fx-background-color: #55565f;" text="cancel order">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>

@@ -24,7 +24,6 @@ public class SaleActivateController {
 		ArrayList<SaleDiscount> saleTemplates = clientSaleDiscount.fetchSaleTemplates();
 		ArrayList<SaleDiscount> activeSalesInThisArea = clientSaleDiscount.fetchActiveSales();
 
-		// Q.Nir - Is needed?
 		if (saleTemplates == null)
 			return;
 		

@@ -85,14 +85,9 @@
                   <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Button>
-            <Text layoutX="40.0" layoutY="560.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Price: ">
+            <Label fx:id="priceLbl" layoutX="162.0" layoutY="539.0" text="Price">
                <font>
-                  <Font name="Arial Rounded MT Bold" size="23.0" />
-               </font>
-            </Text>
-            <Label fx:id="priceLbl" layoutX="173.0" layoutY="540.0" text="Price">
-               <font>
-                  <Font name="Arial Rounded MT Bold" size="23.0" />
+                  <Font name="Arial Rounded MT Bold" size="26.0" />
                </font>
             </Label>
             <Text layoutX="28.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select the desired quantity and click 'update quantity' to update your cart products" textAlignment="CENTER" wrappingWidth="680.0771484375">
@@ -106,6 +101,11 @@
                      </color>
                   </DropShadow>
                </effect>
+            </Text>
+            <Text layoutX="12.0" layoutY="561.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total price:">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="26.0" />
+               </font>
             </Text>
          </children>
       </Pane>

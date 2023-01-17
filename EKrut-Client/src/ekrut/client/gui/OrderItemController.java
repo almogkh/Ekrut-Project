@@ -3,7 +3,6 @@ package ekrut.client.gui;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientOrderManager;
@@ -64,7 +63,7 @@ public class OrderItemController extends HBox {
 	private InventoryItem inventoryItem;
 	private ClientOrderManager orderManager;
 	private OrderBrowserController controller;
-
+	
 	public OrderItemController(OrderBrowserController controller, Item item) {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		orderManager = client.getClientOrderManager();
@@ -99,7 +98,7 @@ public class OrderItemController extends HBox {
 				break;
 			}
 		}
-		if (sale != null && subscriber) {
+		if (sale != null && sale.size() > 0 && subscriber) {
 			String saleDiscountType = sale.get(0).getType().toString().equals("ONE_PLUS_ONE") ? "One Plus One" : "30% Off";
 			saleType.setText(saleDiscountType);
 			saleType.setVisible(true);

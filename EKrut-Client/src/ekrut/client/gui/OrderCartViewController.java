@@ -46,9 +46,6 @@ public class OrderCartViewController {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		orderManager = client.getClientOrderManager();
 		subscriber = client.getClientSessionManager().getUser().getCustomerInfo().getSubscriberNumber() != -1;
-//		if (!subscriber) {
-//			priceAfterDiscountTxt.setVisible(false);
-//		}
 
 		AddItemViewToCartVBox();
 		updatePrice();
