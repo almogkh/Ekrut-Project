@@ -47,7 +47,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ClientLoginController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ClientLoginController">
    <children>
       <HBox alignment="CENTER" minHeight="85.0" styleClass="container">
          <children>
@@ -107,7 +107,7 @@
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
                   </TextField>
-                  <PasswordField fx:id="passwordTxt" layoutX="279.0" layoutY="151.0" prefHeight="41.0" prefWidth="200.0" promptText="Password" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="ofek">
+                  <PasswordField fx:id="passwordTxt" layoutX="279.0" layoutY="151.0" prefHeight="41.0" prefWidth="200.0" promptText="Password" styleClass="text_field" stylesheets="@../../../../../EKrut-Common/src/gui-assets/styles/Styles.css" text="123">
                      <font>
                         <Font name="Arial Rounded MT Bold" size="18.0" />
                      </font>
