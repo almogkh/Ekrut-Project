@@ -67,7 +67,7 @@ public class EKrutClientUI extends Application {
 	 * Launches the GUI
 	 * 
 	 * @param primaryStage the primary stage of the GUI
-	 * @throws Exception
+	 * @throws Exception in case load is fails.
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -84,8 +84,6 @@ public class EKrutClientUI extends Application {
 
 	/**
 	 * Closes the connection when the program is closed
-	 * 
-	 * @throws IOException
 	 */
 	@Override
 	public void stop() throws IOException {
@@ -97,8 +95,6 @@ public class EKrutClientUI extends Application {
 
 		Alert alert = new Alert(AlertType.INFORMATION, notificationMsg, ButtonType.OK);
 		alert.showAndWait();
-		// getEkrutClient().getClientSessionManager().logoutUser();
-
 	}
 
 }
