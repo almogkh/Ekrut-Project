@@ -230,7 +230,9 @@ public class BaseTemplateController {
 	public void setUser(User me) {
 		infoPane.setVisible(true);
 		logoutBtn.setVisible(true);
-		nameInitialsLbl.setText((me.getFirstName().substring(0, 1) + me.getLastName().substring(0, 1)).toUpperCase());
+		String firstInit = me.getFirstName() != null ? me.getFirstName().substring(0, 1) : "";
+		String lastInit = me.getLastName() != null ? me.getLastName().substring(0, 1) : "";
+		nameInitialsLbl.setText((firstInit + lastInit).toUpperCase());
 		roleLbl.setText(me.getUserType().toString().replace("_", " "));
 		navigationVbox.setVisible(true);
 		ObservableList<Node> vboxChildren = navigationVbox.getChildren();

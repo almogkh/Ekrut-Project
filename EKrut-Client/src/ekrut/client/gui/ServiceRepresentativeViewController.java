@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -26,7 +28,7 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class ServiceRepresentativeViewController {
 	@FXML
-	private TextField areaField;
+	private ComboBox<String> areaField;
 
 	@FXML
 	private RadioButton clientRBtn;
@@ -59,7 +61,7 @@ public class ServiceRepresentativeViewController {
 	private TextField lastNameField;
 
 	@FXML
-	private RadioButton monthlyChrgeRBtn;
+	private CheckBox monthlyChrgezCheck;
 
 	@FXML
 	private Pane paneRegister;
@@ -87,11 +89,11 @@ public class ServiceRepresentativeViewController {
 	private void initialize() {
 		EKrutClient client = EKrutClientUI.getEkrutClient();
 		this.sessionManager = client.getClientSessionManager();
-		monthlyChrgeRBtn.setDisable(true);
+		monthlyChrgezCheck.setDisable(true);
 		hideErrors();
 		setText("");
 		setDisable(true);
-
+		areaField.getItems().setAll("North", "South", "UAE");
 	}
 
 	private void hideErrors() {
@@ -104,7 +106,7 @@ public class ServiceRepresentativeViewController {
 	private void setText(String str) {
 		emailField.setText(str);
 		phoneField.setText("");
-		areaField.setText(str);
+		areaField.setValue(null);
 		firstNameField.setText(str);
 		lastNameField.setText(str);
 		idField.setText(str);
@@ -145,7 +147,7 @@ public class ServiceRepresentativeViewController {
 			emailField.setDisable(false);
 			phoneField.setText(user.getPhoneNumber());
 			phoneField.setDisable(false);
-			areaField.setText(user.getArea());
+			areaField.setValue(user.getArea());
 			areaField.setDisable(false);
 			firstNameField.setText(user.getFirstName());
 			firstNameField.setDisable(false);
@@ -153,24 +155,28 @@ public class ServiceRepresentativeViewController {
 			lastNameField.setDisable(false);
 			idField.setText(user.getId());
 			idField.setDisable(false);
+			creditCardField.setText(user.getCustomerInfo().getCreditCard());
+			if (user.getCustomerInfo().getSubscriberNumber() != -1) {
+				subscriberRBtn.setSelected(true);
+				monthlyChrgezCheck.setDisable(false);
+				monthlyChrgezCheck.setSelected(user.getCustomerInfo().isMonthlyCharge());
+			} else {
+				clientRBtn.setSelected(true);
+				monthlyChrgezCheck.setSelected(false);
+				monthlyChrgezCheck.setDisable(true);
+			}
 		}
 	}
 
 	@FXML
 	void chooseClient(ActionEvent event) {
-		monthlyChrgeRBtn.setDisable(true);
-		subscriberRBtn.setSelected(false);
+		monthlyChrgezCheck.setSelected(false);
+		monthlyChrgezCheck.setDisable(true);
 	}
 
 	@FXML
 	void chooseSub(ActionEvent event) {
-		monthlyChrgeRBtn.setDisable(false);
-		clientRBtn.setSelected(false);
-	}
-
-	@FXML
-	void chooseMonthlyCharge(ActionEvent event) {
-		subscriberRBtn.setSelected(true);
+		monthlyChrgezCheck.setDisable(false);
 	}
 
 	private void registerSuccess(String username) {
@@ -188,14 +194,14 @@ public class ServiceRepresentativeViewController {
 		hideErrors();
 		if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty() || emailField.getText().isEmpty()
 				|| phoneField.getText().isEmpty() || creditCardField.getText().isEmpty()
-				|| areaField.getText().isEmpty() || idField.getText().isEmpty()
+				|| areaField.getValue() == null || idField.getText().isEmpty()
 				|| (!subscriberRBtn.isSelected() && !clientRBtn.isSelected())) {
 			errorDetails.setVisible(true);
 			return;
 		}
 
 		//Check if users exist in registration list
-		registerList = sessionManager.getRegistrationList(areaField.getText());
+		registerList = sessionManager.getRegistrationList(areaField.getValue());
 		if (registerList != null) {
 			for (UserRegistration register : registerList) {
 				if (register.getUsername().equals(username)) {
@@ -210,11 +216,11 @@ public class ServiceRepresentativeViewController {
 		user.setLastName(lastNameField.getText());
 		user.setEmail(emailField.getText());
 		user.setPhoneNumber(phoneField.getText());
-		user.setArea(areaField.getText());
+		user.setArea(areaField.getValue());
 		user.setId(idField.getText());
 		UserRegistration userToRegister = new UserRegistration(user.getUsername(), creditCardField.getText(),
-				phoneField.getText(), emailField.getText(), monthlyChrgeRBtn.isSelected() ? true : false,
-				clientRBtn.isSelected() ? "customer" : "subscriber", areaField.getText());
+				phoneField.getText(), emailField.getText(), monthlyChrgezCheck.isSelected() ? true : false,
+				clientRBtn.isSelected() ? "customer" : "subscriber", areaField.getValue());
 		if (!sessionManager.createUserToRegister(userToRegister)) {
 			errorRegister.setVisible(true);
 			return;

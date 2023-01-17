@@ -66,9 +66,9 @@
          <children>
             <ScrollPane prefHeight="470.0" prefWidth="770.0">
               <content>
-                  <VBox fx:id="usersContainerVbox" alignment="TOP_CENTER" prefHeight="548.0" prefWidth="755.0" spacing="10.0">
+                  <VBox fx:id="usersContainerVbox" alignment="TOP_CENTER" prefHeight="548.0" prefWidth="750.0" spacing="10.0">
                      <children>
-                        <Label fx:id="nullRegistrationList" text="User registration list is empty!" textFill="RED">
+                        <Label fx:id="nullRegistrationList" text="User registration list is empty!" textFill="RED" visible="false">
                            <font>
                               <Font name="Arial Rounded MT Bold" size="24.0" />
                            </font>
