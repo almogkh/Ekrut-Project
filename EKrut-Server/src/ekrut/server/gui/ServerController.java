@@ -12,7 +12,10 @@ import ekrut.net.ResultType;
 import ekrut.server.managers.ServerSessionManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
@@ -189,10 +192,11 @@ public class ServerController {
 	void importData(final ActionEvent event) {
 		ErrorImportData.setVisible(false);
 		if (ServerUI.getServer().importUsers().getResultCode() == ResultType.UNKNOWN_ERROR) {
-			System.out.println("not good");
+			System.out.println("Error importing users. Maybe they're already imported.");
 			ErrorImportData.setVisible(true);
 			return;
 		}
+		new Alert(AlertType.INFORMATION, "Users imported successfully!", ButtonType.OK).showAndWait();
 		this.importDataBTN.setDisable(true);
 
 	}
