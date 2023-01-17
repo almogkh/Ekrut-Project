@@ -7,30 +7,36 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-
+/**
+ * The HostSelectionController class is responsible for handling the connection
+ * to the server. It contains an initialize method that is called when the class
+ * is created and a connect method that handles the connection to the server.
+ * 
+ * @author Ofek Malka
+ */
 public class HostSelectionController {
 
-    @FXML
-    private Button connectBtn;
+	@FXML
+	private Button connectBtn;
 
-    @FXML
-    private TextField serverTxt;
+	@FXML
+	private TextField serverTxt;
 
-    @FXML
-    private TextField portTxt;
+	@FXML
+	private TextField portTxt;
 
-    @FXML
-    private Label redErrorLbl;
+	@FXML
+	private Label redErrorLbl;
 
-    private static final String INVALID_PORT_ERROR = "Port or IP values are incorrent.";
-    private static final String BLANK_VAL_ERROR = "Server or Port cannot remain blank";
-    private static final String CANNOT_CONNECT_ERROR = "Unable to connect to server.";
-    
-    @FXML
-    void connect(ActionEvent event) {
-    	redErrorLbl.setVisible(false);
-    	String server = serverTxt.getText().trim();
-    	String portText = portTxt.getText().trim();
+	private static final String INVALID_PORT_ERROR = "Port or IP values are incorrent.";
+	private static final String BLANK_VAL_ERROR = "Server or Port cannot remain blank";
+	private static final String CANNOT_CONNECT_ERROR = "Unable to connect to server.";
+
+	@FXML
+	void connect(ActionEvent event) {
+		redErrorLbl.setVisible(false);
+		String server = serverTxt.getText().trim();
+		String portText = portTxt.getText().trim();
 		int port;
 		if (portText.isEmpty() || server.isEmpty()) {
 			redErrorLbl.setText(BLANK_VAL_ERROR);
@@ -44,13 +50,13 @@ public class HostSelectionController {
 				redErrorLbl.setVisible(true);
 				return;
 			}
-			
+
 			if (!EKrutClientUI.connectToServer(server, port)) {
 				redErrorLbl.setText(CANNOT_CONNECT_ERROR);
 				redErrorLbl.setVisible(true);
 				return;
-			}		
+			}
 			BaseTemplateController.getBaseTemplateController().openLoginStage();
 		}
-    }
+	}
 }

@@ -25,9 +25,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
-/*
+/**
  * This class handles all the interactions between the user and the server, such as connecting to the server,
  * importing data, displaying console, and displaying connected clients.
+ * 
+ * @author Yovel Gabay
  */
 public class ServerController {
 

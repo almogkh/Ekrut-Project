@@ -21,6 +21,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * This class represents the controller for the Order Browser view in the
+ * EKrutClient application. It handles the UI elements and logic for displaying
+ * and managing the items available for purchase in the application.
+ * 
+ * @author Nir Beresh
+ * @author Almog Khaikin
+ */
 public class OrderBrowserController {
 
 	@FXML
@@ -61,24 +70,24 @@ public class OrderBrowserController {
 	// Adding item for scrollDown in order browser.
 	private void AddItemViewToOrderVBox() {
 		ObservableList<Node> children = orderVBox.getChildren();
-		
+
 		if (ekrutLocation != null || orderManager.getOrderType() == OrderType.REMOTE) {
 			String location = ekrutLocation != null ? ekrutLocation : orderManager.getEkrutLocation();
 			ArrayList<InventoryItem> itemsForSale = inventoryManager.fetchInventoryItemsByEkrutLocation(location);
-			
+
 			for (InventoryItem inventoryItem : itemsForSale)
 				children.add(new OrderItemController(this, inventoryItem, location));
 		} else {
 			ArrayList<Item> itemsForSale = inventoryManager.fetchAllItems();
-			
+
 			for (Item item : itemsForSale)
 				children.add(new OrderItemController(this, item, null));
 		}
 	}
-	
+
 	void updateTotalPrice() {
 		float mult = orderedAsSub ? 1 : 0.8f;
-		if (subscriber) 
+		if (subscriber)
 			priceLbl.setText(String.format("%.2f", mult * (orderManager.getTotalPrice() - orderManager.getDiscount())));
 		else
 			priceLbl.setText(String.format("%.2f", orderManager.getTotalPrice()));
@@ -87,15 +96,14 @@ public class OrderBrowserController {
 	@FXML
 	void ViewCart(ActionEvent event) {
 		BTC.switchStages("OrderCartView");
-		
+
 	}
 
 	// Cancel item and ask user if he sure.
 	@FXML
 	void cancelOrder(ActionEvent event) {
-		Optional<ButtonType> res = new Alert(AlertType.CONFIRMATION,
-										"Are you sure you want to cancel the order?",
-										ButtonType.YES, ButtonType.NO).showAndWait();
+		Optional<ButtonType> res = new Alert(AlertType.CONFIRMATION, "Are you sure you want to cancel the order?",
+				ButtonType.YES, ButtonType.NO).showAndWait();
 		res.ifPresent((btn) -> {
 			if (btn == ButtonType.YES) {
 				orderManager.cancelOrder();

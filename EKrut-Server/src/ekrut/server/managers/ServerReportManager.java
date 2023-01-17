@@ -491,6 +491,10 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 	 */
 	public void generateMonthlyReports(LocalDateTime date) {
 		String areas[] = {"UAE", "North", "South"};
+		
+		date = date.withMonth(01);
+		date = date.withYear(2023);
+
 		ArrayList<String> locationsList;
 		for (String area : areas) {
 			locationsList = reportDAO.fetchFacilitiesByArea(area);
@@ -521,7 +525,7 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 		
 		@Override
 		public void run() {
-			generateMonthlyReports(expiry);
+			generateMonthlyReports(expiry); 
 			
 			LocalDateTime now = LocalDateTime.now();
 			LocalDateTime nextExpiry = getEndOfMonth(expiry.plusSeconds(1));

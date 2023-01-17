@@ -16,6 +16,17 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.chart.LineChart;
 
+/**
+ * 
+ * The class responsible for displaying customer reports.
+ * It displays a bar chart and line chart showing customer activity and monthly
+ * activity respectively.
+ * The report data is passed to the class through the setCustomerReport method,
+ * which also updates the charts and head labels.
+ * 
+ * @author Tal Gaon
+
+ */
 public class CustomerReportViewController {
 
 	@FXML
@@ -59,10 +70,10 @@ public class CustomerReportViewController {
 	}
 
 	/*
-	 * This class sets up a line chart to display monthly activity.
-	 * It first creates an ArrayList of strings representing the days of the month (1-31) and
-	 * converts it to an array.
-	 * The x-axis of the line chart is set to the array of days.
+	 * This class sets up a line chart to display monthly activity. It first creates
+	 * an ArrayList of strings representing the days of the month (1-31) and
+	 * converts it to an array. The x-axis of the line chart is set to the array of
+	 * days.
 	 */
 	private void setMonthlyActivityLineChart() {
 		ArrayList<String> days = new ArrayList<>();
@@ -91,9 +102,10 @@ public class CustomerReportViewController {
 	}
 
 	/*
-	 * This class sets up a bar chart to display customer activity.
-	 * It first retrieves a map of customer activity data from a report object.
-	 * The x-axis of the bar chart is set to an array of categories ("1", "2", "3", "4", "5","6+").
+	 * This class sets up a bar chart to display customer activity. It first
+	 * retrieves a map of customer activity data from a report object. The x-axis of
+	 * the bar chart is set to an array of categories ("1", "2", "3", "4",
+	 * "5","6+").
 	 */
 	private void setCustomersActivityBarChart() {
 		Map<String, Integer> CustomersActivityData = report.getCustomerReportData();

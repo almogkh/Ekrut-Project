@@ -11,16 +11,30 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-//The ServerUI class is the main class that runs the EKrut server's GUI.
+/**
+ * The ServerUI class is the main class that runs the EKrut server's GUI.
+ * 
+ * @author Yovel Gabay
+ */
+
 public class ServerUI extends Application {
 
 	private static EKrutServer server;
 	private static ServerController controller;
 
+	/**
+	 * The main method that launches the server GUI.
+	 * 
+	 * @param args command line arguments
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
+	/**
+	 * This method is called when the application starts. It loads the server GUI's
+	 * layout and sets the server controller.
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(("/ekrut/server/gui/Server.fxml")));
@@ -36,14 +50,24 @@ public class ServerUI extends Application {
 		primaryStage.show();
 	}
 
+	/**
+	 * This method is called when the application is closed. It disconnects the
+	 * server.
+	 */
 	@Override
 	public void stop() throws IOException {
 		disconnect();
 	}
 
-	/*
+	/**
 	 * This method initializes the server, sets the connected clients table and
 	 * starts the TimeScheduler
+	 * 
+	 * @param port       the port number of the server
+	 * @param DBuserName the username of the database
+	 * @param username   the username of the server
+	 * @param password   the password of the server
+	 * @return true if the server is successfully run, false otherwise
 	 */
 	public static boolean runServer(int port, String DBuserName, String username, String password) {
 		server = new EKrutServer(port);

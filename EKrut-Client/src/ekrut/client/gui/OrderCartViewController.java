@@ -18,6 +18,15 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * 
+ * This class represents the controller for the Order Cart view in the
+ * EKrutClient application. It handles the UI elements and logic for displaying
+ * and managing the items in a customer's order cart.
+ * 
+ * @author Nir Beresh
+ * @author Almog Khaikin
+ */
 public class OrderCartViewController {
 
 	@FXML
@@ -78,8 +87,6 @@ public class OrderCartViewController {
 			priceBeforeDiscountTxt.setVisible(false);
 		}
 	}
-
-	
 
 	@FXML
 	void agreeAndPay(ActionEvent event) {
