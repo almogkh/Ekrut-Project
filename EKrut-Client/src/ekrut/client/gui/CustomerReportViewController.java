@@ -114,9 +114,8 @@ public class CustomerReportViewController {
 	}
 
 	private void setHeadLabels() {
-
-		areaLbl.setText(report.getArea());
 		locationLbl.setText(report.getEkrutLocation());
+		areaLbl.setText(report.getArea());
 		String date = (String.valueOf(report.getDate().getMonthValue()) + '/'
 				+ String.valueOf(report.getDate().getYear()));
 		dateLbl.setText(date);

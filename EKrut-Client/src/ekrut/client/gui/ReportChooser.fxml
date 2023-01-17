@@ -45,7 +45,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
+<VBox prefHeight="680.0" prefWidth="770.0" spacing="10.0" style="-fx-background-color: none;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ekrut.client.gui.ReportChooserController">
   <children>
       <HBox alignment="CENTER" minHeight="85.0" styleClass="container" stylesheets="gui-assets/styles/Styles.css">
          <children>

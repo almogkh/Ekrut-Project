@@ -72,7 +72,7 @@
       </HBox>
       <HBox alignment="CENTER" prefHeight="48.0" prefWidth="770.0" styleClass="container">
          <children>
-            <Label fx:id="areaLbl1" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="North">
+            <Label fx:id="areaLbl" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="North">
                <font>
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
@@ -82,7 +82,7 @@
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Text>
-            <Label fx:id="locationLbl1" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="Akko" textAlignment="CENTER">
+            <Label fx:id="locationLbl" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="Akko" textAlignment="CENTER">
                <font>
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
@@ -92,7 +92,7 @@
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
             </Text>
-            <Label fx:id="dateLbl1" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="01/2023">
+            <Label fx:id="dateLbl" alignment="CENTER" prefHeight="30.0" prefWidth="150.0" text="01/2023">
                <font>
                   <Font name="Arial Rounded MT Bold" size="24.0" />
                </font>
