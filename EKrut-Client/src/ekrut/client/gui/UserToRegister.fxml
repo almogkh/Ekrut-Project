@@ -62,7 +62,7 @@
          <graphic>
             <ImageView fitHeight="37.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@gui-assets/v.png" />
+                  <Image url="ekrut/client/gui/gui-assets/v.png" />
                </image>
             </ImageView>
          </graphic>

@@ -60,19 +60,19 @@
                <children>
                   <ImageView fitHeight="98.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@gui-assets/Group%2010.png" />
+                        <Image url="ekrut/server/gui/gui-assets/Group 10.png" />
                      </image>
                   </ImageView>
                   <Pane prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <ImageView fx:id="ConnectedRedIMG" fitHeight="150.0" fitWidth="200.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@gui-assets/server%20loguot%20background.png" />
+                              <Image url="ekrut/server/gui/gui-assets/server loguot background.png" />
                            </image>
                         </ImageView>
                         <ImageView fx:id="ConnectedGreenIMG" fitHeight="150.0" fitWidth="200.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@gui-assets/server%20login%20background.png" />
+                              <Image url="ekrut/server/gui/gui-assets/server login background.png" />
                            </image>
                         </ImageView>
                         <Label fx:id="connectionStatus" alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="17.0" prefHeight="22.0" prefWidth="200.0" text="connectionStatus" textAlignment="CENTER">
@@ -103,7 +103,7 @@
                               </DropShadow>
                            </effect>
                         </Text>
-                        <TableView fx:id="ConnectedClients" blendMode="MULTIPLY" layoutX="1.0" layoutY="72.0" prefHeight="232.0" prefWidth="375.0" style="-fx-border-color: none;" styleClass="table" stylesheets="@gui-assets/styles/Styles.css">
+                        <TableView fx:id="ConnectedClients" blendMode="MULTIPLY" layoutX="1.0" layoutY="72.0" prefHeight="232.0" prefWidth="375.0" style="-fx-border-color: none;" styleClass="table" stylesheets="ekrut/server/gui/gui-assets/styles/Styles.css">
                           <columns>
                             <TableColumn id="table" fx:id="IPColumn" prefWidth="104.0" text="IP" />
                             <TableColumn fx:id="UsernameColumn" prefWidth="116.0" text="Username" />

@@ -90,7 +90,7 @@
             </Label>
             <ImageView fitHeight="398.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@gui-assets/gifMachine.gif" />
+                  <Image url="ekrut/client/gui/gui-assets/gifMachine.gif" />
                </image>
                <VBox.margin>
                   <Insets top="60.0" />

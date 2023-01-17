@@ -87,12 +87,12 @@
             <ComboBox fx:id="workerCombo" disable="true" layoutX="550.0" layoutY="138.0" onAction="#workerComboSelected" prefHeight="40.0" prefWidth="150.0" promptText="Select worker" styleClass="item" stylesheets="gui-assets/styles/Styles.css" />
             <ImageView fx:id="arrowToItem" fitHeight="44.0" fitWidth="46.0" layoutX="241.0" layoutY="136.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@gui-assets/right-arrow.png" />
+                  <Image url="ekrut/client/gui/gui-assets/right-arrow.png" />
                </image>
             </ImageView>
             <ImageView fx:id="arrowToWorker" fitHeight="44.0" fitWidth="46.0" layoutX="484.0" layoutY="136.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@gui-assets/right-arrow.png" />
+                  <Image url="ekrut/client/gui/gui-assets/right-arrow.png" />
                </image>
             </ImageView>
             <Label layoutX="34.0" layoutY="251.0" text="Ticket preview:">
@@ -147,7 +147,7 @@
                      <graphic>
                         <ImageView fitHeight="37.0" fitWidth="59.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@gui-assets/v.png" />
+                              <Image url="ekrut/client/gui/gui-assets/v.png" />
                            </image>
                         </ImageView>
                      </graphic>

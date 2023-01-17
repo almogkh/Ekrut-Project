@@ -59,7 +59,7 @@
                      <children>
                         <ImageView fitHeight="98.0" fitWidth="206.0" pickOnBounds="true" preserveRatio="true" x="15.0">
                            <image>
-                              <Image url="@gui-assets/Group%2010.png" />
+                              <Image url="ekrut/client/gui/gui-assets/Group 10.png" />
                            </image>
                            <VBox.margin>
                               <Insets left="15.0" />
@@ -107,7 +107,7 @@
                      <graphic>
                         <ImageView fitHeight="50.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@gui-assets/logout.png" />
+                              <Image url="ekrut/client/gui/gui-assets/logout.png" />
                            </image>
                         </ImageView>
                      </graphic>

@@ -111,7 +111,7 @@
                   </Label>
                   <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="286.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@gui-assets/right-arrow.png" />
+                        <Image url="ekrut/client/gui/gui-assets/right-arrow.png" />
                      </image>
                   </ImageView>
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="323.0" layoutY="42.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Cart view">
@@ -121,7 +121,7 @@
                   </Label>
                   <ImageView fitHeight="37.0" fitWidth="47.0" layoutX="435.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@gui-assets/right-arrow.png" />
+                        <Image url="ekrut/client/gui/gui-assets/right-arrow.png" />
                      </image>
                   </ImageView>
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="472.0" layoutY="42.0" prefHeight="27.0" prefWidth="112.0" style="-fx-background-color: lightgray; -fx-background-radius: 10; -fx-border-color: black; -fx-border-radius: 10;" text="Payment">
