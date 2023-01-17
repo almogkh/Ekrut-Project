@@ -62,7 +62,7 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 	 * Retrieves a report based on the provided request parameters.
 	 *
 	 * @param reportRequest the request containing the parameters to use for report retrieval
-	 * @param client the client requesting the report
+	 * @param user 
 	 * @return a response containing the retrieved report or an error result if the report was not found
 	 */
 	public ReportResponse fetchReport(ReportRequest reportRequest, User user) {
