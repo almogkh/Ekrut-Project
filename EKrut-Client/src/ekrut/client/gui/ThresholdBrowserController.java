@@ -10,11 +10,20 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
+/**
+ * Threshold Browser Controller, shows the thresholds of the machines in the user's assigned area. 
+ * 
+ * @author Ofek Malka
+ */
 public class ThresholdBrowserController {
 
     @FXML
     private VBox thresholdsVbox;
 
+    /**
+     * Fetches the ekrut locations of the current user's area and the inventory items 
+     * and threshold values associated with each location.
+     */
 	@FXML
 	private void initialize() {
 		EKrutClient client = EKrutClientUI.getEkrutClient();

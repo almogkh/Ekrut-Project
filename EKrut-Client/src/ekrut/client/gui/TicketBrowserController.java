@@ -16,6 +16,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
+
+/**
+ * Ticket Browser Controller, shows tickets according to the user. 
+ * 
+ * @author Ofek Malka
+ */
 public class TicketBrowserController implements Initializable {
 	
 	private EKrutClient client;
@@ -27,13 +33,17 @@ public class TicketBrowserController implements Initializable {
     @FXML
     private VBox ticketsContainerVbox;
 
+    
+    /*
+     * Initializes the fields and UI elements on the scene
+     * Fetches the appropriate tickets and shows them in the UI based on the logged in user's role and area
+     */
     @Override
 	public void initialize(URL location, ResourceBundle resources) {
     	client = EKrutClientUI.getEkrutClient();
     	clientTicketManager = client.getClientTicketManager();
     	UserType usertype = client.getClientSessionManager().getUser().getUserType();
     	String username = client.getClientSessionManager().getUser().getUsername();
-    	
     	ArrayList<Ticket> ticketsToShow;
     	if (usertype == UserType.AREA_MANAGER) {
     		createTicketBtn.setVisible(true);
@@ -51,10 +61,8 @@ public class TicketBrowserController implements Initializable {
     		}
 	}
     
-    
     @FXML
     void createTicket(ActionEvent event) {
 		BaseTemplateController.getBaseTemplateController().switchStages("TicketSubmission");
-	    }
-
+	}
 }
