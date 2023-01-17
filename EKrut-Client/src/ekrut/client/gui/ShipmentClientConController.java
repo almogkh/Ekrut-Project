@@ -12,6 +12,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * The ShipmentClientConController class is used to handle the client's
+ * confirmation of delivery.
+ * 
+ * @author Nir Betesh
+ */
 public class ShipmentClientConController extends HBox {
 
 	@FXML
@@ -26,6 +32,11 @@ public class ShipmentClientConController extends HBox {
 	private Order order;
 	private ClientShipmentManager clientShipmentManager;
 
+	/**
+	 * Constructor for ShipmentClientConController
+	 * 
+	 * @param order the order for which the client will confirm delivery
+	 */
 	public ShipmentClientConController(Order order) {
 		this.order = order;
 		clientShipmentManager = EKrutClientUI.getEkrutClient().getClientShipmentManager();

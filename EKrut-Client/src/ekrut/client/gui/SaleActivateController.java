@@ -10,6 +10,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 
+/**
+ * SaleActivateController is the controller class for the sale activation
+ * screen.
+ * 
+ * It allows to view and activate available sales discounts.
+ * @author Nir Betesh
+ */
 public class SaleActivateController {
 
 	@FXML
@@ -26,9 +33,9 @@ public class SaleActivateController {
 
 		if (saleTemplates == null)
 			return;
-		
+
 		ObservableList<Node> children = salesVBox.getChildren();
-		
+
 		for (SaleDiscount sale : saleTemplates)
 			children.add(new SaleToActivateController(sale, activeSalesInThisArea));
 	}

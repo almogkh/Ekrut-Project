@@ -11,6 +11,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
+/**
+ * This class is used to display and handle the shipment worker approval
+ * process.
+ * 
+ * It creates ShipmentWorkerAppController objects for each order and adding them
+ * to a container.
+ * 
+ * @author Nir Betesh
+ */
 public class ShipmentWorkerApprovalController {
 
 	@FXML

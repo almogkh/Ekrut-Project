@@ -13,6 +13,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * This class is used to handle the shipment worker approval process, it
+ * contains the order information and confirm button.
+ * 
+ * @author Nir Betesh
+ */
 public class ShipmentWorkerAppController extends HBox {
 
 	@FXML
@@ -27,6 +33,13 @@ public class ShipmentWorkerAppController extends HBox {
 	private Order order;
 	private ClientShipmentManager clientShipmentManager;
 
+	/**
+	 * Constructor that initializes the ShipmentWorkerAppController object and sets
+	 * the order, orderId and orderDate information.
+	 * 
+	 * @param order order object that contains the information to be displayed in
+	 *              the controller.
+	 */
 	public ShipmentWorkerAppController(Order order) {
 		this.order = order;
 		clientShipmentManager = EKrutClientUI.getEkrutClient().getClientShipmentManager();
@@ -46,6 +59,12 @@ public class ShipmentWorkerAppController extends HBox {
 		orderDateTxt.setText(date + " o'clock");
 	}
 
+	/**
+	 * Method that is called when the confirm button is pressed. It confirms the
+	 * shipment and removes the current object from its parent container.
+	 * 
+	 * @param event the event that triggers the method call
+	 */
 	@FXML
 	void confirmShipment(ActionEvent event) {
 		clientShipmentManager.confirmShipment(order);

@@ -17,6 +17,17 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * The OrderPaymentViewController class is responsible for handling the
+ * interaction with the user when they are trying to pay for an order. It
+ * receives an order ID input from the user, and sends it to the
+ * ClientOrderManager for processing. Depending on the result of the processing,
+ * it displays an appropriate message to the user.
+ * 
+ * 
+ * @author Nir Betesh
+ * @author Almog Khaikin
+ */
 public class OrderPaymentViewController {
 
 	@FXML
@@ -42,7 +53,7 @@ public class OrderPaymentViewController {
 
 	@FXML
 	private TextField newCardNumberTxt;
-	
+
 	private ClientOrderManager orderManager;
 
 	@FXML
@@ -63,16 +74,13 @@ public class OrderPaymentViewController {
 
 	@FXML
 	void cancelOrder(ActionEvent event) {
-		Optional<ButtonType> res = new Alert(AlertType.CONFIRMATION,
-				"Are you sure you want to cancel the order?",
+		Optional<ButtonType> res = new Alert(AlertType.CONFIRMATION, "Are you sure you want to cancel the order?",
 				ButtonType.YES, ButtonType.NO).showAndWait();
 		res.ifPresent((btn) -> {
 			if (btn == ButtonType.YES) {
 				orderManager.cancelOrder();
-				BaseTemplateController.getBaseTemplateController().switchStages(
-											EKrutClientUI.ekrutLocation == null
-											? "OrderCreation"
-											: "MainMenu");
+				BaseTemplateController.getBaseTemplateController()
+						.switchStages(EKrutClientUI.ekrutLocation == null ? "OrderCreation" : "MainMenu");
 			}
 		});
 	}
@@ -87,7 +95,7 @@ public class OrderPaymentViewController {
 	void useNewCard(ActionEvent event) {
 		newCardNumberTxt.setDisable(false);
 	}
-	
+
 	private void orderSuccess(int orderId) {
 		new Alert(AlertType.INFORMATION, "The order was successfully placed! Your order ID is " + orderId,
 				ButtonType.OK).showAndWait();
@@ -98,7 +106,7 @@ public class OrderPaymentViewController {
 			BaseTemplateController.getBaseTemplateController().logout();
 		}
 	}
-	
+
 	@FXML
 	void confirmOrder(ActionEvent event) {
 		int orderId;

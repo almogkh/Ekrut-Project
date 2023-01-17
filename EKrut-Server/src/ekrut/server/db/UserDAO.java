@@ -232,7 +232,7 @@ public class UserDAO {
 
 	/**
 	 * Updates an existing user in the database.
-	 *
+	 * @param user the user whose should be update
 	 * @return `true` if the user was successfully updated, `false` if an error
 	 *         occurred. UserType userType, String username, String password, String
 	 *         firstName, String lastName, String id, String email, String

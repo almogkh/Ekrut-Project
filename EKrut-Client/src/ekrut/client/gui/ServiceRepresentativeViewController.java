@@ -21,8 +21,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Alert.AlertType;
 
-/*
+/**
  * The view is used by service representatives to register new customers or subscribers
+ * 
+ * @author Yovel Gabay
  */
 public class ServiceRepresentativeViewController {
 	@FXML

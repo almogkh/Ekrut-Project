@@ -11,14 +11,18 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
-/*
- * This class is used to display a list of user registrations to the AREA_MANAGER,
- * by creating UserToRegisterController objects for each registration and adding them to a container.
+/**
+ * This class is used to display a list of user registrations to the
+ * AREA_MANAGER, by creating UserToRegisterController objects for each
+ * registration and adding them to a container.
+ * 
+ * @author Yovel Gabay
  */
 public class UserRegistrationController {
 
 	@FXML
 	private VBox usersContainerVbox;
+
 
 	@FXML
 	private void initialize() {
@@ -28,7 +32,7 @@ public class UserRegistrationController {
 
 		String userArea = client.getClientSessionManager().getUser().getArea();
 		ArrayList<UserRegistration> registrationList = clientSessionManager.getRegistrationList(userArea);
-		
+
 		if (registrationList == null)
 			return;
 
