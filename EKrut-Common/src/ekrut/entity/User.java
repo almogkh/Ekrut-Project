@@ -116,6 +116,22 @@ public class User implements Serializable {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((area == null) ? 0 : area.hashCode());
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (o == this) {
 			return true;
@@ -128,5 +144,4 @@ public class User implements Serializable {
 				&& firstName.equals(user.firstName) && lastName.equals(user.lastName) && id.equals(user.id)
 				&& email.equals(user.email) && phoneNumber.equals(user.phoneNumber) && area.equals(user.area);
 	}
-
 }

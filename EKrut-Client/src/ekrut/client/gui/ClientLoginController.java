@@ -10,8 +10,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.WindowEvent;
 
 public class ClientLoginController {
@@ -64,9 +67,15 @@ public class ClientLoginController {
 		try {
 			me = ekrutClient.getClientSessionManager().loginUser(username, password);
 		} catch (RuntimeException e1) {
-			errorLbl.setText(INCORRECT_USER_PASS_ERROR);
-			errorLbl.setVisible(true);
-			return;
+			if (e1.getMessage().contains("INVALID")) {
+				errorLbl.setText(INCORRECT_USER_PASS_ERROR);
+				errorLbl.setVisible(true);
+				return;
+			} else {
+				new Alert(AlertType.ERROR, "An error has occurred. Please make sure you're not already logged in",
+						ButtonType.OK).showAndWait();
+				return;
+			}
 		}
 		
 		if (me == null) {

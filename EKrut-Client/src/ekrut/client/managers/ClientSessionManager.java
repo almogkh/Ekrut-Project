@@ -47,11 +47,12 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 		UserRequest userLoginRequest = new UserRequest(username, password);
 		UserResponse userResponse = sendRequest(userLoginRequest);
 
-		if (userResponse.getResultCode().equals(ResultType.OK)) {
+		if (userResponse.getResultCode() == ResultType.OK) {
 			user = userResponse.getUser();
 			return user;
-		} else
+		} else {
 			throw new RuntimeException(userResponse.getResultCode().toString());
+		}
 	}
 
 	/**

@@ -91,6 +91,8 @@ public class ServerSessionManager {
 		else if (!user.getPassword().equals(password)) {
 			result = ResultType.INVALID_INPUT;
 		} else {
+			if (connectedUsers.containsKey(user))
+				return new UserResponse(ResultType.UNKNOWN_ERROR);
 			userResponse.setUser(user);
 			connectedUsers.put(user, startTimer(username, client));
 			clientUserMap.put(client, user);
