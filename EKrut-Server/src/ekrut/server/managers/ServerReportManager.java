@@ -26,6 +26,7 @@ import ekrut.net.ResultType;
 import ekrut.server.TimeScheduler;
 import ekrut.server.db.DBController;
 import ekrut.server.db.InventoryItemDAO;
+import ekrut.server.db.OrderDAO;
 import ekrut.server.db.ReportDAO;
 import ekrut.server.db.UserDAO;
 
@@ -41,7 +42,8 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 	
 	public ServerReportManager(DBController con) {
 		super(ReportRequest.class, new ReportResponse(ResultType.UNKNOWN_ERROR));
-		reportDAO = new ReportDAO(con);
+		OrderDAO orderDAO = new OrderDAO(con);
+		reportDAO = new ReportDAO(con, orderDAO);
 		inventoryItemDAO = new InventoryItemDAO(con);
 		userDAO = new UserDAO(con);
 	}
