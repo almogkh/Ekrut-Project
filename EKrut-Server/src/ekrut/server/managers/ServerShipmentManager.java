@@ -112,7 +112,6 @@ public class ServerShipmentManager {
 		
 		String estimateTime = estimateDeliveryTime.format(DateTimeFormatter.ofPattern("dd/MM/YY HH:mm"));
 		
-		// Q.Nir - Need to check if success??
 		User user = userDAO.fetchUserByUsername(username);	
 		String notificationMsg = "Hi " + user.getFirstName() + ",\n\n"
 							   + "We wanted to let you know that your delivery is approved by our shipment department,\n"

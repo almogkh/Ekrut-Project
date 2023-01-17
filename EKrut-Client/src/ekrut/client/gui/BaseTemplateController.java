@@ -48,6 +48,8 @@ public class BaseTemplateController {
 		return baseTemplateController;
 	}
 
+	
+	// Methods that run diffrent stages.
 	void showLogoutBtn() {
 		logoutBtn.setVisible(true);
 	}
@@ -141,12 +143,7 @@ public class BaseTemplateController {
 		hyperLink.setWrapText(true);
 		hyperLink.setTextAlignment(TextAlignment.CENTER);
 		hyperLink.setStyle("-fx-text-fill: white;"
-				//+ "-fx-underline: false;"
-				//+ "-fx-border-color: black;"
-				//+ "-fx-border-radius: 20;"
-				//+ "-fx-background-color: rgba(255, 255, 255, 0.5);"
 				+ "-fx-background-color: #2F88FF;"
-				//+ "-fx-background-radius: 20;"
 				+ "-fx-pref-width: 200;"
 				+ "-fx-alignment: center;");
 	}
@@ -218,6 +215,7 @@ public class BaseTemplateController {
 		return allHyperlinks;
 	}
 
+	// Set user 
 	public void setUser(User me) {
 		infoPane.setVisible(true);
 		logoutBtn.setVisible(true);
@@ -255,7 +253,7 @@ public class BaseTemplateController {
 		setRightWindow(root);
     }
    
-    // Load fxml and return parent, good for case that information is needed
+    // Load fxml and return parent, good for case that info is needed
     public Parent load(FXMLLoader loader) {
     	try {
 			loader.load();
@@ -264,7 +262,8 @@ public class BaseTemplateController {
 		}
 		return loader.getRoot();
     }
-    
+
+    // Login stage, if its from machine there is login via touch or username and password. 
     public void openLoginStage() {
     	FXMLLoader loader;
 			loader = new FXMLLoader(getClass().getResource("/ekrut/client/gui/ClientLogin.fxml"));

@@ -101,7 +101,7 @@ public class OrderItemController extends HBox {
 				break;
 			}
 		}
-		if (sale != null && subscriber) {
+		if (sale != null && sale.size() > 0 && subscriber) {
 			String saleDiscountType = sale.get(0).getType().toString().equals("ONE_PLUS_ONE") ? "One Plus One" : "30% Off";
 			saleType.setText(saleDiscountType);
 			saleType.setVisible(true);

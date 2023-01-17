@@ -2,7 +2,6 @@ package ekrut.client.gui;
 
 import java.util.ArrayList;
 import java.util.Optional;
-
 import ekrut.client.EKrutClient;
 import ekrut.client.EKrutClientUI;
 import ekrut.client.managers.ClientInventoryManager;
@@ -54,13 +53,13 @@ public class OrderBrowserController {
 		updateTotalPrice();
 	}
 
+	// Adding item for scrollDown in order browser.
 	private void AddItemViewToOrderVBox() {
 		if (ekrutLocation != null) {
 			ArrayList<InventoryItem> itemsForSale = inventoryManager.fetchInventoryItemsByEkrutLocation(ekrutLocation);
 			ArrayList<OrderItemController> inventoryItemsToAdd = new ArrayList<>();
 			
 			for (InventoryItem inventoryItem : itemsForSale)
-				// Q.Nir - why are you use 'this'?
 				inventoryItemsToAdd.add(new OrderItemController(this, inventoryItem));
 			
 			ObservableList<Node> children = orderVBox.getChildren();
@@ -91,6 +90,7 @@ public class OrderBrowserController {
 		
 	}
 
+	// Cancel item and ask user if he sure.
 	@FXML
 	void cancelOrder(ActionEvent event) {
 		Optional<ButtonType> res = new Alert(AlertType.CONFIRMATION,
