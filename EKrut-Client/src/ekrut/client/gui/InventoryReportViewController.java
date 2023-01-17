@@ -60,7 +60,11 @@ public class InventoryReportViewController {
 	    	dateLbl.setText(date);
 	    	facilityThersholdLbl.setText(String.valueOf(report.getThreshold()));
 	    }  
-	    
+	    /* This class sets up a table to display inventory report data.
+	     * It first retrieves a map of inventory report data from a report object.
+	     * The key of the map is the name of the item and the value is an ArrayList of integers.
+	     * The method creates a new ArrayList of the names of the items and converts it to an array.
+	     * The x-axis of the table is set to the array of item names.*/
 	    public void setTable(){
 	    	Map<String, ArrayList<Integer>> InventoryReportData = report.getInventoryReportData();
 	    	ArrayList<String> itemsName = new ArrayList<>();
