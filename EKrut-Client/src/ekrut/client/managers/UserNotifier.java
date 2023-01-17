@@ -35,11 +35,4 @@ public class UserNotifier {
 	    this.sendSMS(smsMessage);
 	    this.sendEmail(emailMessage);
 	  }
-	  
-	  public static void main(String[] args) {
-		  UserNotifier sms = new UserNotifier("0544944431", "Nir@gmail.com");
-		  sms.sendSMS("Phone SMS");
-		  sms.sendEmail("Email message");
-	}
-
 }
