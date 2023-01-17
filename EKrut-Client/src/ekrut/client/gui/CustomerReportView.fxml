@@ -115,10 +115,10 @@
          <children>
             <BarChart fx:id="CustomersActivityBarChart" prefHeight="294.0" prefWidth="770.0" styleClass="graph" title="Customers Activity By Categories">
               <xAxis>
-                <CategoryAxis fx:id="barChartCategoryAxis" label="Category" side="BOTTOM" />
+                <CategoryAxis fx:id="barChartCategoryAxis" label="Number Of Orders" side="BOTTOM" />
               </xAxis>
               <yAxis>
-                <NumberAxis fx:id="barChartNumberAxis" label="Number Of Orders" side="LEFT" />
+                <NumberAxis fx:id="barChartNumberAxis" label="Number Of Customers" side="LEFT" />
               </yAxis>
             </BarChart>
          </children>
