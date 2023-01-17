@@ -18,6 +18,15 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * The OrderItemInCartController class represents an OrderItem in the Order Cart
+ * View. It provides the user with the ability to delete the OrderItem, update
+ * its quantity, and display the item's name and price.
+ * 
+ * @author Nir Betesh
+ * @author Almog Khaikin
+ */
 public class OrderItemInCartController extends HBox {
 
 	@FXML
@@ -46,6 +55,16 @@ public class OrderItemInCartController extends HBox {
 	private ClientOrderManager orderManager;
 	private OrderItem orderItem;
 
+	/**
+	 * This constructor creates an instance of the class and sets the necessary data
+	 * for it to function properly.
+	 * 
+	 * @param controller The OrderCartViewController that this
+	 *                   OrderItemInCartController belongs to.
+	 * 
+	 * @param orderItem  The OrderItem that this OrderItemInCartController
+	 *                   represents.
+	 */
 	public OrderItemInCartController(OrderCartViewController controller, OrderItem orderItem) {
 		BTC = BaseTemplateController.getBaseTemplateController();
 		this.controller = controller;
@@ -59,13 +78,13 @@ public class OrderItemInCartController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		StringBuilder itemName = new StringBuilder(orderItem.getItem().getItemName());
 		int length = 96 - itemName.length();
 		for (int i = 0; i < length; i++)
 			itemName.append('.');
 		itemNameLbl.setText(itemName.toString());
-		itemPriceLbl.setText(Float.toString(orderItem.getItem().getItemPrice()));	
+		itemPriceLbl.setText(Float.toString(orderItem.getItem().getItemPrice()));
 		quantityTxt.setText(Integer.toString(orderItem.getItemQuantity()));
 	}
 
@@ -80,11 +99,11 @@ public class OrderItemInCartController extends HBox {
 				((VBox) getParent()).getChildren().remove(this);
 			}
 		});
-		
+
 	}
 
-    @FXML
-    void back(ActionEvent event) {
-    	BTC.switchStages("OrderItemBrowser");
-    }
+	@FXML
+	void back(ActionEvent event) {
+		BTC.switchStages("OrderItemBrowser");
+	}
 }

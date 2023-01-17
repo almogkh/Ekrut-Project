@@ -20,6 +20,13 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+
+/**
+ * This class represents the UserToRegisterController which is used to handle
+ * the user registration process.
+ * 
+ * @author Yovel Gabay
+ */
 public class UserToRegisterController extends HBox {
 
 	private UserRegistration user;
@@ -38,7 +45,12 @@ public class UserToRegisterController extends HBox {
 
 	@FXML
 	private Label subOrCustomerLbl;
-
+	
+	/**
+	 * Constructor that takes a UserRegistration object and sets the text of the Label fields with the appropriate user information.
+	 *
+	 * @param user UserRegistration object which contains the user's information to be registered.
+	 */
 	public UserToRegisterController(UserRegistration user) {
 		this.user = user;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UserToRegister.fxml"));
@@ -49,7 +61,7 @@ public class UserToRegisterController extends HBox {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		//Sets the text of the Label fields with the appropriate user information.
+		// Sets the text of the Label fields with the appropriate user information.
 		emailLbl.setText("Email: " + user.getEmail());
 		nameLbl.setText("Username: " + user.getUsername());
 		phoneLbl.setText("Phone: " + user.getPhoneNumber());

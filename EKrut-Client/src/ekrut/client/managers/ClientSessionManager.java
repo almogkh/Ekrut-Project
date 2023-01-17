@@ -28,14 +28,14 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 	}
 
 	/**
-	 * Attempts to login a user with the given username and password.
-	 *
-	 * @param username The username of the user.
-	 * @param password The password of the user.
-	 * @return The `User` object if the login was successful, or throws an exception
-	 *         if an error occurred.
-	 * @throws Exception if the user is already logged in, if the user has entered
-	 *                   null items, or if the login failed.
+	 * Logs in a user with the given username and password.
+	 * 
+	 * @param username The username of the user to log in.
+	 * @param password The password of the user to log in.
+	 * @return The user object of the logged in user.
+	 * @throws RuntimeException     if a user is already logged in or if the login
+	 *                              request fails.
+	 * @throws NullPointerException if a null username or password is provided.
 	 */
 	public User loginUser(String username, String password) {
 		if (user != null)
@@ -80,15 +80,20 @@ public class ClientSessionManager extends AbstractClientManager<UserRequest, Use
 	}
 
 	/**
-	 * Logs out the given user.
-	 *
-	 * @param user The user to log out.
-	 * @throws Exception if the user is not logged in or if the logout failed.
+	 * Logs out the current user.
 	 */
 	public void logoutUser() {
 		logoutUser(false);
 	}
 
+	/**
+	 * Logs out the current user.
+	 * 
+	 * @param quiet If true, the logout process will not notify any listeners or
+	 *              send a request to the server. If false, the logout process will
+	 *              notify all listeners and send a request to the server to log out
+	 *              the user.
+	 */
 	public void logoutUser(boolean quiet) {
 		for (Runnable r : onLogout)
 			r.run();

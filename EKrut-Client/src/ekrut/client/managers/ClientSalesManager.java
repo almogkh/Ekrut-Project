@@ -30,7 +30,7 @@ public class ClientSalesManager extends AbstractClientManager<SaleDiscountReques
 	 * Creates a new sale template.
 	 * 
 	 * @param sale the sale template to create
-	 * @return     the result the server returned for the operation
+	 * @return the result the server returned for the operation
 	 */
 	public ResultType createSaleTemplate(SaleDiscount sale) {
 		SaleDiscountRequest request = new SaleDiscountRequest(sale);
@@ -52,27 +52,30 @@ public class ClientSalesManager extends AbstractClientManager<SaleDiscountReques
 	}
 
 	/**
-	 * Retrieves the list of active sales for the area the logged in manager is responsible for.
+	 * Retrieves the list of active sales for the area the logged in manager is
+	 * responsible for.
 	 * 
 	 * @return the list of active sales for the area
 	 */
 	public ArrayList<SaleDiscount> fetchActiveSales() {
 		User user = client.getClientSessionManager().getUser();
 		SaleDiscountRequest request = new SaleDiscountRequest(SaleDiscountRequestType.FETCH_SALES_BY_AREA,
-															user.getArea());
+				user.getArea());
 		SaleDiscountResponse response = sendRequest(request);
 
 		return response.getSales();
 	}
-	
+
 	/**
-	 * Retrieves the list of active sales for the area the specified machine is located in.
+	 * Fetches all active sales that are currently ongoing for the given ekrut
+	 * location.
 	 * 
-	 * @return the list of active sales for the area
+	 * @param ekrutLocation the location for which active sales are to be fetched
+	 * @return an ArrayList of SaleDiscount objects representing the active sales
 	 */
 	public ArrayList<SaleDiscount> fetchActiveSales(String ekrutLocation) {
 		SaleDiscountRequest request = new SaleDiscountRequest(SaleDiscountRequestType.FETCH_SALES_BY_LOCATION,
-															ekrutLocation);
+				ekrutLocation);
 		SaleDiscountResponse response = sendRequest(request);
 
 		return response.getSales();
@@ -82,27 +85,27 @@ public class ClientSalesManager extends AbstractClientManager<SaleDiscountReques
 	 * Activates a sale for the area the manager is responsible for.
 	 * 
 	 * @param discountId the ID of the sale that should be activated
-	 * @return           the result of the operation
+	 * @return the result of the operation
 	 */
 	public ResultType activateSaleForArea(int discountId) {
 		User user = client.getClientSessionManager().getUser();
 		SaleDiscountRequest request = new SaleDiscountRequest(SaleDiscountRequestType.ACTIVATE_SALE_FOR_AREA,
-                                                              discountId, user.getArea());
+				discountId, user.getArea());
 		SaleDiscountResponse response = sendRequest(request);
 
 		return response.getResult();
 	}
-	
+
 	/**
 	 * Deactivates a sale for the area the manager is responsible for.
 	 * 
 	 * @param discountId the ID of the sale that should be deactivated
-	 * @return           the result of the operation
+	 * @return the result of the operation
 	 */
 	public ResultType deactivateSaleForArea(int discountId) {
 		User user = client.getClientSessionManager().getUser();
 		SaleDiscountRequest request = new SaleDiscountRequest(SaleDiscountRequestType.DEACTIVATE_SALE_FOR_AREA,
-                                                              discountId, user.getArea());
+				discountId, user.getArea());
 		SaleDiscountResponse response = sendRequest(request);
 
 		return response.getResult();

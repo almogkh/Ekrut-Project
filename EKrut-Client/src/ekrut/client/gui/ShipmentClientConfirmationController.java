@@ -10,6 +10,15 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
+/**
+ * This class is used to display a list of orders that are awaiting delivery
+ * confirmation from the client.
+ * 
+ * It creates ShipmentClientConController objects for each order and adds them
+ * to a container.
+ * 
+ * @author Nir Betesh
+ */
 public class ShipmentClientConfirmationController {
 
 	@FXML

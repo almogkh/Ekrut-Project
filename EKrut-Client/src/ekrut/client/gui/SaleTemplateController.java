@@ -16,6 +16,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * This class is the controller for the SaleTemplate view, it handles the
+ * creation and management of Sale Templates by the client.
+ * 
+ * @author Nir Betesh
+ */
 public class SaleTemplateController {
 
 	@FXML
@@ -76,7 +82,7 @@ public class SaleTemplateController {
 	private ArrayList<SaleDiscount> templates;
 
 	private ClientSalesManager clientSalesManager;
-	
+
 	static {
 		for (int i = 0; i < MINUTES_IN_HOUR; i++)
 			MINUTES[i] = (i < 10 ? "0" : "") + Integer.toString(i);
@@ -89,13 +95,12 @@ public class SaleTemplateController {
 		clientSalesManager = EKrutClientUI.getEkrutClient().getClientSalesManager();
 		templates = clientSalesManager.fetchSaleTemplates();
 
-
 		startTimeInHourChoiceB.getItems().addAll(HOURS);
 		endTimeInHourChoiceB.getItems().addAll(HOURS);
 
 		startTimeInMinChoiceB.getItems().addAll(MINUTES);
 		endTimeInMinChoiceB.getItems().addAll(MINUTES);
-		
+
 		saleTypeChoiceB.getItems().addAll(SALE_TYPE);
 	}
 
@@ -111,10 +116,10 @@ public class SaleTemplateController {
 		dayOfSale.append(isDaySelected(saturdayCheckB));
 		String saleDays = dayOfSale.toString();
 
-		if (startTimeInHourChoiceB.getValue() == null|| endTimeInHourChoiceB.getValue() == null
-		 || startTimeInMinChoiceB.getValue() == null || endTimeInMinChoiceB.getValue() == null
-		 || saleTypeChoiceB.getValue() == null       || saleDays.equals("FFFFFFF")) {
-			
+		if (startTimeInHourChoiceB.getValue() == null || endTimeInHourChoiceB.getValue() == null
+				|| startTimeInMinChoiceB.getValue() == null || endTimeInMinChoiceB.getValue() == null
+				|| saleTypeChoiceB.getValue() == null || saleDays.equals("FFFFFFF")) {
+
 			new Alert(AlertType.ERROR, MISSING_INPUT_MSG, ButtonType.OK).showAndWait();
 			return;
 		}
@@ -131,7 +136,7 @@ public class SaleTemplateController {
 			new Alert(AlertType.ERROR, LOGIC_TIME_ERROR, ButtonType.OK).showAndWait();
 			return;
 		}
-		
+
 		// Q.Nir - Is ok to be specific? its fits only for these two types, if we will
 		// add another type it will be problem.
 		SaleDiscountType type = saleTypeChoiceB.getValue().equals("One Plus One") ? SaleDiscountType.ONE_PLUS_ONE
@@ -139,14 +144,14 @@ public class SaleTemplateController {
 
 		// Create template.
 		SaleDiscount saleDiscount = new SaleDiscount(startTime, endTime, saleDays, type);
-		
+
 		// Check if template is already exist in DB.
-		if ( templates != null && templates.contains(saleDiscount)) {
+		if (templates != null && templates.contains(saleDiscount)) {
 			new Alert(AlertType.ERROR, EXISTS_MSG, ButtonType.OK).showAndWait();
 			return;
 		}
 		templates.add(saleDiscount);
-		
+
 		// Add template and send notification if template was added to DB
 		if (clientSalesManager.createSaleTemplate(saleDiscount) == ResultType.OK)
 			new Alert(AlertType.INFORMATION, SUCCESS_MSG, ButtonType.OK).showAndWait();

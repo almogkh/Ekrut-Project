@@ -13,6 +13,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+
+/**
+ * This class is used to display and handle the shipment set done process.
+ * 
+ * @author Nir Betesh
+ */
 public class ShipmentDoneController extends HBox {
 
 	@FXML
@@ -23,7 +29,13 @@ public class ShipmentDoneController extends HBox {
 
 	private Order order;
 	private ClientShipmentManager clientShipmentManager;
-
+/**
+ * Constructor that initializes the ShipmentDoneController object and sets the
+ * order, orderId information.
+ * 
+ * @param order order object that contains the information to be displayed in
+ *              the controller.
+ */
 	public ShipmentDoneController(Order order) {
 		this.order = order;
 		clientShipmentManager = EKrutClientUI.getEkrutClient().getClientShipmentManager();
