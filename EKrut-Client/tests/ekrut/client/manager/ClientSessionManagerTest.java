@@ -4,7 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import ekrut.client.EKrutClient;
 import ekrut.client.managers.AbstractClientManager;
@@ -15,6 +16,8 @@ import ekrut.net.ResultType;
 import ekrut.net.UserRequest;
 import ekrut.net.UserResponse;
 import static org.mockito.Mockito.*;
+
+import java.lang.reflect.Field;
 
 class ClientSessionManagerTest {
 
@@ -29,11 +32,13 @@ class ClientSessionManagerTest {
 	}
 
 	@Test
-	public void testLoginUser_AlreadyLoggedIn() {
+	public void testLoginUser_AlreadyLoggedIn() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		// Set user to a non-nu value to simulate a user already being logged
 		// in
 
-		clientSessionManager.setUser(user);
+		Field userField = ClientSessionManager.class.getDeclaredField("user");
+		userField.setAccessible(true);
+		userField.set(clientSessionManager, user);
 		try {
 			clientSessionManager.loginUser("username", "password");
 			fail("Expected a RuntimeException to be thrown");
@@ -66,9 +71,16 @@ class ClientSessionManagerTest {
 	public void testLoginUser_Success() {
 		User expected =  new User(UserType.AREA_MANAGER, "username",
 				"password", "yovel", "gabay", "123", "email", "phone", "UAE");
-		Mockito.doNothing().when(ekrutClient).sendRequestToServer(Mockito.any(UserRequest.class));
 		UserResponse response = new UserResponse(ResultType.OK, expected);
-		//doReturn(response).when(clientSessionManager).sendRequest(Mockito.any(UserRequest.class));
+		doAnswer(new Answer<Void>() {
+			@Override
+			public Void answer(InvocationOnMock inv) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+				Field res = AbstractClientManager.class.getDeclaredField("response");
+				res.setAccessible(true);
+				res.set(clientSessionManager, response);
+				return null;
+			}
+		}).when(ekrutClient).sendRequestToServer(any(UserRequest.class));
 
 		assertEquals(clientSessionManager.loginUser("username", "password"), expected);	
 	}
