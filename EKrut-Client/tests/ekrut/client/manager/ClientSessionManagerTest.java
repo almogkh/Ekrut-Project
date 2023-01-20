@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
@@ -42,7 +41,7 @@ class ClientSessionManagerTest {
 	 * different result codes being returned by the sendRequest method.
 	 */
 	private void sendRequest(UserResponse response) {
-		Mockito.doAnswer(new Answer<Void>() {
+		doAnswer(new Answer<Void>() {
 			@Override
 			public Void answer(InvocationOnMock inv)
 					throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
@@ -51,7 +50,7 @@ class ClientSessionManagerTest {
 				res.set(clientSessionManager, response);
 				return null;
 			}
-		}).when(ekrutClient).sendRequestToServer(Mockito.any(UserRequest.class));
+		}).when(ekrutClient).sendRequestToServer(any(UserRequest.class));
 	}
 
 	// Checking functionality loginUser:  A user is already logged in when the loginUser function is called
