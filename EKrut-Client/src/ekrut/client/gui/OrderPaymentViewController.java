@@ -97,8 +97,13 @@ public class OrderPaymentViewController {
 	}
 
 	private void orderSuccess(int orderId) {
-		new Alert(AlertType.INFORMATION, "The order was successfully placed! Your order ID is " + orderId,
-				ButtonType.OK).showAndWait();
+		// new Alert(AlertType.INFORMATION, "The order was successfully placed! Your
+		// order ID is " + orderId,
+		// ButtonType.OK).showAndWait();
+		Alert alert = new Alert(AlertType.INFORMATION, "The order was successfully placed! Your order ID is " + orderId,
+				ButtonType.OK);
+		alert.setHeaderText("" + orderId);
+		alert.showAndWait();
 		if (EKrutClientUI.ekrutLocation == null) {
 			BaseTemplateController.getBaseTemplateController().switchStages("MainMenu");
 		} else {
@@ -116,14 +121,29 @@ public class OrderPaymentViewController {
 				return;
 			}
 		} else {
+			// checks credit card
+			if (newCardNumberTxt.getText().length() != 16) {
+				new Alert(AlertType.ERROR, "Invalid credit card number! Please try again", ButtonType.OK).showAndWait();
+				return;
+			}
+			for (int i = 0; i < newCardNumberTxt.getText().length(); i++) {
+				if (!Character.isDigit(newCardNumberTxt.getText().charAt(i))) {
+					new Alert(AlertType.ERROR, "Invalid credit card number! Please try again", ButtonType.OK)
+							.showAndWait();
+					return;
+				}
+			}
 			if ((orderId = orderManager.confirmOrder(newCardNumberTxt.getText())) >= 0) {
 				orderSuccess(orderId);
 				return;
 			}
 		}
-		new Alert(AlertType.ERROR, "The order could not be placed." +
-					(orderId == -2 ? " Someone else bought the items you were purchasing. " +
-							"Please choose new quantities based on the available inventory." : ""), ButtonType.OK).showAndWait();
+		new Alert(AlertType.ERROR,
+				"The order could not be placed."
+						+ (orderId == -2
+								? " Someone else bought the items you were purchasing. "
+										+ "Please choose new quantities based on the available inventory."
+								: ""),
+				ButtonType.OK).showAndWait();
 	}
-
 }
