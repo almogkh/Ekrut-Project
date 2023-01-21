@@ -32,26 +32,27 @@ public class OrderAddressInputController {
 	// Create order after
 	@FXML
 	void Continue(ActionEvent event) {
-	    String address = addressTxt.getText();
-	    if (address.trim().isEmpty()) {
-	        new Alert(AlertType.ERROR, "You must enter address for shipment!", ButtonType.OK).showAndWait();
-	    } else {
-	        boolean validAddress = true;
-	        for (int i = 0; i < address.length(); i++) {
-	            char c = address.charAt(i);
-	            if (!Character.isLetterOrDigit(c) && c != '.' && c != ',' && c != ' ') {
-	            	validAddress = false;
-	                break;
-	            }
-	        }
-	        if (!validAddress) {
-	            new Alert(AlertType.ERROR, "Address contains invalid characters,please try again", ButtonType.OK).showAndWait();
-	            addressTxt.setText("");
-	        } else {
-	            EKrutClientUI.getEkrutClient().getClientOrderManager().createOrder(address, true);
-	            BaseTemplateController.getBaseTemplateController().switchStages("OrderItemBrowser");
-	        }
-	    }
+		String address = addressTxt.getText();
+		if (address.trim().isEmpty()) {
+			new Alert(AlertType.ERROR, "You must enter address for shipment!", ButtonType.OK).showAndWait();
+		} else {
+			boolean validAddress = true;
+			for (int i = 0; i < address.length(); i++) {
+				char c = address.charAt(i);
+				if (!Character.isLetterOrDigit(c) && c != '.' && c != ',' && c != ' ') {
+					validAddress = false;
+					break;
+				}
+			}
+			if (!validAddress) {
+				new Alert(AlertType.ERROR, "Address contains invalid characters,please try again", ButtonType.OK)
+						.showAndWait();
+				addressTxt.setText("");
+			} else {
+				EKrutClientUI.getEkrutClient().getClientOrderManager().createOrder(address, true);
+				BaseTemplateController.getBaseTemplateController().switchStages("OrderItemBrowser");
+			}
+		}
 	}
 
 	@FXML
