@@ -235,9 +235,9 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 	 */
 	public Report generateInventoryReport(LocalDateTime date, String ekrutLocation, String area) {
 		// Get a list of all threshold breaches for the given date and location
-		ArrayList<String> thersholdBreaches = reportDAO.getThresholdBreaches(date, ekrutLocation);
+		ArrayList<String> thresholdBreaches = reportDAO.getThresholdBreaches(date, ekrutLocation);
 		// Process the threshold breaches to count the number of breaches for each item
-		Map<String, Integer> tresholdBreachesCounted = CountThresholdBreaches(thersholdBreaches);
+		Map<String, Integer> thresholdBreachesCounted = CountThresholdBreaches(thresholdBreaches);
 		// Get the list of all items in the location
 		ArrayList<InventoryItem> allItemsInLocation;
 		try {
@@ -245,15 +245,14 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 		} catch (DeadlockException e) {
 			allItemsInLocation = new ArrayList<>();
 		}
-		int facilityThreshold = 0;
-		// If the list of items is not empty, extract the facility threshold from the
-		// first item
+		int facilityThreshold = -1;
+		// If the list of items is not empty, extract the facility threshold from the first item
 		if (!allItemsInLocation.isEmpty()) {
 			facilityThreshold = allItemsInLocation.get(0).getItemThreshold();
 		}
 		// Process the inventory data
 		Map<String, ArrayList<Integer>> inventoryReportData = createInventoryReportData(allItemsInLocation,
-				tresholdBreachesCounted);
+				thresholdBreachesCounted);
 		// Create a new report object with the generated data
 		Report report = new Report(null, ReportType.INVENTORY, date, ekrutLocation, area, inventoryReportData,
 				facilityThreshold);
@@ -303,7 +302,6 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 			}
 			// Create a list containing the item threshold alert count
 			ArrayList<Integer> temp = new ArrayList<>();
-			temp.add(inventoryItem.getItemThreshold());
 			temp.add(thresholdAlerts);
 
 			// Store the list in the inventory report data map using the item name as the
