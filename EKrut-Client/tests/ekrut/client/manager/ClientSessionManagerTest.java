@@ -110,11 +110,11 @@ class ClientSessionManagerTest {
 	}
 
 
-	// Checking functionality loginUser: An invalid username is provided
+	// Checking functionality loginUser: Not exist username is provided
 	// Input parameters: wrong username: "username", "password"
 	// Expected result: A RuntimeException is thrown with the message ResultType.NOT_FOUND
 	@Test
-	public void test_LoginUser_InvaildUsername_throwException() {
+	public void test_LoginUser_UsernameNotFound_throwException() {
 		User expected = null;
 		UserResponse response = new UserResponse(ResultType.NOT_FOUND, expected);
 		sendRequest(response);

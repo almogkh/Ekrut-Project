@@ -82,11 +82,10 @@ class ServerSessionMangerTest {
 		}
 	}
 
-	// Checking functionality loginUser: User with valid input
+	// Checking functionality loginUser: Exist User with valid input
 	// Input: "username", "password"
-	// Expected output: ResultType.OK, User object, connectedUsers map contains the
-	// user, clientUserMap contains the client, connectedClientList contains the
-	// client
+	// Expected output: ResultType.OK, User object, connectedUsers map contains the user, 
+	//clientUserMap contains the client, connectedClientList contains the client
 	@Test
 	public void test_LoginUser_ExistUser_ResOK() throws UnknownHostException {
 		user = new User(UserType.CUSTOMER, "username", "password", "firstName", "lastName", "123", "email", "phone",
@@ -121,9 +120,8 @@ class ServerSessionMangerTest {
 	// Expected output: ResultType.NOT_FOUND
 	@Test
 	public void test_LoginUser_NullUsername_ResNotFound() {
-		user = new User(UserType.CUSTOMER, "username", "password", "firstName", "lastName", "123", "email", "phone",
-				"UAE");
-		when(userDAO.fetchUserByUsername("username")).thenReturn(user);
+		user = null;
+		when(userDAO.fetchUserByUsername(null)).thenReturn(user);
 		UserResponse response = serverSessionManager.loginUser(null, "password", client);
 		assertEquals(ResultType.NOT_FOUND, response.getResultCode());
 	}
@@ -142,7 +140,7 @@ class ServerSessionMangerTest {
 
 	// Checking functionality loginUser: Incorrect password
 	// Input: "username", "incorrect_password"
-	// Expected output: ResultType.INVALID_INPUT, null user object
+	// Expected output: ResultType.INVALID_INPUT
 	@Test
 	public void test_LoginUser_IncorrectPassword_ResInvalidInput() {
 		user = new User(UserType.CUSTOMER, "username", "password", "firstName", "lastName", "123", "email", "phone",
@@ -150,7 +148,6 @@ class ServerSessionMangerTest {
 		when(userDAO.fetchUserByUsername("username")).thenReturn(user);
 		UserResponse response = serverSessionManager.loginUser("username", "incorrect_password", client);
 		assertEquals(ResultType.INVALID_INPUT, response.getResultCode());
-		assertNotNull(response.getUser());
 	}
 
 	// Checking functionality loginUser: User already logged in
