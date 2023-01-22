@@ -48,7 +48,6 @@ class ClientReportManagerTest {
 				"Coke", new ArrayList<>(Arrays.asList(1)), "Pepsi", new ArrayList<>(Arrays.asList(1)),
 				"Fanta", new ArrayList<>(Arrays.asList(1)), "Oreo", new ArrayList<>(Arrays.asList(1)),
 				"Bisli", new ArrayList<>(Arrays.asList(1))));
-
 	}
 
 	/*

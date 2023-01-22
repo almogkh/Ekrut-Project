@@ -92,6 +92,6 @@ class ReportDAOTest {
 		
 		resultReport = reportDAO.fetchReport(may_2021, "Afula", "North", ReportType.INVENTORY);
 		
-		assertEquals(expectedInventoryReport, resultReport, "Incorrect reportID");
+		assertEquals(expectedInventoryReport, resultReport);
 	}
 }
