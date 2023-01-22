@@ -13,9 +13,6 @@ import ekrut.entity.UserRegistration;
 import ekrut.entity.UserType;
 
 class UserDAOTest {
-	String url;
-	String username;
-	String password;
 	UserDAO userDAO;
 	DBController dbController;
 	User user1;
@@ -26,7 +23,7 @@ class UserDAOTest {
 		dbController = new DBController("jdbc:mysql://localhost/testekrut?serverTimezone=IST", "root", "1qazZ2wsxX!@");
 		dbController.connect();
 		userDAO = new UserDAO(dbController);
-		user1 = new User(UserType.CEO, "ofek", "ofek", "ofek", "malka", "1", "uaeCEO@ek.com", "05050050050", "UAE");
+		user1 = new User(UserType.CEO, "ceo", "123", "israel", "lobisvili", "1", "israel@ek.com", "05050050001", null);
 	}
 
 	// Checking functionality fetchUserByUsername: fetch user by exists username
