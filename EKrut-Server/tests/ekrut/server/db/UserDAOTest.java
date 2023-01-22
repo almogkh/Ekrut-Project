@@ -1,15 +1,9 @@
 package ekrut.server.db;
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import ekrut.entity.Customer;
 import ekrut.entity.User;
-import ekrut.entity.UserRegistration;
 import ekrut.entity.UserType;
 
 class UserDAOTest {
@@ -31,15 +25,15 @@ class UserDAOTest {
 	// Expected result: User with user name: "ofek"
 	@Test
 	void test_FetchUserByUsername_UserNameExists_ResUser() {
-		userResult = userDAO.fetchUserByUsername("ofek");
+		userResult = userDAO.fetchUserByUsername("ceo");
 		assertEquals(userResult.getUserType(), UserType.CEO, "Incorrect userType");
-		assertEquals(userResult.getPassword(), "ofek", "Incorrect password");
-		assertEquals(userResult.getFirstName(), "ofek", "Incorrect first-name");
-		assertEquals(userResult.getLastName(), "malka", "Incorrect last-name");
+		assertEquals(userResult.getPassword(), "123", "Incorrect password");
+		assertEquals(userResult.getFirstName(), "israel", "Incorrect first-name");
+		assertEquals(userResult.getLastName(), "lobisvili", "Incorrect last-name");
 		assertEquals(userResult.getId(), "1", "Incorrect ID");
-		assertEquals(userResult.getEmail(), "uaeCEO@ek.com", "Incorrect email");
-		assertEquals(userResult.getPhoneNumber(), "05050050050", "Incorrect phone number");
-		assertEquals(userResult.getArea(), "UAE", "Incorrect area");
+		assertEquals(userResult.getEmail(), "israel@ek.com", "Incorrect email");
+		assertEquals(userResult.getPhoneNumber(), "05050050001", "Incorrect phone number");
+		assertEquals(userResult.getArea(), null, "Incorrect area");
 	}
 
 	// Checking functionality fetchUserByUsername: fetch user by not exists username
