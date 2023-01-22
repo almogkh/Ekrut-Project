@@ -70,6 +70,13 @@ class ClientReportManagerTest {
 		}).when(ekrutClient).sendRequestToServer(any(ReportRequest.class));
 	}
 	
+	/**
+	 * Test the functionality of the method 'getReport' when the result type is OK
+	 * Input parameters: area: "South", location: "Dimona", reportType: ReportType.INVENTORY,
+	 * date: 2022-01-31.
+	 * Expected result: The method should return the expected Report object.
+	 * @throws Exception 
+	 */
     @Test
     public void testGetReportSuccess() throws Exception {
         String area = "South";
@@ -88,7 +95,13 @@ class ClientReportManagerTest {
         
         assertEquals(expectedReport, resultReport);
     }
-
+    /**
+     * Test the functionality of the method 'getReport' when the result type is NOT_FOUND
+     * Input parameters: area: "UAE", location: "Dubai" ,reportType: ReportType.INVENTORY,
+     * date: 2022-01-31.
+     * Expected result: The method should return null as the resultReport.
+     * @throws Exception 
+     */
     @Test 
     public void testGetReportError() throws Exception{
         String area = "UAE";
