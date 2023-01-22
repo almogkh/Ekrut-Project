@@ -29,9 +29,9 @@ class ReportDAOTest {
 	Report resultReport;
 
 	Report expectedInventoryReport;
+	Report expectedInventoryReport2;
 
 	Map<String, ArrayList<Integer>> expectedInventoryReportData;
-
 
 	@BeforeEach
 	void setUp() throws Exception {
@@ -41,28 +41,19 @@ class ReportDAOTest {
 		
 		reportDAO = new ReportDAO(DBcontroller);
 		
-		jan_2022 = LocalDateTime.now();
-		jan_2022 = jan_2022.withMonth(1);
-		jan_2022 = jan_2022.withYear(2022);
-		jan_2022 = jan_2022.withDayOfMonth(31);
+		jan_2022 = LocalDateTime.of(2022, 1, 31, 0, 0, 0);
+		may_2021 = LocalDateTime.of(2021, 5, 31, 0, 0, 0);
 		
-		may_2021 = LocalDateTime.now();
-		may_2021 = may_2021.withMonth(5);
-		may_2021 = may_2021.withYear(2021);
-		may_2021 = may_2021.withDayOfMonth(31);
-		
-		
-		expectedInventoryReportData = new HashMap<>();
-		 // populate the map with the expected data
-		expectedInventoryReportData.put("Bamba", new ArrayList<>(Arrays.asList(1)));
-		expectedInventoryReportData.put("Coke", new ArrayList<>(Arrays.asList(1)));
-		expectedInventoryReportData.put("Pepsi", new ArrayList<>(Arrays.asList(1)));
-		expectedInventoryReportData.put("Fanta", new ArrayList<>(Arrays.asList(1)));
-		expectedInventoryReportData.put("Oreo", new ArrayList<>(Arrays.asList(1)));
-		expectedInventoryReportData.put("Bisli", new ArrayList<>(Arrays.asList(1)));
+		expectedInventoryReportData = new HashMap<>(Map.of("Bamba", new ArrayList<>(Arrays.asList(1)),
+				"Coke", new ArrayList<>(Arrays.asList(1)), "Pepsi", new ArrayList<>(Arrays.asList(1)),
+				"Fanta", new ArrayList<>(Arrays.asList(1)), "Oreo", new ArrayList<>(Arrays.asList(1)),
+				"Bisli", new ArrayList<>(Arrays.asList(1))));
 		
 		expectedInventoryReport = new Report(null, ReportType.INVENTORY, may_2021, "Afula", "North",
 				expectedInventoryReportData, 12);
+		
+		expectedInventoryReport2 = new Report(1, ReportType.INVENTORY, jan_2022, "Akko", "North",
+				expectedInventoryReportData, 15);
 	}
 	
 	// Checking functionality fetchReport: fetch not exist report
@@ -71,7 +62,7 @@ class ReportDAOTest {
 	@Test
 	public void testFetchNotExsitsReport() {
 		
-		resultReport = reportDAO.fetchReport(jan_2022, "Eilat", "South", ReportType.CUSTOMER);
+		resultReport = reportDAO.fetchReport(jan_2022, "Eilat", "South", ReportType.INVENTORY);
 		
 		assertNull(resultReport);
 	}
@@ -81,50 +72,26 @@ class ReportDAOTest {
 	// Expected result: All the result report data is equals to the data at the DB
 	@Test 
 	public void testFetchMonthlyInventoryReport_North_Akko_JAN_2022(){
-
+		
 		resultReport = reportDAO.fetchReport(jan_2022, "Akko", "North", ReportType.INVENTORY);
 		
-		assertEquals(2, resultReport.getReportID(),
-				"Incorrect reportID");
-		assertEquals(ReportType.INVENTORY, resultReport.getReportType(),
-				"Incorrect report type");
-		assertEquals(jan_2022.toLocalDate(), resultReport.getDate().toLocalDate(),
-				"Incorrect report date");
-		assertEquals("Akko", resultReport.getEkrutLocation(),
-				"Incorrect report location");
-		assertEquals("North", resultReport.getArea(),
-				"Incorrect report area");
-		assertEquals(expectedInventoryReportData, resultReport.getInventoryReportData(),
-				"Incorrect inventory report data");
-		assertEquals(15, resultReport.getThreshold(),
-				"Incorrect threshold");
-
+		assertEquals(expectedInventoryReport2, resultReport);
 	}
-	// Checking functionality createInventoryReport: 
-	// Input parameters: 
-	// Expected result: 
+	
+	// Checking functionality createInventoryReport: insert inventory report from may 2021 at "Afula" "North" into the DB.
+	// Input parameters: excepted inventory report
+	// Expected result: the fetched report from the DB is equals to the report that inserted.
 	@Test 
 	public void testCreateInventoryReport_North_Afula_may_2021() {
+		
+		resultReport = reportDAO.fetchReport(may_2021, "Afula", "North", ReportType.INVENTORY);
+		
+		assertNull(resultReport);
 		
 		reportDAO.createInventoryReport(expectedInventoryReport);
 		
 		resultReport = reportDAO.fetchReport(may_2021, "Afula", "North", ReportType.INVENTORY);
 		
-		assertEquals(expectedInventoryReport.getReportID(), resultReport.getReportID(),
-				"Incorrect reportID");
-		assertEquals(expectedInventoryReport.getReportType(), resultReport.getReportType(),
-				"Incorrect report type");
-		assertEquals(expectedInventoryReport.getDate().toLocalDate(), resultReport.getDate().toLocalDate(),
-				"Incorrect report date");
-		assertEquals(expectedInventoryReport.getEkrutLocation(), resultReport.getEkrutLocation(),
-				"Incorrect report location");
-		assertEquals(expectedInventoryReport.getArea(), resultReport.getArea(),
-				"Incorrect report area");
-		assertEquals(expectedInventoryReport.getInventoryReportData(), resultReport.getInventoryReportData(),
-				"Incorrect inventory report data");
-		assertEquals(expectedInventoryReport.getThreshold(), resultReport.getThreshold(),
-				"Incorrect threshold");
+		assertEquals(expectedInventoryReport, resultReport, "Incorrect reportID");
 	}
-	
-	
 }
