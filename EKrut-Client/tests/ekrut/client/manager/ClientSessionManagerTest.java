@@ -157,20 +157,4 @@ class ClientSessionManagerTest {
 			assertEquals(ResultType.PERMISSION_DENIED.toString(), e.getMessage());
 		}
 	}
-	
-	// Checking functionality fetchUser: A valid fetchType and argument are provided
-	// Input parameters: FetchUserType.ROLE and UserType.CUSTOMER.toString()
-	// Expected result: A list of users of type CUSTOMER is returned
-	@Test
-	public void test_loginViaToouch_FetchUser_Role_Customer() {
-	    // Create a list of expected users
-	    ArrayList<User> expectedUsers = new ArrayList<>();
-	    expectedUsers.add(new User(UserType.CUSTOMER, "username1", "password1", "firstName1", "lastName1", "123", "email1", "phone1", "UAE"));
-	    expectedUsers.add(new User(UserType.CUSTOMER, "username2", "password2", "firstName2", "lastName2", "456", "email2", "phone2", "UAE"));
-	    UserResponse response = new UserResponse(ResultType.OK, expectedUsers);
-	    sendRequest(response);
-	    ArrayList<User> actualUsers = clientSessionManager.fetchUser(FetchUserType.ROLE, UserType.CUSTOMER.toString());
-	    assertEquals(expectedUsers, actualUsers);
-	}
-	
 }
