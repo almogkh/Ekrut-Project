@@ -791,8 +791,8 @@ public class ReportDAO {
 				String itemName = entry.getKey();
 				ArrayList<Integer> thresholdData = entry.getValue();
 
-				// tresholdData(1) is how many breaches that item "cause"
-				int thresholdBreaches = thresholdData.get(1);
+				// tresholdData(0) is how many breaches that item "cause"
+				int thresholdBreaches = thresholdData.get(0);
 
 				ps1.setInt(1, reportID);
 				ps1.setString(2, itemName);
