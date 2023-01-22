@@ -19,16 +19,17 @@ import javafx.collections.ObservableList;
 import ocsf.server.ConnectionToClient;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Map;
 import java.util.Timer;
+import java.util.TimerTask;
 
 class ServerSessionMangerTest {
 
 	private UserDAO userDAO;
 	private User user;
 	private Timer timer;
-	private Timer timerMock;
 	private ConnectionToClient client;
 	private ServerSessionManager serverSessionManager;
 	private DBController dbCon;
@@ -37,6 +38,7 @@ class ServerSessionMangerTest {
 	private Map<ConnectionToClient, User> clientUserMap;
 	private ObservableList<ConnectedClient> connectedClientList;
 	private InetAddress inetAddress;
+	private Socket clientSocket;
 
 	@SuppressWarnings("unchecked")
 	@BeforeEach
@@ -44,9 +46,10 @@ class ServerSessionMangerTest {
 		dbCon = new DBController("jdbc:postgresql://localhost:5432/mydb", "username", "password");
 		userNotifier = mock(IUserNotifier.class);
 		client = mock(ConnectionToClient.class);
-		//inetAddress = mock(InetAddress.class);
 		userDAO = mock(UserDAO.class);
-		timerMock = mock(Timer.class);
+		timer = mock(Timer.class);
+		clientSocket = mock(Socket.class);
+		inetAddress = mock(InetAddress.class);
 		serverSessionManager = new ServerSessionManager(dbCon, userNotifier);
 		// Use reflection to set the userDAO field in the ServerSessionManager object
 		try {
@@ -63,12 +66,14 @@ class ServerSessionMangerTest {
 			Field clientUserMapField = ServerSessionManager.class.getDeclaredField("clientUserMap");
 			Field connectedClientListField = ServerSessionManager.class.getDeclaredField("connectedClientList");
 			Field timerField = TimeScheduler.class.getDeclaredField("timer");
+			Field clientSocketField = ConnectionToClient.class.getDeclaredField("clientSocket");
 			connectedUsersField.setAccessible(true);
 			clientUserMapField.setAccessible(true);
 			connectedClientListField.setAccessible(true);
 			timerField.setAccessible(true);
-			timerField.set(null,timerMock);
-			
+			clientSocketField.setAccessible(true);
+			clientSocketField.set(client, clientSocket);
+			timerField.set(null, timer);
 			connectedUsers = (Map<User, Timer>) connectedUsersField.get(serverSessionManager);
 			clientUserMap = (Map<ConnectionToClient, User>) clientUserMapField.get(serverSessionManager);
 			connectedClientList = (ObservableList<ConnectedClient>) connectedClientListField.get(serverSessionManager);
@@ -77,21 +82,85 @@ class ServerSessionMangerTest {
 		}
 	}
 
+	// Checking functionality loginUser: Exist User with valid input
+	// Input: "username", "password"
+	// Expected output: ResultType.OK, User object, connectedUsers map contains the user, 
+	//clientUserMap contains the client, connectedClientList contains the client
 	@Test
-	public void testLoginUser_Success() throws UnknownHostException {
+	public void test_LoginUser_ExistUser_ResOK() throws UnknownHostException {
 		user = new User(UserType.CUSTOMER, "username", "password", "firstName", "lastName", "123", "email", "phone",
 				"UAE");
 		when(userDAO.fetchUserByUsername("username")).thenReturn(user);
-		// ****need to be fixed*** doNothing().when(timer).schedule(any()); ****need to be fixed***
-//		doNothing().when(serverSessionManager).startTimer(Mockito.anyString(),Mockito.any(ConnectionToClient.class));
-//		when(inetAddress.getHostAddress()).thenReturn("/127.0.0.1");
-//		when(client.getInetAddress()).thenReturn(inetAddress);
+		doNothing().when(timer).schedule(any(TimerTask.class), anyLong());
+		when(inetAddress.toString()).thenReturn("/127.0.0.1");
+		when(clientSocket.getInetAddress()).thenReturn(inetAddress);
 		UserResponse response = serverSessionManager.loginUser("username", "password", client);
 		assertEquals(ResultType.OK, response.getResultCode());
 		assertEquals(user, response.getUser());
 		assertTrue(connectedUsers.containsKey(user));
 		assertTrue(clientUserMap.containsKey(client));
-//		assertTrue(connectedClientList.contains(new ConnectedClient(client.getInetAddress().toString().replace("/", ""),"username", user.getUserType())));
+		connectedClientList = serverSessionManager.getConnectedClientList();
+		assertTrue(connectedClientList.contains(new ConnectedClient(client.getInetAddress().toString().replace("/", ""),
+				"username", user.getUserType())));
+	}
+
+	// Checking functionality loginUser: Non-existent user
+	// Input: "username", "password"
+	// Expected output: ResultType.NOT_FOUND, null user object
+	@Test
+	public void test_LoginUser_UserNotExist_ResNotFound() {
+		when(userDAO.fetchUserByUsername("username")).thenReturn(null);
+		UserResponse response = serverSessionManager.loginUser("username", "password", client);
+		assertEquals(ResultType.NOT_FOUND, response.getResultCode());
+		assertNull(response.getUser());
+	}
+
+	// Checking functionality loginUser: null username
+	// Input: null username, "password"
+	// Expected output: ResultType.NOT_FOUND
+	@Test
+	public void test_LoginUser_NullUsername_ResNotFound() {
+		user = null;
+		when(userDAO.fetchUserByUsername(null)).thenReturn(user);
+		UserResponse response = serverSessionManager.loginUser(null, "password", client);
+		assertEquals(ResultType.NOT_FOUND, response.getResultCode());
+	}
+
+	// Checking functionality loginUser: null username
+	// Input: "username", null password
+	// Expected output: ResultType.INVALID_INPUT
+	@Test
+	public void test_LoginUser_NullPassword_ResInvalidInput() {
+		user = new User(UserType.CUSTOMER, "username", "password", "firstName", "lastName", "123", "email", "phone",
+				"UAE");
+		when(userDAO.fetchUserByUsername("username")).thenReturn(user);
+		UserResponse response = serverSessionManager.loginUser("username", null, client);
+		assertEquals(ResultType.INVALID_INPUT, response.getResultCode());
+	}
+
+	// Checking functionality loginUser: Incorrect password
+	// Input: "username", "incorrect_password"
+	// Expected output: ResultType.INVALID_INPUT
+	@Test
+	public void test_LoginUser_IncorrectPassword_ResInvalidInput() {
+		user = new User(UserType.CUSTOMER, "username", "password", "firstName", "lastName", "123", "email", "phone",
+				"UAE");
+		when(userDAO.fetchUserByUsername("username")).thenReturn(user);
+		UserResponse response = serverSessionManager.loginUser("username", "incorrect_password", client);
+		assertEquals(ResultType.INVALID_INPUT, response.getResultCode());
+	}
+
+	// Checking functionality loginUser: User already logged in
+	// Input: "username", "password"
+	// Expected output: ResultType.PERMISSION_DENIED
+	@Test
+	public void test_LoginUser_UserAlreadyLoggedIn_ResPermissionDenied() {
+		user = new User(UserType.CUSTOMER, "username", "password", "firstName", "lastName", "123", "email", "phone",
+				"UAE");
+		when(userDAO.fetchUserByUsername("username")).thenReturn(user);
+		connectedUsers.put(user, timer);
+		UserResponse response = serverSessionManager.loginUser("username", "password", client);
+		assertEquals(ResultType.PERMISSION_DENIED, response.getResultCode());
 	}
 
 }

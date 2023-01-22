@@ -41,7 +41,7 @@ public class ServerSessionManager {
 	private HashMap<ConnectionToClient, User> clientUserMap;
 	// The time, in milliseconds, after which a user will be automatically logged
 	// out if they have not made any requests.
-	private static final long LOGOUT_TIME = 300_000; // 5 minutes
+	private static final long LOGOUT_TIME = 90_000; // 1 minute
 	private ObservableList<ConnectedClient> connectedClientList;
 	private IUserNotifier userNotifier;
 
