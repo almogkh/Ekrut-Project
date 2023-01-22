@@ -43,12 +43,22 @@ class ClientReportManagerTest {
 		ekrutClient = mock(EKrutClient.class);
 		
 		clientReportManager = new ClientReportManager(ekrutClient);
-		/*
-        inventoryReportData = new HashMap<>(Map.of("Bamba", new ArrayList<>(Arrays.asList(1)),
-				"Coke", new ArrayList<>(Arrays.asList(1)), "Pepsi", new ArrayList<>(Arrays.asList(1)),
-				"Fanta", new ArrayList<>(Arrays.asList(1)), "Oreo", new ArrayList<>(Arrays.asList(1)),
-				"Bisli", new ArrayList<>(Arrays.asList(1))));
-				*/
+		
+		Map<String, ArrayList<Integer>> expectedInventoryReportData = new HashMap<>();
+
+		ArrayList<Integer> thresholdBreachesBamba = new ArrayList<>(Arrays.asList(1));
+		ArrayList<Integer> thresholdBreachesCoke = new ArrayList<>(Arrays.asList(1));
+		ArrayList<Integer> thresholdBreachesPepsi = new ArrayList<>(Arrays.asList(1));
+		ArrayList<Integer> thresholdBreachesFanta = new ArrayList<>(Arrays.asList(1));
+		ArrayList<Integer> thresholdBreachesOreo = new ArrayList<>(Arrays.asList(1));
+		ArrayList<Integer> thresholdBreachesBisli = new ArrayList<>(Arrays.asList(1));
+
+		expectedInventoryReportData.put("Bamba", thresholdBreachesBamba);
+		expectedInventoryReportData.put("Coke", thresholdBreachesCoke);
+		expectedInventoryReportData.put("Pepsi", thresholdBreachesPepsi);
+		expectedInventoryReportData.put("Fanta", thresholdBreachesFanta);
+		expectedInventoryReportData.put("Oreo", thresholdBreachesOreo);
+		expectedInventoryReportData.put("Bisli", thresholdBreachesBisli);
 	}
 
 	/*
@@ -70,15 +80,11 @@ class ClientReportManagerTest {
 		}).when(ekrutClient).sendRequestToServer(any(ReportRequest.class));
 	}
 	
-	/**
-	 * Test the functionality of the method 'getReport' when the result type is OK
-	 * Input parameters: area: "South", location: "Dimona", reportType: ReportType.INVENTORY,
-	 * date: 2022-01-31.
-	 * Expected result: The method should return the expected Report object.
-	 * @throws Exception 
-	 */
+	// Checking functionality getReport: get exists inventory report.
+	// Input parameters: date: 2022-01-31, ekrutLocation: "Dimona", area: "South", type: INVENTORY.
+	// Expected result: Inventory report of the given parameters and resultType "OK".
     @Test
-    public void testGetReportSuccess() throws Exception {
+    public void test_getReport_Success() throws Exception {
         String area = "South";
         String location = "Dimona";
         ReportType reportType = ReportType.INVENTORY;
@@ -88,22 +94,17 @@ class ClientReportManagerTest {
    			 location, area, inventoryReportData, 12);
         
         ReportResponse reportResponse = new ReportResponse(ResultType.OK, expectedReport);
-        
         sendRequest(reportResponse);
         
         Report resultReport = clientReportManager.getReport(area, location, reportType, date);
-        
         assertEquals(expectedReport, resultReport);
     }
-    /**
-     * Test the functionality of the method 'getReport' when the result type is NOT_FOUND
-     * Input parameters: area: "UAE", location: "Dubai" ,reportType: ReportType.INVENTORY,
-     * date: 2022-01-31.
-     * Expected result: The method should return null as the resultReport.
-     * @throws Exception 
-     */
+    
+	// Checking functionality getReport: get not exists report.
+	// Input parameters: date: 2022-01-31, ekrutLocation: "Dubai", area: "UAE", type: INVENTORY.
+	// Expected result: null report and resultType "NOT_FOUND".
     @Test 
-    public void testGetReportError() throws Exception{
+    public void test_GetReport_NotExsitsReport_ResNullReport() throws Exception{
         String area = "UAE";
         String location = "Dubai";
         ReportType reportType = ReportType.INVENTORY;
@@ -112,11 +113,9 @@ class ClientReportManagerTest {
         Report expectedReport = null;
         
         ReportResponse reportResponse = new ReportResponse(ResultType.NOT_FOUND, expectedReport);
-        
         sendRequest(reportResponse);
         
         Report resultReport = clientReportManager.getReport(area, location, reportType, date);
-        
         assertNull(resultReport);
     }
 }
