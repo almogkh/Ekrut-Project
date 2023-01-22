@@ -94,7 +94,7 @@ class ServerSessionMangerTest {
 		when(userDAO.fetchUserByUsername("username")).thenReturn(user);
 		doNothing().when(timer).schedule(any(TimerTask.class), anyLong());
 		when(inetAddress.toString()).thenReturn("/127.0.0.1");
-		when(client.getInetAddress()).thenReturn(inetAddress);
+		when(clientSocket.getInetAddress()).thenReturn(inetAddress);
 		UserResponse response = serverSessionManager.loginUser("username", "password", client);
 		assertEquals(ResultType.OK, response.getResultCode());
 		assertEquals(user, response.getUser());
