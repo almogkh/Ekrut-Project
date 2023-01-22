@@ -245,7 +245,7 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 		} catch (DeadlockException e) {
 			allItemsInLocation = new ArrayList<>();
 		}
-		int facilityThreshold = 0;
+		int facilityThreshold = -1;
 		// If the list of items is not empty, extract the facility threshold from the
 		// first item
 		if (!allItemsInLocation.isEmpty()) {
@@ -303,7 +303,6 @@ public class ServerReportManager extends AbstractServerManager<ReportRequest, Re
 			}
 			// Create a list containing the item threshold alert count
 			ArrayList<Integer> temp = new ArrayList<>();
-			temp.add(inventoryItem.getItemThreshold());
 			temp.add(thresholdAlerts);
 
 			// Store the list in the inventory report data map using the item name as the
