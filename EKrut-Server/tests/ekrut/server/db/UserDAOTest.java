@@ -20,7 +20,7 @@ class UserDAOTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
-		dbController = new DBController("jdbc:mysql://localhost/testekrut?serverTimezone=IST", "root", "1qazZ2wsxX!@");
+		dbController = new DBController("jdbc:mysql://localhost/test_ekrut?serverTimezone=IST", "root", "1qazZ2wsxX!@");
 		dbController.connect();
 		userDAO = new UserDAO(dbController);
 		user1 = new User(UserType.CEO, "ceo", "123", "israel", "lobisvili", "1", "israel@ek.com", "05050050001", null);
