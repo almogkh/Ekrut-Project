@@ -43,11 +43,12 @@ class ReportDAOTest {
 		
 		jan_2022 = LocalDateTime.of(2022, 1, 31, 0, 0, 0);
 		may_2021 = LocalDateTime.of(2021, 5, 31, 0, 0, 0);
-		
+		/*
 		expectedInventoryReportData = new HashMap<>(Map.of("Bamba", new ArrayList<>(Arrays.asList(1)),
 				"Coke", new ArrayList<>(Arrays.asList(1)), "Pepsi", new ArrayList<>(Arrays.asList(1)),
 				"Fanta", new ArrayList<>(Arrays.asList(1)), "Oreo", new ArrayList<>(Arrays.asList(1)),
 				"Bisli", new ArrayList<>(Arrays.asList(1))));
+				*/
 		
 		expectedInventoryReport = new Report(null, ReportType.INVENTORY, may_2021, "Afula", "North",
 				expectedInventoryReportData, 12);
